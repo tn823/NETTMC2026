@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<CETCheck>false</CETCheck>
+		<DisableHardwareEnforcedStackProtection>true</DisableHardwareEnforcedStackProtection>
+		<Features>$(Features);disable-hw-enforced-stack-protection</Features>
+
+		<NoWarn>$(NoWarn);CET0001;MSB4011;CS8600;CS8602;CS8603</NoWarn>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Deterministic>false</Deterministic>
+		<CETCompat>false</CETCompat>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Oracle.ManagedDataAccess" Version="23.26.100" />
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.100" />
+		<PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="23.26.0" />
+	</ItemGroup>
+</Project>
