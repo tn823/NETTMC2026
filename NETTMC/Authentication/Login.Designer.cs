@@ -35,7 +35,6 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
-            button4 = new Button();
             button5 = new Button();
             button6 = new Button();
             button7 = new Button();
@@ -72,7 +71,6 @@
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Controls.Add(button3);
-            flowLayoutPanel1.Controls.Add(button4);
             flowLayoutPanel1.Controls.Add(button5);
             flowLayoutPanel1.Controls.Add(button6);
             flowLayoutPanel1.Controls.Add(button7);
@@ -113,18 +111,9 @@
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
             // 
-            // button4
-            // 
-            button4.Location = new Point(605, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(188, 120);
-            button4.TabIndex = 3;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
-            // 
             // button5
             // 
-            button5.Location = new Point(3, 129);
+            button5.Location = new Point(605, 3);
             button5.Name = "button5";
             button5.Size = new Size(193, 120);
             button5.TabIndex = 4;
@@ -133,7 +122,7 @@
             // 
             // button6
             // 
-            button6.Location = new Point(202, 129);
+            button6.Location = new Point(3, 129);
             button6.Name = "button6";
             button6.Size = new Size(193, 120);
             button6.TabIndex = 5;
@@ -142,7 +131,7 @@
             // 
             // button7
             // 
-            button7.Location = new Point(401, 129);
+            button7.Location = new Point(202, 129);
             button7.Name = "button7";
             button7.Size = new Size(193, 120);
             button7.TabIndex = 6;
@@ -151,7 +140,7 @@
             // 
             // button8
             // 
-            button8.Location = new Point(600, 129);
+            button8.Location = new Point(401, 129);
             button8.Name = "button8";
             button8.Size = new Size(193, 120);
             button8.TabIndex = 7;
@@ -160,7 +149,7 @@
             // 
             // button9
             // 
-            button9.Location = new Point(3, 255);
+            button9.Location = new Point(600, 129);
             button9.Name = "button9";
             button9.Size = new Size(193, 120);
             button9.TabIndex = 8;
@@ -169,7 +158,7 @@
             // 
             // button10
             // 
-            button10.Location = new Point(202, 255);
+            button10.Location = new Point(3, 255);
             button10.Name = "button10";
             button10.Size = new Size(193, 120);
             button10.TabIndex = 9;
@@ -178,7 +167,7 @@
             // 
             // button11
             // 
-            button11.Location = new Point(401, 255);
+            button11.Location = new Point(202, 255);
             button11.Name = "button11";
             button11.Size = new Size(193, 120);
             button11.TabIndex = 10;
@@ -187,7 +176,7 @@
             // 
             // button12
             // 
-            button12.Location = new Point(600, 255);
+            button12.Location = new Point(401, 255);
             button12.Name = "button12";
             button12.Size = new Size(193, 120);
             button12.TabIndex = 11;
@@ -219,7 +208,6 @@
         private Button button1;
         private Button button2;
         private Button button3;
-        private Button button4;
         private Button button5;
         private Button button6;
         private Button button7;
