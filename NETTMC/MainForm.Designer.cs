@@ -40,20 +40,41 @@
             TreeNode treeNode22 = new TreeNode("User Mangement");
             TreeNode treeNode23 = new TreeNode("User System", new TreeNode[] { treeNode22 });
             TreeNode treeNode24 = new TreeNode("SYSTEM", new TreeNode[] { treeNode3, treeNode7, treeNode15, treeNode19, treeNode21, treeNode23 });
-            TreeNode treeNode25 = new TreeNode("HRMS");
-            TreeNode treeNode26 = new TreeNode("SALARY");
-            TreeNode treeNode27 = new TreeNode("HR", new TreeNode[] { treeNode25, treeNode26 });
-            TreeNode treeNode28 = new TreeNode("DEV");
-            TreeNode treeNode29 = new TreeNode("LAB");
-            TreeNode treeNode30 = new TreeNode("MAT");
-            TreeNode treeNode31 = new TreeNode("QA");
-            TreeNode treeNode32 = new TreeNode("QIP");
-            TreeNode treeNode33 = new TreeNode("RTDM", new TreeNode[] { treeNode28, treeNode29, treeNode30, treeNode31, treeNode32 });
-            TreeNode treeNode34 = new TreeNode("LEAN NB");
-            TreeNode treeNode35 = new TreeNode("LEAN AD");
-            TreeNode treeNode36 = new TreeNode("LEAN", new TreeNode[] { treeNode34, treeNode35 });
-            TreeNode treeNode37 = new TreeNode("STOCKFIT DEFECT");
-            TreeNode treeNode38 = new TreeNode("Main Menu", new TreeNode[] { treeNode24, treeNode27, treeNode33, treeNode36, treeNode37 });
+            TreeNode treeNode25 = new TreeNode("Node50");
+            TreeNode treeNode26 = new TreeNode("Node51");
+            TreeNode treeNode27 = new TreeNode("Attendace", new TreeNode[] { treeNode25, treeNode26 });
+            TreeNode treeNode28 = new TreeNode("Node52");
+            TreeNode treeNode29 = new TreeNode("Node53");
+            TreeNode treeNode30 = new TreeNode("Canteen", new TreeNode[] { treeNode28, treeNode29 });
+            TreeNode treeNode31 = new TreeNode("Dashboard");
+            TreeNode treeNode32 = new TreeNode("Node54");
+            TreeNode treeNode33 = new TreeNode("Node55");
+            TreeNode treeNode34 = new TreeNode("Security", new TreeNode[] { treeNode32, treeNode33 });
+            TreeNode treeNode35 = new TreeNode("Node56");
+            TreeNode treeNode36 = new TreeNode("Node57");
+            TreeNode treeNode37 = new TreeNode("Node58");
+            TreeNode treeNode38 = new TreeNode("MAS", new TreeNode[] { treeNode35, treeNode36, treeNode37 });
+            TreeNode treeNode39 = new TreeNode("Org Chart");
+            TreeNode treeNode40 = new TreeNode("HRMS", new TreeNode[] { treeNode27, treeNode30, treeNode31, treeNode34, treeNode38, treeNode39 });
+            TreeNode treeNode41 = new TreeNode("Upload Excel");
+            TreeNode treeNode42 = new TreeNode("Upload Salary", new TreeNode[] { treeNode41 });
+            TreeNode treeNode43 = new TreeNode("Register && Execute Allowance");
+            TreeNode treeNode44 = new TreeNode("Salary Calculation");
+            TreeNode treeNode45 = new TreeNode("Report End Of Month");
+            TreeNode treeNode46 = new TreeNode("Salary", new TreeNode[] { treeNode43, treeNode44, treeNode45 });
+            TreeNode treeNode47 = new TreeNode("SALARY", new TreeNode[] { treeNode42, treeNode46 });
+            TreeNode treeNode48 = new TreeNode("HR", new TreeNode[] { treeNode40, treeNode47 });
+            TreeNode treeNode49 = new TreeNode("DEV");
+            TreeNode treeNode50 = new TreeNode("LAB");
+            TreeNode treeNode51 = new TreeNode("MAT");
+            TreeNode treeNode52 = new TreeNode("QA");
+            TreeNode treeNode53 = new TreeNode("QIP");
+            TreeNode treeNode54 = new TreeNode("RTDM", new TreeNode[] { treeNode49, treeNode50, treeNode51, treeNode52, treeNode53 });
+            TreeNode treeNode55 = new TreeNode("LEAN NB");
+            TreeNode treeNode56 = new TreeNode("LEAN AD");
+            TreeNode treeNode57 = new TreeNode("LEAN", new TreeNode[] { treeNode55, treeNode56 });
+            TreeNode treeNode58 = new TreeNode("STOCKFIT DEFECT");
+            TreeNode treeNode59 = new TreeNode("Main Menu", new TreeNode[] { treeNode24, treeNode48, treeNode54, treeNode57, treeNode58 });
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainMenuStrip = new MenuStrip();
             menuHome = new ToolStripMenuItem();
@@ -61,6 +82,29 @@
             menuView = new ToolStripMenuItem();
             menuTools = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
+            sTOCKToolStripMenuItem = new ToolStripMenuItem();
+            kiểmKhoToolStripMenuItem = new ToolStripMenuItem();
+            exportCheckStockToolStripMenuItem = new ToolStripMenuItem();
+            fPCardReaderMachineToolStripMenuItem = new ToolStripMenuItem();
+            userManagementToolStripMenuItem = new ToolStripMenuItem();
+            deviceStatusToolStripMenuItem = new ToolStripMenuItem();
+            dataManagementToolStripMenuItem = new ToolStripMenuItem();
+            iTAssetsToolStripMenuItem = new ToolStripMenuItem();
+            iPManagementToolStripMenuItem = new ToolStripMenuItem();
+            printLabelToolStripMenuItem = new ToolStripMenuItem();
+            checkIPScanDevicesToolStripMenuItem = new ToolStripMenuItem();
+            deviceManufacturerToolStripMenuItem = new ToolStripMenuItem();
+            modelManagementToolStripMenuItem = new ToolStripMenuItem();
+            devicesTypeManagementToolStripMenuItem = new ToolStripMenuItem();
+            deviceManagementToolStripMenuItem = new ToolStripMenuItem();
+            modifiedPCARDToolStripMenuItem = new ToolStripMenuItem();
+            checkPCARDToolStripMenuItem = new ToolStripMenuItem();
+            materialBarcodeToolStripMenuItem = new ToolStripMenuItem();
+            cartonGWHSToolStripMenuItem = new ToolStripMenuItem();
+            programVersionToolStripMenuItem = new ToolStripMenuItem();
+            versionManagementToolStripMenuItem = new ToolStripMenuItem();
+            userSystemToolStripMenuItem = new ToolStripMenuItem();
+            userManagementToolStripMenuItem1 = new ToolStripMenuItem();
             ribbonStrip = new ToolStrip();
             btnNew = new ToolStripButton();
             btnOpen = new ToolStripButton();
@@ -85,29 +129,6 @@
             splitContainer1 = new SplitContainer();
             tabControl = new TabControl();
             timerConnectionCheck = new System.Windows.Forms.Timer(components);
-            sTOCKToolStripMenuItem = new ToolStripMenuItem();
-            kiểmKhoToolStripMenuItem = new ToolStripMenuItem();
-            exportCheckStockToolStripMenuItem = new ToolStripMenuItem();
-            fPCardReaderMachineToolStripMenuItem = new ToolStripMenuItem();
-            iTAssetsToolStripMenuItem = new ToolStripMenuItem();
-            modifiedPCARDToolStripMenuItem = new ToolStripMenuItem();
-            programVersionToolStripMenuItem = new ToolStripMenuItem();
-            userSystemToolStripMenuItem = new ToolStripMenuItem();
-            userManagementToolStripMenuItem = new ToolStripMenuItem();
-            deviceStatusToolStripMenuItem = new ToolStripMenuItem();
-            dataManagementToolStripMenuItem = new ToolStripMenuItem();
-            iPManagementToolStripMenuItem = new ToolStripMenuItem();
-            printLabelToolStripMenuItem = new ToolStripMenuItem();
-            checkIPScanDevicesToolStripMenuItem = new ToolStripMenuItem();
-            deviceManufacturerToolStripMenuItem = new ToolStripMenuItem();
-            modelManagementToolStripMenuItem = new ToolStripMenuItem();
-            devicesTypeManagementToolStripMenuItem = new ToolStripMenuItem();
-            deviceManagementToolStripMenuItem = new ToolStripMenuItem();
-            checkPCARDToolStripMenuItem = new ToolStripMenuItem();
-            materialBarcodeToolStripMenuItem = new ToolStripMenuItem();
-            cartonGWHSToolStripMenuItem = new ToolStripMenuItem();
-            versionManagementToolStripMenuItem = new ToolStripMenuItem();
-            userManagementToolStripMenuItem1 = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             ribbonStrip.SuspendLayout();
             statusStrip.SuspendLayout();
@@ -154,6 +175,150 @@
             menuHelp.Name = "menuHelp";
             menuHelp.Size = new Size(81, 20);
             menuHelp.Text = "Trợ giúp (&P)";
+            // 
+            // sTOCKToolStripMenuItem
+            // 
+            sTOCKToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { kiểmKhoToolStripMenuItem, exportCheckStockToolStripMenuItem });
+            sTOCKToolStripMenuItem.Name = "sTOCKToolStripMenuItem";
+            sTOCKToolStripMenuItem.Size = new Size(55, 20);
+            sTOCKToolStripMenuItem.Text = "STOCK";
+            // 
+            // kiểmKhoToolStripMenuItem
+            // 
+            kiểmKhoToolStripMenuItem.Name = "kiểmKhoToolStripMenuItem";
+            kiểmKhoToolStripMenuItem.Size = new Size(172, 22);
+            kiểmKhoToolStripMenuItem.Text = "Kiểm Kho";
+            // 
+            // exportCheckStockToolStripMenuItem
+            // 
+            exportCheckStockToolStripMenuItem.Name = "exportCheckStockToolStripMenuItem";
+            exportCheckStockToolStripMenuItem.Size = new Size(172, 22);
+            exportCheckStockToolStripMenuItem.Text = "Export CheckStock";
+            // 
+            // fPCardReaderMachineToolStripMenuItem
+            // 
+            fPCardReaderMachineToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { userManagementToolStripMenuItem, deviceStatusToolStripMenuItem, dataManagementToolStripMenuItem });
+            fPCardReaderMachineToolStripMenuItem.Name = "fPCardReaderMachineToolStripMenuItem";
+            fPCardReaderMachineToolStripMenuItem.Size = new Size(161, 20);
+            fPCardReaderMachineToolStripMenuItem.Text = "FP && Card Reader Machine";
+            // 
+            // userManagementToolStripMenuItem
+            // 
+            userManagementToolStripMenuItem.Name = "userManagementToolStripMenuItem";
+            userManagementToolStripMenuItem.Size = new Size(172, 22);
+            userManagementToolStripMenuItem.Text = "User Management";
+            // 
+            // deviceStatusToolStripMenuItem
+            // 
+            deviceStatusToolStripMenuItem.Name = "deviceStatusToolStripMenuItem";
+            deviceStatusToolStripMenuItem.Size = new Size(172, 22);
+            deviceStatusToolStripMenuItem.Text = "Device Status";
+            // 
+            // dataManagementToolStripMenuItem
+            // 
+            dataManagementToolStripMenuItem.Name = "dataManagementToolStripMenuItem";
+            dataManagementToolStripMenuItem.Size = new Size(172, 22);
+            dataManagementToolStripMenuItem.Text = "Data Management";
+            // 
+            // iTAssetsToolStripMenuItem
+            // 
+            iTAssetsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { iPManagementToolStripMenuItem, printLabelToolStripMenuItem, checkIPScanDevicesToolStripMenuItem, deviceManufacturerToolStripMenuItem, modelManagementToolStripMenuItem, devicesTypeManagementToolStripMenuItem, deviceManagementToolStripMenuItem });
+            iTAssetsToolStripMenuItem.Name = "iTAssetsToolStripMenuItem";
+            iTAssetsToolStripMenuItem.Size = new Size(65, 20);
+            iTAssetsToolStripMenuItem.Text = "IT Assets";
+            // 
+            // iPManagementToolStripMenuItem
+            // 
+            iPManagementToolStripMenuItem.Name = "iPManagementToolStripMenuItem";
+            iPManagementToolStripMenuItem.Size = new Size(216, 22);
+            iPManagementToolStripMenuItem.Text = "IP Management";
+            // 
+            // printLabelToolStripMenuItem
+            // 
+            printLabelToolStripMenuItem.Name = "printLabelToolStripMenuItem";
+            printLabelToolStripMenuItem.Size = new Size(216, 22);
+            printLabelToolStripMenuItem.Text = "Print Label";
+            // 
+            // checkIPScanDevicesToolStripMenuItem
+            // 
+            checkIPScanDevicesToolStripMenuItem.Name = "checkIPScanDevicesToolStripMenuItem";
+            checkIPScanDevicesToolStripMenuItem.Size = new Size(216, 22);
+            checkIPScanDevicesToolStripMenuItem.Text = "Check IP Scan Devices";
+            // 
+            // deviceManufacturerToolStripMenuItem
+            // 
+            deviceManufacturerToolStripMenuItem.Name = "deviceManufacturerToolStripMenuItem";
+            deviceManufacturerToolStripMenuItem.Size = new Size(216, 22);
+            deviceManufacturerToolStripMenuItem.Text = "Device Manufacturer";
+            // 
+            // modelManagementToolStripMenuItem
+            // 
+            modelManagementToolStripMenuItem.Name = "modelManagementToolStripMenuItem";
+            modelManagementToolStripMenuItem.Size = new Size(216, 22);
+            modelManagementToolStripMenuItem.Text = "Model Management";
+            // 
+            // devicesTypeManagementToolStripMenuItem
+            // 
+            devicesTypeManagementToolStripMenuItem.Name = "devicesTypeManagementToolStripMenuItem";
+            devicesTypeManagementToolStripMenuItem.Size = new Size(216, 22);
+            devicesTypeManagementToolStripMenuItem.Text = "Devices Type Management";
+            // 
+            // deviceManagementToolStripMenuItem
+            // 
+            deviceManagementToolStripMenuItem.Name = "deviceManagementToolStripMenuItem";
+            deviceManagementToolStripMenuItem.Size = new Size(216, 22);
+            deviceManagementToolStripMenuItem.Text = "Device Management";
+            // 
+            // modifiedPCARDToolStripMenuItem
+            // 
+            modifiedPCARDToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkPCARDToolStripMenuItem, materialBarcodeToolStripMenuItem, cartonGWHSToolStripMenuItem });
+            modifiedPCARDToolStripMenuItem.Name = "modifiedPCARDToolStripMenuItem";
+            modifiedPCARDToolStripMenuItem.Size = new Size(113, 20);
+            modifiedPCARDToolStripMenuItem.Text = "Modified P-CARD";
+            // 
+            // checkPCARDToolStripMenuItem
+            // 
+            checkPCARDToolStripMenuItem.Name = "checkPCARDToolStripMenuItem";
+            checkPCARDToolStripMenuItem.Size = new Size(163, 22);
+            checkPCARDToolStripMenuItem.Text = "Check P-CARD";
+            // 
+            // materialBarcodeToolStripMenuItem
+            // 
+            materialBarcodeToolStripMenuItem.Name = "materialBarcodeToolStripMenuItem";
+            materialBarcodeToolStripMenuItem.Size = new Size(163, 22);
+            materialBarcodeToolStripMenuItem.Text = "Material Barcode";
+            // 
+            // cartonGWHSToolStripMenuItem
+            // 
+            cartonGWHSToolStripMenuItem.Name = "cartonGWHSToolStripMenuItem";
+            cartonGWHSToolStripMenuItem.Size = new Size(163, 22);
+            cartonGWHSToolStripMenuItem.Text = "Carton GWHS";
+            // 
+            // programVersionToolStripMenuItem
+            // 
+            programVersionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { versionManagementToolStripMenuItem });
+            programVersionToolStripMenuItem.Name = "programVersionToolStripMenuItem";
+            programVersionToolStripMenuItem.Size = new Size(106, 20);
+            programVersionToolStripMenuItem.Text = "Program Version";
+            // 
+            // versionManagementToolStripMenuItem
+            // 
+            versionManagementToolStripMenuItem.Name = "versionManagementToolStripMenuItem";
+            versionManagementToolStripMenuItem.Size = new Size(186, 22);
+            versionManagementToolStripMenuItem.Text = "Version Management";
+            // 
+            // userSystemToolStripMenuItem
+            // 
+            userSystemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { userManagementToolStripMenuItem1 });
+            userSystemToolStripMenuItem.Name = "userSystemToolStripMenuItem";
+            userSystemToolStripMenuItem.Size = new Size(83, 20);
+            userSystemToolStripMenuItem.Text = "User System";
+            // 
+            // userManagementToolStripMenuItem1
+            // 
+            userManagementToolStripMenuItem1.Name = "userManagementToolStripMenuItem1";
+            userManagementToolStripMenuItem1.Size = new Size(171, 22);
+            userManagementToolStripMenuItem1.Text = "User Management";
             // 
             // ribbonStrip
             // 
@@ -283,83 +448,138 @@
             treeView1.Dock = DockStyle.Fill;
             treeView1.Location = new Point(0, 0);
             treeView1.Name = "treeView1";
-            treeNode1.Name = "Node21";
+            treeNode1.Name = "barBtn_System_CheckStock";
+            treeNode1.Tag = "CHECKSTOCK";
             treeNode1.Text = "Kiểm kho";
-            treeNode2.Name = "Node22";
+            treeNode2.Name = "barButtonItem7";
+            treeNode2.Tag = "EX_CHECKSTOCK";
             treeNode2.Text = "Export CheckStock";
             treeNode3.Name = "Node15";
             treeNode3.Text = "Stock";
-            treeNode4.Name = "Node23";
+            treeNode4.Name = "barButtonItem1";
             treeNode4.Text = "User Management";
-            treeNode5.Name = "Node24";
+            treeNode5.Name = "barButtonItem2";
             treeNode5.Text = "Device Status";
-            treeNode6.Name = "Node25";
+            treeNode6.Name = "barButtonItem3";
             treeNode6.Text = "Data Management";
             treeNode7.Name = "Node16";
             treeNode7.Text = "FP && Card Reader Machine";
-            treeNode8.Name = "Node26";
+            treeNode8.Name = "barBtnIPManagement";
+            treeNode8.Tag = "ASSET";
             treeNode8.Text = "IP Management";
-            treeNode9.Name = "Node27";
+            treeNode9.Name = "barBtnPrintAssetLabel";
+            treeNode9.Tag = "ASSET";
             treeNode9.Text = "Print Label";
-            treeNode10.Name = "Node28";
+            treeNode10.Name = "ASSET";
+            treeNode10.Tag = "ASSET";
             treeNode10.Text = "Check IP Scan Devices";
-            treeNode11.Name = "Node29";
+            treeNode11.Name = "barBtnManufacturer";
+            treeNode11.Tag = "ASSET";
             treeNode11.Text = "Device Manufacturer";
-            treeNode12.Name = "Node30";
+            treeNode12.Name = "barBtnModel";
+            treeNode12.Tag = "ASSET";
             treeNode12.Text = "Model Management";
-            treeNode13.Name = "Node31";
+            treeNode13.Name = "barBtnAssetType";
+            treeNode13.Tag = "ASSET";
             treeNode13.Text = "Devices Type Management";
-            treeNode14.Name = "Node32";
+            treeNode14.Name = "barBtnAssetDevicesManagement";
+            treeNode14.Tag = "ASSET";
             treeNode14.Text = "Device Management";
             treeNode15.Name = "Node17";
             treeNode15.Text = "IT Assets";
-            treeNode16.Name = "Node33";
+            treeNode16.Name = "barBtnCheckPCard";
+            treeNode16.Tag = "PCARD";
             treeNode16.Text = "Check P-CARD";
-            treeNode17.Name = "Node34";
+            treeNode17.Name = "barButtonItem4";
             treeNode17.Text = "Material Barcode";
-            treeNode18.Name = "Node35";
+            treeNode18.Name = "barBtnCartonGWHS";
+            treeNode18.Tag = "CARTON";
             treeNode18.Text = "Carton GWHS";
             treeNode19.Name = "Node18";
             treeNode19.Text = "Modified P-CARD";
-            treeNode20.Name = "Node36";
+            treeNode20.Name = "barBtnVersionManagement";
+            treeNode20.Tag = "VERSION";
             treeNode20.Text = "Version Management";
             treeNode21.Name = "Node19";
             treeNode21.Text = "Program Version";
-            treeNode22.Name = "Node37";
+            treeNode22.Name = "barBtnUserManagement";
+            treeNode22.Tag = "USERMNGT";
             treeNode22.Text = "User Mangement";
             treeNode23.Name = "Node20";
             treeNode23.Text = "User System";
             treeNode24.Name = "Node11";
             treeNode24.Text = "SYSTEM";
-            treeNode25.Name = "Node9";
-            treeNode25.Text = "HRMS";
-            treeNode26.Name = "Node10";
-            treeNode26.Text = "SALARY";
-            treeNode27.Name = "Node12";
-            treeNode27.Text = "HR";
-            treeNode28.Name = "Node4";
-            treeNode28.Text = "DEV";
-            treeNode29.Name = "Node2";
-            treeNode29.Text = "LAB";
-            treeNode30.Name = "Node5";
-            treeNode30.Text = "MAT";
-            treeNode31.Name = "Node6";
-            treeNode31.Text = "QA";
-            treeNode32.Name = "Node1";
-            treeNode32.Text = "QIP";
-            treeNode33.Name = "Node13";
-            treeNode33.Text = "RTDM";
-            treeNode34.Name = "Node7";
-            treeNode34.Text = "LEAN NB";
-            treeNode35.Name = "Node8";
-            treeNode35.Text = "LEAN AD";
-            treeNode36.Name = "Node14";
-            treeNode36.Text = "LEAN";
-            treeNode37.Name = "Node3";
-            treeNode37.Text = "STOCKFIT DEFECT";
-            treeNode38.Name = "Node0";
-            treeNode38.Text = "Main Menu";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode38 });
+            treeNode25.Name = "Node50";
+            treeNode25.Text = "Node50";
+            treeNode26.Name = "Node51";
+            treeNode26.Text = "Node51";
+            treeNode27.Name = "Node44";
+            treeNode27.Text = "Attendace";
+            treeNode28.Name = "Node52";
+            treeNode28.Text = "Node52";
+            treeNode29.Name = "Node53";
+            treeNode29.Text = "Node53";
+            treeNode30.Name = "Node45";
+            treeNode30.Text = "Canteen";
+            treeNode31.Name = "Node46";
+            treeNode31.Text = "Dashboard";
+            treeNode32.Name = "Node54";
+            treeNode32.Text = "Node54";
+            treeNode33.Name = "Node55";
+            treeNode33.Text = "Node55";
+            treeNode34.Name = "Node47";
+            treeNode34.Text = "Security";
+            treeNode35.Name = "Node56";
+            treeNode35.Text = "Node56";
+            treeNode36.Name = "Node57";
+            treeNode36.Text = "Node57";
+            treeNode37.Name = "Node58";
+            treeNode37.Text = "Node58";
+            treeNode38.Name = "Node48";
+            treeNode38.Text = "MAS";
+            treeNode39.Name = "Node49";
+            treeNode39.Text = "Org Chart";
+            treeNode40.Name = "Node9";
+            treeNode40.Text = "HRMS";
+            treeNode41.Name = "Node38";
+            treeNode41.Text = "Upload Excel";
+            treeNode42.Name = "Node42";
+            treeNode42.Text = "Upload Salary";
+            treeNode43.Name = "Node39";
+            treeNode43.Text = "Register && Execute Allowance";
+            treeNode44.Name = "Node40";
+            treeNode44.Text = "Salary Calculation";
+            treeNode45.Name = "Node41";
+            treeNode45.Text = "Report End Of Month";
+            treeNode46.Name = "Node43";
+            treeNode46.Text = "Salary";
+            treeNode47.Name = "Node10";
+            treeNode47.Text = "SALARY";
+            treeNode48.Name = "Node12";
+            treeNode48.Text = "HR";
+            treeNode49.Name = "Node4";
+            treeNode49.Text = "DEV";
+            treeNode50.Name = "Node2";
+            treeNode50.Text = "LAB";
+            treeNode51.Name = "Node5";
+            treeNode51.Text = "MAT";
+            treeNode52.Name = "Node6";
+            treeNode52.Text = "QA";
+            treeNode53.Name = "Node1";
+            treeNode53.Text = "QIP";
+            treeNode54.Name = "Node13";
+            treeNode54.Text = "RTDM";
+            treeNode55.Name = "Node7";
+            treeNode55.Text = "LEAN NB";
+            treeNode56.Name = "Node8";
+            treeNode56.Text = "LEAN AD";
+            treeNode57.Name = "Node14";
+            treeNode57.Text = "LEAN";
+            treeNode58.Name = "Node3";
+            treeNode58.Text = "STOCKFIT DEFECT";
+            treeNode59.Name = "Node0";
+            treeNode59.Text = "Main Menu";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode59 });
             treeView1.Size = new Size(183, 667);
             treeView1.TabIndex = 4;
             treeView1.AfterSelect += treeView1_AfterSelect;
@@ -393,150 +613,6 @@
             tabControl.DrawItem += mainTabControl_DrawItem;
             tabControl.SelectedIndexChanged += mainTabControl_SelectedIndexChanged;
             tabControl.MouseDown += mainTabControl_MouseDown;
-            // 
-            // sTOCKToolStripMenuItem
-            // 
-            sTOCKToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { kiểmKhoToolStripMenuItem, exportCheckStockToolStripMenuItem });
-            sTOCKToolStripMenuItem.Name = "sTOCKToolStripMenuItem";
-            sTOCKToolStripMenuItem.Size = new Size(55, 20);
-            sTOCKToolStripMenuItem.Text = "STOCK";
-            // 
-            // kiểmKhoToolStripMenuItem
-            // 
-            kiểmKhoToolStripMenuItem.Name = "kiểmKhoToolStripMenuItem";
-            kiểmKhoToolStripMenuItem.Size = new Size(180, 22);
-            kiểmKhoToolStripMenuItem.Text = "Kiểm Kho";
-            // 
-            // exportCheckStockToolStripMenuItem
-            // 
-            exportCheckStockToolStripMenuItem.Name = "exportCheckStockToolStripMenuItem";
-            exportCheckStockToolStripMenuItem.Size = new Size(180, 22);
-            exportCheckStockToolStripMenuItem.Text = "Export CheckStock";
-            // 
-            // fPCardReaderMachineToolStripMenuItem
-            // 
-            fPCardReaderMachineToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { userManagementToolStripMenuItem, deviceStatusToolStripMenuItem, dataManagementToolStripMenuItem });
-            fPCardReaderMachineToolStripMenuItem.Name = "fPCardReaderMachineToolStripMenuItem";
-            fPCardReaderMachineToolStripMenuItem.Size = new Size(161, 20);
-            fPCardReaderMachineToolStripMenuItem.Text = "FP && Card Reader Machine";
-            // 
-            // iTAssetsToolStripMenuItem
-            // 
-            iTAssetsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { iPManagementToolStripMenuItem, printLabelToolStripMenuItem, checkIPScanDevicesToolStripMenuItem, deviceManufacturerToolStripMenuItem, modelManagementToolStripMenuItem, devicesTypeManagementToolStripMenuItem, deviceManagementToolStripMenuItem });
-            iTAssetsToolStripMenuItem.Name = "iTAssetsToolStripMenuItem";
-            iTAssetsToolStripMenuItem.Size = new Size(65, 20);
-            iTAssetsToolStripMenuItem.Text = "IT Assets";
-            // 
-            // modifiedPCARDToolStripMenuItem
-            // 
-            modifiedPCARDToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkPCARDToolStripMenuItem, materialBarcodeToolStripMenuItem, cartonGWHSToolStripMenuItem });
-            modifiedPCARDToolStripMenuItem.Name = "modifiedPCARDToolStripMenuItem";
-            modifiedPCARDToolStripMenuItem.Size = new Size(113, 20);
-            modifiedPCARDToolStripMenuItem.Text = "Modified P-CARD";
-            // 
-            // programVersionToolStripMenuItem
-            // 
-            programVersionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { versionManagementToolStripMenuItem });
-            programVersionToolStripMenuItem.Name = "programVersionToolStripMenuItem";
-            programVersionToolStripMenuItem.Size = new Size(106, 20);
-            programVersionToolStripMenuItem.Text = "Program Version";
-            // 
-            // userSystemToolStripMenuItem
-            // 
-            userSystemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { userManagementToolStripMenuItem1 });
-            userSystemToolStripMenuItem.Name = "userSystemToolStripMenuItem";
-            userSystemToolStripMenuItem.Size = new Size(83, 20);
-            userSystemToolStripMenuItem.Text = "User System";
-            // 
-            // userManagementToolStripMenuItem
-            // 
-            userManagementToolStripMenuItem.Name = "userManagementToolStripMenuItem";
-            userManagementToolStripMenuItem.Size = new Size(180, 22);
-            userManagementToolStripMenuItem.Text = "User Management";
-            // 
-            // deviceStatusToolStripMenuItem
-            // 
-            deviceStatusToolStripMenuItem.Name = "deviceStatusToolStripMenuItem";
-            deviceStatusToolStripMenuItem.Size = new Size(180, 22);
-            deviceStatusToolStripMenuItem.Text = "Device Status";
-            // 
-            // dataManagementToolStripMenuItem
-            // 
-            dataManagementToolStripMenuItem.Name = "dataManagementToolStripMenuItem";
-            dataManagementToolStripMenuItem.Size = new Size(180, 22);
-            dataManagementToolStripMenuItem.Text = "Data Management";
-            // 
-            // iPManagementToolStripMenuItem
-            // 
-            iPManagementToolStripMenuItem.Name = "iPManagementToolStripMenuItem";
-            iPManagementToolStripMenuItem.Size = new Size(216, 22);
-            iPManagementToolStripMenuItem.Text = "IP Management";
-            // 
-            // printLabelToolStripMenuItem
-            // 
-            printLabelToolStripMenuItem.Name = "printLabelToolStripMenuItem";
-            printLabelToolStripMenuItem.Size = new Size(216, 22);
-            printLabelToolStripMenuItem.Text = "Print Label";
-            // 
-            // checkIPScanDevicesToolStripMenuItem
-            // 
-            checkIPScanDevicesToolStripMenuItem.Name = "checkIPScanDevicesToolStripMenuItem";
-            checkIPScanDevicesToolStripMenuItem.Size = new Size(216, 22);
-            checkIPScanDevicesToolStripMenuItem.Text = "Check IP Scan Devices";
-            // 
-            // deviceManufacturerToolStripMenuItem
-            // 
-            deviceManufacturerToolStripMenuItem.Name = "deviceManufacturerToolStripMenuItem";
-            deviceManufacturerToolStripMenuItem.Size = new Size(216, 22);
-            deviceManufacturerToolStripMenuItem.Text = "Device Manufacturer";
-            // 
-            // modelManagementToolStripMenuItem
-            // 
-            modelManagementToolStripMenuItem.Name = "modelManagementToolStripMenuItem";
-            modelManagementToolStripMenuItem.Size = new Size(216, 22);
-            modelManagementToolStripMenuItem.Text = "Model Management";
-            // 
-            // devicesTypeManagementToolStripMenuItem
-            // 
-            devicesTypeManagementToolStripMenuItem.Name = "devicesTypeManagementToolStripMenuItem";
-            devicesTypeManagementToolStripMenuItem.Size = new Size(216, 22);
-            devicesTypeManagementToolStripMenuItem.Text = "Devices Type Management";
-            // 
-            // deviceManagementToolStripMenuItem
-            // 
-            deviceManagementToolStripMenuItem.Name = "deviceManagementToolStripMenuItem";
-            deviceManagementToolStripMenuItem.Size = new Size(216, 22);
-            deviceManagementToolStripMenuItem.Text = "Device Management";
-            // 
-            // checkPCARDToolStripMenuItem
-            // 
-            checkPCARDToolStripMenuItem.Name = "checkPCARDToolStripMenuItem";
-            checkPCARDToolStripMenuItem.Size = new Size(180, 22);
-            checkPCARDToolStripMenuItem.Text = "Check P-CARD";
-            // 
-            // materialBarcodeToolStripMenuItem
-            // 
-            materialBarcodeToolStripMenuItem.Name = "materialBarcodeToolStripMenuItem";
-            materialBarcodeToolStripMenuItem.Size = new Size(180, 22);
-            materialBarcodeToolStripMenuItem.Text = "Material Barcode";
-            // 
-            // cartonGWHSToolStripMenuItem
-            // 
-            cartonGWHSToolStripMenuItem.Name = "cartonGWHSToolStripMenuItem";
-            cartonGWHSToolStripMenuItem.Size = new Size(180, 22);
-            cartonGWHSToolStripMenuItem.Text = "Carton GWHS";
-            // 
-            // versionManagementToolStripMenuItem
-            // 
-            versionManagementToolStripMenuItem.Name = "versionManagementToolStripMenuItem";
-            versionManagementToolStripMenuItem.Size = new Size(186, 22);
-            versionManagementToolStripMenuItem.Text = "Version Management";
-            // 
-            // userManagementToolStripMenuItem1
-            // 
-            userManagementToolStripMenuItem1.Name = "userManagementToolStripMenuItem1";
-            userManagementToolStripMenuItem1.Size = new Size(180, 22);
-            userManagementToolStripMenuItem1.Text = "User Management";
             // 
             // MainForm
             // 

@@ -42,7 +42,6 @@
             button9 = new Button();
             button10 = new Button();
             button11 = new Button();
-            button12 = new Button();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -78,7 +77,6 @@
             flowLayoutPanel1.Controls.Add(button9);
             flowLayoutPanel1.Controls.Add(button10);
             flowLayoutPanel1.Controls.Add(button11);
-            flowLayoutPanel1.Controls.Add(button12);
             flowLayoutPanel1.Location = new Point(46, 92);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(813, 386);
@@ -174,15 +172,6 @@
             button11.Text = "button11";
             button11.UseVisualStyleBackColor = true;
             // 
-            // button12
-            // 
-            button12.Location = new Point(401, 255);
-            button12.Name = "button12";
-            button12.Size = new Size(193, 120);
-            button12.TabIndex = 11;
-            button12.Text = "button12";
-            button12.UseVisualStyleBackColor = true;
-            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -215,6 +204,5 @@
         private Button button9;
         private Button button10;
         private Button button11;
-        private Button button12;
     }
 }
