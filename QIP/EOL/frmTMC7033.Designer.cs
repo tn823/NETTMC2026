@@ -1,6 +1,6 @@
-﻿namespace NETTMC
+﻿namespace QIP.EOL
 {
-    partial class testUC
+    partial class frmTMC7033
     {
         /// <summary> 
         /// Required designer variable.
@@ -34,21 +34,18 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(58, 57);
+            label1.Location = new Point(33, 53);
             label1.Name = "label1";
-            label1.Size = new Size(65, 20);
+            label1.Size = new Size(94, 20);
             label1.TabIndex = 0;
-            label1.Text = "TEST OK";
+            label1.Text = "frmTMC7033";
             // 
-            // testUC
+            // frmTMC7033
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
-            Margin = new Padding(3, 4, 3, 4);
-            Name = "testUC";
-            Size = new Size(171, 200);
-            Load += testUC_Load;
+            Name = "frmTMC7033";
             ResumeLayout(false);
             PerformLayout();
         }

@@ -29,204 +29,359 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
-            label1 = new Label();
+            labelControl3 = new Label();
             label2 = new Label();
-            flowLayoutPanel1 = new FlowLayoutPanel();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
-            button5 = new Button();
-            button6 = new Button();
-            button7 = new Button();
-            button8 = new Button();
-            button9 = new Button();
-            button10 = new Button();
-            button11 = new Button();
-            button12 = new Button();
-            flowLayoutPanel1.SuspendLayout();
+            progressPanel1 = new FlowLayoutPanel();
+            btnMas = new Button();
+            btnSecurity = new Button();
+            barBtnGatePassCheck = new Button();
+            barBtnForITOnly = new Button();
+            btnDefect = new Button();
+            btnDefectAdidas = new Button();
+            btnJSI = new Button();
+            btnCCQP = new Button();
+            btnP2PAllLineNB = new Button();
+            btnP2P = new Button();
+            btnCanteen = new Button();
+            btnDefectImage = new Button();
+            tableLayoutLogin = new TableLayoutPanel();
+            txtUser = new TextBox();
+            txtPassword = new TextBox();
+            panelControl1 = new Panel();
+            label1 = new Label();
+            btnCancel = new Button();
+            btnLogin = new Button();
+            checkBoxSite = new CheckBox();
+            label3 = new Label();
+            label4 = new Label();
+            labelControl5 = new Label();
+            progressPanel1.SuspendLayout();
+            tableLayoutLogin.SuspendLayout();
+            panelControl1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // labelControl3
             // 
-            label1.Dock = DockStyle.Top;
-            label1.Font = new Font("Tahoma", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(0, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(871, 34);
-            label1.TabIndex = 0;
-            label1.Text = "Welcome to NetTMC software.";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            labelControl3.Dock = DockStyle.Top;
+            labelControl3.Font = new Font("Tahoma", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelControl3.Location = new Point(0, 0);
+            labelControl3.Name = "labelControl3";
+            labelControl3.Size = new Size(710, 36);
+            labelControl3.TabIndex = 0;
+            labelControl3.Text = "Welcome to NetTMC software.";
+            labelControl3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(295, 43);
+            label2.Location = new Point(201, 48);
             label2.Name = "label2";
-            label2.Size = new Size(261, 15);
+            label2.Size = new Size(283, 16);
             label2.TabIndex = 1;
             label2.Text = "Please select function that you want to access in";
+            label2.TextAlign = ContentAlignment.TopCenter;
             // 
-            // flowLayoutPanel1
+            // progressPanel1
             // 
-            flowLayoutPanel1.Controls.Add(button1);
-            flowLayoutPanel1.Controls.Add(button2);
-            flowLayoutPanel1.Controls.Add(button3);
-            flowLayoutPanel1.Controls.Add(button4);
-            flowLayoutPanel1.Controls.Add(button5);
-            flowLayoutPanel1.Controls.Add(button6);
-            flowLayoutPanel1.Controls.Add(button7);
-            flowLayoutPanel1.Controls.Add(button8);
-            flowLayoutPanel1.Controls.Add(button9);
-            flowLayoutPanel1.Controls.Add(button10);
-            flowLayoutPanel1.Controls.Add(button11);
-            flowLayoutPanel1.Controls.Add(button12);
-            flowLayoutPanel1.Location = new Point(46, 92);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(813, 386);
-            flowLayoutPanel1.TabIndex = 2;
+            progressPanel1.Controls.Add(btnMas);
+            progressPanel1.Controls.Add(btnSecurity);
+            progressPanel1.Controls.Add(barBtnGatePassCheck);
+            progressPanel1.Controls.Add(barBtnForITOnly);
+            progressPanel1.Controls.Add(btnDefect);
+            progressPanel1.Controls.Add(btnDefectAdidas);
+            progressPanel1.Controls.Add(btnJSI);
+            progressPanel1.Controls.Add(btnCCQP);
+            progressPanel1.Controls.Add(btnP2PAllLineNB);
+            progressPanel1.Controls.Add(btnP2P);
+            progressPanel1.Controls.Add(btnCanteen);
+            progressPanel1.Controls.Add(btnDefectImage);
+            progressPanel1.Location = new Point(46, 98);
+            progressPanel1.Name = "progressPanel1";
+            progressPanel1.Size = new Size(609, 274);
+            progressPanel1.TabIndex = 2;
             // 
-            // button1
+            // btnMas
             // 
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(193, 120);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnMas.Location = new Point(3, 3);
+            btnMas.Name = "btnMas";
+            btnMas.Size = new Size(146, 82);
+            btnMas.TabIndex = 0;
+            btnMas.Text = "MAS";
+            btnMas.UseVisualStyleBackColor = true;
+            btnMas.Click += button1_Click;
             // 
-            // button2
+            // btnSecurity
             // 
-            button2.Location = new Point(202, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(189, 120);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            btnSecurity.Location = new Point(155, 3);
+            btnSecurity.Name = "btnSecurity";
+            btnSecurity.Size = new Size(146, 82);
+            btnSecurity.TabIndex = 1;
+            btnSecurity.Text = "Security Registration Đăng ký bảo vệ";
+            btnSecurity.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // barBtnGatePassCheck
             // 
-            button3.Location = new Point(397, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(202, 120);
-            button3.TabIndex = 2;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            barBtnGatePassCheck.Location = new Point(307, 3);
+            barBtnGatePassCheck.Name = "barBtnGatePassCheck";
+            barBtnGatePassCheck.Size = new Size(146, 82);
+            barBtnGatePassCheck.TabIndex = 2;
+            barBtnGatePassCheck.Text = "GatePass Check";
+            barBtnGatePassCheck.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // barBtnForITOnly
             // 
-            button4.Location = new Point(605, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(188, 120);
-            button4.TabIndex = 3;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
+            barBtnForITOnly.Location = new Point(459, 3);
+            barBtnForITOnly.Name = "barBtnForITOnly";
+            barBtnForITOnly.Size = new Size(146, 82);
+            barBtnForITOnly.TabIndex = 3;
+            barBtnForITOnly.Text = "Automated For IT";
+            barBtnForITOnly.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btnDefect
             // 
-            button5.Location = new Point(3, 129);
-            button5.Name = "button5";
-            button5.Size = new Size(193, 120);
-            button5.TabIndex = 4;
-            button5.Text = "button5";
-            button5.UseVisualStyleBackColor = true;
+            btnDefect.Location = new Point(3, 91);
+            btnDefect.Name = "btnDefect";
+            btnDefect.Size = new Size(146, 82);
+            btnDefect.TabIndex = 4;
+            btnDefect.Text = "DEFECT Chấm lỗi cuối chuyền";
+            btnDefect.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnDefectAdidas
             // 
-            button6.Location = new Point(202, 129);
-            button6.Name = "button6";
-            button6.Size = new Size(193, 120);
-            button6.TabIndex = 5;
-            button6.Text = "button6";
-            button6.UseVisualStyleBackColor = true;
+            btnDefectAdidas.Location = new Point(155, 91);
+            btnDefectAdidas.Name = "btnDefectAdidas";
+            btnDefectAdidas.Size = new Size(146, 82);
+            btnDefectAdidas.TabIndex = 5;
+            btnDefectAdidas.Text = "DEFECT Stockfit";
+            btnDefectAdidas.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnJSI
             // 
-            button7.Location = new Point(401, 129);
-            button7.Name = "button7";
-            button7.Size = new Size(193, 120);
-            button7.TabIndex = 6;
-            button7.Text = "button7";
-            button7.UseVisualStyleBackColor = true;
+            btnJSI.Location = new Point(307, 91);
+            btnJSI.Name = "btnJSI";
+            btnJSI.Size = new Size(146, 82);
+            btnJSI.TabIndex = 6;
+            btnJSI.Text = "DEFECT JSI ( NB only )";
+            btnJSI.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // btnCCQP
             // 
-            button8.Location = new Point(600, 129);
-            button8.Name = "button8";
-            button8.Size = new Size(193, 120);
-            button8.TabIndex = 7;
-            button8.Text = "button8";
-            button8.UseVisualStyleBackColor = true;
+            btnCCQP.Location = new Point(459, 91);
+            btnCCQP.Name = "btnCCQP";
+            btnCCQP.Size = new Size(146, 82);
+            btnCCQP.TabIndex = 7;
+            btnCCQP.Text = "CCQP";
+            btnCCQP.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // btnP2PAllLineNB
             // 
-            button9.Location = new Point(3, 255);
-            button9.Name = "button9";
-            button9.Size = new Size(193, 120);
-            button9.TabIndex = 8;
-            button9.Text = "button9";
-            button9.UseVisualStyleBackColor = true;
+            btnP2PAllLineNB.Location = new Point(3, 179);
+            btnP2PAllLineNB.Name = "btnP2PAllLineNB";
+            btnP2PAllLineNB.Size = new Size(146, 82);
+            btnP2PAllLineNB.TabIndex = 8;
+            btnP2PAllLineNB.Text = "P2P All Line NB";
+            btnP2PAllLineNB.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // btnP2P
             // 
-            button10.Location = new Point(202, 255);
-            button10.Name = "button10";
-            button10.Size = new Size(193, 120);
-            button10.TabIndex = 9;
-            button10.Text = "button10";
-            button10.UseVisualStyleBackColor = true;
+            btnP2P.Location = new Point(155, 179);
+            btnP2P.Name = "btnP2P";
+            btnP2P.Size = new Size(146, 82);
+            btnP2P.TabIndex = 9;
+            btnP2P.Text = "P2P Tivi Cuối chuyền";
+            btnP2P.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // btnCanteen
             // 
-            button11.Location = new Point(401, 255);
-            button11.Name = "button11";
-            button11.Size = new Size(193, 120);
-            button11.TabIndex = 10;
-            button11.Text = "button11";
-            button11.UseVisualStyleBackColor = true;
+            btnCanteen.Location = new Point(307, 179);
+            btnCanteen.Name = "btnCanteen";
+            btnCanteen.Size = new Size(146, 82);
+            btnCanteen.TabIndex = 10;
+            btnCanteen.Text = "Monitor Temp && Hum";
+            btnCanteen.UseVisualStyleBackColor = true;
             // 
-            // button12
+            // btnDefectImage
             // 
-            button12.Location = new Point(600, 255);
-            button12.Name = "button12";
-            button12.Size = new Size(193, 120);
-            button12.TabIndex = 11;
-            button12.Text = "button12";
-            button12.UseVisualStyleBackColor = true;
+            btnDefectImage.Location = new Point(459, 179);
+            btnDefectImage.Name = "btnDefectImage";
+            btnDefectImage.Size = new Size(146, 82);
+            btnDefectImage.TabIndex = 11;
+            btnDefectImage.Text = "Defect Images";
+            btnDefectImage.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutLogin
+            // 
+            tableLayoutLogin.Anchor = AnchorStyles.Right;
+            tableLayoutLogin.ColumnCount = 2;
+            tableLayoutLogin.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 31.7415733F));
+            tableLayoutLogin.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 68.25843F));
+            tableLayoutLogin.Controls.Add(txtUser, 1, 0);
+            tableLayoutLogin.Controls.Add(txtPassword, 1, 1);
+            tableLayoutLogin.Controls.Add(panelControl1, 0, 2);
+            tableLayoutLogin.Controls.Add(label3, 0, 0);
+            tableLayoutLogin.Controls.Add(label4, 0, 1);
+            tableLayoutLogin.Location = new Point(46, 396);
+            tableLayoutLogin.Margin = new Padding(4, 2, 4, 2);
+            tableLayoutLogin.Name = "tableLayoutLogin";
+            tableLayoutLogin.RowCount = 3;
+            tableLayoutLogin.RowStyles.Add(new RowStyle(SizeType.Percent, 44.8717957F));
+            tableLayoutLogin.RowStyles.Add(new RowStyle(SizeType.Percent, 55.1282043F));
+            tableLayoutLogin.RowStyles.Add(new RowStyle(SizeType.Absolute, 51F));
+            tableLayoutLogin.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutLogin.Size = new Size(356, 130);
+            tableLayoutLogin.TabIndex = 0;
+            tableLayoutLogin.Paint += tableLayoutLogin_Paint;
+            // 
+            // txtUser
+            // 
+            txtUser.Location = new Point(116, 3);
+            txtUser.Name = "txtUser";
+            txtUser.Size = new Size(187, 23);
+            txtUser.TabIndex = 2;
+            // 
+            // txtPassword
+            // 
+            txtPassword.Location = new Point(116, 38);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(190, 23);
+            txtPassword.TabIndex = 3;
+            // 
+            // panelControl1
+            // 
+            tableLayoutLogin.SetColumnSpan(panelControl1, 2);
+            panelControl1.Controls.Add(label1);
+            panelControl1.Controls.Add(btnCancel);
+            panelControl1.Controls.Add(btnLogin);
+            panelControl1.Controls.Add(checkBoxSite);
+            panelControl1.Location = new Point(3, 81);
+            panelControl1.Name = "panelControl1";
+            panelControl1.Size = new Size(350, 46);
+            panelControl1.TabIndex = 4;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(7, 12);
+            label1.Name = "label1";
+            label1.Size = new Size(34, 16);
+            label1.TabIndex = 4;
+            label1.Text = "Site:";
+            // 
+            // btnCancel
+            // 
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Location = new Point(238, 7);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(94, 29);
+            btnCancel.TabIndex = 3;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnLogin
+            // 
+            btnLogin.FlatStyle = FlatStyle.Flat;
+            btnLogin.Location = new Point(134, 7);
+            btnLogin.Name = "btnLogin";
+            btnLogin.Size = new Size(89, 29);
+            btnLogin.TabIndex = 2;
+            btnLogin.Text = "Login";
+            btnLogin.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSite
+            // 
+            checkBoxSite.AutoSize = true;
+            checkBoxSite.Location = new Point(44, 12);
+            checkBoxSite.Name = "checkBoxSite";
+            checkBoxSite.Size = new Size(80, 20);
+            checkBoxSite.TabIndex = 1;
+            checkBoxSite.Text = "An Giang";
+            checkBoxSite.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(54, 16);
+            label3.TabIndex = 0;
+            label3.Text = "User ID:";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 35);
+            label4.Name = "label4";
+            label4.Size = new Size(67, 16);
+            label4.TabIndex = 1;
+            label4.Text = "Password:";
+            // 
+            // labelControl5
+            // 
+            labelControl5.AutoSize = true;
+            labelControl5.Location = new Point(528, 48);
+            labelControl5.Name = "labelControl5";
+            labelControl5.Size = new Size(157, 16);
+            labelControl5.TabIndex = 3;
+            labelControl5.Text = "Try to connect database...";
             // 
             // Login
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(871, 504);
-            Controls.Add(flowLayoutPanel1);
+            BackColor = Color.FromArgb(248, 248, 248);
+            BackgroundImageLayout = ImageLayout.None;
+            ClientSize = new Size(710, 602);
+            Controls.Add(labelControl5);
+            Controls.Add(tableLayoutLogin);
+            Controls.Add(progressPanel1);
             Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(labelControl3);
+            Font = new Font("Tahoma", 7.8F);
+            ForeColor = Color.FromArgb(72, 70, 68);
+            FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Login";
-            flowLayoutPanel1.ResumeLayout(false);
+            Text = "Login - NetTMC";
+            Load += Login_Load;
+            progressPanel1.ResumeLayout(false);
+            tableLayoutLogin.ResumeLayout(false);
+            tableLayoutLogin.PerformLayout();
+            panelControl1.ResumeLayout(false);
+            panelControl1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
+        private Label labelControl3;
         private Label label2;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
-        private Button button5;
-        private Button button6;
-        private Button button7;
-        private Button button8;
-        private Button button9;
-        private Button button10;
-        private Button button11;
-        private Button button12;
+        private FlowLayoutPanel progressPanel1;
+        private TableLayoutPanel tableLayoutLogin;
+        private Label label3;
+        private Label label4;
+        private TextBox txtUser;
+        private TextBox txtPassword;
+        private Panel panelControl1;
+        private Button btnCancel;
+        private Button btnLogin;
+        private CheckBox checkBoxSite;
+        private Button btnMas;
+        private Button btnSecurity;
+        private Button barBtnGatePassCheck;
+        private Button barBtnForITOnly;
+        private Button btnDefect;
+        private Button btnDefectAdidas;
+        private Button btnJSI;
+        private Button btnCCQP;
+        private Button btnP2PAllLineNB;
+        private Button btnP2P;
+        private Button btnCanteen;
+        private Button btnDefectImage;
+        private Label label1;
+        private Label labelControl5;
     }
 }

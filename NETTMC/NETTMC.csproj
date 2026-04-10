@@ -16,6 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
     <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
+    <ProjectReference Include="..\NetTMCVersion\NetTMCVersion.csproj" />
+    <ProjectReference Include="..\QIP\QIP.csproj" />
+    <ProjectReference Include="..\SystemControl\SystemControl.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +34,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\DefaultProgram.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
