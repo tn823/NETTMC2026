@@ -405,6 +405,8 @@ namespace GlobalFunction
             try
             {
                 string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Config\\" + filename + ".txt";
+                //Debug.WriteLine("Đường dẫn đang tìm: " + filepath);
+                //Debug.WriteLine("File tồn tại không? " + File.Exists(filepath));
                 if (!File.Exists(filepath))
                 {
 
@@ -1223,6 +1225,302 @@ namespace GlobalFunction
             }
 
         }
-        
+
+
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        public bool OpenUserControl(UserControl uc, string uc_name, string caption, TabControl tabControl, string AccessableName, string roleID)
+        {
+
+            if (!GlobalFunction.Authentication.Permission.UserInformation.CheckPermissionOpenForm(roleID, AccessableName))
+            {
+                return false;
+            }
+            else
+            {
+
+                TabPage TAbAdd = new TabPage();
+                TAbAdd.Name = uc_name;
+                TAbAdd.Text = caption;
+                foreach (TabPage c in tabControl.TabPages)
+                {
+                    if (c.Name == uc_name)
+                    {
+                        tabControl.SelectedTab = c;
+                        return true;
+                    }
+                }
+
+                if (tabControl.TabPages.Count >= 0)
+                {
+                    uc.Dock = DockStyle.Fill;
+                    TAbAdd.Controls.Add(uc);
+                    tabControl.TabPages.Add(TAbAdd);
+                    tabControl.SelectedTab = TAbAdd;
+                }
+                return true;
+            }
+
+        }
+        public bool OpenUserControlWithoutPermission(UserControl uc, string uc_name, string caption, TabControl tabControl, string AccessableName, string roleID)
+        {
+            TabPage TAbAdd = new TabPage();
+            TAbAdd.Name = uc_name;
+            TAbAdd.Text = caption;
+
+            foreach (TabPage c in tabControl.TabPages)
+            {
+                if (c.Name == uc_name)
+                {
+                    tabControl.SelectedTab = c;
+                    return true;
+                }
+            }
+
+            if (tabControl.TabPages.Count >= 0)
+            {
+                uc.Dock = DockStyle.Fill;
+                TAbAdd.Controls.Add(uc);
+                tabControl.TabPages.Add(TAbAdd);
+                tabControl.SelectedTab = TAbAdd;
+            }
+            return true;
+        }
+        private bool CheckPermissionOpenDirectForm(UserControl uc_name)
+        {
+            StringBuilder query = new StringBuilder();
+            CRUDOracle crud = new CRUDOracle("VSMES");
+            DataTable dt = new DataTable();
+            switch (uc_name.Name)
+            {
+                case "Dashboard":
+                    if (myIpaddress == "192.168.1.19" || myIpaddress == "192.168.0.213" || myIpaddress == "192.168.1.253")
+                    {
+                        myIpaddress = "192.168.31.69";
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    break;
+                case "frmTMC9001":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'SEC' AND N_COMNAME = '" + myIpaddress + "' AND T_DEFAULT = 'frmTMC9001'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "AndonServerPushNotification":
+                    return true;
+                    break;
+                case "P2PNBAll":
+                    return true;
+                    break;
+                case "P2PSTFAdidascs":
+                    return true;
+                    break;
+                case "ChartDesign":
+                    return true;
+                    break;
+                case "DashboardDesigner":
+                    return true;
+                    break;
+                case "TempAndHumpMonitor":
+                    return true;
+                    break;
+                case "P2PAdidas":
+                    return true;
+                    break;
+                case "frmTMC7032":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7033":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7033_A14":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7039":
+                    return true;
+                    break;
+                case "frmTMC7034":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7035":
+                    return true;
+                    break;
+                case "PrintPcard":
+                    return true;
+                    break;
+                case "frmTMC7036":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7031":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7099":
+                    if (myIpaddress == "192.168.31.100") return true;
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE T_DEFAULT = '" + uc_name.Name + "' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7098":
+                    if (myIpaddress == "192.168.31.100") return true;
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE T_DEFAULT = 'frmTMC7099' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                default:
+                    return false;
+            }
+
+            return true;
+        }
+        public bool OpenUserControl(UserControl uc, string uc_name, string caption, TabControl tabControl)
+        {
+            try
+            {
+                //MessageBox.Show("Tới đây rồi. " + uc.Name + " " + myIpaddress);
+                TabPage TAbAdd = new TabPage();
+                TAbAdd.Name = uc_name;
+                TAbAdd.Text = caption;
+                if (!CheckPermissionOpenDirectForm(uc))
+                {
+                    //MessageBox.Show("Check bị failed rồi. " + uc.Name + " " + myIpaddress);
+                    return false;
+                }
+                //MessageBox.Show("Check permission OK rồi " + uc.Name + " " + myIpaddress);
+                foreach (TabPage c in tabControl.TabPages)
+                {
+                    if (c.Name == uc_name)
+                    {
+                        tabControl.SelectedTab = c;
+                        return true;
+                    }
+                }
+
+                if (tabControl.TabPages.Count >= 0)
+                {
+                    uc.Dock = DockStyle.Fill;
+                    TAbAdd.Controls.Add(uc);
+                    tabControl.TabPages.Add(TAbAdd);
+                    tabControl.SelectedTab = TAbAdd;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurs. Please check error code below " + ex.Message, "Error ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
