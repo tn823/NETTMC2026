@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SystemControl;
+
 
 namespace NETTMC
 {
@@ -345,19 +347,11 @@ namespace NETTMC
                 case "STOCKFIT DEFECT":
                     OpenTab<testUC>("STOCKFIT DEFECT");
                     break;
+                case "Kiểm kho":
+                    OpenTab<CheckStock>("Kiểm kho");
+                    break;
 
-                    //case "Module 1":
-                    //OpenTab<Module1Control>("Module 1");
-                    //break;
 
-                    // Mở nhiều instance cùng kiểu — dùng uniqueKey
-                    //case var name when name.StartsWith("Đơn hàng"):
-                    //    var orderId = e.Node.Tag?.ToString();
-                    //    OpenTab<OrderDetailControl>(
-                    //        title: $"Đơn hàng #{orderId}",
-                    //        uniqueKey: $"order_{orderId}",
-                    //        initAction: uc => uc.LoadOrder(orderId));
-                    //    break;
             }
         }
 

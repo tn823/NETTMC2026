@@ -16,5 +16,10 @@ namespace NETTMC
         {
             InitializeComponent();
         }
+
+        private void testUC_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -686,7 +686,7 @@
         private System.Windows.Forms.ToolStripStatusLabel statusLabelVersion;
         private TreeView treeView1;
         private SplitContainer splitContainer1;
-        private TabControl tabControl;
+        public TabControl tabControl;
         private ToolStripStatusLabel statusLabelConnection;
         private System.Windows.Forms.Timer timerConnectionCheck;
         private ToolStripStatusLabel barIPaddress;

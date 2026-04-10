@@ -34,18 +34,21 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(51, 43);
+            label1.Location = new Point(58, 57);
             label1.Name = "label1";
-            label1.Size = new Size(50, 15);
+            label1.Size = new Size(65, 20);
             label1.TabIndex = 0;
             label1.Text = "TEST OK";
             // 
             // testUC
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "testUC";
+            Size = new Size(171, 200);
+            Load += testUC_Load;
             ResumeLayout(false);
             PerformLayout();
         }
