@@ -10,13 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Config\DefaultProgram.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Config\DefaultProgram.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="logoSamho.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
     <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
+    <ProjectReference Include="..\NetTMCVersion\NetTMCVersion.csproj" />
     <ProjectReference Include="..\QIP\QIP.csproj" />
+    <ProjectReference Include="..\SystemControl\SystemControl.csproj" />
   </ItemGroup>
 
   <ItemGroup>

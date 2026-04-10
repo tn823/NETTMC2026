@@ -406,6 +406,8 @@ namespace GlobalFunction
             try
             {
                 string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Config\\" + filename + ".txt";
+                //Debug.WriteLine("Đường dẫn đang tìm: " + filepath);
+                //Debug.WriteLine("File tồn tại không? " + File.Exists(filepath));
                 if (!File.Exists(filepath))
                 {
 
@@ -1224,41 +1226,68 @@ namespace GlobalFunction
             }
 
         }
-        public bool OpenUserControl(UserControl uc, string uc_name, string caption, TabControl tabControl)
+
+
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        public bool OpenUserControl(UserControl uc, string uc_name, string caption, TabControl tabControl, string AccessableName, string roleID)
         {
-            try
+
+            if (!GlobalFunction.Authentication.Permission.UserInformation.CheckPermissionOpenForm(roleID, AccessableName))
             {
-                //MessageBox.Show("Tới đây rồi. " + uc.Name + " " + myIpaddress);
-                //DevExpress.XtraTab.XtraTabPage TAbAdd = new Tab.TabPage();
-               // TAbAdd.Name = uc_name;
-                //TAbAdd.Text = caption;
-                if (!CheckPermissionOpenDirectForm(uc))
-                {
-                    //MessageBox.Show("Check bị failed rồi. " + uc.Name + " " + myIpaddress);
-                    return false;
-                }
-                //MessageBox.Show("Check permission OK rồi " + uc.Name + " " + myIpaddress);
+                return false;
+            }
+            else
+            {
+
+                TabPage TAbAdd = new TabPage();
+                TAbAdd.Name = uc_name;
+                TAbAdd.Text = caption;
                 foreach (TabPage c in tabControl.TabPages)
                 {
                     if (c.Name == uc_name)
                     {
                         tabControl.SelectedTab = c;
                         return true;
-
                     }
                 }
 
-                TabPage newTab = new TabPage();
-                newTab.Name = uc_name;
-                newTab.Text = caption;
-
-                uc.Dock = DockStyle.Fill;
-                newTab.Controls.Add(uc);
+                if (tabControl.TabPages.Count >= 0)
+                {
+                    uc.Dock = DockStyle.Fill;
+                    TAbAdd.Controls.Add(uc);
+                    tabControl.TabPages.Add(TAbAdd);
+                    tabControl.SelectedTab = TAbAdd;
+                }
+                return true;
             }
-            catch (Exception ex)
+
+        }
+        public bool OpenUserControlWithoutPermission(UserControl uc, string uc_name, string caption, TabControl tabControl, string AccessableName, string roleID)
+        {
+            TabPage TAbAdd = new TabPage();
+            TAbAdd.Name = uc_name;
+            TAbAdd.Text = caption;
+
+            foreach (TabPage c in tabControl.TabPages)
             {
-                MessageBox.Show("Error occurs. Please check error code below " + ex.Message, "Error ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (c.Name == uc_name)
+                {
+                    tabControl.SelectedTab = c;
+                    return true;
+                }
+            }
+
+            if (tabControl.TabPages.Count >= 0)
+            {
+                uc.Dock = DockStyle.Fill;
+                TAbAdd.Controls.Add(uc);
+                tabControl.TabPages.Add(TAbAdd);
+                tabControl.SelectedTab = TAbAdd;
             }
             return true;
         }
@@ -1270,7 +1299,7 @@ namespace GlobalFunction
             switch (uc_name.Name)
             {
                 case "Dashboard":
-                    if (myIpaddress == "192.168.1.19" || myIpaddress == "192.168.0.213" || myIpaddress == "192.168.1.253" || myIpaddress == "192.168.31.35")
+                    if (myIpaddress == "192.168.1.19" || myIpaddress == "192.168.0.213" || myIpaddress == "192.168.1.253")
                     {
                         myIpaddress = "192.168.31.69";
                         return true;
@@ -1347,36 +1376,6 @@ namespace GlobalFunction
                     }
                     break;
                 case "frmTMC7033_A14":
-                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
-                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
-                    if (dt.Rows.Count > 0)
-                    {
-                        if (dt.Rows[0][0].ToString() == "1")
-                        {
-                            return true;
-                        }
-                        else if (dt.Rows[0][0].ToString() == "0")
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case "frmTMC7033_A7":
-                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
-                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
-                    if (dt.Rows.Count > 0)
-                    {
-                        if (dt.Rows[0][0].ToString() == "1")
-                        {
-                            return true;
-                        }
-                        else if (dt.Rows[0][0].ToString() == "0")
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case "frmTMC7036_New":
                     query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
                     dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                     if (dt.Rows.Count > 0)
@@ -1483,6 +1482,46 @@ namespace GlobalFunction
 
             return true;
         }
+        public bool OpenUserControl(UserControl uc, string uc_name, string caption, TabControl tabControl)
+        {
+            try
+            {
+                //MessageBox.Show("Tới đây rồi. " + uc.Name + " " + myIpaddress);
+                TabPage TAbAdd = new TabPage();
+                TAbAdd.Name = uc_name;
+                TAbAdd.Text = caption;
+                if (!CheckPermissionOpenDirectForm(uc))
+                {
+                    //MessageBox.Show("Check bị failed rồi. " + uc.Name + " " + myIpaddress);
+                    return false;
+                }
+                //MessageBox.Show("Check permission OK rồi " + uc.Name + " " + myIpaddress);
+                foreach (TabPage c in tabControl.TabPages)
+                {
+                    if (c.Name == uc_name)
+                    {
+                        tabControl.SelectedTab = c;
+                        return true;
+                    }
+                }
 
+                if (tabControl.TabPages.Count >= 0)
+                {
+                    uc.Dock = DockStyle.Fill;
+                    TAbAdd.Controls.Add(uc);
+                    tabControl.TabPages.Add(TAbAdd);
+                    tabControl.SelectedTab = TAbAdd;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurs. Please check error code below " + ex.Message, "Error ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

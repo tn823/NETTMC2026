@@ -1,6 +1,6 @@
-﻿namespace NETTMC
+﻿namespace SystemControl
 {
-    partial class testUC
+    partial class CheckStock
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,33 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            textBox1 = new TextBox();
             SuspendLayout();
             // 
-            // label1
+            // textBox1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(58, 57);
-            label1.Name = "label1";
-            label1.Size = new Size(65, 20);
-            label1.TabIndex = 0;
-            label1.Text = "TEST OK";
+            textBox1.Location = new Point(23, 78);
+            textBox1.Margin = new Padding(3, 4, 3, 4);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(100, 27);
+            textBox1.TabIndex = 0;
+            textBox1.Text = "test checkstock ui";
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
-            // testUC
+            // CheckStock
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(label1);
+            Controls.Add(textBox1);
             Margin = new Padding(3, 4, 3, 4);
-            Name = "testUC";
-            Size = new Size(171, 200);
-            Load += testUC_Load;
+            Name = "CheckStock";
+            Size = new Size(150, 188);
+            Load += CheckStock_Load;
             ResumeLayout(false);
             PerformLayout();
+
         }
 
         #endregion
 
-        private Label label1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

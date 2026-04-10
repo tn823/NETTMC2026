@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NETTMC
+namespace QIP.EOL
 {
-    public partial class testUC : UserControl
+    public partial class frmTMC7033 : UserControl
     {
-        public testUC()
+        public frmTMC7033()
         {
             InitializeComponent();
-        }
-
-        private void testUC_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
