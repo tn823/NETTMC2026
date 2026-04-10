@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
     <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
+    <ProjectReference Include="..\QIP\QIP.csproj" />
   </ItemGroup>
 
   <ItemGroup>

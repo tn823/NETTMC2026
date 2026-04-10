@@ -32,16 +32,18 @@
             label1 = new Label();
             label2 = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button5 = new Button();
-            button6 = new Button();
-            button7 = new Button();
-            button8 = new Button();
-            button9 = new Button();
-            button10 = new Button();
-            button11 = new Button();
+            btnMas = new Button();
+            btnSecurity = new Button();
+            barBtnGatePassCheck = new Button();
+            barBtnForITOnly = new Button();
+            btnDefect = new Button();
+            btnDefectAdidas = new Button();
+            btnJSI = new Button();
+            simpleButton4 = new Button();
+            btnP2PAllLineNB = new Button();
+            btnP2P = new Button();
+            btnCanteen = new Button();
+            btnDefectImage = new Button();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -67,110 +69,133 @@
             // 
             // flowLayoutPanel1
             // 
-            flowLayoutPanel1.Controls.Add(button1);
-            flowLayoutPanel1.Controls.Add(button2);
-            flowLayoutPanel1.Controls.Add(button3);
-            flowLayoutPanel1.Controls.Add(button5);
-            flowLayoutPanel1.Controls.Add(button6);
-            flowLayoutPanel1.Controls.Add(button7);
-            flowLayoutPanel1.Controls.Add(button8);
-            flowLayoutPanel1.Controls.Add(button9);
-            flowLayoutPanel1.Controls.Add(button10);
-            flowLayoutPanel1.Controls.Add(button11);
+            flowLayoutPanel1.Controls.Add(btnMas);
+            flowLayoutPanel1.Controls.Add(btnSecurity);
+            flowLayoutPanel1.Controls.Add(barBtnGatePassCheck);
+            flowLayoutPanel1.Controls.Add(barBtnForITOnly);
+            flowLayoutPanel1.Controls.Add(btnDefect);
+            flowLayoutPanel1.Controls.Add(btnDefectAdidas);
+            flowLayoutPanel1.Controls.Add(btnJSI);
+            flowLayoutPanel1.Controls.Add(simpleButton4);
+            flowLayoutPanel1.Controls.Add(btnP2PAllLineNB);
+            flowLayoutPanel1.Controls.Add(btnP2P);
+            flowLayoutPanel1.Controls.Add(btnCanteen);
+            flowLayoutPanel1.Controls.Add(btnDefectImage);
             flowLayoutPanel1.Location = new Point(46, 92);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(813, 386);
             flowLayoutPanel1.TabIndex = 2;
             // 
-            // button1
+            // btnMas
             // 
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(193, 120);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnMas.Location = new Point(3, 3);
+            btnMas.Name = "btnMas";
+            btnMas.Size = new Size(193, 120);
+            btnMas.TabIndex = 0;
+            btnMas.Text = "MAS";
+            btnMas.UseVisualStyleBackColor = true;
+            btnMas.Click += btnMas_Click;
             // 
-            // button2
+            // btnSecurity
             // 
-            button2.Location = new Point(202, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(189, 120);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            btnSecurity.Location = new Point(202, 3);
+            btnSecurity.Name = "btnSecurity";
+            btnSecurity.Size = new Size(189, 120);
+            btnSecurity.TabIndex = 1;
+            btnSecurity.Text = "Security Registration Đăng ký bảo vệ";
+            btnSecurity.UseVisualStyleBackColor = true;
+            btnSecurity.Click += btnSecurity_Click;
             // 
-            // button3
+            // barBtnGatePassCheck
             // 
-            button3.Location = new Point(397, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(202, 120);
-            button3.TabIndex = 2;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            barBtnGatePassCheck.Location = new Point(397, 3);
+            barBtnGatePassCheck.Name = "barBtnGatePassCheck";
+            barBtnGatePassCheck.Size = new Size(202, 120);
+            barBtnGatePassCheck.TabIndex = 2;
+            barBtnGatePassCheck.Text = "GatePass Check";
+            barBtnGatePassCheck.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // barBtnForITOnly
             // 
-            button5.Location = new Point(605, 3);
-            button5.Name = "button5";
-            button5.Size = new Size(193, 120);
-            button5.TabIndex = 4;
-            button5.Text = "button5";
-            button5.UseVisualStyleBackColor = true;
+            barBtnForITOnly.Location = new Point(605, 3);
+            barBtnForITOnly.Name = "barBtnForITOnly";
+            barBtnForITOnly.Size = new Size(193, 120);
+            barBtnForITOnly.TabIndex = 4;
+            barBtnForITOnly.Text = "Automated For IT";
+            barBtnForITOnly.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnDefect
             // 
-            button6.Location = new Point(3, 129);
-            button6.Name = "button6";
-            button6.Size = new Size(193, 120);
-            button6.TabIndex = 5;
-            button6.Text = "button6";
-            button6.UseVisualStyleBackColor = true;
+            btnDefect.Location = new Point(3, 129);
+            btnDefect.Name = "btnDefect";
+            btnDefect.Size = new Size(193, 120);
+            btnDefect.TabIndex = 5;
+            btnDefect.Text = "DEFECT Chấm lỗi cuối chuyền";
+            btnDefect.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnDefectAdidas
             // 
-            button7.Location = new Point(202, 129);
-            button7.Name = "button7";
-            button7.Size = new Size(193, 120);
-            button7.TabIndex = 6;
-            button7.Text = "button7";
-            button7.UseVisualStyleBackColor = true;
+            btnDefectAdidas.Location = new Point(202, 129);
+            btnDefectAdidas.Name = "btnDefectAdidas";
+            btnDefectAdidas.Size = new Size(193, 120);
+            btnDefectAdidas.TabIndex = 6;
+            btnDefectAdidas.Text = "DEFECT Stockfit";
+            btnDefectAdidas.UseVisualStyleBackColor = true;
+            btnDefectAdidas.Click += btnDefectAdidas_Click;
             // 
-            // button8
+            // btnJSI
             // 
-            button8.Location = new Point(401, 129);
-            button8.Name = "button8";
-            button8.Size = new Size(193, 120);
-            button8.TabIndex = 7;
-            button8.Text = "button8";
-            button8.UseVisualStyleBackColor = true;
+            btnJSI.Location = new Point(401, 129);
+            btnJSI.Name = "btnJSI";
+            btnJSI.Size = new Size(193, 120);
+            btnJSI.TabIndex = 7;
+            btnJSI.Text = "DEFECT JSI ( NB only )";
+            btnJSI.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // simpleButton4
             // 
-            button9.Location = new Point(600, 129);
-            button9.Name = "button9";
-            button9.Size = new Size(193, 120);
-            button9.TabIndex = 8;
-            button9.Text = "button9";
-            button9.UseVisualStyleBackColor = true;
+            simpleButton4.Location = new Point(600, 129);
+            simpleButton4.Name = "simpleButton4";
+            simpleButton4.Size = new Size(193, 120);
+            simpleButton4.TabIndex = 8;
+            simpleButton4.Text = "CCQP";
+            simpleButton4.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // btnP2PAllLineNB
             // 
-            button10.Location = new Point(3, 255);
-            button10.Name = "button10";
-            button10.Size = new Size(193, 120);
-            button10.TabIndex = 9;
-            button10.Text = "button10";
-            button10.UseVisualStyleBackColor = true;
+            btnP2PAllLineNB.Location = new Point(3, 255);
+            btnP2PAllLineNB.Name = "btnP2PAllLineNB";
+            btnP2PAllLineNB.Size = new Size(193, 120);
+            btnP2PAllLineNB.TabIndex = 9;
+            btnP2PAllLineNB.Text = "P2P All Line NB";
+            btnP2PAllLineNB.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // btnP2P
             // 
-            button11.Location = new Point(202, 255);
-            button11.Name = "button11";
-            button11.Size = new Size(193, 120);
-            button11.TabIndex = 10;
-            button11.Text = "button11";
-            button11.UseVisualStyleBackColor = true;
+            btnP2P.Location = new Point(202, 255);
+            btnP2P.Name = "btnP2P";
+            btnP2P.Size = new Size(193, 120);
+            btnP2P.TabIndex = 10;
+            btnP2P.Text = "P2P Tivi Cuối chuyền";
+            btnP2P.UseVisualStyleBackColor = true;
+            // 
+            // btnCanteen
+            // 
+            btnCanteen.Location = new Point(401, 255);
+            btnCanteen.Name = "btnCanteen";
+            btnCanteen.Size = new Size(193, 120);
+            btnCanteen.TabIndex = 11;
+            btnCanteen.Text = "Monitor Temp && Hum";
+            btnCanteen.UseVisualStyleBackColor = true;
+            // 
+            // btnDefectImage
+            // 
+            btnDefectImage.Location = new Point(600, 255);
+            btnDefectImage.Name = "btnDefectImage";
+            btnDefectImage.Size = new Size(193, 120);
+            btnDefectImage.TabIndex = 12;
+            btnDefectImage.Text = "Defect Images";
+            btnDefectImage.UseVisualStyleBackColor = true;
             // 
             // Login
             // 
@@ -194,15 +219,17 @@
         private Label label1;
         private Label label2;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button5;
-        private Button button6;
-        private Button button7;
-        private Button button8;
-        private Button button9;
-        private Button button10;
-        private Button button11;
+        private Button btnMas;
+        private Button btnSecurity;
+        private Button barBtnGatePassCheck;
+        private Button barBtnForITOnly;
+        private Button btnDefect;
+        private Button btnDefectAdidas;
+        private Button btnJSI;
+        private Button simpleButton4;
+        private Button btnP2PAllLineNB;
+        private Button btnP2P;
+        private Button btnCanteen;
+        private Button btnDefectImage;
     }
 }
