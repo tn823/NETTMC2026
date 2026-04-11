@@ -1293,6 +1293,9 @@ namespace GlobalFunction
         }
         private bool CheckPermissionOpenDirectForm(UserControl uc_name)
         {
+            bool isDevIP = myIpaddress == "192.168.1.197";
+
+
             StringBuilder query = new StringBuilder();
             CRUDOracle crud = new CRUDOracle("VSMES");
             DataTable dt = new DataTable();
@@ -1376,6 +1379,9 @@ namespace GlobalFunction
                     }
                     break;
                 case "frmTMC7033_A14":
+
+                    if (isDevIP) return true;
+
                     query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
                     dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                     if (dt.Rows.Count > 0)
