@@ -1,4 +1,4 @@
-﻿using ConnectionClass.Oracle;
+using ConnectionClass.Oracle;
 using QIP.EOL;
 using System;
 using System.Collections.Generic;
@@ -158,7 +158,8 @@ namespace NETTMC.Authentication
                     mf.Show();
                     UserControl uc;
 
-                    if (GlobalFunction.PublicFunction.myIpaddress == "192.168.31.249" || GlobalFunction.PublicFunction.myIpaddress == "192.168.31.62" || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
+                    //if (GlobalFunction.PublicFunction.myIpaddress == "192.168.31.249" || GlobalFunction.PublicFunction.myIpaddress == "192.168.31.62" || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
+                    if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.1.197") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
                     {
                         uc = new QIP.EOL.frmTMC7033_A14();
                     }
@@ -293,6 +294,7 @@ namespace NETTMC.Authentication
 
         private async void CheckConnectionStatus()
         {
+            
             connectionstatus = await Task.Run(() =>
             {
                 return crud.ConnectionStatus();
@@ -309,7 +311,7 @@ namespace NETTMC.Authentication
             }
             else
             {
-                labelControl5.Text = "Database Disonnected"; 
+                labelControl5.Text = "Database Disonnected";
                 labelControl5.ForeColor = Color.Red;
             }
             //progressPanel1.Hide();
@@ -328,6 +330,45 @@ namespace NETTMC.Authentication
         private void tableLayoutLogin_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnDefect_Click(object sender, EventArgs e)
+        {
+            MainForm mf = new MainForm();
+            //mf.ribbon.Visible = false;
+            mf.Show();
+
+
+            UserControl uc;
+            //if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
+            if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.1.197") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
+            {
+                uc = new QIP.EOL.frmTMC7033_A14();
+            }
+            else
+            {
+                uc = new QIP.EOL.frmTMC7033();
+            }
+            if (!pubFunc.OpenUserControl(uc, "NB Defect End Of Line (frmTMC7033)", "frmTMC7033", mf.tabControl))
+            {
+                MessageBox.Show("Sorry 111 ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                uc.Dispose();
+                mf.Hide();
+                this.Focus();
+                return;
+            }
+            if (MessageBox.Show("Do you want to set this program default open on this machine ?", "Question", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                new GlobalFunction.PublicFunction().WriteToFile("TouchDefect", "DefaultProgram");
+            }
+            this.Hide();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            txtUser.Text = "";
+            txtPassword.Text = "";
+            tableLayoutLogin.Hide();
         }
     }
 }

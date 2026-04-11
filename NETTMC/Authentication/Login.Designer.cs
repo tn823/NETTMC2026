@@ -145,6 +145,7 @@
             btnDefect.TabIndex = 4;
             btnDefect.Text = "DEFECT Chấm lỗi cuối chuyền";
             btnDefect.UseVisualStyleBackColor = true;
+            btnDefect.Click += btnDefect_Click;
             // 
             // btnDefectAdidas
             // 
@@ -277,6 +278,7 @@
             btnCancel.TabIndex = 3;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // btnLogin
             // 
