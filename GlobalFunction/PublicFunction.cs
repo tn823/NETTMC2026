@@ -452,10 +452,10 @@ namespace GlobalFunction
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    if (ip.ToString() == "192.168.1.193" || ip.ToString() == "192.168.1.196" || ip.ToString() == "192.168.0.118" || ip.ToString() == "192.168.1.150")
+                    if (ip.ToString() == "192.168.1.55" || ip.ToString() == "192.168.1.196" || ip.ToString() == "192.168.0.118" || ip.ToString() == "192.168.1.150")
                     {
                         //return ip.ToString();
-                        return "192.168.31.22";
+                        return "192.168.0.85";
                         //return "192.168.2.180";
                         //return "192.168.17.241";
                         //return "192.168.0.236";
@@ -1376,6 +1376,21 @@ namespace GlobalFunction
                     }
                     break;
                 case "frmTMC7033_A14":
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "frmTMC7036_New":
                     query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
                     dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                     if (dt.Rows.Count > 0)
