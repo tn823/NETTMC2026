@@ -419,5 +419,10 @@ namespace NETTMC.Authentication
             }
             this.Hide();
         }
+
+        //private void btnDefectAdidas_Click(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }
