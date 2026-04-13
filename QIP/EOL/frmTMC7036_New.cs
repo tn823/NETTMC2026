@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using static GlobalFunction.PublicFunction;
+using System.Diagnostics;
 
 namespace QIP.EOL
 {
@@ -868,6 +869,8 @@ namespace QIP.EOL
                 query.AppendLine("      WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + ip + "')");
 
                 DataTable dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+
+                Debug.WriteLine("Query executed: " + dt);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
