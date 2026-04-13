@@ -309,7 +309,7 @@ namespace NETTMC.Authentication
             }
             else
             {
-                labelControl5.Text = "Database Disonnected"; 
+                labelControl5.Text = "Database Disonnected";
                 labelControl5.ForeColor = Color.Red;
             }
             //progressPanel1.Hide();
@@ -326,6 +326,11 @@ namespace NETTMC.Authentication
         }
 
         private void tableLayoutLogin_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnDefectAdidas_Click(object sender, EventArgs e)
         {
 
         }
