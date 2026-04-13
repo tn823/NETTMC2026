@@ -73,6 +73,16 @@ namespace QIP.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap project_preview_large_21 {
+            get {
+                object obj = ResourceManager.GetObject("project-preview-large-21", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sASS_3 {
             get {
                 object obj = ResourceManager.GetObject("sASS_3", resourceCulture);

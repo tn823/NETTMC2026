@@ -88,7 +88,7 @@ namespace NETTMC.Authentication
         private bool CheckDefaultProgram()
         {
             var a = new GlobalFunction.PublicFunction().ReadFromFileNotMesage("DefaultProgram");
-            Debug.WriteLine("Default Program: " + a);
+            //Debug.WriteLine("Default Program: " + a);
             if (a == null)
             {
                 return false;
@@ -156,7 +156,8 @@ namespace NETTMC.Authentication
                     MainForm mf = new MainForm();
                     mf.splitContainer1.Panel1Collapsed = true;
                     mf.ribbonStrip.Visible = false;
-                    mf.mainMenuStrip.Visible = false; mf.Show();
+                    mf.mainMenuStrip.Visible = false;
+                    mf.Show();
 
                     UserControl uc;
                     if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
@@ -169,7 +170,7 @@ namespace NETTMC.Authentication
                     }
                     if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036)", "frmTMC7036", mf.tabControl))
                     {
-                        MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Sorry 36 ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         uc.Dispose();
                         mf.Hide();
                         this.Focus();
@@ -181,7 +182,10 @@ namespace NETTMC.Authentication
                 if (arr[0].ToString() == "TouchDefect")
                 {
                     MainForm mf = new MainForm();
-                    //mf.ribbon.Visible = false;
+                    mf.splitContainer1.Panel1Collapsed = true;
+                    mf.ribbonStrip.Visible = false;
+                    mf.mainMenuStrip.Visible = false;
+
                     mf.Show();
                     UserControl uc;
 
@@ -343,12 +347,17 @@ namespace NETTMC.Authentication
         private void btnDefect_Click(object sender, EventArgs e)
         {
             MainForm mf = new MainForm();
-            //mf.ribbon.Visible = false;
+            mf.splitContainer1.Panel1Collapsed = true;
+            mf.ribbonStrip.Visible = false;
+            mf.mainMenuStrip.Visible = false;
+
+            mf.tabControl.Appearance = TabAppearance.FlatButtons;
+            mf.tabControl.ItemSize = new Size(0, 1);
+            mf.tabControl.SizeMode = TabSizeMode.Fixed;
             mf.Show();
 
 
             UserControl uc;
-            //if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
             if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.1.197") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
             {
                 uc = new QIP.EOL.frmTMC7033_A14();
@@ -382,13 +391,13 @@ namespace NETTMC.Authentication
         private void btnDefectAdidas_Click(object sender, EventArgs e)
         {
             MainForm mf = new MainForm();
-           // mf.treeView1.Visible = false;
-           mf.splitContainer1.Panel1Collapsed = true;
+            // mf.treeView1.Visible = false;
+            mf.splitContainer1.Panel1Collapsed = true;
             mf.ribbonStrip.Visible = false;
             mf.mainMenuStrip.Visible = false;
             mf.Show();
             UserControl uc;
-            if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
+            if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85" || GlobalFunction.PublicFunction.myIpaddress == "192.168.1.197")
             {
                 uc = new QIP.EOL.frmTMC7036_New();
             }
