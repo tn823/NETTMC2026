@@ -75,40 +75,40 @@
             chkEng = new CheckBox();
             chkVN = new CheckBox();
             tableLayoutPanel10 = new TableLayoutPanel();
+            label11 = new Label();
+            label8 = new Label();
+            label7 = new Label();
             tableLayoutPanel19 = new TableLayoutPanel();
+            label17 = new Label();
             lblSensorCount = new Label();
-            button11 = new Button();
             tableLayoutPanel18 = new TableLayoutPanel();
+            label16 = new Label();
             lblTotalDefect = new Label();
-            button10 = new Button();
-            btnSPCBonding = new Button();
             tableLayoutPanel17 = new TableLayoutPanel();
+            label18 = new Label();
             lblEOLQCDDPM = new Label();
-            button8 = new Button();
             tableLayoutPanel16 = new TableLayoutPanel();
+            label15 = new Label();
             lblReDefect = new Label();
-            button7 = new Button();
-            btnSPCStitching = new Button();
-            btnSPCCleanliness = new Button();
             panel4 = new Panel();
             tableLayoutPanel11 = new TableLayoutPanel();
             lblTop1DefectDDPM = new Label();
             lblTop1Defect = new Label();
-            button1 = new Button();
+            label3 = new Label();
             tableLayoutPanel12 = new TableLayoutPanel();
+            label14 = new Label();
             lblFirstDefect = new Label();
-            button2 = new Button();
             tableLayoutPanel13 = new TableLayoutPanel();
+            label19 = new Label();
             lblRFT = new Label();
-            button3 = new Button();
             tableLayoutPanel14 = new TableLayoutPanel();
+            label10 = new Label();
             lblTop2DefectDDPM = new Label();
             lblTop2Defect = new Label();
-            button6 = new Button();
             tableLayoutPanel15 = new TableLayoutPanel();
+            label13 = new Label();
             lblTop3DefectDDPM = new Label();
             lblTop3Defect = new Label();
-            button9 = new Button();
             tableLayoutPanel9 = new TableLayoutPanel();
             button16 = new Button();
             button15 = new Button();
@@ -147,6 +147,7 @@
             button18 = new Button();
             button17 = new Button();
             panel8 = new Panel();
+            btnClear = new Button();
             panelStatus = new FlowLayoutPanel();
             grdOfflineData = new DataGridView();
             lblSyncStatus = new Label();
@@ -168,6 +169,9 @@
             backgroundOracle = new System.ComponentModel.BackgroundWorker();
             timer2 = new System.Windows.Forms.Timer(components);
             timerBindProduction = new System.Windows.Forms.Timer(components);
+            timer_BlinkButtonGreen = new System.Windows.Forms.Timer(components);
+            timer_BlinkButtonRed = new System.Windows.Forms.Timer(components);
+            timer_BlinkButtonYellow = new System.Windows.Forms.Timer(components);
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -676,6 +680,7 @@
             btnRePass.TabIndex = 2;
             btnRePass.Text = "RE-INS PASS";
             btnRePass.UseVisualStyleBackColor = false;
+            btnRePass.Click += btnRePass_Click;
             // 
             // btnFail
             // 
@@ -689,6 +694,7 @@
             btnFail.TabIndex = 1;
             btnFail.Text = "1st FAIL";
             btnFail.UseVisualStyleBackColor = false;
+            btnFail.Click += btnFail_Click;
             // 
             // btnPass
             // 
@@ -724,8 +730,8 @@
             tableLayoutPanel99.Location = new Point(0, 0);
             tableLayoutPanel99.Name = "tableLayoutPanel99";
             tableLayoutPanel99.RowCount = 3;
-            tableLayoutPanel99.RowStyles.Add(new RowStyle(SizeType.Percent, 27.8350525F));
-            tableLayoutPanel99.RowStyles.Add(new RowStyle(SizeType.Percent, 72.16495F));
+            tableLayoutPanel99.RowStyles.Add(new RowStyle(SizeType.Percent, 27.3529415F));
+            tableLayoutPanel99.RowStyles.Add(new RowStyle(SizeType.Percent, 72.64706F));
             tableLayoutPanel99.RowStyles.Add(new RowStyle(SizeType.Absolute, 481F));
             tableLayoutPanel99.Size = new Size(980, 822);
             tableLayoutPanel99.TabIndex = 0;
@@ -742,7 +748,7 @@
             panel3.Dock = DockStyle.Fill;
             panel3.Location = new Point(3, 3);
             panel3.Name = "panel3";
-            panel3.Size = new Size(974, 88);
+            panel3.Size = new Size(974, 87);
             panel3.TabIndex = 0;
             panel3.Paint += panel3_Paint;
             // 
@@ -832,252 +838,266 @@
             // 
             // tableLayoutPanel10
             // 
+            tableLayoutPanel10.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
             tableLayoutPanel10.ColumnCount = 4;
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 96F));
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 48.2731F));
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 26.4791279F));
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.2477722F));
+            tableLayoutPanel10.Controls.Add(label11, 0, 2);
+            tableLayoutPanel10.Controls.Add(label8, 0, 1);
+            tableLayoutPanel10.Controls.Add(label7, 0, 0);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel19, 3, 2);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel18, 2, 2);
-            tableLayoutPanel10.Controls.Add(btnSPCBonding, 0, 2);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel17, 3, 1);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel16, 2, 1);
-            tableLayoutPanel10.Controls.Add(btnSPCStitching, 0, 1);
-            tableLayoutPanel10.Controls.Add(btnSPCCleanliness, 0, 0);
             tableLayoutPanel10.Controls.Add(panel4, 1, 0);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel12, 2, 0);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel13, 3, 0);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel14, 1, 1);
             tableLayoutPanel10.Controls.Add(tableLayoutPanel15, 1, 2);
             tableLayoutPanel10.Dock = DockStyle.Fill;
-            tableLayoutPanel10.Location = new Point(3, 97);
+            tableLayoutPanel10.Location = new Point(3, 96);
             tableLayoutPanel10.Name = "tableLayoutPanel10";
             tableLayoutPanel10.RowCount = 3;
             tableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 32.5F));
             tableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel10.Size = new Size(974, 240);
+            tableLayoutPanel10.Size = new Size(974, 241);
             tableLayoutPanel10.TabIndex = 1;
             tableLayoutPanel10.Paint += tableLayoutPanel10_Paint;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.BackColor = Color.FromArgb(192, 0, 0);
+            label11.Dock = DockStyle.Fill;
+            label11.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.ForeColor = SystemColors.ControlLightLight;
+            label11.Location = new Point(6, 160);
+            label11.Name = "label11";
+            label11.Size = new Size(90, 78);
+            label11.TabIndex = 14;
+            label11.Text = "SPC BONDING";
+            label11.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.BackColor = Color.FromArgb(192, 0, 0);
+            label8.Dock = DockStyle.Fill;
+            label8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.ForeColor = SystemColors.ControlLightLight;
+            label8.Location = new Point(6, 82);
+            label8.Name = "label8";
+            label8.Size = new Size(90, 75);
+            label8.TabIndex = 13;
+            label8.Text = "SPC STITCHING";
+            label8.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = Color.FromArgb(192, 0, 0);
+            label7.Dock = DockStyle.Fill;
+            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.ForeColor = SystemColors.ControlLightLight;
+            label7.Location = new Point(6, 3);
+            label7.Name = "label7";
+            label7.Size = new Size(90, 76);
+            label7.TabIndex = 12;
+            label7.Text = "SPC CLEANLINESS";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel19
             // 
             tableLayoutPanel19.ColumnCount = 2;
             tableLayoutPanel19.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55.6097565F));
             tableLayoutPanel19.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.3902435F));
+            tableLayoutPanel19.Controls.Add(label17, 0, 0);
             tableLayoutPanel19.Controls.Add(lblSensorCount, 1, 0);
-            tableLayoutPanel19.Controls.Add(button11, 0, 0);
             tableLayoutPanel19.Dock = DockStyle.Fill;
-            tableLayoutPanel19.Location = new Point(754, 161);
+            tableLayoutPanel19.Location = new Point(755, 163);
             tableLayoutPanel19.Name = "tableLayoutPanel19";
             tableLayoutPanel19.RowCount = 1;
             tableLayoutPanel19.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel19.Size = new Size(217, 76);
+            tableLayoutPanel19.Size = new Size(213, 72);
             tableLayoutPanel19.TabIndex = 11;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.BackColor = Color.FromArgb(192, 0, 0);
+            label17.Dock = DockStyle.Fill;
+            label17.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label17.ForeColor = SystemColors.ControlLightLight;
+            label17.Location = new Point(3, 0);
+            label17.Name = "label17";
+            label17.Size = new Size(112, 72);
+            label17.TabIndex = 7;
+            label17.Text = "SENSOR COUNT :";
+            label17.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblSensorCount
             // 
             lblSensorCount.AutoSize = true;
             lblSensorCount.BackColor = SystemColors.ButtonHighlight;
             lblSensorCount.Dock = DockStyle.Fill;
-            lblSensorCount.Location = new Point(123, 0);
+            lblSensorCount.Location = new Point(121, 0);
             lblSensorCount.Name = "lblSensorCount";
-            lblSensorCount.Size = new Size(91, 76);
+            lblSensorCount.Size = new Size(89, 72);
             lblSensorCount.TabIndex = 6;
             lblSensorCount.Text = "10.1";
             lblSensorCount.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button11
-            // 
-            button11.BackColor = Color.FromArgb(192, 0, 0);
-            button11.Dock = DockStyle.Fill;
-            button11.ForeColor = Color.White;
-            button11.Location = new Point(3, 3);
-            button11.Name = "button11";
-            button11.Size = new Size(114, 70);
-            button11.TabIndex = 5;
-            button11.Text = "SENSOR COUNT :";
-            button11.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel18
             // 
             tableLayoutPanel18.ColumnCount = 2;
             tableLayoutPanel18.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel18.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel18.Controls.Add(label16, 0, 0);
             tableLayoutPanel18.Controls.Add(lblTotalDefect, 1, 0);
-            tableLayoutPanel18.Controls.Add(button10, 0, 0);
             tableLayoutPanel18.Dock = DockStyle.Fill;
-            tableLayoutPanel18.Location = new Point(522, 161);
+            tableLayoutPanel18.Location = new Point(524, 163);
             tableLayoutPanel18.Name = "tableLayoutPanel18";
             tableLayoutPanel18.RowCount = 1;
             tableLayoutPanel18.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel18.Size = new Size(226, 76);
+            tableLayoutPanel18.Size = new Size(222, 72);
             tableLayoutPanel18.TabIndex = 10;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.BackColor = Color.FromArgb(192, 0, 0);
+            label16.Dock = DockStyle.Fill;
+            label16.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label16.ForeColor = SystemColors.ControlLightLight;
+            label16.Location = new Point(3, 0);
+            label16.Name = "label16";
+            label16.Size = new Size(105, 72);
+            label16.TabIndex = 6;
+            label16.Text = "TOTAL DEFECT :";
+            label16.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblTotalDefect
             // 
             lblTotalDefect.AutoSize = true;
             lblTotalDefect.BackColor = SystemColors.ButtonHighlight;
             lblTotalDefect.Dock = DockStyle.Fill;
-            lblTotalDefect.Location = new Point(116, 0);
+            lblTotalDefect.Location = new Point(114, 0);
             lblTotalDefect.Name = "lblTotalDefect";
-            lblTotalDefect.Size = new Size(107, 76);
+            lblTotalDefect.Size = new Size(105, 72);
             lblTotalDefect.TabIndex = 5;
             lblTotalDefect.Text = "10.1";
             lblTotalDefect.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button10
-            // 
-            button10.BackColor = Color.FromArgb(192, 0, 0);
-            button10.Dock = DockStyle.Fill;
-            button10.ForeColor = Color.White;
-            button10.Location = new Point(3, 3);
-            button10.Name = "button10";
-            button10.Size = new Size(107, 70);
-            button10.TabIndex = 4;
-            button10.Text = "TOTAL DEFECT :";
-            button10.UseVisualStyleBackColor = false;
-            // 
-            // btnSPCBonding
-            // 
-            btnSPCBonding.BackColor = Color.FromArgb(192, 0, 0);
-            btnSPCBonding.Dock = DockStyle.Fill;
-            btnSPCBonding.ForeColor = Color.White;
-            btnSPCBonding.Location = new Point(3, 161);
-            btnSPCBonding.Name = "btnSPCBonding";
-            btnSPCBonding.Size = new Size(90, 76);
-            btnSPCBonding.TabIndex = 9;
-            btnSPCBonding.Text = "SPC BONDING";
-            btnSPCBonding.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel17
             // 
             tableLayoutPanel17.ColumnCount = 2;
             tableLayoutPanel17.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55.1401863F));
             tableLayoutPanel17.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.8598137F));
+            tableLayoutPanel17.Controls.Add(label18, 0, 0);
             tableLayoutPanel17.Controls.Add(lblEOLQCDDPM, 1, 0);
-            tableLayoutPanel17.Controls.Add(button8, 0, 0);
             tableLayoutPanel17.Dock = DockStyle.Fill;
-            tableLayoutPanel17.Location = new Point(754, 83);
+            tableLayoutPanel17.Location = new Point(755, 85);
             tableLayoutPanel17.Name = "tableLayoutPanel17";
             tableLayoutPanel17.RowCount = 1;
             tableLayoutPanel17.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel17.Size = new Size(217, 72);
+            tableLayoutPanel17.Size = new Size(213, 69);
             tableLayoutPanel17.TabIndex = 8;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.BackColor = Color.FromArgb(192, 0, 0);
+            label18.Dock = DockStyle.Fill;
+            label18.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label18.ForeColor = SystemColors.ControlLightLight;
+            label18.Location = new Point(3, 0);
+            label18.Name = "label18";
+            label18.Size = new Size(111, 69);
+            label18.TabIndex = 6;
+            label18.Text = "EOL QC DPPM :";
+            label18.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblEOLQCDDPM
             // 
             lblEOLQCDDPM.AutoSize = true;
             lblEOLQCDDPM.BackColor = SystemColors.ButtonHighlight;
             lblEOLQCDDPM.Dock = DockStyle.Fill;
-            lblEOLQCDDPM.Location = new Point(122, 0);
+            lblEOLQCDDPM.Location = new Point(120, 0);
             lblEOLQCDDPM.Name = "lblEOLQCDDPM";
-            lblEOLQCDDPM.Size = new Size(92, 72);
+            lblEOLQCDDPM.Size = new Size(90, 69);
             lblEOLQCDDPM.TabIndex = 5;
             lblEOLQCDDPM.Text = "10.1";
             lblEOLQCDDPM.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button8
-            // 
-            button8.BackColor = Color.FromArgb(192, 0, 0);
-            button8.Dock = DockStyle.Fill;
-            button8.ForeColor = Color.White;
-            button8.Location = new Point(3, 3);
-            button8.Name = "button8";
-            button8.Size = new Size(113, 66);
-            button8.TabIndex = 4;
-            button8.Text = "EOL QC DPPM :";
-            button8.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel16
             // 
             tableLayoutPanel16.ColumnCount = 2;
             tableLayoutPanel16.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel16.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel16.Controls.Add(label15, 0, 0);
             tableLayoutPanel16.Controls.Add(lblReDefect, 1, 0);
-            tableLayoutPanel16.Controls.Add(button7, 0, 0);
             tableLayoutPanel16.Dock = DockStyle.Fill;
-            tableLayoutPanel16.Location = new Point(522, 83);
+            tableLayoutPanel16.Location = new Point(524, 85);
             tableLayoutPanel16.Name = "tableLayoutPanel16";
             tableLayoutPanel16.RowCount = 1;
             tableLayoutPanel16.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel16.Size = new Size(226, 72);
+            tableLayoutPanel16.Size = new Size(222, 69);
             tableLayoutPanel16.TabIndex = 7;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.BackColor = Color.FromArgb(192, 0, 0);
+            label15.Dock = DockStyle.Fill;
+            label15.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label15.ForeColor = SystemColors.ControlLightLight;
+            label15.Location = new Point(3, 0);
+            label15.Name = "label15";
+            label15.Size = new Size(105, 69);
+            label15.TabIndex = 6;
+            label15.Text = "RE-INS DEFECT :";
+            label15.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblReDefect
             // 
             lblReDefect.AutoSize = true;
             lblReDefect.BackColor = SystemColors.ButtonHighlight;
             lblReDefect.Dock = DockStyle.Fill;
-            lblReDefect.Location = new Point(116, 0);
+            lblReDefect.Location = new Point(114, 0);
             lblReDefect.Name = "lblReDefect";
-            lblReDefect.Size = new Size(107, 72);
+            lblReDefect.Size = new Size(105, 69);
             lblReDefect.TabIndex = 4;
             lblReDefect.Text = "10.1";
             lblReDefect.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button7
-            // 
-            button7.BackColor = Color.FromArgb(192, 0, 0);
-            button7.Dock = DockStyle.Fill;
-            button7.ForeColor = Color.White;
-            button7.Location = new Point(3, 3);
-            button7.Name = "button7";
-            button7.Size = new Size(107, 66);
-            button7.TabIndex = 3;
-            button7.Text = "RE-INS DEFECT :";
-            button7.UseVisualStyleBackColor = false;
-            // 
-            // btnSPCStitching
-            // 
-            btnSPCStitching.BackColor = Color.FromArgb(192, 0, 0);
-            btnSPCStitching.Dock = DockStyle.Fill;
-            btnSPCStitching.ForeColor = Color.White;
-            btnSPCStitching.Location = new Point(3, 83);
-            btnSPCStitching.Name = "btnSPCStitching";
-            btnSPCStitching.Size = new Size(90, 72);
-            btnSPCStitching.TabIndex = 6;
-            btnSPCStitching.Text = "SPC STITCHING";
-            btnSPCStitching.UseVisualStyleBackColor = false;
-            btnSPCStitching.Click += button4_Click_1;
-            // 
-            // btnSPCCleanliness
-            // 
-            btnSPCCleanliness.BackColor = Color.FromArgb(192, 0, 0);
-            btnSPCCleanliness.Dock = DockStyle.Fill;
-            btnSPCCleanliness.ForeColor = Color.White;
-            btnSPCCleanliness.Location = new Point(3, 3);
-            btnSPCCleanliness.Name = "btnSPCCleanliness";
-            btnSPCCleanliness.Size = new Size(90, 74);
-            btnSPCCleanliness.TabIndex = 2;
-            btnSPCCleanliness.Text = "SPC CLEANLINESS";
-            btnSPCCleanliness.UseVisualStyleBackColor = false;
-            // 
             // panel4
             // 
             panel4.Controls.Add(tableLayoutPanel11);
-            panel4.Controls.Add(button1);
             panel4.Dock = DockStyle.Fill;
-            panel4.Location = new Point(99, 3);
+            panel4.Location = new Point(105, 6);
             panel4.Name = "panel4";
-            panel4.Size = new Size(417, 74);
+            panel4.Size = new Size(410, 70);
             panel4.TabIndex = 1;
             // 
             // tableLayoutPanel11
             // 
-            tableLayoutPanel11.ColumnCount = 2;
-            tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65.0349655F));
-            tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34.9650345F));
-            tableLayoutPanel11.Controls.Add(lblTop1DefectDDPM, 1, 0);
-            tableLayoutPanel11.Controls.Add(lblTop1Defect, 0, 0);
+            tableLayoutPanel11.ColumnCount = 3;
+            tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40.3846169F));
+            tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 59.6153831F));
+            tableLayoutPanel11.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 98F));
+            tableLayoutPanel11.Controls.Add(lblTop1DefectDDPM, 2, 0);
+            tableLayoutPanel11.Controls.Add(lblTop1Defect, 1, 0);
+            tableLayoutPanel11.Controls.Add(label3, 0, 0);
             tableLayoutPanel11.Dock = DockStyle.Fill;
-            tableLayoutPanel11.Location = new Point(126, 0);
+            tableLayoutPanel11.Location = new Point(0, 0);
             tableLayoutPanel11.Name = "tableLayoutPanel11";
             tableLayoutPanel11.RowCount = 1;
             tableLayoutPanel11.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel11.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
-            tableLayoutPanel11.Size = new Size(291, 74);
-            tableLayoutPanel11.TabIndex = 2;
+            tableLayoutPanel11.Size = new Size(410, 70);
+            tableLayoutPanel11.TabIndex = 5;
             // 
             // lblTop1DefectDDPM
             // 
@@ -1085,10 +1105,10 @@
             lblTop1DefectDDPM.BackColor = SystemColors.ButtonHighlight;
             lblTop1DefectDDPM.BorderStyle = BorderStyle.Fixed3D;
             lblTop1DefectDDPM.Dock = DockStyle.Fill;
-            lblTop1DefectDDPM.Location = new Point(192, 0);
+            lblTop1DefectDDPM.Location = new Point(315, 0);
             lblTop1DefectDDPM.Name = "lblTop1DefectDDPM";
-            lblTop1DefectDDPM.Size = new Size(96, 74);
-            lblTop1DefectDDPM.TabIndex = 1;
+            lblTop1DefectDDPM.Size = new Size(92, 70);
+            lblTop1DefectDDPM.TabIndex = 4;
             lblTop1DefectDDPM.Text = "10.1";
             lblTop1DefectDDPM.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -1097,102 +1117,108 @@
             lblTop1Defect.AutoSize = true;
             lblTop1Defect.BackColor = SystemColors.ButtonHighlight;
             lblTop1Defect.Dock = DockStyle.Fill;
-            lblTop1Defect.Location = new Point(3, 0);
+            lblTop1Defect.Location = new Point(129, 0);
             lblTop1Defect.Name = "lblTop1Defect";
-            lblTop1Defect.Size = new Size(183, 74);
-            lblTop1Defect.TabIndex = 0;
+            lblTop1Defect.Size = new Size(180, 70);
+            lblTop1Defect.TabIndex = 3;
             lblTop1Defect.Text = "10.1";
             lblTop1Defect.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // label3
             // 
-            button1.BackColor = Color.FromArgb(192, 0, 0);
-            button1.Dock = DockStyle.Left;
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(0, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(126, 74);
-            button1.TabIndex = 1;
-            button1.Text = "TOP 1 DEFECT :";
-            button1.UseVisualStyleBackColor = false;
+            label3.AutoSize = true;
+            label3.BackColor = Color.FromArgb(192, 0, 0);
+            label3.Dock = DockStyle.Fill;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.ForeColor = SystemColors.ControlLightLight;
+            label3.Location = new Point(3, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(120, 70);
+            label3.TabIndex = 5;
+            label3.Text = "TOP 1 DEFECT :";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel12
             // 
             tableLayoutPanel12.ColumnCount = 2;
             tableLayoutPanel12.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel12.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel12.Controls.Add(label14, 0, 0);
             tableLayoutPanel12.Controls.Add(lblFirstDefect, 1, 0);
-            tableLayoutPanel12.Controls.Add(button2, 0, 0);
             tableLayoutPanel12.Dock = DockStyle.Fill;
-            tableLayoutPanel12.Location = new Point(522, 3);
+            tableLayoutPanel12.Location = new Point(524, 6);
             tableLayoutPanel12.Name = "tableLayoutPanel12";
             tableLayoutPanel12.RowCount = 1;
             tableLayoutPanel12.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel12.Size = new Size(226, 74);
+            tableLayoutPanel12.Size = new Size(222, 70);
             tableLayoutPanel12.TabIndex = 2;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.BackColor = Color.FromArgb(192, 0, 0);
+            label14.Dock = DockStyle.Fill;
+            label14.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label14.ForeColor = SystemColors.ControlLightLight;
+            label14.Location = new Point(3, 0);
+            label14.Name = "label14";
+            label14.Size = new Size(105, 70);
+            label14.TabIndex = 6;
+            label14.Text = "1st INS DEFECT :";
+            label14.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblFirstDefect
             // 
             lblFirstDefect.AutoSize = true;
             lblFirstDefect.BackColor = SystemColors.ButtonHighlight;
             lblFirstDefect.Dock = DockStyle.Fill;
-            lblFirstDefect.Location = new Point(116, 0);
+            lblFirstDefect.Location = new Point(114, 0);
             lblFirstDefect.Name = "lblFirstDefect";
-            lblFirstDefect.Size = new Size(107, 74);
+            lblFirstDefect.Size = new Size(105, 70);
             lblFirstDefect.TabIndex = 5;
             lblFirstDefect.Text = "10.1";
             lblFirstDefect.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.FromArgb(192, 0, 0);
-            button2.Dock = DockStyle.Fill;
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(3, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(107, 68);
-            button2.TabIndex = 4;
-            button2.Text = "1st INS DEFECT :";
-            button2.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel13
             // 
             tableLayoutPanel13.ColumnCount = 2;
             tableLayoutPanel13.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 54.6728973F));
             tableLayoutPanel13.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45.3271027F));
+            tableLayoutPanel13.Controls.Add(label19, 0, 0);
             tableLayoutPanel13.Controls.Add(lblRFT, 1, 0);
-            tableLayoutPanel13.Controls.Add(button3, 0, 0);
             tableLayoutPanel13.Dock = DockStyle.Fill;
-            tableLayoutPanel13.Location = new Point(754, 3);
+            tableLayoutPanel13.Location = new Point(755, 6);
             tableLayoutPanel13.Name = "tableLayoutPanel13";
             tableLayoutPanel13.RowCount = 1;
             tableLayoutPanel13.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel13.Size = new Size(217, 74);
+            tableLayoutPanel13.Size = new Size(213, 70);
             tableLayoutPanel13.TabIndex = 3;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.BackColor = Color.FromArgb(192, 0, 0);
+            label19.Dock = DockStyle.Fill;
+            label19.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label19.ForeColor = SystemColors.ControlLightLight;
+            label19.Location = new Point(3, 0);
+            label19.Name = "label19";
+            label19.Size = new Size(110, 70);
+            label19.TabIndex = 6;
+            label19.Text = "STOCKFIT RFT :";
+            label19.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblRFT
             // 
             lblRFT.AutoSize = true;
             lblRFT.BackColor = SystemColors.ButtonHighlight;
             lblRFT.Dock = DockStyle.Fill;
-            lblRFT.Location = new Point(121, 0);
+            lblRFT.Location = new Point(119, 0);
             lblRFT.Name = "lblRFT";
-            lblRFT.Size = new Size(93, 74);
+            lblRFT.Size = new Size(91, 70);
             lblRFT.TabIndex = 4;
             lblRFT.Text = "10.1";
             lblRFT.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button3
-            // 
-            button3.BackColor = Color.FromArgb(192, 0, 0);
-            button3.Dock = DockStyle.Fill;
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(3, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(112, 68);
-            button3.TabIndex = 3;
-            button3.Text = "STOCKFIT RFT :";
-            button3.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel14
             // 
@@ -1200,16 +1226,30 @@
             tableLayoutPanel14.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40.3846169F));
             tableLayoutPanel14.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 59.6153831F));
             tableLayoutPanel14.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 98F));
+            tableLayoutPanel14.Controls.Add(label10, 0, 0);
             tableLayoutPanel14.Controls.Add(lblTop2DefectDDPM, 2, 0);
             tableLayoutPanel14.Controls.Add(lblTop2Defect, 1, 0);
-            tableLayoutPanel14.Controls.Add(button6, 0, 0);
             tableLayoutPanel14.Dock = DockStyle.Fill;
-            tableLayoutPanel14.Location = new Point(99, 83);
+            tableLayoutPanel14.Location = new Point(105, 85);
             tableLayoutPanel14.Name = "tableLayoutPanel14";
             tableLayoutPanel14.RowCount = 1;
             tableLayoutPanel14.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel14.Size = new Size(417, 72);
+            tableLayoutPanel14.Size = new Size(410, 69);
             tableLayoutPanel14.TabIndex = 4;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.BackColor = Color.FromArgb(192, 0, 0);
+            label10.Dock = DockStyle.Fill;
+            label10.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.ForeColor = SystemColors.ControlLightLight;
+            label10.Location = new Point(3, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(120, 69);
+            label10.TabIndex = 6;
+            label10.Text = "TOP 2 DEFECT :";
+            label10.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblTop2DefectDDPM
             // 
@@ -1217,9 +1257,9 @@
             lblTop2DefectDDPM.BackColor = SystemColors.ButtonHighlight;
             lblTop2DefectDDPM.BorderStyle = BorderStyle.Fixed3D;
             lblTop2DefectDDPM.Dock = DockStyle.Fill;
-            lblTop2DefectDDPM.Location = new Point(321, 0);
+            lblTop2DefectDDPM.Location = new Point(315, 0);
             lblTop2DefectDDPM.Name = "lblTop2DefectDDPM";
-            lblTop2DefectDDPM.Size = new Size(93, 72);
+            lblTop2DefectDDPM.Size = new Size(92, 69);
             lblTop2DefectDDPM.TabIndex = 4;
             lblTop2DefectDDPM.Text = "10.1";
             lblTop2DefectDDPM.TextAlign = ContentAlignment.MiddleCenter;
@@ -1229,24 +1269,12 @@
             lblTop2Defect.AutoSize = true;
             lblTop2Defect.BackColor = SystemColors.ButtonHighlight;
             lblTop2Defect.Dock = DockStyle.Fill;
-            lblTop2Defect.Location = new Point(131, 0);
+            lblTop2Defect.Location = new Point(129, 0);
             lblTop2Defect.Name = "lblTop2Defect";
-            lblTop2Defect.Size = new Size(184, 72);
+            lblTop2Defect.Size = new Size(180, 69);
             lblTop2Defect.TabIndex = 3;
             lblTop2Defect.Text = "10.1";
             lblTop2Defect.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button6
-            // 
-            button6.BackColor = Color.FromArgb(192, 0, 0);
-            button6.Dock = DockStyle.Fill;
-            button6.ForeColor = Color.White;
-            button6.Location = new Point(3, 3);
-            button6.Name = "button6";
-            button6.Size = new Size(122, 66);
-            button6.TabIndex = 2;
-            button6.Text = "TOP 2 DEFECT :";
-            button6.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel15
             // 
@@ -1254,16 +1282,30 @@
             tableLayoutPanel15.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 39.8734169F));
             tableLayoutPanel15.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60.1265831F));
             tableLayoutPanel15.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 96F));
+            tableLayoutPanel15.Controls.Add(label13, 0, 0);
             tableLayoutPanel15.Controls.Add(lblTop3DefectDDPM, 2, 0);
             tableLayoutPanel15.Controls.Add(lblTop3Defect, 1, 0);
-            tableLayoutPanel15.Controls.Add(button9, 0, 0);
             tableLayoutPanel15.Dock = DockStyle.Fill;
-            tableLayoutPanel15.Location = new Point(99, 161);
+            tableLayoutPanel15.Location = new Point(105, 163);
             tableLayoutPanel15.Name = "tableLayoutPanel15";
             tableLayoutPanel15.RowCount = 1;
             tableLayoutPanel15.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel15.Size = new Size(417, 76);
+            tableLayoutPanel15.Size = new Size(410, 72);
             tableLayoutPanel15.TabIndex = 5;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.BackColor = Color.FromArgb(192, 0, 0);
+            label13.Dock = DockStyle.Fill;
+            label13.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label13.ForeColor = SystemColors.ControlLightLight;
+            label13.Location = new Point(3, 0);
+            label13.Name = "label13";
+            label13.Size = new Size(119, 72);
+            label13.TabIndex = 6;
+            label13.Text = "TOP 3 DEFECT :";
+            label13.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblTop3DefectDDPM
             // 
@@ -1271,9 +1313,9 @@
             lblTop3DefectDDPM.BackColor = SystemColors.ButtonHighlight;
             lblTop3DefectDDPM.BorderStyle = BorderStyle.Fixed3D;
             lblTop3DefectDDPM.Dock = DockStyle.Fill;
-            lblTop3DefectDDPM.Location = new Point(323, 0);
+            lblTop3DefectDDPM.Location = new Point(316, 0);
             lblTop3DefectDDPM.Name = "lblTop3DefectDDPM";
-            lblTop3DefectDDPM.Size = new Size(91, 76);
+            lblTop3DefectDDPM.Size = new Size(91, 72);
             lblTop3DefectDDPM.TabIndex = 5;
             lblTop3DefectDDPM.Text = "10.1";
             lblTop3DefectDDPM.TextAlign = ContentAlignment.MiddleCenter;
@@ -1284,25 +1326,13 @@
             lblTop3Defect.BackColor = SystemColors.ButtonHighlight;
             lblTop3Defect.BorderStyle = BorderStyle.FixedSingle;
             lblTop3Defect.Dock = DockStyle.Fill;
-            lblTop3Defect.Location = new Point(130, 0);
+            lblTop3Defect.Location = new Point(128, 0);
             lblTop3Defect.Name = "lblTop3Defect";
-            lblTop3Defect.Size = new Size(187, 76);
+            lblTop3Defect.Size = new Size(182, 72);
             lblTop3Defect.TabIndex = 4;
             lblTop3Defect.Text = "10.1";
             lblTop3Defect.TextAlign = ContentAlignment.MiddleCenter;
             lblTop3Defect.Click += lblTop3Defect_Click;
-            // 
-            // button9
-            // 
-            button9.BackColor = Color.FromArgb(192, 0, 0);
-            button9.Dock = DockStyle.Fill;
-            button9.ForeColor = Color.White;
-            button9.Location = new Point(3, 3);
-            button9.Name = "button9";
-            button9.Size = new Size(121, 70);
-            button9.TabIndex = 3;
-            button9.Text = "TOP 3 DEFECT :";
-            button9.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel9
             // 
@@ -1863,6 +1893,7 @@
             // 
             // panel8
             // 
+            panel8.Controls.Add(btnClear);
             panel8.Controls.Add(panelStatus);
             panel8.Controls.Add(grdOfflineData);
             panel8.Controls.Add(lblSyncStatus);
@@ -1879,9 +1910,23 @@
             panel8.Size = new Size(1937, 56);
             panel8.TabIndex = 1;
             // 
+            // btnClear
+            // 
+            btnClear.BackColor = Color.Gray;
+            btnClear.Dock = DockStyle.Right;
+            btnClear.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnClear.ForeColor = SystemColors.ButtonFace;
+            btnClear.Location = new Point(1116, 0);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(116, 56);
+            btnClear.TabIndex = 13;
+            btnClear.Text = "CLEAR";
+            btnClear.UseVisualStyleBackColor = false;
+            btnClear.Click += btnClear_Click;
+            // 
             // panelStatus
             // 
-            panelStatus.Location = new Point(748, 20);
+            panelStatus.Location = new Point(838, 20);
             panelStatus.Name = "panelStatus";
             panelStatus.Size = new Size(68, 10);
             panelStatus.TabIndex = 12;
@@ -1890,7 +1935,7 @@
             // grdOfflineData
             // 
             grdOfflineData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            grdOfflineData.Location = new Point(800, 4);
+            grdOfflineData.Location = new Point(855, 30);
             grdOfflineData.Name = "grdOfflineData";
             grdOfflineData.Size = new Size(39, 26);
             grdOfflineData.TabIndex = 11;
@@ -1899,7 +1944,7 @@
             // lblSyncStatus
             // 
             lblSyncStatus.AutoSize = true;
-            lblSyncStatus.Location = new Point(868, 17);
+            lblSyncStatus.Location = new Point(903, 44);
             lblSyncStatus.Name = "lblSyncStatus";
             lblSyncStatus.Size = new Size(38, 15);
             lblSyncStatus.TabIndex = 10;
@@ -1909,7 +1954,7 @@
             // lblProdTotal
             // 
             lblProdTotal.AutoSize = true;
-            lblProdTotal.Location = new Point(938, 20);
+            lblProdTotal.Location = new Point(903, 29);
             lblProdTotal.Name = "lblProdTotal";
             lblProdTotal.Size = new Size(38, 15);
             lblProdTotal.TabIndex = 8;
@@ -1919,7 +1964,7 @@
             // txtDefectQty
             // 
             txtDefectQty.AutoSize = true;
-            txtDefectQty.Location = new Point(1126, 23);
+            txtDefectQty.Location = new Point(903, 2);
             txtDefectQty.Name = "txtDefectQty";
             txtDefectQty.Size = new Size(38, 15);
             txtDefectQty.TabIndex = 7;
@@ -1929,7 +1974,7 @@
             // txtSensorCount
             // 
             txtSensorCount.AutoSize = true;
-            txtSensorCount.Location = new Point(1034, 19);
+            txtSensorCount.Location = new Point(900, 14);
             txtSensorCount.Name = "txtSensorCount";
             txtSensorCount.Size = new Size(38, 15);
             txtSensorCount.TabIndex = 6;
@@ -1960,6 +2005,7 @@
             btn_reasonCode3.TabIndex = 4;
             btn_reasonCode3.Text = "(Andon) Gọi Sản xuất";
             btn_reasonCode3.UseVisualStyleBackColor = false;
+            btn_reasonCode3.Click += btn_reasonCode3_Click;
             // 
             // btn_reasonCode2
             // 
@@ -2071,6 +2117,7 @@
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             tableLayoutPanel10.ResumeLayout(false);
+            tableLayoutPanel10.PerformLayout();
             tableLayoutPanel19.ResumeLayout(false);
             tableLayoutPanel19.PerformLayout();
             tableLayoutPanel18.ResumeLayout(false);
@@ -2154,46 +2201,31 @@
         private TableLayoutPanel tableLayoutPanel99;
         private Panel panel3;
         private TableLayoutPanel tableLayoutPanel10;
-        private Button btnSPCCleanliness;
         private TableLayoutPanel tableLayoutPanel12;
         private TableLayoutPanel tableLayoutPanel17;
         private TableLayoutPanel tableLayoutPanel16;
-        private Button btnSPCStitching;
         private TableLayoutPanel tableLayoutPanel13;
         private Label lblRFT;
-        private Button button3;
         private TableLayoutPanel tableLayoutPanel14;
         private TableLayoutPanel tableLayoutPanel15;
         private TableLayoutPanel tableLayoutPanel19;
         private TableLayoutPanel tableLayoutPanel18;
-        private Button btnSPCBonding;
-        private Button button8;
         private Label lblReDefect;
-        private Button button7;
         private Label lblTop2DefectDDPM;
         private Label lblTop2Defect;
-        private Button button6;
         private Label lblSensorCount;
-        private Button button11;
         private Label lblTotalDefect;
-        private Button button10;
         private Label lblEOLQCDDPM;
         private Label lblTop3DefectDDPM;
         private Label lblTop3Defect;
-        private Button button9;
         private TableLayoutPanel tableLayoutPanel9;
         private Panel panel5;
         private TableLayoutPanel tableLayoutPanel21;
         private Panel panel4;
-        private TableLayoutPanel tableLayoutPanel11;
-        private Label lblTop1DefectDDPM;
-        private Label lblTop1Defect;
-        private Button button1;
         private Panel panel6;
         private TextBox textBox1;
         private Panel panel7;
         private Label lblFirstDefect;
-        private Button button2;
         private TextBox textBox2;
         private Label lblCurRate;
         private Label lblTTLRate;
@@ -2247,5 +2279,24 @@
         private System.Windows.Forms.Timer timerBindProduction;
         public System.ComponentModel.BackgroundWorker backgroundSyncData;
         public System.ComponentModel.BackgroundWorker backgroundOracle;
+        private Label label11;
+        private Label label8;
+        private Label label7;
+        private Label label17;
+        private Label label16;
+        private Label label18;
+        private Label label15;
+        private TableLayoutPanel tableLayoutPanel11;
+        private Label lblTop1DefectDDPM;
+        private Label lblTop1Defect;
+        private Label label3;
+        private Label label14;
+        private Label label19;
+        private Label label10;
+        private Label label13;
+        private Button btnClear;
+        private System.Windows.Forms.Timer timer_BlinkButtonGreen;
+        private System.Windows.Forms.Timer timer_BlinkButtonRed;
+        private System.Windows.Forms.Timer timer_BlinkButtonYellow;
     }
 }

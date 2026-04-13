@@ -141,7 +141,7 @@ namespace QIP.EOL
             pictureEdit2.Focus();
             //countDefectContinuos = 0;
             crud = new CRUDOracle("VSMES");
-            
+
             //spDeptCode = "STF";
             GetSetButtonLocation();
             //timer1.Enabled = true;
@@ -972,9 +972,112 @@ namespace QIP.EOL
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (txtPo.Text == "" || txtPo.Text == "Nhấn vào NHẬP PO để nhập PO ->")
+            {
+                ShowMessage("Chọn Model trước khi chấm lỗi. !! Please choose model", Color.Red);
 
+                return;
+            }
+            btnfail = new List<string>();
+
+            if (errorTouch != null && errorTouch.Rows.Count > 0)
+            {
+                if (toggleSwitchOnline != null && toggleSwitchOnline.Checked)
+                {
+                    UpdatePassFailDirectToDB(false, "2");
+                }
+                else
+                {
+                    UpdateFail2();
+                }
+            }
+            else
+            {
+                errorTouch?.Clear();
+            }
+
+            //this.lblFailTotal.Text = "FAIL: " + TotalDefect;
+
+            btnPass.Enabled = true;
+            btnFail.Enabled = false;
+            btnRePass.Enabled = true;
+            btnReFail.Enabled = false;
+
+            ConffigErrorButton(false);
+
+            lblPart1.ForeColor = System.Drawing.Color.Red;
+            lblPart2.ForeColor = System.Drawing.Color.Red;
+            lblPart3.ForeColor = System.Drawing.Color.Red;
+            lblPart4.ForeColor = System.Drawing.Color.Red;
+
+            if (!backgroundSyncData.IsBusy)
+            {
+                backgroundSyncData.RunWorkerAsync();
+            }
         }
+        private void UpdateFail2()
+        {
+            string C_STYLE = style;
+            string groupsum = GROUPSUM;
 
+            if (errorTouch == null || errorTouch.Rows.Count == 0)
+                return;
+
+            string po = txtPo.Text.Trim().Replace("'", "''");
+            if (string.IsNullOrEmpty(po))
+                po = "N/A";
+
+            int index = 0;
+
+            foreach (DataRow row in errorTouch.Rows)
+            {
+                reasonID = row["REASON_ID"].ToString();
+                partID = row["PART_ID"].ToString();
+
+                string time = DateTime.Now.AddSeconds(index).ToString("yyyyMMddHHmmss");
+                index++;
+
+                string log = time + ";" +
+                             spDeptCode + ";" +
+                             LineName + ";" +
+                             ipAddress + ";" +
+                             C_STYLE + ";" +
+                             partID + ";" +
+                             reasonID + ";" +
+                             groupsum + ";" +
+                             "1" + ";" +
+                             "0" + ";" +
+                             "2" + ";" +
+                             po;
+
+                if (WriteFailToLogFile(log))
+                {
+                    TotalDefect++;
+                    this.lblFailTotal.Text = "FAIL: " + TotalDefect;
+                }
+            }
+
+            errorTouch.Rows.Clear();
+        }
+        private void SetButtonsEnabledRecursive(Control parent, bool enabled, Color foreColor)
+        {
+            foreach (Control ctrl in parent.Controls)
+            {
+                if (ctrl is Button btn)
+                {
+                    btn.Enabled = enabled;
+                    btn.ForeColor = foreColor;
+                }
+                else if (ctrl is TableLayoutPanel tlp)
+                {
+                    SetButtonsEnabledRecursive(tlp, enabled, foreColor);
+                }
+                else if (ctrl.HasChildren)
+                {
+                    SetButtonsEnabledRecursive(ctrl, enabled, foreColor);
+                }
+            }
+        }
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
@@ -3095,6 +3198,293 @@ namespace QIP.EOL
             if (!backgroundOracle.IsBusy)
             {
                 backgroundOracle.RunWorkerAsync();
+            }
+        }
+        private static string Comname;
+        private void btn_reasonCode3_Click(object sender, EventArgs e)
+        {
+            //string onoff = "on";
+            //try
+            //{
+            //    if (btn_reasonCode3.Text.ToString().Contains("Waiting"))
+            //    {
+            //        onoff = "off";
+            //        //TurnOffAndon("G");
+            //        //var result = TurnOffAndonAsync("G");
+
+            //        ThreadSafe(() =>
+            //        {
+            //            btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất";
+            //            timer_BlinkButtonGreen.Enabled = false;
+            //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.DarkGreen;
+            //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.DarkGreen;
+            //        });
+            //    }
+            //    else if (btn_reasonCode3.Text.ToString().Contains("Calling"))
+            //    {
+            //        onoff = "off";
+            //        //TurnOffAndon("R");
+            //        var result = TurnOffAndonAsync("G");
+            //        ThreadSafe(() =>
+            //        {
+            //            btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Waiting";
+            //            timer_BlinkButtonGreen.Enabled = false;
+            //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.DarkGreen;
+            //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.DarkGreen;
+            //        });
+            //    }
+            //    else
+            //    {
+            //        var result = TurnOnAndonAsync("G");
+            //        //if (result.IsCompleted)
+            //        //{
+            //        //    btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Calling";
+            //        //    timer_BlinkButtonGreen.Enabled = true;
+            //        //}
+            //        btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Calling";
+            //        timer_BlinkButtonGreen.Enabled = true;
+            //        //TurnOnAndon("G");
+            //    }
+            //    using (TimedWebClient wc = new TimedWebClient { Timeout = 2000 })
+            //    {
+            //        string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, RecievedIpaddress, onoff, "1");
+            //        //string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, "", onoff, "1");
+            //        //TunrOnOfAlarmSound(false, "one", 1);
+            //        var json = wc.DownloadString(a);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    //lblMessage.Text = "Không gọi được " + ex.Message;
+            //}
+        }
+        
+        private static List<string> btnfail;
+        private void btnFail_Click(object sender, EventArgs e)
+        {
+            if (txtPo.Text == "" || txtPo.Text == "Nhấn vào NHẬP PO để nhập PO ->")
+            {
+                ShowMessage("Chọn Model trước khi chấm lỗi. !! Please choose model", Color.Red);
+
+                return;
+            }
+            btnfail = new List<string>();
+            if (errorTouch != null && errorTouch.Rows.Count > 0)
+            {
+                if (toggleSwitchOnline.Checked)
+                {
+                    UpdatePassFailDirectToDB(false, "1");
+                }
+                else
+                {
+                    UpdateFailFromErrorTouch();
+                }
+            }
+            else
+            {
+                errorTouch?.Clear();
+            }
+            //this.lblFailTotal.Text = "FAIL :" + TotalDefect;
+
+            //lblRFT.Text = Math.Round(TotalDefect * 1.0 / (TotalDefect + TotalPass * 1.0) * 100, 2) + " %";
+            btnPass.Enabled = true;
+            btnFail.Enabled = false;
+            btnRePass.Enabled = true;
+            btnReFail.Enabled = false;
+            ConffigErrorButton(false);
+            lblPart1.ForeColor = System.Drawing.Color.Red;
+            lblPart2.ForeColor = System.Drawing.Color.Red;
+            lblPart3.ForeColor = System.Drawing.Color.Red;
+            lblPart4.ForeColor = System.Drawing.Color.Red;
+            foreach (var panel in tableLayoutPanel4.Controls)
+            {
+                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
+                {
+                    Panel pnl = (Panel)panel;
+                    foreach (var a in pnl.Controls)
+                    {
+                        if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
+                        {
+                            Button btn = (Button)a;
+                            btn.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
+                            //btn.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
+                        }
+                    }
+                }
+            }
+            if (backgroundSyncData.IsBusy)
+            {
+
+            }
+            else
+            {
+                backgroundSyncData.RunWorkerAsync();
+            }
+
+        }
+        private void UpdateFailFromErrorTouch()
+        {
+            string po = txtPo.Text.Trim();
+            string C_STYLE = style;
+            string groupsum = GROUPSUM;
+
+            foreach (DataRow row in errorTouch.Rows)
+            {
+                string partID = row["PART_ID"].ToString();
+                string reasonID = row["REASON_ID"].ToString();
+
+                if (WriteFailToLogFile(
+                    DateTime.Now.ToString("yyyyMMddHHmmss") + ";" +
+                    spDeptCode + ";" +
+                    LineName + ";" +
+                    ipAddress + ";" +
+                    C_STYLE + ";" +
+                    partID + ";" +
+                    reasonID + ";" +
+                    groupsum + ";" +
+                    1 + ";" +
+                    0 + ";" +
+                    "1" + ";" + po))
+                {
+                    TotalDefect++;
+                }
+            }
+
+            lblFailTotal.Text = "FAIL :" + TotalDefect;
+
+            errorTouch.Clear();
+        }
+        private bool WriteFailToLogFile(string content)
+        {
+            try
+            {
+                string filename;
+                filename = "FailBTS_" + DateTime.Now.ToString("yyyyMMdd");
+                etc.WriteToFile(content, "Fail", filename);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void btnRePass_Click(object sender, EventArgs e)
+        {
+            if (txtPo.Text == "" || txtPo.Text == "Nhấn vào NHẬP PO để nhập PO ->")
+            {
+                ShowMessage("Nhập PO trước khi chấm lỗi. !! Please fill in PO", Color.Red);
+                return;
+            }
+            string C_STYLE = style;
+            double a = new Random().Next(0, 60);
+
+            if (toggleSwitchOnline.Checked)
+            {
+                UpdatePassFailDirectToDB(true, "2");
+            }
+            else
+            {
+                if (WritePassToLogFile(DateTime.Now.AddSeconds(a).ToString("yyyyMMddHHmmss") + ";" + spDeptCode + ";" + LineName + ";" + ipAddress + ";" + C_STYLE + ";" + "0" + ";" + "0" + ";" + "0" + ";" + 1 + ";" + 0 + ";" + "2" + ";" + txtPo.Text))
+                {
+                    TotalPass = TotalPass + 1;
+                    lblPassTotal.Text = "PASS:" + " " + TotalPass;
+                }
+            }
+            if (backgroundSyncData.IsBusy)
+            {
+
+            }
+            else
+            {
+                backgroundSyncData.RunWorkerAsync();
+            }
+        }
+        private DataTable dtReason;
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            {
+                bool visible = false;
+                if (dtReason != null)
+                {
+                    dtReason.Clear();
+
+                }
+                btnPass.Enabled = true;
+                btnRePass.Enabled = true;
+                btnFail.Enabled = false;
+                btnReFail.Enabled = false;
+                ConffigErrorButton(false);
+                lblPart1.ForeColor = System.Drawing.Color.Red;
+                lblPart2.ForeColor = System.Drawing.Color.Red;
+                lblPart3.ForeColor = System.Drawing.Color.Red;
+                lblPart4.ForeColor = System.Drawing.Color.Red;
+                //foreach (var panel in tableLayoutPanel4.Controls)
+                //{
+                //    if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
+                //    {
+                //        DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
+                //        foreach (var a in pnl.Controls)
+                //        {
+                //            if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
+                //            {
+                //                SimpleButton btn = (SimpleButton)a;
+                //                btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
+                //                btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
+                //            }
+                //        }
+                //    }
+                //}
+                //    foreach (var table in new TableLayoutPanel[] { tableLayoutPanel4, tableLayoutPanel7, tableLayoutPanel9 })
+                //    {
+                //        foreach (var panel in table.Controls)
+                //        {
+                //            if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
+                //            {
+                //                DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
+                //                foreach (var a in pnl.Controls)
+                //                {
+                //                    if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
+                //                    {
+                //                        SimpleButton btn = (SimpleButton)a;
+                //                        btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
+                //                        btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+
+                //    // Bật/tắt và đổi màu chữ cho các nút trong tableLayoutPanel7 và tableLayoutPanel9
+                //    foreach (var table in new TableLayoutPanel[] { tableLayoutPanel7, tableLayoutPanel9 })
+                //    {
+                //        foreach (SimpleButton btnID in table.Controls)
+                //        {
+                //            btnID.Enabled = visible;
+                //            btnID.ForeColor = visible ? Color.Black : Color.DarkGray;
+                //        }
+
+                //        foreach (Control panel in table.Controls)
+                //        {
+                //            foreach (Control a in panel.Controls)
+                //            {
+                //                if (a is SimpleButton btnID)
+                //                {
+                //                    btnID.Enabled = visible;
+                //                    btnID.ForeColor = visible ? Color.Black : Color.DarkGray;
+                //                }
+                //            }
+                //        }
+                //    }
+
+                //}
+
+                SetButtonsEnabledRecursive(tableLayoutPanel4, false, Color.Red);
+                SetButtonsEnabledRecursive(tableLayoutPanel7, false, Color.Red);
+                SetButtonsEnabledRecursive(tableLayoutPanel9, false, Color.Red);
+                btnPass.Enabled = true;
+                btnRePass.Enabled = true;
             }
         }
     }
