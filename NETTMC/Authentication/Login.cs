@@ -167,7 +167,7 @@ namespace NETTMC.Authentication
                     {
                         uc = new QIP.EOL.frmTMC7036();
                     }
-                    if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036)", "frmTMC7036", mf.tabControl))
+                    if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036_New)", "frmTMC7036_New", mf.tabControl))
                     {
                         MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         uc.Dispose();
@@ -348,15 +348,11 @@ namespace NETTMC.Authentication
             mf.mainMenuStrip.Visible = false;
             mf.Show();
             UserControl uc;
-            if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
-            {
-                uc = new QIP.EOL.frmTMC7036_New();
-            }
-            else
-            {
-                uc = new QIP.EOL.frmTMC7036();
-            }
-            if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036)", "frmTMC7036", mf.tabControl))
+            
+            uc = new QIP.EOL.frmTMC7036_New();
+            
+            
+            if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036_New)", "frmTMC7036_New", mf.tabControl))
             {
                 MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 uc.Dispose();

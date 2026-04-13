@@ -8,7 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="oracle.manageddataaccess.core" Version="23.26.100" />
+    <PackageReference Include="oracle.manageddataaccess.core" Version="23.26.200" />
+    <PackageReference Include="System.Data.OleDb" Version="10.0.5" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
+    <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
   </ItemGroup>
 
   <ItemGroup>
