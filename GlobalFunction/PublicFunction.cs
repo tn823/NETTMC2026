@@ -1397,6 +1397,7 @@ namespace GlobalFunction
                     }
                     break;
                 case "frmTMC7036_New":
+                    if (isDevIP) return true;
                     query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
                     dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                     if (dt.Rows.Count > 0)

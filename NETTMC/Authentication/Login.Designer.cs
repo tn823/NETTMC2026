@@ -37,7 +37,7 @@
             barBtnGatePassCheck = new Button();
             barBtnForITOnly = new Button();
             btnDefect = new Button();
-            btnDefectAdidas = new Button();
+            btnDefectStockfit = new Button();
             btnJSI = new Button();
             btnCCQP = new Button();
             btnP2PAllLineNB = new Button();
@@ -88,7 +88,7 @@
             progressPanel1.Controls.Add(barBtnGatePassCheck);
             progressPanel1.Controls.Add(barBtnForITOnly);
             progressPanel1.Controls.Add(btnDefect);
-            progressPanel1.Controls.Add(btnDefectAdidas);
+            progressPanel1.Controls.Add(btnDefectStockfit);
             progressPanel1.Controls.Add(btnJSI);
             progressPanel1.Controls.Add(btnCCQP);
             progressPanel1.Controls.Add(btnP2PAllLineNB);
@@ -147,15 +147,14 @@
             btnDefect.UseVisualStyleBackColor = true;
             btnDefect.Click += btnDefect_Click;
             // 
-            // btnDefectAdidas
+            // btnDefectStockfit
             // 
-            btnDefectAdidas.Location = new Point(155, 91);
-            btnDefectAdidas.Name = "btnDefectAdidas";
-            btnDefectAdidas.Size = new Size(146, 82);
-            btnDefectAdidas.TabIndex = 5;
-            btnDefectAdidas.Text = "DEFECT Stockfit";
-            btnDefectAdidas.UseVisualStyleBackColor = true;
-            btnDefectAdidas.Click += btnDefectAdidas_Click;
+            btnDefectStockfit.Location = new Point(155, 91);
+            btnDefectStockfit.Name = "btnDefectStockfit";
+            btnDefectStockfit.Size = new Size(146, 82);
+            btnDefectStockfit.TabIndex = 5;
+            btnDefectStockfit.Text = "DEFECT Stockfit";
+            btnDefectStockfit.UseVisualStyleBackColor = true;
             // 
             // btnJSI
             // 
@@ -377,7 +376,7 @@
         private Button barBtnGatePassCheck;
         private Button barBtnForITOnly;
         private Button btnDefect;
-        private Button btnDefectAdidas;
+        private Button btnDefectStockfit;
         private Button btnJSI;
         private Button btnCCQP;
         private Button btnP2PAllLineNB;
