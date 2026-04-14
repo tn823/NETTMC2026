@@ -55,6 +55,7 @@
             label3 = new Label();
             label4 = new Label();
             labelControl5 = new Label();
+            button1 = new Button();
             progressPanel1.SuspendLayout();
             tableLayoutLogin.SuspendLayout();
             panelControl1.SuspendLayout();
@@ -327,6 +328,16 @@
             labelControl5.TabIndex = 3;
             labelControl5.Text = "Try to connect database...";
             // 
+            // button1
+            // 
+            button1.Location = new Point(542, 470);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 68);
+            button1.TabIndex = 4;
+            button1.Text = "Test Insert Pass, Fail";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(6F, 12F);
@@ -334,6 +345,7 @@
             BackColor = Color.FromArgb(248, 248, 248);
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(710, 602);
+            Controls.Add(button1);
             Controls.Add(labelControl5);
             Controls.Add(tableLayoutLogin);
             Controls.Add(progressPanel1);
@@ -384,5 +396,6 @@
         private Button btnDefectImage;
         private Label label1;
         private Label labelControl5;
+        private Button button1;
     }
 }
