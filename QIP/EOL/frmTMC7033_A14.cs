@@ -55,7 +55,7 @@ namespace QIP.EOL
         {
             InitializeComponent();
             crud = new CRUDOracle("VSMES");
-        }              
+        }
 
         private void frmTMC7033_A14_Load(object sender, EventArgs e)
         {
@@ -555,6 +555,11 @@ namespace QIP.EOL
 
         }
         private void labelControl7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbl1stPass_Click(object sender, EventArgs e)
         {
 
         }
