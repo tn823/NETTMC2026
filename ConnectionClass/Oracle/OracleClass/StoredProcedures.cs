@@ -41,7 +41,7 @@ namespace ConnectionClass.Oracle.OracleClass
         {
             if (AppKeySetting == "VSMES")
             {
-                strConnection = "Data Source=VSMES;User Id=MES;Password=MES;Integrated Security=no";
+                strConnection = "User Id=MES;Password=MES;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.1.32)(PORT=1521))(CONNECT_DATA=(SID=VMES)));";
             }
             else if (AppKeySetting == "HRMS")
             {
@@ -84,7 +84,7 @@ namespace ConnectionClass.Oracle.OracleClass
         {
             foreach (KeyValuePair<string, object> k in dicparams)
             {
-                cmdOracleCommand.Parameters.Add("V" + k.Key, k.Value.ToString());
+                cmdOracleCommand.Parameters.Add(k.Key, k.Value.ToString());
             }
         }
         private void AddOracleParams(Dictionary<string, object> dicparams)
@@ -98,10 +98,14 @@ namespace ConnectionClass.Oracle.OracleClass
         {
             foreach (KeyValuePair<string, object> k in dicparams)
             {
-                ParameterDirection direction = new ParameterDirection();
                 object[] dicValue = (object[])k.Value;
-                direction = (ParameterDirection)dicValue[0];
-                cmdOracleCommand.Parameters.Add(k.Key, (OracleDbType)dicValue[2]).Direction = direction;
+                ParameterDirection dir = (ParameterDirection)dicValue[0];
+                object value = dicValue[1];          // ← value
+                OracleDbType dbType = (OracleDbType)dicValue[2];
+
+                var param = cmdOracleCommand.Parameters.Add(k.Key, dbType);
+                param.Direction = dir;
+                param.Value = value ?? DBNull.Value;      // ← set value, null-safe
             }
         }
         private void AddOracleParamsOutput(Dictionary<string, object> dicparams)
@@ -415,7 +419,7 @@ namespace ConnectionClass.Oracle.OracleClass
             cmdOracleCommand.CommandType = CommandType.StoredProcedure;
             //AddParams(dicparams);
             if (dicparams != null)
-            { AddOracleParams(dicparams); }
+            { AddParams(dicparams); }
             // ExecuteNonQuery() 이후에 반환될 값(0 or 1)
             int intResult;
             // Transaction 처리
