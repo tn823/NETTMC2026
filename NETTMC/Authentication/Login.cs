@@ -1,4 +1,5 @@
 ﻿using ConnectionClass.Oracle;
+using GlobalFunction;
 using QIP.EOL;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace NETTMC.Authentication
 {
     public partial class Login : Form
     {
+        private InspectionSyncManager _syncManager;
+        GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
 
         public GlobalFunction.PublicFunction pubFunc;
         private bool connectionstatus;
@@ -332,6 +335,42 @@ namespace NETTMC.Authentication
 
         private void btnDefectAdidas_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            _syncManager = new InspectionSyncManager(
+        executeProc: crud.dac.IUExcuteWithProc,
+        writeToFile: etc.WriteToFile,
+        readFromFile: etc.ReadFromFile   // overload có foldername
+                                );
+
+
+            //bool ok = _syncManager.Submit(
+            //        deptCd: "ASS",
+            //        lineCd: "P114",
+            //        cStyle: "ABC",
+            //        orderNo: "111111",
+            //        poNum: "111111",
+            //        result: "P",
+            //        dGather: DateTime.Now.ToString("yyyyMMddHHmmss"),
+            //        ipAddress: "192.168.1.1",defectList:"P"
+            //        );
+            bool ok2 = _syncManager.Submit(
+                    deptCd: "ASS",
+                    lineCd: "P114",
+                    cStyle: "ABC",
+                    orderNo: "111111",
+                    poNum: "111111",
+                    result: "F",
+                    dGather: DateTime.Now.ToString("yyyyMMddHHmmss"),
+                    ipAddress: "192.168.1.1", defectList: "15;5;1&17;5;2"
+                    );
+            //"15;5;1&17;5;2 REASON;PARTID;QTY cách nhau ký tự &" 
+
+            //if (ok) MessageBox.Show("Đã lưu Pass");
+            if (ok2) MessageBox.Show("Đã lưu Fail");
 
         }
     }
