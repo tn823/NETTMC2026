@@ -8,7 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="oracle.manageddataaccess.core" Version="23.26.100" />
+    <PackageReference Include="AForge" Version="2.2.5" />
+    <PackageReference Include="AForge.Video" Version="2.2.5" />
+    <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
+    <PackageReference Include="oracle.manageddataaccess.core" Version="23.26.200" />
+    <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
+    <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
+    <PackageReference Include="oracle.manageddataaccess.core" Version="23.26.200" />
+    <PackageReference Include="System.Data.OleDb" Version="10.0.5" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
+    <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
+    <ProjectReference Include="..\MQTT\MQTT.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using ConnectionClass.Oracle;
+using ConnectionClass.Oracle;
 using GlobalFunction;
 using QIP.EOL;
 using System;
@@ -96,9 +96,16 @@ namespace NETTMC.Authentication
             {
                 return false;
             }
+
             else
             {
                 string[] arr = (string[])a;
+
+                if (arr == null || arr.Length == 0 || string.IsNullOrWhiteSpace(arr[0]))
+                {
+                    return false;
+                }
+
                 //if (arr[0].ToString() == "P2PAdidas")
                 //{
                 //    MainForm mf = new MainForm();
@@ -154,10 +161,41 @@ namespace NETTMC.Authentication
 
 
                 //}
+                if (arr[0].ToString() == "TouchDefectSTF")
+                {
+                    MainForm mf = new MainForm();
+                    mf.splitContainer1.Panel1Collapsed = true;
+                    mf.ribbonStrip.Visible = false;
+                    mf.mainMenuStrip.Visible = false;
+                    mf.Show();
+
+                    UserControl uc;
+                    if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
+                    {
+                        uc = new QIP.EOL.frmTMC7036_New();
+                    }
+                    else
+                    {
+                        uc = new QIP.EOL.frmTMC7036();
+                    }
+                    if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036_New)", "frmTMC7036_New", mf.tabControl))
+                    {
+                        MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        uc.Dispose();
+                        mf.Hide();
+                        this.Focus();
+                        return false;
+                    }
+                    this.Hide();
+                    return true;
+                }
                 if (arr[0].ToString() == "TouchDefect")
                 {
                     MainForm mf = new MainForm();
-                    //mf.ribbon.Visible = false;
+                    mf.splitContainer1.Panel1Collapsed = true;
+                    mf.ribbonStrip.Visible = false;
+                    mf.mainMenuStrip.Visible = false;
+
                     mf.Show();
                     UserControl uc;
 
@@ -170,24 +208,6 @@ namespace NETTMC.Authentication
                         uc = new QIP.EOL.frmTMC7033();
                     }
                     if (!pubFunc.OpenUserControl(uc, "NB Defect End Of Line (frmTMC7033)", "frmTMC7033", mf.tabControl))
-                    {
-                        MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        uc.Dispose();
-                        mf.Hide();
-                        this.Focus();
-                        return false;
-                    }
-                    this.Hide();
-                    return true;
-                }
-                if (arr[0].ToString() == "TouchDefectSTF")
-                {
-                    MainForm mf = new MainForm();
-                    //mf.ribbon.Visible = false;
-                    mf.Show();
-
-                    UserControl uc = new QIP.EOL.frmTMC7036();
-                    if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036)", "frmTMC7036", mf.tabControl))
                     {
                         MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         uc.Dispose();
@@ -296,6 +316,7 @@ namespace NETTMC.Authentication
 
         private async void CheckConnectionStatus()
         {
+
             connectionstatus = await Task.Run(() =>
             {
                 return crud.ConnectionStatus();
@@ -333,10 +354,85 @@ namespace NETTMC.Authentication
 
         }
 
+        private void btnDefect_Click(object sender, EventArgs e)
+        {
+            MainForm mf = new MainForm();
+            mf.splitContainer1.Panel1Collapsed = true;
+            mf.ribbonStrip.Visible = false;
+            mf.mainMenuStrip.Visible = false;
+
+            mf.tabControl.Appearance = TabAppearance.FlatButtons;
+            mf.tabControl.ItemSize = new Size(0, 1);
+            mf.tabControl.SizeMode = TabSizeMode.Fixed;
+            mf.Show();
+
+
+            UserControl uc;
+            if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.1.197") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
+            {
+                uc = new QIP.EOL.frmTMC7033_A14();
+            }
+            else
+            {
+                uc = new QIP.EOL.frmTMC7033();
+            }
+            if (!pubFunc.OpenUserControl(uc, "NB Defect End Of Line (frmTMC7033)", "frmTMC7033", mf.tabControl))
+            {
+                MessageBox.Show("Sorry 111 ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                uc.Dispose();
+                mf.Hide();
+                this.Focus();
+                return;
+            }
+            if (MessageBox.Show("Do you want to set this program default open on this machine ?", "Question", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                new GlobalFunction.PublicFunction().WriteToFile("TouchDefect", "DefaultProgram");
+            }
+            this.Hide();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            txtUser.Text = "";
+            txtPassword.Text = "";
+            tableLayoutLogin.Hide();
+        }
+
         private void btnDefectAdidas_Click(object sender, EventArgs e)
         {
-
+            MainForm mf = new MainForm();
+            // mf.treeView1.Visible = false;
+            mf.splitContainer1.Panel1Collapsed = true;
+            mf.ribbonStrip.Visible = false;
+            mf.mainMenuStrip.Visible = false;
+            mf.Show();
+            UserControl uc;
+            if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
+            {
+                uc = new QIP.EOL.frmTMC7036_New();
+            }
+            else
+            {
+                uc = new QIP.EOL.frmTMC7036();
+            }
+            if (!pubFunc.OpenUserControl(uc, "Defect Stockfit (frmTMC7036)", "frmTMC7036", mf.tabControl))
+            {
+                MessageBox.Show("Sorry ! You don’t have permission to open this program", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                uc.Dispose();
+                mf.Hide();
+                this.Focus();
+                return;
+            }
+            if (MessageBox.Show("Do you want to set this program default open on this machine ?", "Question", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                new GlobalFunction.PublicFunction().WriteToFile("TouchDefectSTF", "DefaultProgram");
+            }
+            this.Hide();
         }
+
+        
+
+        
 
         private void button1_Click_1(object sender, EventArgs e)
         {

@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace QIP.EOL
 {
-    public partial class frmTMC7033 : UserControl
+    public partial class frmTMC7032_MsgA : Form
     {
-        public frmTMC7033()
+        public frmTMC7032_MsgA()
         {
             InitializeComponent();
-        }
-
-        private void frmTMC7033_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -37,7 +37,7 @@
             barBtnGatePassCheck = new Button();
             barBtnForITOnly = new Button();
             btnDefect = new Button();
-            btnDefectStockfit = new Button();
+            btnDefectAdidas = new Button();
             btnJSI = new Button();
             btnCCQP = new Button();
             btnP2PAllLineNB = new Button();
@@ -77,7 +77,7 @@
             label2.AutoSize = true;
             label2.Location = new Point(201, 48);
             label2.Name = "label2";
-            label2.Size = new Size(241, 13);
+            label2.Size = new Size(283, 16);
             label2.TabIndex = 1;
             label2.Text = "Please select function that you want to access in";
             label2.TextAlign = ContentAlignment.TopCenter;
@@ -89,7 +89,7 @@
             progressPanel1.Controls.Add(barBtnGatePassCheck);
             progressPanel1.Controls.Add(barBtnForITOnly);
             progressPanel1.Controls.Add(btnDefect);
-            progressPanel1.Controls.Add(btnDefectStockfit);
+            progressPanel1.Controls.Add(btnDefectAdidas);
             progressPanel1.Controls.Add(btnJSI);
             progressPanel1.Controls.Add(btnCCQP);
             progressPanel1.Controls.Add(btnP2PAllLineNB);
@@ -146,16 +146,17 @@
             btnDefect.TabIndex = 4;
             btnDefect.Text = "DEFECT Chấm lỗi cuối chuyền";
             btnDefect.UseVisualStyleBackColor = true;
+            btnDefect.Click += btnDefect_Click;
             // 
-            // btnDefectStockfit
+            // btnDefectAdidas
             // 
-            btnDefectStockfit.Location = new Point(155, 91);
-            btnDefectStockfit.Name = "btnDefectStockfit";
-            btnDefectStockfit.Size = new Size(146, 82);
-            btnDefectStockfit.TabIndex = 5;
-            btnDefectStockfit.Text = "DEFECT Stockfit";
-            btnDefectStockfit.UseVisualStyleBackColor = true;
-            btnDefectStockfit.Click += btnDefectAdidas_Click;
+            btnDefectAdidas.Location = new Point(155, 91);
+            btnDefectAdidas.Name = "btnDefectAdidas";
+            btnDefectAdidas.Size = new Size(146, 82);
+            btnDefectAdidas.TabIndex = 5;
+            btnDefectAdidas.Text = "DEFECT Stockfit";
+            btnDefectAdidas.UseVisualStyleBackColor = true;
+            btnDefectAdidas.Click += btnDefectAdidas_Click;
             // 
             // btnJSI
             // 
@@ -238,7 +239,7 @@
             // 
             txtUser.Location = new Point(116, 3);
             txtUser.Name = "txtUser";
-            txtUser.Size = new Size(187, 20);
+            txtUser.Size = new Size(187, 23);
             txtUser.TabIndex = 2;
             // 
             // txtPassword
@@ -246,7 +247,7 @@
             txtPassword.Location = new Point(116, 38);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new Size(190, 20);
+            txtPassword.Size = new Size(190, 23);
             txtPassword.TabIndex = 3;
             // 
             // panelControl1
@@ -266,7 +267,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(7, 12);
             label1.Name = "label1";
-            label1.Size = new Size(29, 13);
+            label1.Size = new Size(34, 16);
             label1.TabIndex = 4;
             label1.Text = "Site:";
             // 
@@ -279,6 +280,7 @@
             btnCancel.TabIndex = 3;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // btnLogin
             // 
@@ -295,7 +297,7 @@
             checkBoxSite.AutoSize = true;
             checkBoxSite.Location = new Point(44, 12);
             checkBoxSite.Name = "checkBoxSite";
-            checkBoxSite.Size = new Size(69, 17);
+            checkBoxSite.Size = new Size(80, 20);
             checkBoxSite.TabIndex = 1;
             checkBoxSite.Text = "An Giang";
             checkBoxSite.UseVisualStyleBackColor = true;
@@ -305,7 +307,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(3, 0);
             label3.Name = "label3";
-            label3.Size = new Size(47, 13);
+            label3.Size = new Size(54, 16);
             label3.TabIndex = 0;
             label3.Text = "User ID:";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -315,7 +317,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(3, 35);
             label4.Name = "label4";
-            label4.Size = new Size(57, 13);
+            label4.Size = new Size(67, 16);
             label4.TabIndex = 1;
             label4.Text = "Password:";
             // 
@@ -324,7 +326,7 @@
             labelControl5.AutoSize = true;
             labelControl5.Location = new Point(528, 48);
             labelControl5.Name = "labelControl5";
-            labelControl5.Size = new Size(137, 13);
+            labelControl5.Size = new Size(157, 16);
             labelControl5.TabIndex = 3;
             labelControl5.Text = "Try to connect database...";
             // 
@@ -340,7 +342,7 @@
             // 
             // Login
             // 
-            AutoScaleDimensions = new SizeF(6F, 12F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(248, 248, 248);
             BackgroundImageLayout = ImageLayout.None;
@@ -387,7 +389,7 @@
         private Button barBtnGatePassCheck;
         private Button barBtnForITOnly;
         private Button btnDefect;
-        private Button btnDefectStockfit;
+        private Button btnDefectAdidas;
         private Button btnJSI;
         private Button btnCCQP;
         private Button btnP2PAllLineNB;

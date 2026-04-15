@@ -980,14 +980,14 @@
         #endregion
 
         // ── Field declarations ────────────────────────────────────────
-        private System.Windows.Forms.MenuStrip mainMenuStrip;
+        public System.Windows.Forms.MenuStrip mainMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem menuHome;
         private System.Windows.Forms.ToolStripMenuItem menuInsert;
         private System.Windows.Forms.ToolStripMenuItem menuView;
         private System.Windows.Forms.ToolStripMenuItem menuTools;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
 
-        private System.Windows.Forms.ToolStrip ribbonStrip;
+        public System.Windows.Forms.ToolStrip ribbonStrip;
         private System.Windows.Forms.ToolStripButton btnNew;
         private System.Windows.Forms.ToolStripButton btnOpen;
         private System.Windows.Forms.ToolStripButton btnSave;
@@ -1005,7 +1005,7 @@
         private System.Windows.Forms.ToolStripStatusLabel statusLabelCount;
         private System.Windows.Forms.ToolStripStatusLabel statusLabelVersion;
         public TreeView treeView1;
-        private SplitContainer splitContainer1;
+        public SplitContainer splitContainer1;
         public TabControl tabControl;
         private ToolStripStatusLabel statusLabelConnection;
         private System.Windows.Forms.Timer timerConnectionCheck;

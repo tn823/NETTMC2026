@@ -1,4 +1,5 @@
 ﻿using ConnectionClass.Oracle;
+using QIP.EOL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +20,7 @@ namespace NETTMC
         private bool connectionstatus;
         CRUDOracle crud;
         public GlobalFunction.PublicFunction pubFunc;
-
+        frmTMC7036_New frmSensor;
         public MainForm()
         {
             InitializeComponent();
@@ -231,6 +232,8 @@ namespace NETTMC
             //});
             //taskCheckConnect.Start();
             GetPosition();
+            frmSensor = new frmTMC7036_New();
+            frmSensor.Show();
         }
         //private void TabControl_CloseButtonClick(object sender, EventArgs e)
         //{
@@ -357,6 +360,14 @@ namespace NETTMC
 
         private void barBtnClose_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (frmSensor != null)
+                {
+                    frmSensor.CloseSerial(); 
+                }
+            }
+            catch { }
             Application.ExitThread();
             Application.Exit();
         }

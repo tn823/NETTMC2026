@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QIP.EOL
+namespace MQTT
 {
-    public partial class frmTMC7033 : UserControl
+    public partial class Form1 : Form
     {
-        public frmTMC7033()
+        public Form1()
         {
             InitializeComponent();
-        }
-
-        private void frmTMC7033_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
