@@ -29,6 +29,44 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            lblPartCount1 = new Label();
+            lblPartCount6 = new Label();
+            lblPartCount2 = new Label();
+            lblPartCount4 = new Label();
+            lblPartCount5 = new Label();
+            txtMessage = new TextBox();
+            lblNotification = new Label();
+            grdOfflineData = new DataGridView();
+            lblPartCount3 = new Label();
+            lblPart6 = new Label();
+            lblPart5 = new Label();
+            lblPart4 = new Label();
+            lblPart3 = new Label();
+            lblPart2 = new Label();
+            lblPart1 = new Label();
+            pictureShoes = new PictureBox();
+            tableLayoutPanel8 = new TableLayoutPanel();
+            lblDefectTop2 = new Label();
+            lblDefectTop1 = new Label();
+            lblDefectTop3 = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            lblPassTotal = new Label();
+            panelControl1 = new Panel();
+            checkEdit2 = new CheckBox();
+            chkPlanOneMonth = new CheckBox();
+            btnChonModel = new Button();
+            lblProdTotal = new Label();
+            lblReady = new Label();
+            lblLineInfo = new Label();
+            panel2 = new Panel();
+            lblRFT = new Label();
+            pictureStop = new PictureBox();
+            panel9 = new Panel();
+            label7 = new Label();
+            lblFailTotal = new Label();
+            panel8 = new Panel();
+            label5 = new Label();
+            lblSensorCount = new Label();
             panel5 = new Panel();
             panel6 = new Panel();
             btnRestartServices = new Button();
@@ -37,6 +75,15 @@
             btn_reasonCode2 = new Button();
             btn_reasonCode3 = new Button();
             panel7 = new Panel();
+            txtTime = new Label();
+            labelControl11 = new Label();
+            chkEng = new CheckBox();
+            chkVN = new CheckBox();
+            lblSyncStatus = new Label();
+            toggleSwitchOnline = new CheckBox();
+            btnSetting = new Button();
+            pictureEdit2 = new PictureBox();
+            pictureBox1 = new PictureBox();
             labelControl2 = new Label();
             txtStatus = new Label();
             oracleCommandBuilder1 = new Oracle.ManagedDataAccess.Client.OracleCommandBuilder();
@@ -57,41 +104,27 @@
             label2 = new Label();
             simpleButton23 = new Button();
             panelControl2 = new Panel();
+            gridControl1 = new DataGridView();
             simpleButton3 = new Button();
             panelControl19 = new Panel();
             label1 = new Label();
             simpleButton10 = new Button();
             oracleCommandBuilder2 = new Oracle.ManagedDataAccess.Client.OracleCommandBuilder();
-            pictureBox1 = new PictureBox();
-            pictureEdit2 = new PictureBox();
-            btnSetting = new Button();
-            toggleSwitchOnline = new CheckBox();
-            lblSyncStatus = new Label();
-            labelControl11 = new Label();
-            txtTime = new Label();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            panel2 = new Panel();
-            pictureStop = new PictureBox();
-            lblRFT = new Label();
-            lblLineInfo = new Label();
-            lblReady = new Label();
-            lblProdTotal = new Label();
-            panelControl1 = new Panel();
-            checkEdit2 = new CheckBox();
-            chkPlanOneMonth = new CheckBox();
-            btnChonModel = new Button();
-            lblPassTotal = new Label();
-            panel9 = new Panel();
-            panel8 = new Panel();
-            lblFailTotal = new Label();
-            lblSensorCount = new Label();
-            label7 = new Label();
-            label5 = new Label();
-            tableLayoutPanel8 = new TableLayoutPanel();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grdOfflineData).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShoes).BeginInit();
+            tableLayoutPanel8.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            panelControl1.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureStop).BeginInit();
+            panel9.SuspendLayout();
+            panel8.SuspendLayout();
             panel5.SuspendLayout();
             panel6.SuspendLayout();
             panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureEdit2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel22.SuspendLayout();
             panel3.SuspendLayout();
             fgsfbsfx.SuspendLayout();
@@ -99,20 +132,29 @@
             panel4.SuspendLayout();
             panelControl24.SuspendLayout();
             panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             panelControl19.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureEdit2).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureStop).BeginInit();
-            panelControl1.SuspendLayout();
-            panel9.SuspendLayout();
-            panel8.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(224, 224, 224);
+            panel1.Controls.Add(lblPartCount1);
+            panel1.Controls.Add(lblPartCount6);
+            panel1.Controls.Add(lblPartCount2);
+            panel1.Controls.Add(lblPartCount4);
+            panel1.Controls.Add(lblPartCount5);
+            panel1.Controls.Add(txtMessage);
+            panel1.Controls.Add(lblNotification);
+            panel1.Controls.Add(grdOfflineData);
+            panel1.Controls.Add(lblPartCount3);
+            panel1.Controls.Add(lblPart6);
+            panel1.Controls.Add(lblPart5);
+            panel1.Controls.Add(lblPart4);
+            panel1.Controls.Add(lblPart3);
+            panel1.Controls.Add(lblPart2);
+            panel1.Controls.Add(lblPart1);
+            panel1.Controls.Add(pictureShoes);
             panel1.Controls.Add(tableLayoutPanel8);
             panel1.Controls.Add(tableLayoutPanel1);
             panel1.Controls.Add(panel5);
@@ -121,6 +163,458 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(812, 780);
             panel1.TabIndex = 1;
+            // 
+            // lblPartCount1
+            // 
+            lblPartCount1.BackColor = Color.Transparent;
+            lblPartCount1.Location = new Point(128, 196);
+            lblPartCount1.Name = "lblPartCount1";
+            lblPartCount1.Size = new Size(0, 33);
+            lblPartCount1.TabIndex = 26;
+            // 
+            // lblPartCount6
+            // 
+            lblPartCount6.BackColor = Color.Transparent;
+            lblPartCount6.Location = new Point(630, 262);
+            lblPartCount6.Name = "lblPartCount6";
+            lblPartCount6.Size = new Size(0, 33);
+            lblPartCount6.TabIndex = 25;
+            // 
+            // lblPartCount2
+            // 
+            lblPartCount2.BackColor = Color.Transparent;
+            lblPartCount2.Location = new Point(290, 262);
+            lblPartCount2.Name = "lblPartCount2";
+            lblPartCount2.Size = new Size(0, 33);
+            lblPartCount2.TabIndex = 25;
+            // 
+            // lblPartCount4
+            // 
+            lblPartCount4.BackColor = Color.Transparent;
+            lblPartCount4.Location = new Point(561, 302);
+            lblPartCount4.Name = "lblPartCount4";
+            lblPartCount4.Size = new Size(0, 33);
+            lblPartCount4.TabIndex = 25;
+            // 
+            // lblPartCount5
+            // 
+            lblPartCount5.BackColor = Color.Transparent;
+            lblPartCount5.Location = new Point(630, 69);
+            lblPartCount5.Name = "lblPartCount5";
+            lblPartCount5.Size = new Size(0, 33);
+            lblPartCount5.TabIndex = 25;
+            // 
+            // txtMessage
+            // 
+            txtMessage.BackColor = SystemColors.InfoText;
+            txtMessage.Cursor = Cursors.IBeam;
+            txtMessage.Dock = DockStyle.Fill;
+            txtMessage.Font = new Font("Consolas", 12F);
+            txtMessage.ForeColor = Color.MediumSeaGreen;
+            txtMessage.Location = new Point(0, 191);
+            txtMessage.Margin = new Padding(3, 4, 3, 4);
+            txtMessage.Multiline = true;
+            txtMessage.Name = "txtMessage";
+            txtMessage.ScrollBars = ScrollBars.Both;
+            txtMessage.Size = new Size(812, 441);
+            txtMessage.TabIndex = 4;
+            txtMessage.Text = "Message";
+            txtMessage.Visible = false;
+            // 
+            // lblNotification
+            // 
+            lblNotification.BackColor = Color.Transparent;
+            lblNotification.Dock = DockStyle.Bottom;
+            lblNotification.Location = new Point(0, 632);
+            lblNotification.Name = "lblNotification";
+            lblNotification.Size = new Size(812, 21);
+            lblNotification.TabIndex = 27;
+            // 
+            // grdOfflineData
+            // 
+            grdOfflineData.BackgroundColor = SystemColors.ActiveCaptionText;
+            grdOfflineData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            grdOfflineData.Location = new Point(696, 187);
+            grdOfflineData.Name = "grdOfflineData";
+            grdOfflineData.Size = new Size(39, 20);
+            grdOfflineData.TabIndex = 28;
+            grdOfflineData.Visible = false;
+            // 
+            // lblPartCount3
+            // 
+            lblPartCount3.BackColor = Color.Transparent;
+            lblPartCount3.Location = new Point(349, 69);
+            lblPartCount3.Name = "lblPartCount3";
+            lblPartCount3.Size = new Size(0, 33);
+            lblPartCount3.TabIndex = 25;
+            // 
+            // lblPart6
+            // 
+            lblPart6.AccessibleName = "6";
+            lblPart6.AutoSize = true;
+            lblPart6.Font = new Font("Arial", 48F);
+            lblPart6.ForeColor = Color.Gray;
+            lblPart6.Location = new Point(646, 455);
+            lblPart6.Name = "lblPart6";
+            lblPart6.Size = new Size(80, 72);
+            lblPart6.TabIndex = 19;
+            lblPart6.Text = "O";
+            // 
+            // lblPart5
+            // 
+            lblPart5.AccessibleName = "5";
+            lblPart5.AutoSize = true;
+            lblPart5.Font = new Font("Arial", 48F);
+            lblPart5.ForeColor = Color.FromArgb(255, 192, 128);
+            lblPart5.Location = new Point(567, 267);
+            lblPart5.Name = "lblPart5";
+            lblPart5.Size = new Size(80, 72);
+            lblPart5.TabIndex = 20;
+            lblPart5.Text = "O";
+            // 
+            // lblPart4
+            // 
+            lblPart4.AccessibleName = "4";
+            lblPart4.AutoSize = true;
+            lblPart4.Font = new Font("Arial", 48F);
+            lblPart4.ForeColor = Color.Red;
+            lblPart4.Location = new Point(434, 480);
+            lblPart4.Name = "lblPart4";
+            lblPart4.Size = new Size(80, 72);
+            lblPart4.TabIndex = 21;
+            lblPart4.Text = "O";
+            // 
+            // lblPart3
+            // 
+            lblPart3.AccessibleName = "3";
+            lblPart3.AutoSize = true;
+            lblPart3.Font = new Font("Arial", 48F);
+            lblPart3.ForeColor = Color.Blue;
+            lblPart3.Location = new Point(337, 234);
+            lblPart3.Name = "lblPart3";
+            lblPart3.Size = new Size(80, 72);
+            lblPart3.TabIndex = 22;
+            lblPart3.Text = "O";
+            // 
+            // lblPart2
+            // 
+            lblPart2.AccessibleName = "2";
+            lblPart2.AutoSize = true;
+            lblPart2.Font = new Font("Arial", 48F);
+            lblPart2.ForeColor = Color.Lime;
+            lblPart2.Location = new Point(225, 390);
+            lblPart2.Name = "lblPart2";
+            lblPart2.Size = new Size(80, 72);
+            lblPart2.TabIndex = 23;
+            lblPart2.Text = "O";
+            // 
+            // lblPart1
+            // 
+            lblPart1.AccessibleName = "1";
+            lblPart1.AutoSize = true;
+            lblPart1.Font = new Font("Arial", 48F);
+            lblPart1.ForeColor = Color.Red;
+            lblPart1.Location = new Point(48, 429);
+            lblPart1.Name = "lblPart1";
+            lblPart1.Size = new Size(80, 72);
+            lblPart1.TabIndex = 24;
+            lblPart1.Text = "O";
+            // 
+            // pictureShoes
+            // 
+            pictureShoes.BackColor = Color.White;
+            pictureShoes.Dock = DockStyle.Fill;
+            pictureShoes.Image = Properties.Resources.sASS_3;
+            pictureShoes.Location = new Point(0, 191);
+            pictureShoes.Name = "pictureShoes";
+            pictureShoes.Size = new Size(812, 462);
+            pictureShoes.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureShoes.TabIndex = 29;
+            pictureShoes.TabStop = false;
+            // 
+            // tableLayoutPanel8
+            // 
+            tableLayoutPanel8.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tableLayoutPanel8.ColumnCount = 3;
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel8.Controls.Add(lblDefectTop2, 1, 0);
+            tableLayoutPanel8.Controls.Add(lblDefectTop1, 0, 0);
+            tableLayoutPanel8.Controls.Add(lblDefectTop3, 2, 0);
+            tableLayoutPanel8.Dock = DockStyle.Top;
+            tableLayoutPanel8.Location = new Point(0, 148);
+            tableLayoutPanel8.Name = "tableLayoutPanel8";
+            tableLayoutPanel8.RowCount = 1;
+            tableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel8.Size = new Size(812, 43);
+            tableLayoutPanel8.TabIndex = 1;
+            // 
+            // lblDefectTop2
+            // 
+            lblDefectTop2.BackColor = Color.Yellow;
+            lblDefectTop2.BorderStyle = BorderStyle.Fixed3D;
+            lblDefectTop2.Dock = DockStyle.Fill;
+            lblDefectTop2.Font = new Font("VNI-Times", 15.75F, FontStyle.Bold);
+            lblDefectTop2.Location = new Point(274, 1);
+            lblDefectTop2.Name = "lblDefectTop2";
+            lblDefectTop2.Size = new Size(263, 41);
+            lblDefectTop2.TabIndex = 2;
+            lblDefectTop2.Text = "TOP2";
+            lblDefectTop2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblDefectTop1
+            // 
+            lblDefectTop1.BackColor = Color.Red;
+            lblDefectTop1.BorderStyle = BorderStyle.Fixed3D;
+            lblDefectTop1.Dock = DockStyle.Fill;
+            lblDefectTop1.Font = new Font("VNI-Times", 15.75F, FontStyle.Bold);
+            lblDefectTop1.Location = new Point(4, 1);
+            lblDefectTop1.Name = "lblDefectTop1";
+            lblDefectTop1.Size = new Size(263, 41);
+            lblDefectTop1.TabIndex = 1;
+            lblDefectTop1.Text = "TOP1";
+            lblDefectTop1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblDefectTop3
+            // 
+            lblDefectTop3.BackColor = Color.FromArgb(0, 192, 0);
+            lblDefectTop3.BorderStyle = BorderStyle.Fixed3D;
+            lblDefectTop3.Dock = DockStyle.Fill;
+            lblDefectTop3.Font = new Font("VNI-Times", 15.75F, FontStyle.Bold);
+            lblDefectTop3.Location = new Point(544, 1);
+            lblDefectTop3.Name = "lblDefectTop3";
+            lblDefectTop3.Size = new Size(264, 41);
+            lblDefectTop3.TabIndex = 0;
+            lblDefectTop3.Text = "TOP3";
+            lblDefectTop3.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 4;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 170F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 222F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 347F));
+            tableLayoutPanel1.Controls.Add(lblPassTotal, 2, 1);
+            tableLayoutPanel1.Controls.Add(panelControl1, 1, 1);
+            tableLayoutPanel1.Controls.Add(lblProdTotal, 3, 0);
+            tableLayoutPanel1.Controls.Add(lblReady, 2, 0);
+            tableLayoutPanel1.Controls.Add(lblLineInfo, 1, 0);
+            tableLayoutPanel1.Controls.Add(panel2, 0, 0);
+            tableLayoutPanel1.Controls.Add(panel9, 3, 1);
+            tableLayoutPanel1.Dock = DockStyle.Top;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 39.57F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 60.43F));
+            tableLayoutPanel1.Size = new Size(812, 148);
+            tableLayoutPanel1.TabIndex = 0;
+            // 
+            // lblPassTotal
+            // 
+            lblPassTotal.AutoSize = true;
+            lblPassTotal.BorderStyle = BorderStyle.Fixed3D;
+            lblPassTotal.Dock = DockStyle.Fill;
+            lblPassTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            lblPassTotal.ForeColor = Color.Blue;
+            lblPassTotal.Location = new Point(246, 58);
+            lblPassTotal.Name = "lblPassTotal";
+            lblPassTotal.Size = new Size(216, 90);
+            lblPassTotal.TabIndex = 16;
+            lblPassTotal.Text = "PASS :  0";
+            lblPassTotal.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // panelControl1
+            // 
+            panelControl1.BorderStyle = BorderStyle.Fixed3D;
+            panelControl1.Controls.Add(checkEdit2);
+            panelControl1.Controls.Add(chkPlanOneMonth);
+            panelControl1.Controls.Add(btnChonModel);
+            panelControl1.Dock = DockStyle.Fill;
+            panelControl1.Location = new Point(76, 61);
+            panelControl1.Name = "panelControl1";
+            panelControl1.Size = new Size(164, 84);
+            panelControl1.TabIndex = 15;
+            // 
+            // checkEdit2
+            // 
+            checkEdit2.AutoSize = true;
+            checkEdit2.Checked = true;
+            checkEdit2.CheckState = CheckState.Checked;
+            checkEdit2.Font = new Font("Tahoma", 8.25F);
+            checkEdit2.Location = new Point(3, 65);
+            checkEdit2.Name = "checkEdit2";
+            checkEdit2.Size = new Size(82, 17);
+            checkEdit2.TabIndex = 2;
+            checkEdit2.Text = "Plan 7 ngày";
+            checkEdit2.UseVisualStyleBackColor = true;
+            // 
+            // chkPlanOneMonth
+            // 
+            chkPlanOneMonth.AutoSize = true;
+            chkPlanOneMonth.Font = new Font("Tahoma", 8.25F);
+            chkPlanOneMonth.Location = new Point(3, 50);
+            chkPlanOneMonth.Name = "chkPlanOneMonth";
+            chkPlanOneMonth.Size = new Size(86, 17);
+            chkPlanOneMonth.TabIndex = 1;
+            chkPlanOneMonth.Text = "Plan 1 tháng";
+            chkPlanOneMonth.UseVisualStyleBackColor = true;
+            // 
+            // btnChonModel
+            // 
+            btnChonModel.BackColor = Color.FromArgb(255, 255, 128);
+            btnChonModel.Dock = DockStyle.Top;
+            btnChonModel.Font = new Font("Arial", 11.25F, FontStyle.Bold);
+            btnChonModel.ForeColor = SystemColors.ControlText;
+            btnChonModel.Location = new Point(0, 0);
+            btnChonModel.Name = "btnChonModel";
+            btnChonModel.Size = new Size(160, 48);
+            btnChonModel.TabIndex = 0;
+            btnChonModel.Text = "Chọn MODEL";
+            btnChonModel.UseVisualStyleBackColor = false;
+            // 
+            // lblProdTotal
+            // 
+            lblProdTotal.BorderStyle = BorderStyle.Fixed3D;
+            lblProdTotal.Dock = DockStyle.Fill;
+            lblProdTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            lblProdTotal.ForeColor = Color.Navy;
+            lblProdTotal.Location = new Point(468, 0);
+            lblProdTotal.Name = "lblProdTotal";
+            lblProdTotal.Size = new Size(341, 58);
+            lblProdTotal.TabIndex = 14;
+            lblProdTotal.Text = "SX : 0";
+            lblProdTotal.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lblReady
+            // 
+            lblReady.AutoSize = true;
+            lblReady.BorderStyle = BorderStyle.Fixed3D;
+            lblReady.Dock = DockStyle.Fill;
+            lblReady.Font = new Font("Arial", 30F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblReady.Location = new Point(246, 0);
+            lblReady.Name = "lblReady";
+            lblReady.Size = new Size(216, 58);
+            lblReady.TabIndex = 13;
+            lblReady.Text = "READY";
+            lblReady.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lblLineInfo
+            // 
+            lblLineInfo.AutoSize = true;
+            lblLineInfo.BorderStyle = BorderStyle.Fixed3D;
+            lblLineInfo.Dock = DockStyle.Fill;
+            lblLineInfo.Font = new Font("Arial", 30F, FontStyle.Bold);
+            lblLineInfo.Location = new Point(76, 0);
+            lblLineInfo.Name = "lblLineInfo";
+            lblLineInfo.Size = new Size(164, 58);
+            lblLineInfo.TabIndex = 12;
+            lblLineInfo.Text = "P515";
+            lblLineInfo.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(lblRFT);
+            panel2.Controls.Add(pictureStop);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(3, 3);
+            panel2.Name = "panel2";
+            tableLayoutPanel1.SetRowSpan(panel2, 2);
+            panel2.Size = new Size(67, 142);
+            panel2.TabIndex = 0;
+            // 
+            // lblRFT
+            // 
+            lblRFT.Dock = DockStyle.Fill;
+            lblRFT.Font = new Font("Tahoma", 14.25F);
+            lblRFT.Location = new Point(0, 87);
+            lblRFT.Name = "lblRFT";
+            lblRFT.Size = new Size(67, 55);
+            lblRFT.TabIndex = 1;
+            lblRFT.Text = "0 %";
+            lblRFT.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pictureStop
+            // 
+            pictureStop.Dock = DockStyle.Top;
+            pictureStop.Image = Properties.Resources._0387_2;
+            pictureStop.Location = new Point(0, 0);
+            pictureStop.Name = "pictureStop";
+            pictureStop.Size = new Size(67, 87);
+            pictureStop.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureStop.TabIndex = 0;
+            pictureStop.TabStop = false;
+            // 
+            // panel9
+            // 
+            panel9.Controls.Add(label7);
+            panel9.Controls.Add(lblFailTotal);
+            panel9.Controls.Add(panel8);
+            panel9.Dock = DockStyle.Fill;
+            panel9.Location = new Point(468, 61);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(341, 84);
+            panel9.TabIndex = 9;
+            // 
+            // label7
+            // 
+            label7.BorderStyle = BorderStyle.Fixed3D;
+            label7.Dock = DockStyle.Fill;
+            label7.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            label7.ForeColor = Color.Red;
+            label7.Location = new Point(0, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(211, 41);
+            label7.TabIndex = 2;
+            label7.Text = "FAIL ";
+            // 
+            // lblFailTotal
+            // 
+            lblFailTotal.BorderStyle = BorderStyle.Fixed3D;
+            lblFailTotal.Dock = DockStyle.Right;
+            lblFailTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            lblFailTotal.ForeColor = Color.Red;
+            lblFailTotal.Location = new Point(211, 0);
+            lblFailTotal.Name = "lblFailTotal";
+            lblFailTotal.Size = new Size(130, 41);
+            lblFailTotal.TabIndex = 1;
+            lblFailTotal.Text = "0";
+            // 
+            // panel8
+            // 
+            panel8.Controls.Add(label5);
+            panel8.Controls.Add(lblSensorCount);
+            panel8.Dock = DockStyle.Bottom;
+            panel8.Location = new Point(0, 41);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(341, 43);
+            panel8.TabIndex = 0;
+            // 
+            // label5
+            // 
+            label5.BorderStyle = BorderStyle.Fixed3D;
+            label5.Dock = DockStyle.Fill;
+            label5.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            label5.ForeColor = Color.Red;
+            label5.Location = new Point(0, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(211, 43);
+            label5.TabIndex = 3;
+            label5.Text = "SENSOR ";
+            // 
+            // lblSensorCount
+            // 
+            lblSensorCount.BorderStyle = BorderStyle.Fixed3D;
+            lblSensorCount.Dock = DockStyle.Right;
+            lblSensorCount.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            lblSensorCount.ForeColor = Color.Red;
+            lblSensorCount.Location = new Point(211, 0);
+            lblSensorCount.Name = "lblSensorCount";
+            lblSensorCount.Size = new Size(130, 43);
+            lblSensorCount.TabIndex = 2;
+            lblSensorCount.Text = "0";
             // 
             // panel5
             // 
@@ -214,6 +708,8 @@
             panel7.BorderStyle = BorderStyle.FixedSingle;
             panel7.Controls.Add(txtTime);
             panel7.Controls.Add(labelControl11);
+            panel7.Controls.Add(chkEng);
+            panel7.Controls.Add(chkVN);
             panel7.Controls.Add(lblSyncStatus);
             panel7.Controls.Add(toggleSwitchOnline);
             panel7.Controls.Add(btnSetting);
@@ -226,6 +722,124 @@
             panel7.Name = "panel7";
             panel7.Size = new Size(745, 32);
             panel7.TabIndex = 3;
+            // 
+            // txtTime
+            // 
+            txtTime.BackColor = Color.Black;
+            txtTime.Dock = DockStyle.Left;
+            txtTime.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+            txtTime.ForeColor = Color.Lavender;
+            txtTime.Location = new Point(0, 0);
+            txtTime.Margin = new Padding(3, 4, 3, 4);
+            txtTime.Name = "txtTime";
+            txtTime.Size = new Size(317, 30);
+            txtTime.TabIndex = 26;
+            txtTime.Text = "2018-11-19 15:46:45";
+            txtTime.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // labelControl11
+            // 
+            labelControl11.BackColor = Color.Transparent;
+            labelControl11.Dock = DockStyle.Fill;
+            labelControl11.Font = new Font("Tahoma", 14.25F, FontStyle.Bold);
+            labelControl11.ForeColor = Color.Navy;
+            labelControl11.Location = new Point(0, 0);
+            labelControl11.Margin = new Padding(3, 4, 3, 4);
+            labelControl11.Name = "labelControl11";
+            labelControl11.Size = new Size(253, 30);
+            labelControl11.TabIndex = 25;
+            labelControl11.Text = "Language";
+            labelControl11.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // chkEng
+            // 
+            chkEng.AutoSize = true;
+            chkEng.Dock = DockStyle.Right;
+            chkEng.Font = new Font("Tahoma", 14.25F);
+            chkEng.Location = new Point(253, 0);
+            chkEng.Name = "chkEng";
+            chkEng.Size = new Size(66, 30);
+            chkEng.TabIndex = 15;
+            chkEng.Text = "ENG";
+            chkEng.UseVisualStyleBackColor = true;
+            // 
+            // chkVN
+            // 
+            chkVN.AutoSize = true;
+            chkVN.Checked = true;
+            chkVN.CheckState = CheckState.Checked;
+            chkVN.Dock = DockStyle.Right;
+            chkVN.Font = new Font("Tahoma", 14.25F);
+            chkVN.Location = new Point(319, 0);
+            chkVN.Name = "chkVN";
+            chkVN.Size = new Size(53, 30);
+            chkVN.TabIndex = 27;
+            chkVN.Text = "VN";
+            chkVN.UseVisualStyleBackColor = true;
+            // 
+            // lblSyncStatus
+            // 
+            lblSyncStatus.BackColor = Color.WhiteSmoke;
+            lblSyncStatus.BorderStyle = BorderStyle.Fixed3D;
+            lblSyncStatus.Dock = DockStyle.Right;
+            lblSyncStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSyncStatus.ForeColor = SystemColors.ActiveCaptionText;
+            lblSyncStatus.Location = new Point(372, 0);
+            lblSyncStatus.Margin = new Padding(3, 4, 3, 4);
+            lblSyncStatus.Name = "lblSyncStatus";
+            lblSyncStatus.Size = new Size(53, 30);
+            lblSyncStatus.TabIndex = 24;
+            lblSyncStatus.Text = "0/0";
+            lblSyncStatus.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // toggleSwitchOnline
+            // 
+            toggleSwitchOnline.Dock = DockStyle.Right;
+            toggleSwitchOnline.Location = new Point(425, 0);
+            toggleSwitchOnline.Name = "toggleSwitchOnline";
+            toggleSwitchOnline.Size = new Size(25, 30);
+            toggleSwitchOnline.TabIndex = 6;
+            toggleSwitchOnline.Text = "Offline";
+            toggleSwitchOnline.UseVisualStyleBackColor = true;
+            // 
+            // btnSetting
+            // 
+            btnSetting.Dock = DockStyle.Right;
+            btnSetting.Font = new Font("Tahoma", 8.25F);
+            btnSetting.Image = Properties.Resources.Properties_16x16;
+            btnSetting.ImageAlign = ContentAlignment.MiddleLeft;
+            btnSetting.Location = new Point(450, 0);
+            btnSetting.Name = "btnSetting";
+            btnSetting.Size = new Size(75, 30);
+            btnSetting.TabIndex = 5;
+            btnSetting.Text = "   Cài đặt";
+            btnSetting.UseVisualStyleBackColor = true;
+            // 
+            // pictureEdit2
+            // 
+            pictureEdit2.BackColor = Color.Black;
+            pictureEdit2.BorderStyle = BorderStyle.FixedSingle;
+            pictureEdit2.Dock = DockStyle.Right;
+            pictureEdit2.Image = Properties.Resources.Action_Bell_32x32;
+            pictureEdit2.Location = new Point(525, 0);
+            pictureEdit2.Name = "pictureEdit2";
+            pictureEdit2.Size = new Size(40, 30);
+            pictureEdit2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureEdit2.TabIndex = 3;
+            pictureEdit2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.Black;
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox1.Dock = DockStyle.Right;
+            pictureBox1.Image = Properties.Resources.IconSetTrafficLights3_32x32;
+            pictureBox1.Location = new Point(565, 0);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(40, 30);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 2;
+            pictureBox1.TabStop = false;
             // 
             // labelControl2
             // 
@@ -461,6 +1075,7 @@
             // panelControl2
             // 
             tableLayoutPanel2.SetColumnSpan(panelControl2, 3);
+            panelControl2.Controls.Add(gridControl1);
             panelControl2.Controls.Add(labelControl4);
             panelControl2.Controls.Add(simpleButton3);
             panelControl2.Dock = DockStyle.Fill;
@@ -468,6 +1083,15 @@
             panelControl2.Name = "panelControl2";
             panelControl2.Size = new Size(739, 304);
             panelControl2.TabIndex = 0;
+            // 
+            // gridControl1
+            // 
+            gridControl1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gridControl1.Location = new Point(-106, 213);
+            gridControl1.Name = "gridControl1";
+            gridControl1.Size = new Size(240, 150);
+            gridControl1.TabIndex = 29;
+            gridControl1.Visible = false;
             // 
             // simpleButton3
             // 
@@ -520,339 +1144,6 @@
             simpleButton10.TextAlign = ContentAlignment.BottomCenter;
             simpleButton10.UseVisualStyleBackColor = false;
             // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.Black;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Dock = DockStyle.Right;
-            pictureBox1.Image = Properties.Resources.IconSetTrafficLights3_32x32;
-            pictureBox1.Location = new Point(565, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(40, 30);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 2;
-            pictureBox1.TabStop = false;
-            // 
-            // pictureEdit2
-            // 
-            pictureEdit2.BackColor = Color.Black;
-            pictureEdit2.BorderStyle = BorderStyle.FixedSingle;
-            pictureEdit2.Dock = DockStyle.Right;
-            pictureEdit2.Image = Properties.Resources.Action_Bell_32x32;
-            pictureEdit2.Location = new Point(525, 0);
-            pictureEdit2.Name = "pictureEdit2";
-            pictureEdit2.Size = new Size(40, 30);
-            pictureEdit2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureEdit2.TabIndex = 3;
-            pictureEdit2.TabStop = false;
-            // 
-            // btnSetting
-            // 
-            btnSetting.Dock = DockStyle.Right;
-            btnSetting.Font = new Font("Tahoma", 8.25F);
-            btnSetting.Image = Properties.Resources.Properties_16x16;
-            btnSetting.ImageAlign = ContentAlignment.MiddleLeft;
-            btnSetting.Location = new Point(450, 0);
-            btnSetting.Name = "btnSetting";
-            btnSetting.Size = new Size(75, 30);
-            btnSetting.TabIndex = 5;
-            btnSetting.Text = "   Cài đặt";
-            btnSetting.UseVisualStyleBackColor = true;
-            // 
-            // toggleSwitchOnline
-            // 
-            toggleSwitchOnline.Dock = DockStyle.Right;
-            toggleSwitchOnline.Location = new Point(425, 0);
-            toggleSwitchOnline.Name = "toggleSwitchOnline";
-            toggleSwitchOnline.Size = new Size(25, 30);
-            toggleSwitchOnline.TabIndex = 6;
-            toggleSwitchOnline.Text = "Offline";
-            toggleSwitchOnline.UseVisualStyleBackColor = true;
-            // 
-            // lblSyncStatus
-            // 
-            lblSyncStatus.BackColor = Color.WhiteSmoke;
-            lblSyncStatus.BorderStyle = BorderStyle.Fixed3D;
-            lblSyncStatus.Dock = DockStyle.Right;
-            lblSyncStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblSyncStatus.ForeColor = SystemColors.ActiveCaptionText;
-            lblSyncStatus.Location = new Point(372, 0);
-            lblSyncStatus.Margin = new Padding(3, 4, 3, 4);
-            lblSyncStatus.Name = "lblSyncStatus";
-            lblSyncStatus.Size = new Size(53, 30);
-            lblSyncStatus.TabIndex = 24;
-            lblSyncStatus.Text = "0/0";
-            lblSyncStatus.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // labelControl11
-            // 
-            labelControl11.BackColor = Color.Transparent;
-            labelControl11.Dock = DockStyle.Fill;
-            labelControl11.Font = new Font("Tahoma", 14.25F, FontStyle.Bold);
-            labelControl11.ForeColor = Color.Navy;
-            labelControl11.Location = new Point(0, 0);
-            labelControl11.Margin = new Padding(3, 4, 3, 4);
-            labelControl11.Name = "labelControl11";
-            labelControl11.Size = new Size(372, 30);
-            labelControl11.TabIndex = 25;
-            labelControl11.Text = "Language";
-            labelControl11.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // txtTime
-            // 
-            txtTime.BackColor = Color.Black;
-            txtTime.Dock = DockStyle.Left;
-            txtTime.Font = new Font("Tahoma", 18F, FontStyle.Bold);
-            txtTime.ForeColor = Color.Lavender;
-            txtTime.Location = new Point(0, 0);
-            txtTime.Margin = new Padding(3, 4, 3, 4);
-            txtTime.Name = "txtTime";
-            txtTime.Size = new Size(317, 30);
-            txtTime.TabIndex = 26;
-            txtTime.Text = "2018-11-19 15:46:45";
-            txtTime.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 4;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 170F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 222F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 347F));
-            tableLayoutPanel1.Controls.Add(lblPassTotal, 2, 1);
-            tableLayoutPanel1.Controls.Add(panelControl1, 1, 1);
-            tableLayoutPanel1.Controls.Add(lblProdTotal, 3, 0);
-            tableLayoutPanel1.Controls.Add(lblReady, 2, 0);
-            tableLayoutPanel1.Controls.Add(lblLineInfo, 1, 0);
-            tableLayoutPanel1.Controls.Add(panel2, 0, 0);
-            tableLayoutPanel1.Controls.Add(panel9, 3, 1);
-            tableLayoutPanel1.Dock = DockStyle.Top;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 39.57F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 60.43F));
-            tableLayoutPanel1.Size = new Size(812, 148);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            panel2.Controls.Add(lblRFT);
-            panel2.Controls.Add(pictureStop);
-            panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(3, 3);
-            panel2.Name = "panel2";
-            tableLayoutPanel1.SetRowSpan(panel2, 2);
-            panel2.Size = new Size(67, 142);
-            panel2.TabIndex = 0;
-            // 
-            // pictureStop
-            // 
-            pictureStop.Dock = DockStyle.Top;
-            pictureStop.Image = Properties.Resources._0387_2;
-            pictureStop.Location = new Point(0, 0);
-            pictureStop.Name = "pictureStop";
-            pictureStop.Size = new Size(67, 87);
-            pictureStop.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureStop.TabIndex = 0;
-            pictureStop.TabStop = false;
-            // 
-            // lblRFT
-            // 
-            lblRFT.Dock = DockStyle.Fill;
-            lblRFT.Font = new Font("Tahoma", 14.25F);
-            lblRFT.Location = new Point(0, 87);
-            lblRFT.Name = "lblRFT";
-            lblRFT.Size = new Size(67, 55);
-            lblRFT.TabIndex = 1;
-            lblRFT.Text = "0 %";
-            lblRFT.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // lblLineInfo
-            // 
-            lblLineInfo.AutoSize = true;
-            lblLineInfo.BorderStyle = BorderStyle.Fixed3D;
-            lblLineInfo.Dock = DockStyle.Fill;
-            lblLineInfo.Font = new Font("Arial", 30F, FontStyle.Bold);
-            lblLineInfo.Location = new Point(76, 0);
-            lblLineInfo.Name = "lblLineInfo";
-            lblLineInfo.Size = new Size(164, 58);
-            lblLineInfo.TabIndex = 12;
-            lblLineInfo.Text = "P515";
-            lblLineInfo.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // lblReady
-            // 
-            lblReady.AutoSize = true;
-            lblReady.BorderStyle = BorderStyle.Fixed3D;
-            lblReady.Dock = DockStyle.Fill;
-            lblReady.Font = new Font("Arial", 30F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblReady.Location = new Point(246, 0);
-            lblReady.Name = "lblReady";
-            lblReady.Size = new Size(216, 58);
-            lblReady.TabIndex = 13;
-            lblReady.Text = "READY";
-            lblReady.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // lblProdTotal
-            // 
-            lblProdTotal.BorderStyle = BorderStyle.Fixed3D;
-            lblProdTotal.Dock = DockStyle.Fill;
-            lblProdTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            lblProdTotal.ForeColor = Color.Navy;
-            lblProdTotal.Location = new Point(468, 0);
-            lblProdTotal.Name = "lblProdTotal";
-            lblProdTotal.Size = new Size(341, 58);
-            lblProdTotal.TabIndex = 14;
-            lblProdTotal.Text = "SX : 0";
-            lblProdTotal.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // panelControl1
-            // 
-            panelControl1.BorderStyle = BorderStyle.Fixed3D;
-            panelControl1.Controls.Add(checkEdit2);
-            panelControl1.Controls.Add(chkPlanOneMonth);
-            panelControl1.Controls.Add(btnChonModel);
-            panelControl1.Dock = DockStyle.Fill;
-            panelControl1.Location = new Point(76, 61);
-            panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(164, 84);
-            panelControl1.TabIndex = 15;
-            // 
-            // checkEdit2
-            // 
-            checkEdit2.AutoSize = true;
-            checkEdit2.Checked = true;
-            checkEdit2.CheckState = CheckState.Checked;
-            checkEdit2.Font = new Font("Tahoma", 8.25F);
-            checkEdit2.Location = new Point(3, 65);
-            checkEdit2.Name = "checkEdit2";
-            checkEdit2.Size = new Size(82, 17);
-            checkEdit2.TabIndex = 2;
-            checkEdit2.Text = "Plan 7 ngày";
-            checkEdit2.UseVisualStyleBackColor = true;
-            // 
-            // chkPlanOneMonth
-            // 
-            chkPlanOneMonth.AutoSize = true;
-            chkPlanOneMonth.Font = new Font("Tahoma", 8.25F);
-            chkPlanOneMonth.Location = new Point(3, 50);
-            chkPlanOneMonth.Name = "chkPlanOneMonth";
-            chkPlanOneMonth.Size = new Size(86, 17);
-            chkPlanOneMonth.TabIndex = 1;
-            chkPlanOneMonth.Text = "Plan 1 tháng";
-            chkPlanOneMonth.UseVisualStyleBackColor = true;
-            // 
-            // btnChonModel
-            // 
-            btnChonModel.BackColor = Color.FromArgb(255, 255, 128);
-            btnChonModel.Dock = DockStyle.Top;
-            btnChonModel.Font = new Font("Arial", 11.25F, FontStyle.Bold);
-            btnChonModel.ForeColor = SystemColors.ControlText;
-            btnChonModel.Location = new Point(0, 0);
-            btnChonModel.Name = "btnChonModel";
-            btnChonModel.Size = new Size(160, 48);
-            btnChonModel.TabIndex = 0;
-            btnChonModel.Text = "Chọn MODEL";
-            btnChonModel.UseVisualStyleBackColor = false;
-            // 
-            // lblPassTotal
-            // 
-            lblPassTotal.AutoSize = true;
-            lblPassTotal.BorderStyle = BorderStyle.Fixed3D;
-            lblPassTotal.Dock = DockStyle.Fill;
-            lblPassTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            lblPassTotal.ForeColor = Color.Blue;
-            lblPassTotal.Location = new Point(246, 58);
-            lblPassTotal.Name = "lblPassTotal";
-            lblPassTotal.Size = new Size(216, 90);
-            lblPassTotal.TabIndex = 16;
-            lblPassTotal.Text = "PASS :  0";
-            lblPassTotal.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // panel9
-            // 
-            panel9.Controls.Add(label7);
-            panel9.Controls.Add(lblFailTotal);
-            panel9.Controls.Add(panel8);
-            panel9.Dock = DockStyle.Fill;
-            panel9.Location = new Point(468, 61);
-            panel9.Name = "panel9";
-            panel9.Size = new Size(341, 84);
-            panel9.TabIndex = 9;
-            // 
-            // panel8
-            // 
-            panel8.Controls.Add(label5);
-            panel8.Controls.Add(lblSensorCount);
-            panel8.Dock = DockStyle.Bottom;
-            panel8.Location = new Point(0, 41);
-            panel8.Name = "panel8";
-            panel8.Size = new Size(341, 43);
-            panel8.TabIndex = 0;
-            // 
-            // lblFailTotal
-            // 
-            lblFailTotal.BorderStyle = BorderStyle.Fixed3D;
-            lblFailTotal.Dock = DockStyle.Right;
-            lblFailTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            lblFailTotal.ForeColor = Color.Red;
-            lblFailTotal.Location = new Point(211, 0);
-            lblFailTotal.Name = "lblFailTotal";
-            lblFailTotal.Size = new Size(130, 41);
-            lblFailTotal.TabIndex = 1;
-            lblFailTotal.Text = "0";
-            // 
-            // lblSensorCount
-            // 
-            lblSensorCount.BorderStyle = BorderStyle.Fixed3D;
-            lblSensorCount.Dock = DockStyle.Right;
-            lblSensorCount.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            lblSensorCount.ForeColor = Color.Red;
-            lblSensorCount.Location = new Point(211, 0);
-            lblSensorCount.Name = "lblSensorCount";
-            lblSensorCount.Size = new Size(130, 43);
-            lblSensorCount.TabIndex = 2;
-            lblSensorCount.Text = "0";
-            // 
-            // label7
-            // 
-            label7.BorderStyle = BorderStyle.Fixed3D;
-            label7.Dock = DockStyle.Fill;
-            label7.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            label7.ForeColor = Color.Red;
-            label7.Location = new Point(0, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(211, 41);
-            label7.TabIndex = 2;
-            label7.Text = "FAIL ";
-            // 
-            // label5
-            // 
-            label5.BorderStyle = BorderStyle.Fixed3D;
-            label5.Dock = DockStyle.Fill;
-            label5.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            label5.ForeColor = Color.Red;
-            label5.Location = new Point(0, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(211, 43);
-            label5.TabIndex = 3;
-            label5.Text = "SENSOR ";
-            // 
-            // tableLayoutPanel8
-            // 
-            tableLayoutPanel8.ColumnCount = 3;
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel8.Dock = DockStyle.Top;
-            tableLayoutPanel8.Location = new Point(0, 148);
-            tableLayoutPanel8.Name = "tableLayoutPanel8";
-            tableLayoutPanel8.RowCount = 1;
-            tableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel8.Size = new Size(812, 43);
-            tableLayoutPanel8.TabIndex = 1;
-            // 
             // frmTMC7033
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -869,9 +1160,24 @@
             Size = new Size(1557, 780);
             Load += frmTMC7033_Load;
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)grdOfflineData).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShoes).EndInit();
+            tableLayoutPanel8.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            panelControl1.ResumeLayout(false);
+            panelControl1.PerformLayout();
+            panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureStop).EndInit();
+            panel9.ResumeLayout(false);
+            panel8.ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel6.ResumeLayout(false);
             panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureEdit2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel22.ResumeLayout(false);
             panel3.ResumeLayout(false);
             fgsfbsfx.ResumeLayout(false);
@@ -883,18 +1189,9 @@
             panelControl24.PerformLayout();
             panelControl2.ResumeLayout(false);
             panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
             panelControl19.ResumeLayout(false);
             panelControl19.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureEdit2).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureStop).EndInit();
-            panelControl1.ResumeLayout(false);
-            panelControl1.PerformLayout();
-            panel9.ResumeLayout(false);
-            panel8.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -960,5 +1257,27 @@
         private Label lblSensorCount;
         private TableLayoutPanel tableLayoutPanel8;
         private Label label5;
+        private Label lblDefectTop2;
+        private Label lblDefectTop1;
+        private Label lblDefectTop3;
+        private Label lblPart6;
+        private Label lblPartCount3;
+        private Label lblPartCount5;
+        private Label lblPartCount4;
+        private Label lblPartCount2;
+        private Label lblPartCount6;
+        private Label lblPartCount1;
+        private TextBox txtMessage;
+        private Label lblNotification;
+        private DataGridView grdOfflineData;
+        private DataGridView gridControl1;
+        private Label lblPart5;
+        private Label lblPart4;
+        private Label lblPart3;
+        private PictureBox pictureShoes;
+        private Label lblPart2;
+        private Label lblPart1;
+        private CheckBox chkEng;
+        private CheckBox chkVN;
     }
 }
