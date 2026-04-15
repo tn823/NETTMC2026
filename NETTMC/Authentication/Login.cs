@@ -88,14 +88,21 @@ namespace NETTMC.Authentication
         private bool CheckDefaultProgram()
         {
             var a = new GlobalFunction.PublicFunction().ReadFromFileNotMesage("DefaultProgram");
-            //Debug.WriteLine("Default Program: " + a);
+            Debug.WriteLine("Default Program: " + a);
             if (a == null)
             {
                 return false;
             }
+
             else
             {
                 string[] arr = (string[])a;
+
+                if (arr == null || arr.Length == 0 || string.IsNullOrWhiteSpace(arr[0]))
+                {
+                    return false;
+                }
+
                 //if (arr[0].ToString() == "P2PAdidas")
                 //{
                 //    MainForm mf = new MainForm();
@@ -160,7 +167,7 @@ namespace NETTMC.Authentication
                     mf.Show();
 
                     UserControl uc;
-                    if (GlobalFunction.PublicFunction.myIpaddress == "192.168.1.197" || GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
+                    if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
                     {
                         uc = new QIP.EOL.frmTMC7036_New();
                     }
