@@ -406,8 +406,8 @@ namespace GlobalFunction
             try
             {
                 string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Config\\" + filename + ".txt";
-                //Debug.WriteLine("Đường dẫn đang tìm: " + filepath);
-                //Debug.WriteLine("File tồn tại không? " + File.Exists(filepath));
+                Debug.WriteLine("Đường dẫn đang tìm: " + filepath);
+                Debug.WriteLine("File tồn tại không? " + File.Exists(filepath));
                 if (!File.Exists(filepath))
                 {
 
