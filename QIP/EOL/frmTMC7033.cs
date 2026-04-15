@@ -16,5 +16,10 @@ namespace QIP.EOL
         {
             InitializeComponent();
         }
+
+        private void frmTMC7033_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

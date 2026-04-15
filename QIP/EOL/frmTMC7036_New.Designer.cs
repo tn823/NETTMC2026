@@ -118,6 +118,7 @@
             button5 = new Button();
             panel5 = new Panel();
             tableLayoutPanel21 = new TableLayoutPanel();
+            label21 = new Label();
             lblCurRate = new Label();
             lblTTLRate = new Label();
             label12 = new Label();
@@ -129,11 +130,8 @@
             label6 = new Label();
             label5 = new Label();
             label4 = new Label();
-            panel6 = new Panel();
-            textBox1 = new TextBox();
-            panel7 = new Panel();
-            textBox2 = new TextBox();
             label2 = new Label();
+            label20 = new Label();
             button4 = new Button();
             tableLayoutPanel22 = new TableLayoutPanel();
             tableLayoutPanel7 = new TableLayoutPanel();
@@ -205,8 +203,6 @@
             tableLayoutPanel9.SuspendLayout();
             panel5.SuspendLayout();
             tableLayoutPanel21.SuspendLayout();
-            panel6.SuspendLayout();
-            panel7.SuspendLayout();
             tableLayoutPanel22.SuspendLayout();
             tableLayoutPanel7.SuspendLayout();
             panel8.SuspendLayout();
@@ -1463,6 +1459,7 @@
             tableLayoutPanel21.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45.1820145F));
             tableLayoutPanel21.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 54.8179855F));
             tableLayoutPanel21.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 168F));
+            tableLayoutPanel21.Controls.Add(label21, 0, 1);
             tableLayoutPanel21.Controls.Add(lblCurRate, 2, 5);
             tableLayoutPanel21.Controls.Add(lblTTLRate, 1, 5);
             tableLayoutPanel21.Controls.Add(label12, 0, 5);
@@ -1474,9 +1471,8 @@
             tableLayoutPanel21.Controls.Add(label6, 0, 3);
             tableLayoutPanel21.Controls.Add(label5, 2, 2);
             tableLayoutPanel21.Controls.Add(label4, 1, 2);
-            tableLayoutPanel21.Controls.Add(panel6, 0, 0);
-            tableLayoutPanel21.Controls.Add(panel7, 0, 1);
             tableLayoutPanel21.Controls.Add(label2, 0, 2);
+            tableLayoutPanel21.Controls.Add(label20, 0, 0);
             tableLayoutPanel21.Dock = DockStyle.Fill;
             tableLayoutPanel21.Location = new Point(0, 0);
             tableLayoutPanel21.Name = "tableLayoutPanel21";
@@ -1490,6 +1486,20 @@
             tableLayoutPanel21.Size = new Size(646, 368);
             tableLayoutPanel21.TabIndex = 0;
             tableLayoutPanel21.Paint += tableLayoutPanel21_Paint;
+            // 
+            // label21
+            // 
+            label21.BackColor = SystemColors.ActiveCaptionText;
+            tableLayoutPanel21.SetColumnSpan(label21, 3);
+            label21.Dock = DockStyle.Fill;
+            label21.Font = new Font("Consolas", 18F, FontStyle.Bold);
+            label21.ForeColor = SystemColors.ButtonHighlight;
+            label21.Location = new Point(4, 52);
+            label21.Name = "label21";
+            label21.Size = new Size(638, 46);
+            label21.TabIndex = 15;
+            label21.Text = "Remark :";
+            label21.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblCurRate
             // 
@@ -1646,57 +1656,6 @@
             label4.Text = "TTL";
             label4.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // panel6
-            // 
-            tableLayoutPanel21.SetColumnSpan(panel6, 3);
-            panel6.Controls.Add(textBox1);
-            panel6.Dock = DockStyle.Fill;
-            panel6.Location = new Point(4, 4);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(638, 44);
-            panel6.TabIndex = 0;
-            // 
-            // textBox1
-            // 
-            textBox1.BackColor = SystemColors.InfoText;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Enabled = false;
-            textBox1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox1.ForeColor = Color.White;
-            textBox1.Location = new Point(0, 0);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(638, 44);
-            textBox1.TabIndex = 0;
-            textBox1.Text = "PRODUCTION INFORMATION";
-            textBox1.TextAlign = HorizontalAlignment.Center;
-            // 
-            // panel7
-            // 
-            tableLayoutPanel21.SetColumnSpan(panel7, 3);
-            panel7.Controls.Add(textBox2);
-            panel7.Dock = DockStyle.Fill;
-            panel7.Location = new Point(4, 55);
-            panel7.Name = "panel7";
-            panel7.Size = new Size(638, 40);
-            panel7.TabIndex = 1;
-            // 
-            // textBox2
-            // 
-            textBox2.BackColor = SystemColors.InfoText;
-            textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Dock = DockStyle.Fill;
-            textBox2.Enabled = false;
-            textBox2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox2.ForeColor = Color.White;
-            textBox2.Location = new Point(0, 0);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(638, 40);
-            textBox2.TabIndex = 1;
-            textBox2.Text = "Remark :";
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -1708,6 +1667,20 @@
             label2.Size = new Size(208, 51);
             label2.TabIndex = 2;
             label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label20
+            // 
+            label20.BackColor = SystemColors.ActiveCaptionText;
+            tableLayoutPanel21.SetColumnSpan(label20, 3);
+            label20.Dock = DockStyle.Fill;
+            label20.Font = new Font("Consolas", 18F, FontStyle.Bold);
+            label20.ForeColor = SystemColors.ButtonHighlight;
+            label20.Location = new Point(4, 1);
+            label20.Name = "label20";
+            label20.Size = new Size(638, 50);
+            label20.TabIndex = 14;
+            label20.Text = "PRODUCTION INFORMATION";
+            label20.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // button4
             // 
@@ -2141,10 +2114,6 @@
             panel5.ResumeLayout(false);
             tableLayoutPanel21.ResumeLayout(false);
             tableLayoutPanel21.PerformLayout();
-            panel6.ResumeLayout(false);
-            panel6.PerformLayout();
-            panel7.ResumeLayout(false);
-            panel7.PerformLayout();
             tableLayoutPanel22.ResumeLayout(false);
             tableLayoutPanel7.ResumeLayout(false);
             panel8.ResumeLayout(false);
@@ -2222,11 +2191,7 @@
         private Panel panel5;
         private TableLayoutPanel tableLayoutPanel21;
         private Panel panel4;
-        private Panel panel6;
-        private TextBox textBox1;
-        private Panel panel7;
         private Label lblFirstDefect;
-        private TextBox textBox2;
         private Label lblCurRate;
         private Label lblTTLRate;
         private Label label12;
@@ -2298,5 +2263,7 @@
         private System.Windows.Forms.Timer timer_BlinkButtonGreen;
         private System.Windows.Forms.Timer timer_BlinkButtonRed;
         private System.Windows.Forms.Timer timer_BlinkButtonYellow;
+        private Label label21;
+        private Label label20;
     }
 }

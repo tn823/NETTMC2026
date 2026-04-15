@@ -840,6 +840,7 @@ namespace QIP.EOL
             lbl1stPass.TabIndex = 8;
             lbl1stPass.Text = "1st PASS :  0";
             lbl1stPass.TextAlign = ContentAlignment.MiddleLeft;
+            lbl1stPass.Click += lbl1stPass_Click;
             // 
             // lblPassTotal
             // 
@@ -888,7 +889,7 @@ namespace QIP.EOL
             checkEdit2.Font = new Font("Tahoma", 8.25F);
             checkEdit2.Location = new Point(166, 36);
             checkEdit2.Name = "checkEdit2";
-            checkEdit2.Size = new Size(102, 21);
+            checkEdit2.Size = new Size(82, 17);
             checkEdit2.TabIndex = 2;
             checkEdit2.Text = "Plan 7 ngày";
             checkEdit2.UseVisualStyleBackColor = true;
@@ -900,7 +901,7 @@ namespace QIP.EOL
             chkPlanOneMonth.Font = new Font("Tahoma", 8.25F);
             chkPlanOneMonth.Location = new Point(166, 9);
             chkPlanOneMonth.Name = "chkPlanOneMonth";
-            chkPlanOneMonth.Size = new Size(107, 21);
+            chkPlanOneMonth.Size = new Size(86, 17);
             chkPlanOneMonth.TabIndex = 1;
             chkPlanOneMonth.Text = "Plan 1 tháng";
             chkPlanOneMonth.UseVisualStyleBackColor = true;
@@ -999,7 +1000,7 @@ namespace QIP.EOL
             labelControl17.Location = new Point(2, 0);
             labelControl17.Margin = new Padding(3, 4, 3, 4);
             labelControl17.Name = "labelControl17";
-            labelControl17.Size = new Size(37, 41);
+            labelControl17.Size = new Size(30, 33);
             labelControl17.TabIndex = 5;
             labelControl17.Text = "0";
             // 
@@ -1091,7 +1092,7 @@ namespace QIP.EOL
             lblPartCount6.Location = new Point(1002, 297);
             lblPartCount6.Margin = new Padding(3, 4, 3, 4);
             lblPartCount6.Name = "lblPartCount6";
-            lblPartCount6.Size = new Size(0, 41);
+            lblPartCount6.Size = new Size(0, 33);
             lblPartCount6.TabIndex = 37;
             // 
             // lblPartCount5
@@ -1102,7 +1103,7 @@ namespace QIP.EOL
             lblPartCount5.Location = new Point(961, 100);
             lblPartCount5.Margin = new Padding(3, 4, 3, 4);
             lblPartCount5.Name = "lblPartCount5";
-            lblPartCount5.Size = new Size(0, 41);
+            lblPartCount5.Size = new Size(0, 33);
             lblPartCount5.TabIndex = 36;
             // 
             // lblPartCount4
@@ -1113,7 +1114,7 @@ namespace QIP.EOL
             lblPartCount4.Location = new Point(831, 308);
             lblPartCount4.Margin = new Padding(3, 4, 3, 4);
             lblPartCount4.Name = "lblPartCount4";
-            lblPartCount4.Size = new Size(0, 41);
+            lblPartCount4.Size = new Size(0, 33);
             lblPartCount4.TabIndex = 35;
             // 
             // lblPartCount3
@@ -1124,7 +1125,7 @@ namespace QIP.EOL
             lblPartCount3.Location = new Point(652, 62);
             lblPartCount3.Margin = new Padding(3, 4, 3, 4);
             lblPartCount3.Name = "lblPartCount3";
-            lblPartCount3.Size = new Size(0, 41);
+            lblPartCount3.Size = new Size(0, 33);
             lblPartCount3.TabIndex = 34;
             // 
             // lblPartCount2
@@ -1135,7 +1136,7 @@ namespace QIP.EOL
             lblPartCount2.Location = new Point(576, 297);
             lblPartCount2.Margin = new Padding(3, 4, 3, 4);
             lblPartCount2.Name = "lblPartCount2";
-            lblPartCount2.Size = new Size(0, 41);
+            lblPartCount2.Size = new Size(0, 33);
             lblPartCount2.TabIndex = 33;
             // 
             // labelControl10
@@ -1146,7 +1147,7 @@ namespace QIP.EOL
             labelControl10.Location = new Point(712, 199);
             labelControl10.Margin = new Padding(3, 4, 3, 4);
             labelControl10.Name = "labelControl10";
-            labelControl10.Size = new Size(0, 41);
+            labelControl10.Size = new Size(0, 33);
             labelControl10.TabIndex = 32;
             // 
             // lblPartCount1
@@ -1157,7 +1158,7 @@ namespace QIP.EOL
             lblPartCount1.Location = new Point(398, 258);
             lblPartCount1.Margin = new Padding(3, 4, 3, 4);
             lblPartCount1.Name = "lblPartCount1";
-            lblPartCount1.Size = new Size(0, 41);
+            lblPartCount1.Size = new Size(0, 33);
             lblPartCount1.TabIndex = 31;
             // 
             // lblPart6
@@ -1170,7 +1171,7 @@ namespace QIP.EOL
             lblPart6.Location = new Point(988, 270);
             lblPart6.Margin = new Padding(3, 4, 3, 4);
             lblPart6.Name = "lblPart6";
-            lblPart6.Size = new Size(100, 89);
+            lblPart6.Size = new Size(80, 72);
             lblPart6.TabIndex = 30;
             lblPart6.Text = "O";
             // 
@@ -1184,7 +1185,7 @@ namespace QIP.EOL
             lblPart5.Location = new Point(944, 80);
             lblPart5.Margin = new Padding(3, 4, 3, 4);
             lblPart5.Name = "lblPart5";
-            lblPart5.Size = new Size(100, 89);
+            lblPart5.Size = new Size(80, 72);
             lblPart5.TabIndex = 29;
             lblPart5.Text = "O";
             // 
@@ -1198,7 +1199,7 @@ namespace QIP.EOL
             lblPart4.Location = new Point(807, 284);
             lblPart4.Margin = new Padding(3, 4, 3, 4);
             lblPart4.Name = "lblPart4";
-            lblPart4.Size = new Size(100, 89);
+            lblPart4.Size = new Size(80, 72);
             lblPart4.TabIndex = 28;
             lblPart4.Text = "O";
             // 
@@ -1212,7 +1213,7 @@ namespace QIP.EOL
             lblPart3.Location = new Point(636, 39);
             lblPart3.Margin = new Padding(3, 4, 3, 4);
             lblPart3.Name = "lblPart3";
-            lblPart3.Size = new Size(100, 89);
+            lblPart3.Size = new Size(80, 72);
             lblPart3.TabIndex = 27;
             lblPart3.Text = "O";
             // 
@@ -1226,7 +1227,7 @@ namespace QIP.EOL
             lblPart2.Location = new Point(556, 270);
             lblPart2.Margin = new Padding(3, 4, 3, 4);
             lblPart2.Name = "lblPart2";
-            lblPart2.Size = new Size(100, 89);
+            lblPart2.Size = new Size(80, 72);
             lblPart2.TabIndex = 26;
             lblPart2.Text = "O";
             // 
@@ -1239,7 +1240,7 @@ namespace QIP.EOL
             lblPart1.Location = new Point(377, 238);
             lblPart1.Margin = new Padding(3, 4, 3, 4);
             lblPart1.Name = "lblPart1";
-            lblPart1.Size = new Size(100, 89);
+            lblPart1.Size = new Size(80, 72);
             lblPart1.TabIndex = 25;
             lblPart1.Text = "O";
             // 
@@ -1330,7 +1331,7 @@ namespace QIP.EOL
             labelControl15.Location = new Point(2, -5);
             labelControl15.Margin = new Padding(3, 4, 3, 4);
             labelControl15.Name = "labelControl15";
-            labelControl15.Size = new Size(37, 41);
+            labelControl15.Size = new Size(30, 33);
             labelControl15.TabIndex = 5;
             labelControl15.Text = "0";
             // 
@@ -1370,7 +1371,7 @@ namespace QIP.EOL
             labelControl16.Location = new Point(2, 0);
             labelControl16.Margin = new Padding(3, 4, 3, 4);
             labelControl16.Name = "labelControl16";
-            labelControl16.Size = new Size(37, 41);
+            labelControl16.Size = new Size(30, 33);
             labelControl16.TabIndex = 5;
             labelControl16.Text = "0";
             // 
@@ -1410,7 +1411,7 @@ namespace QIP.EOL
             labelControl18.Location = new Point(2, 0);
             labelControl18.Margin = new Padding(3, 4, 3, 4);
             labelControl18.Name = "labelControl18";
-            labelControl18.Size = new Size(37, 41);
+            labelControl18.Size = new Size(30, 33);
             labelControl18.TabIndex = 5;
             labelControl18.Text = "0";
             // 
@@ -1450,7 +1451,7 @@ namespace QIP.EOL
             labelControl19.Location = new Point(2, 0);
             labelControl19.Margin = new Padding(3, 4, 3, 4);
             labelControl19.Name = "labelControl19";
-            labelControl19.Size = new Size(37, 41);
+            labelControl19.Size = new Size(30, 33);
             labelControl19.TabIndex = 5;
             labelControl19.Text = "0";
             // 
@@ -1490,7 +1491,7 @@ namespace QIP.EOL
             labelControl14.Location = new Point(2, 0);
             labelControl14.Margin = new Padding(3, 4, 3, 4);
             labelControl14.Name = "labelControl14";
-            labelControl14.Size = new Size(37, 41);
+            labelControl14.Size = new Size(30, 33);
             labelControl14.TabIndex = 5;
             labelControl14.Text = "0";
             // 
@@ -1835,7 +1836,7 @@ namespace QIP.EOL
             labelControl13.Location = new Point(2, 0);
             labelControl13.Margin = new Padding(3, 4, 3, 4);
             labelControl13.Name = "labelControl13";
-            labelControl13.Size = new Size(37, 41);
+            labelControl13.Size = new Size(30, 33);
             labelControl13.TabIndex = 5;
             labelControl13.Text = "0";
             // 
@@ -1875,7 +1876,7 @@ namespace QIP.EOL
             labelControl12.Location = new Point(2, 0);
             labelControl12.Margin = new Padding(3, 4, 3, 4);
             labelControl12.Name = "labelControl12";
-            labelControl12.Size = new Size(37, 41);
+            labelControl12.Size = new Size(30, 33);
             labelControl12.TabIndex = 5;
             labelControl12.Text = "0";
             // 
@@ -2103,7 +2104,7 @@ namespace QIP.EOL
             lblCount21.Location = new Point(2, 0);
             lblCount21.Margin = new Padding(3, 4, 3, 4);
             lblCount21.Name = "lblCount21";
-            lblCount21.Size = new Size(37, 41);
+            lblCount21.Size = new Size(30, 33);
             lblCount21.TabIndex = 5;
             lblCount21.Text = "0";
             // 
@@ -2144,7 +2145,7 @@ namespace QIP.EOL
             lblCount0.Location = new Point(0, 0);
             lblCount0.Margin = new Padding(3, 4, 3, 4);
             lblCount0.Name = "lblCount0";
-            lblCount0.Size = new Size(37, 41);
+            lblCount0.Size = new Size(30, 33);
             lblCount0.TabIndex = 6;
             lblCount0.Text = "0";
             // 
@@ -2216,7 +2217,7 @@ namespace QIP.EOL
             // 
             // frmTMC7033_A14
             // 
-            AutoScaleDimensions = new SizeF(7F, 16F);
+            AutoScaleDimensions = new SizeF(6F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = SystemColors.ButtonFace;
