@@ -1054,6 +1054,12 @@ namespace QIP.EOL
         {
             return etc.CountPassFail("Fail", "FailBTS_" + DateTime.Now.ToString("yyyyMMdd"));
         }
+
+
+        // =============================================================================
+
+
+
         //private DataTable GetDataTable(GridView view)
         //{
         //    DataTable dt = new DataTable();
@@ -1082,6 +1088,13 @@ namespace QIP.EOL
             }
             return dt;
         }
+
+
+        // =============================================================================
+
+
+
+
         private void simpleButton14_Click(object sender, EventArgs e)
         {
             Popup.SendPictureDefectEOL sendpicture = new Popup.SendPictureDefectEOL();
