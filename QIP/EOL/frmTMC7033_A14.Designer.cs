@@ -1,4 +1,6 @@
-﻿namespace QIP.EOL
+﻿using System.ComponentModel;
+
+namespace QIP.EOL
 {
     partial class frmTMC7033_A14
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             btnSPCBonding = new Button();
             btnSPCStitching = new Button();
@@ -122,23 +125,23 @@
             simpleButton1 = new Button();
             tableLayoutErrorRight = new TableLayoutPanel();
             panelControl17 = new Panel();
-            simpleButton11 = new Button();
             labelControl20 = new Label();
+            simpleButton11 = new Button();
             panelControl18 = new Panel();
-            simpleButton12 = new Button();
             labelControl21 = new Label();
+            simpleButton12 = new Button();
             panelControl19 = new Panel();
-            simpleButton13 = new Button();
             labelControl22 = new Label();
+            simpleButton13 = new Button();
             panelControl20 = new Panel();
-            simpleButton15 = new Button();
             labelControl23 = new Label();
+            simpleButton15 = new Button();
             panelControl21 = new Panel();
-            simpleButton16 = new Button();
             labelControl24 = new Label();
+            simpleButton16 = new Button();
             panelControl22 = new Panel();
-            simpleButton17 = new Button();
             labelControl25 = new Label();
+            simpleButton17 = new Button();
             panelControl4 = new Panel();
             tableLayoutPanel2 = new TableLayoutPanel();
             panelControl8 = new Panel();
@@ -166,6 +169,17 @@
             panelControl10 = new Panel();
             lblCount0 = new Label();
             simpleButton5 = new Button();
+            backgroundWorkerCheckAndon = new BackgroundWorker();
+            timerCheckAndon = new System.Windows.Forms.Timer(components);
+            backgroundOracle = new BackgroundWorker();
+            timerBindProduction = new System.Windows.Forms.Timer(components);
+            timer_CheckStopLine = new System.Windows.Forms.Timer(components);
+            backgroundWorkerStopLine = new BackgroundWorker();
+            timer_SyncData = new System.Windows.Forms.Timer(components);
+            backgroundSyncData = new BackgroundWorker();
+            timer_BlinkButtonRed = new System.Windows.Forms.Timer(components);
+            timer_BlinkButtonYellow = new System.Windows.Forms.Timer(components);
+            timer_BlinkButtonGreen = new System.Windows.Forms.Timer(components);
             tableLayoutPanel1.SuspendLayout();
             panel7.SuspendLayout();
             panel1.SuspendLayout();
@@ -185,9 +199,9 @@
             panel11.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             panel14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)grdOfflineData).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureShoes).BeginInit();
+            ((ISupportInitialize)grdOfflineData).BeginInit();
+            ((ISupportInitialize)gridControl1).BeginInit();
+            ((ISupportInitialize)pictureShoes).BeginInit();
             tableLayoutErrorLeft.SuspendLayout();
             panelControl12.SuspendLayout();
             panelControl13.SuspendLayout();
@@ -812,7 +826,6 @@
             lblFailTotal.TabIndex = 9;
             lblFailTotal.Text = "FAIL : 0";
             lblFailTotal.TextAlign = ContentAlignment.MiddleLeft;
-            lblFailTotal.Click += lblFailTotal_Click;
             // 
             // lbl1stPass
             // 
@@ -1229,7 +1242,6 @@
             lblPart1.Size = new Size(100, 89);
             lblPart1.TabIndex = 25;
             lblPart1.Text = "O";
-            lblPart1.Click += lblPart1_Click;
             // 
             // txtMessage
             // 
@@ -1499,279 +1511,267 @@
             // 
             // tableLayoutErrorRight
             // 
-            this.tableLayoutErrorRight.ColumnCount = 1;
-            this.tableLayoutErrorRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutErrorRight.Controls.Add(this.panelControl17, 0, 0);
-            this.tableLayoutErrorRight.Controls.Add(this.panelControl18, 0, 1);
-            this.tableLayoutErrorRight.Controls.Add(this.panelControl19, 0, 2);
-            this.tableLayoutErrorRight.Controls.Add(this.panelControl20, 0, 3);
-            this.tableLayoutErrorRight.Controls.Add(this.panelControl21, 0, 4);
-            this.tableLayoutErrorRight.Controls.Add(this.panelControl22, 0, 5);
-            this.tableLayoutErrorRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutErrorRight.Location = new System.Drawing.Point(1673, 4);
-            this.tableLayoutErrorRight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tableLayoutErrorRight.Name = "tableLayoutErrorRight";
-            this.tableLayoutErrorRight.RowCount = 6;
-            this.tableLayoutErrorRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutErrorRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutErrorRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutErrorRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutErrorRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutErrorRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutErrorRight.Size = new System.Drawing.Size(413, 242);
-            this.tableLayoutErrorRight.TabIndex = 2;
+            tableLayoutErrorRight.ColumnCount = 1;
+            tableLayoutErrorRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutErrorRight.Controls.Add(panelControl17, 0, 0);
+            tableLayoutErrorRight.Controls.Add(panelControl18, 0, 1);
+            tableLayoutErrorRight.Controls.Add(panelControl19, 0, 2);
+            tableLayoutErrorRight.Controls.Add(panelControl20, 0, 3);
+            tableLayoutErrorRight.Controls.Add(panelControl21, 0, 4);
+            tableLayoutErrorRight.Controls.Add(panelControl22, 0, 5);
+            tableLayoutErrorRight.Dock = DockStyle.Fill;
+            tableLayoutErrorRight.Location = new Point(2187, 4);
+            tableLayoutErrorRight.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutErrorRight.Name = "tableLayoutErrorRight";
+            tableLayoutErrorRight.RowCount = 6;
+            tableLayoutErrorRight.RowStyles.Add(new RowStyle(SizeType.Percent, 16.66667F));
+            tableLayoutErrorRight.RowStyles.Add(new RowStyle(SizeType.Percent, 16.66667F));
+            tableLayoutErrorRight.RowStyles.Add(new RowStyle(SizeType.Percent, 16.66667F));
+            tableLayoutErrorRight.RowStyles.Add(new RowStyle(SizeType.Percent, 16.66667F));
+            tableLayoutErrorRight.RowStyles.Add(new RowStyle(SizeType.Percent, 16.66667F));
+            tableLayoutErrorRight.RowStyles.Add(new RowStyle(SizeType.Percent, 16.66667F));
+            tableLayoutErrorRight.Size = new Size(540, 367);
+            tableLayoutErrorRight.TabIndex = 2;
             // 
             // panelControl17
             // 
-            this.panelControl17.Controls.Add(this.labelControl20);
-            this.panelControl17.Controls.Add(this.simpleButton11);
-            this.panelControl17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl17.Location = new System.Drawing.Point(3, 4);
-            this.panelControl17.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelControl17.Name = "panelControl17";
-            this.panelControl17.Size = new System.Drawing.Size(407, 32);
-            this.panelControl17.TabIndex = 15;
-
+            panelControl17.Controls.Add(labelControl20);
+            panelControl17.Controls.Add(simpleButton11);
+            panelControl17.Dock = DockStyle.Fill;
+            panelControl17.Location = new Point(3, 4);
+            panelControl17.Margin = new Padding(3, 4, 3, 4);
+            panelControl17.Name = "panelControl17";
+            panelControl17.Size = new Size(534, 53);
+            panelControl17.TabIndex = 15;
             // 
             // labelControl20
             // 
-            this.labelControl20.AccessibleName = "C8";
-            this.labelControl20.AutoSize = true;
-            this.labelControl20.BackColor = System.Drawing.Color.AliceBlue;
-            this.labelControl20.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl20.ForeColor = System.Drawing.Color.Red;
-            this.labelControl20.Location = new System.Drawing.Point(2, 0);
-            this.labelControl20.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.labelControl20.Name = "labelControl20";
-            this.labelControl20.TabIndex = 5;
-            this.labelControl20.Text = "0";
-
+            labelControl20.AccessibleName = "C8";
+            labelControl20.AutoSize = true;
+            labelControl20.BackColor = Color.AliceBlue;
+            labelControl20.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelControl20.ForeColor = Color.Red;
+            labelControl20.Location = new Point(2, 0);
+            labelControl20.Margin = new Padding(3, 4, 3, 4);
+            labelControl20.Name = "labelControl20";
+            labelControl20.Size = new Size(37, 41);
+            labelControl20.TabIndex = 5;
+            labelControl20.Text = "0";
             // 
             // simpleButton11
             // 
-            this.simpleButton11.AccessibleName = "8";
-            this.simpleButton11.BackColor = System.Drawing.Color.AliceBlue;
-            this.simpleButton11.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simpleButton11.Location = new System.Drawing.Point(2, 2);
-            this.simpleButton11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.simpleButton11.Name = "simpleButton11";
-            this.simpleButton11.Size = new System.Drawing.Size(403, 28);
-            this.simpleButton11.TabIndex = 4;
-            this.simpleButton11.Text = "Lieu da that/ da gia bi hu";
-            this.simpleButton11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.simpleButton11.UseVisualStyleBackColor = false;
-            this.simpleButton11.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton11.AccessibleName = "8";
+            simpleButton11.BackColor = Color.AliceBlue;
+            simpleButton11.Dock = DockStyle.Fill;
+            simpleButton11.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton11.Location = new Point(0, 0);
+            simpleButton11.Margin = new Padding(3, 4, 3, 4);
+            simpleButton11.Name = "simpleButton11";
+            simpleButton11.Size = new Size(534, 53);
+            simpleButton11.TabIndex = 4;
+            simpleButton11.Text = "Lieu da that/ da gia bi hu";
+            simpleButton11.UseVisualStyleBackColor = false;
+            simpleButton11.Click += simpleButton23_Click;
             // 
             // panelControl18
             // 
-            this.panelControl18.Controls.Add(this.labelControl21);
-            this.panelControl18.Controls.Add(this.simpleButton12);
-            this.panelControl18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl18.Location = new System.Drawing.Point(3, 44);
-            this.panelControl18.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelControl18.Name = "panelControl18";
-            this.panelControl18.Size = new System.Drawing.Size(407, 32);
-            this.panelControl18.TabIndex = 15;
-
+            panelControl18.Controls.Add(labelControl21);
+            panelControl18.Controls.Add(simpleButton12);
+            panelControl18.Dock = DockStyle.Fill;
+            panelControl18.Location = new Point(3, 65);
+            panelControl18.Margin = new Padding(3, 4, 3, 4);
+            panelControl18.Name = "panelControl18";
+            panelControl18.Size = new Size(534, 53);
+            panelControl18.TabIndex = 15;
             // 
             // labelControl21
             // 
-            this.labelControl21.AccessibleName = "C9";
-            this.labelControl21.AutoSize = true;
-            this.labelControl21.BackColor = System.Drawing.Color.AliceBlue;
-            this.labelControl21.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl21.ForeColor = System.Drawing.Color.Red;
-            this.labelControl21.Location = new System.Drawing.Point(2, 0);
-            this.labelControl21.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.labelControl21.Name = "labelControl21";
-            this.labelControl21.TabIndex = 5;
-            this.labelControl21.Text = "0";
-
+            labelControl21.AccessibleName = "C9";
+            labelControl21.AutoSize = true;
+            labelControl21.BackColor = Color.AliceBlue;
+            labelControl21.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelControl21.ForeColor = Color.Red;
+            labelControl21.Location = new Point(2, 0);
+            labelControl21.Margin = new Padding(3, 4, 3, 4);
+            labelControl21.Name = "labelControl21";
+            labelControl21.Size = new Size(37, 41);
+            labelControl21.TabIndex = 5;
+            labelControl21.Text = "0";
             // 
             // simpleButton12
             // 
-            this.simpleButton12.AccessibleName = "9";
-            this.simpleButton12.BackColor = System.Drawing.Color.AliceBlue;
-            this.simpleButton12.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simpleButton12.Location = new System.Drawing.Point(2, 2);
-            this.simpleButton12.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.simpleButton12.Name = "simpleButton12";
-            this.simpleButton12.Size = new System.Drawing.Size(403, 28);
-            this.simpleButton12.TabIndex = 4;
-            this.simpleButton12.Text = "Lieu da that/ da gia bi hu";
-            this.simpleButton12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.simpleButton12.UseVisualStyleBackColor = false;
-            this.simpleButton12.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton12.AccessibleName = "9";
+            simpleButton12.BackColor = Color.AliceBlue;
+            simpleButton12.Dock = DockStyle.Fill;
+            simpleButton12.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton12.Location = new Point(0, 0);
+            simpleButton12.Margin = new Padding(3, 4, 3, 4);
+            simpleButton12.Name = "simpleButton12";
+            simpleButton12.Size = new Size(534, 53);
+            simpleButton12.TabIndex = 4;
+            simpleButton12.Text = "Lieu da that/ da gia bi hu";
+            simpleButton12.UseVisualStyleBackColor = false;
+            simpleButton12.Click += simpleButton23_Click;
             // 
             // panelControl19
             // 
-            this.panelControl19.Controls.Add(this.labelControl22);
-            this.panelControl19.Controls.Add(this.simpleButton13);
-            this.panelControl19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl19.Location = new System.Drawing.Point(3, 84);
-            this.panelControl19.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelControl19.Name = "panelControl19";
-            this.panelControl19.Size = new System.Drawing.Size(407, 32);
-            this.panelControl19.TabIndex = 15;
-
+            panelControl19.Controls.Add(labelControl22);
+            panelControl19.Controls.Add(simpleButton13);
+            panelControl19.Dock = DockStyle.Fill;
+            panelControl19.Location = new Point(3, 126);
+            panelControl19.Margin = new Padding(3, 4, 3, 4);
+            panelControl19.Name = "panelControl19";
+            panelControl19.Size = new Size(534, 53);
+            panelControl19.TabIndex = 15;
             // 
             // labelControl22
             // 
-            this.labelControl22.AccessibleName = "C12";
-            this.labelControl22.AutoSize = true;
-            this.labelControl22.BackColor = System.Drawing.Color.AliceBlue;
-            this.labelControl22.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl22.ForeColor = System.Drawing.Color.Red;
-            this.labelControl22.Location = new System.Drawing.Point(2, 0);
-            this.labelControl22.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.labelControl22.Name = "labelControl22";
-            this.labelControl22.TabIndex = 5;
-            this.labelControl22.Text = "0";
-
+            labelControl22.AccessibleName = "C12";
+            labelControl22.AutoSize = true;
+            labelControl22.BackColor = Color.AliceBlue;
+            labelControl22.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelControl22.ForeColor = Color.Red;
+            labelControl22.Location = new Point(2, 0);
+            labelControl22.Margin = new Padding(3, 4, 3, 4);
+            labelControl22.Name = "labelControl22";
+            labelControl22.Size = new Size(37, 41);
+            labelControl22.TabIndex = 5;
+            labelControl22.Text = "0";
             // 
             // simpleButton13
             // 
-            this.simpleButton13.AccessibleName = "12";
-            this.simpleButton13.BackColor = System.Drawing.Color.AliceBlue;
-            this.simpleButton13.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simpleButton13.Location = new System.Drawing.Point(2, 2);
-            this.simpleButton13.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.simpleButton13.Name = "simpleButton13";
-            this.simpleButton13.Size = new System.Drawing.Size(403, 28);
-            this.simpleButton13.TabIndex = 4;
-            this.simpleButton13.Text = "Lieu da that/ da gia bi hu";
-            this.simpleButton13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.simpleButton13.UseVisualStyleBackColor = false;
-            this.simpleButton13.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton13.AccessibleName = "12";
+            simpleButton13.BackColor = Color.AliceBlue;
+            simpleButton13.Dock = DockStyle.Fill;
+            simpleButton13.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton13.Location = new Point(0, 0);
+            simpleButton13.Margin = new Padding(3, 4, 3, 4);
+            simpleButton13.Name = "simpleButton13";
+            simpleButton13.Size = new Size(534, 53);
+            simpleButton13.TabIndex = 4;
+            simpleButton13.Text = "Lieu da that/ da gia bi hu";
+            simpleButton13.UseVisualStyleBackColor = false;
+            simpleButton13.Click += simpleButton23_Click;
             // 
             // panelControl20
             // 
-            this.panelControl20.Controls.Add(this.labelControl23);
-            this.panelControl20.Controls.Add(this.simpleButton15);
-            this.panelControl20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl20.Location = new System.Drawing.Point(3, 124);
-            this.panelControl20.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelControl20.Name = "panelControl20";
-            this.panelControl20.Size = new System.Drawing.Size(407, 32);
-            this.panelControl20.TabIndex = 15;
-
+            panelControl20.Controls.Add(labelControl23);
+            panelControl20.Controls.Add(simpleButton15);
+            panelControl20.Dock = DockStyle.Fill;
+            panelControl20.Location = new Point(3, 187);
+            panelControl20.Margin = new Padding(3, 4, 3, 4);
+            panelControl20.Name = "panelControl20";
+            panelControl20.Size = new Size(534, 53);
+            panelControl20.TabIndex = 15;
             // 
             // labelControl23
             // 
-            this.labelControl23.AccessibleName = "C23";
-            this.labelControl23.AutoSize = true;
-            this.labelControl23.BackColor = System.Drawing.Color.AliceBlue;
-            this.labelControl23.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl23.ForeColor = System.Drawing.Color.Red;
-            this.labelControl23.Location = new System.Drawing.Point(2, 0);
-            this.labelControl23.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.labelControl23.Name = "labelControl23";
-            this.labelControl23.TabIndex = 5;
-            this.labelControl23.Text = "0";
-
+            labelControl23.AccessibleName = "C23";
+            labelControl23.AutoSize = true;
+            labelControl23.BackColor = Color.AliceBlue;
+            labelControl23.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelControl23.ForeColor = Color.Red;
+            labelControl23.Location = new Point(2, 0);
+            labelControl23.Margin = new Padding(3, 4, 3, 4);
+            labelControl23.Name = "labelControl23";
+            labelControl23.Size = new Size(37, 41);
+            labelControl23.TabIndex = 5;
+            labelControl23.Text = "0";
             // 
             // simpleButton15
             // 
-            this.simpleButton15.AccessibleName = "23";
-            this.simpleButton15.BackColor = System.Drawing.Color.AliceBlue;
-            this.simpleButton15.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simpleButton15.Location = new System.Drawing.Point(2, 2);
-            this.simpleButton15.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.simpleButton15.Name = "simpleButton15";
-            this.simpleButton15.Size = new System.Drawing.Size(403, 28);
-            this.simpleButton15.TabIndex = 4;
-            this.simpleButton15.Text = "Lieu da that/ da gia bi hu";
-            this.simpleButton15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.simpleButton15.UseVisualStyleBackColor = false;
-            this.simpleButton15.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton15.AccessibleName = "23";
+            simpleButton15.BackColor = Color.AliceBlue;
+            simpleButton15.Dock = DockStyle.Fill;
+            simpleButton15.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton15.Location = new Point(0, 0);
+            simpleButton15.Margin = new Padding(3, 4, 3, 4);
+            simpleButton15.Name = "simpleButton15";
+            simpleButton15.Size = new Size(534, 53);
+            simpleButton15.TabIndex = 4;
+            simpleButton15.Text = "Lieu da that/ da gia bi hu";
+            simpleButton15.UseVisualStyleBackColor = false;
+            simpleButton15.Click += simpleButton23_Click;
             // 
             // panelControl21
             // 
-            this.panelControl21.Controls.Add(this.labelControl24);
-            this.panelControl21.Controls.Add(this.simpleButton16);
-            this.panelControl21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl21.Location = new System.Drawing.Point(3, 164);
-            this.panelControl21.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelControl21.Name = "panelControl21";
-            this.panelControl21.Size = new System.Drawing.Size(407, 32);
-            this.panelControl21.TabIndex = 15;
-
+            panelControl21.Controls.Add(labelControl24);
+            panelControl21.Controls.Add(simpleButton16);
+            panelControl21.Dock = DockStyle.Fill;
+            panelControl21.Location = new Point(3, 248);
+            panelControl21.Margin = new Padding(3, 4, 3, 4);
+            panelControl21.Name = "panelControl21";
+            panelControl21.Size = new Size(534, 53);
+            panelControl21.TabIndex = 15;
             // 
             // labelControl24
             // 
-            this.labelControl24.AccessibleName = "C79";
-            this.labelControl24.AutoSize = true;
-            this.labelControl24.BackColor = System.Drawing.Color.AliceBlue;
-            this.labelControl24.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl24.ForeColor = System.Drawing.Color.Red;
-            this.labelControl24.Location = new System.Drawing.Point(2, 0);
-            this.labelControl24.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.labelControl24.Name = "labelControl24";
-            this.labelControl24.TabIndex = 5;
-            this.labelControl24.Text = "0";
-
+            labelControl24.AccessibleName = "C79";
+            labelControl24.AutoSize = true;
+            labelControl24.BackColor = Color.AliceBlue;
+            labelControl24.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelControl24.ForeColor = Color.Red;
+            labelControl24.Location = new Point(2, 0);
+            labelControl24.Margin = new Padding(3, 4, 3, 4);
+            labelControl24.Name = "labelControl24";
+            labelControl24.Size = new Size(37, 41);
+            labelControl24.TabIndex = 5;
+            labelControl24.Text = "0";
             // 
             // simpleButton16
             // 
-            this.simpleButton16.AccessibleName = "79";
-            this.simpleButton16.BackColor = System.Drawing.Color.AliceBlue;
-            this.simpleButton16.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simpleButton16.Location = new System.Drawing.Point(2, 2);
-            this.simpleButton16.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.simpleButton16.Name = "simpleButton16";
-            this.simpleButton16.Size = new System.Drawing.Size(403, 28);
-            this.simpleButton16.TabIndex = 4;
-            this.simpleButton16.Text = "Lieu da that/ da gia bi hu";
-            this.simpleButton16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.simpleButton16.UseVisualStyleBackColor = false;
-            this.simpleButton16.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton16.AccessibleName = "79";
+            simpleButton16.BackColor = Color.AliceBlue;
+            simpleButton16.Dock = DockStyle.Fill;
+            simpleButton16.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton16.Location = new Point(0, 0);
+            simpleButton16.Margin = new Padding(3, 4, 3, 4);
+            simpleButton16.Name = "simpleButton16";
+            simpleButton16.Size = new Size(534, 53);
+            simpleButton16.TabIndex = 4;
+            simpleButton16.Text = "Lieu da that/ da gia bi hu";
+            simpleButton16.UseVisualStyleBackColor = false;
+            simpleButton16.Click += simpleButton23_Click;
             // 
             // panelControl22
             // 
-            this.panelControl22.Controls.Add(this.labelControl25);
-            this.panelControl22.Controls.Add(this.simpleButton17);
-            this.panelControl22.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl22.Location = new System.Drawing.Point(3, 204);
-            this.panelControl22.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelControl22.Name = "panelControl22";
-            this.panelControl22.Size = new System.Drawing.Size(407, 34);
-            this.panelControl22.TabIndex = 15;
-
+            panelControl22.Controls.Add(labelControl25);
+            panelControl22.Controls.Add(simpleButton17);
+            panelControl22.Dock = DockStyle.Fill;
+            panelControl22.Location = new Point(3, 309);
+            panelControl22.Margin = new Padding(3, 4, 3, 4);
+            panelControl22.Name = "panelControl22";
+            panelControl22.Size = new Size(534, 54);
+            panelControl22.TabIndex = 15;
             // 
             // labelControl25
             // 
-            this.labelControl25.AccessibleName = "C22";
-            this.labelControl25.AutoSize = true;
-            this.labelControl25.BackColor = System.Drawing.Color.AliceBlue;
-            this.labelControl25.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelControl25.ForeColor = System.Drawing.Color.Red;
-            this.labelControl25.Location = new System.Drawing.Point(2, 0);
-            this.labelControl25.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.labelControl25.Name = "labelControl25";
-            this.labelControl25.TabIndex = 5;
-            this.labelControl25.Text = "0";
-
+            labelControl25.AccessibleName = "C22";
+            labelControl25.AutoSize = true;
+            labelControl25.BackColor = Color.AliceBlue;
+            labelControl25.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelControl25.ForeColor = Color.Red;
+            labelControl25.Location = new Point(2, 0);
+            labelControl25.Margin = new Padding(3, 4, 3, 4);
+            labelControl25.Name = "labelControl25";
+            labelControl25.Size = new Size(37, 41);
+            labelControl25.TabIndex = 5;
+            labelControl25.Text = "0";
             // 
             // simpleButton17
             // 
-            this.simpleButton17.AccessibleName = "22";
-            this.simpleButton17.BackColor = System.Drawing.Color.AliceBlue;
-            this.simpleButton17.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simpleButton17.Location = new System.Drawing.Point(2, 2);
-            this.simpleButton17.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.simpleButton17.Name = "simpleButton17";
-            this.simpleButton17.Size = new System.Drawing.Size(403, 30);
-            this.simpleButton17.TabIndex = 4;
-            this.simpleButton17.Text = "Lieu da that/ da gia bi hu";
-            this.simpleButton17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.simpleButton17.UseVisualStyleBackColor = false;
-            this.simpleButton17.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton17.AccessibleName = "22";
+            simpleButton17.BackColor = Color.AliceBlue;
+            simpleButton17.Dock = DockStyle.Fill;
+            simpleButton17.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton17.Location = new Point(0, 0);
+            simpleButton17.Margin = new Padding(3, 4, 3, 4);
+            simpleButton17.Name = "simpleButton17";
+            simpleButton17.Size = new Size(534, 54);
+            simpleButton17.TabIndex = 4;
+            simpleButton17.Text = "Lieu da that/ da gia bi hu";
+            simpleButton17.UseVisualStyleBackColor = false;
+            simpleButton17.Click += simpleButton23_Click;
             // 
             // panelControl4
             // 
@@ -2163,6 +2163,57 @@
             simpleButton5.UseVisualStyleBackColor = false;
             simpleButton5.Click += simpleButton23_Click;
             // 
+            // backgroundWorkerCheckAndon
+            // 
+            backgroundWorkerCheckAndon.WorkerReportsProgress = true;
+            backgroundWorkerCheckAndon.WorkerSupportsCancellation = true;
+            // 
+            // timerCheckAndon
+            // 
+            timerCheckAndon.Enabled = true;
+            timerCheckAndon.Interval = 1000;
+            // 
+            // backgroundOracle
+            // 
+            backgroundOracle.WorkerReportsProgress = true;
+            backgroundOracle.WorkerSupportsCancellation = true;
+            // 
+            // timerBindProduction
+            // 
+            timerBindProduction.Enabled = true;
+            timerBindProduction.Interval = 20000;
+            // 
+            // timer_CheckStopLine
+            // 
+            timer_CheckStopLine.Enabled = true;
+            timer_CheckStopLine.Interval = 3000;
+            // 
+            // backgroundWorkerStopLine
+            // 
+            backgroundWorkerStopLine.WorkerReportsProgress = true;
+            backgroundWorkerStopLine.WorkerSupportsCancellation = true;
+            // 
+            // timer_SyncData
+            // 
+            timer_SyncData.Interval = 20000;
+            // 
+            // backgroundSyncData
+            // 
+            backgroundSyncData.WorkerReportsProgress = true;
+            backgroundSyncData.WorkerSupportsCancellation = true;
+            // 
+            // timer_BlinkButtonRed
+            // 
+            timer_BlinkButtonRed.Interval = 1000;
+            // 
+            // timer_BlinkButtonYellow
+            // 
+            timer_BlinkButtonYellow.Interval = 1000;
+            // 
+            // timer_BlinkButtonGreen
+            // 
+            timer_BlinkButtonGreen.Interval = 1000;
+            // 
             // frmTMC7033_A14
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
@@ -2202,9 +2253,9 @@
             tableLayoutPanel3.ResumeLayout(false);
             panel14.ResumeLayout(false);
             panel14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)grdOfflineData).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureShoes).EndInit();
+            ((ISupportInitialize)grdOfflineData).EndInit();
+            ((ISupportInitialize)gridControl1).EndInit();
+            ((ISupportInitialize)pictureShoes).EndInit();
             tableLayoutErrorLeft.ResumeLayout(false);
             panelControl12.ResumeLayout(false);
             panelControl12.PerformLayout();
@@ -2218,11 +2269,17 @@
             panelControl11.PerformLayout();
             tableLayoutErrorRight.ResumeLayout(false);
             panelControl17.ResumeLayout(false);
+            panelControl17.PerformLayout();
             panelControl18.ResumeLayout(false);
+            panelControl18.PerformLayout();
             panelControl19.ResumeLayout(false);
+            panelControl19.PerformLayout();
             panelControl20.ResumeLayout(false);
+            panelControl20.PerformLayout();
             panelControl21.ResumeLayout(false);
+            panelControl21.PerformLayout();
             panelControl22.ResumeLayout(false);
+            panelControl22.PerformLayout();
             panelControl4.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             panelControl8.ResumeLayout(false);
@@ -2379,5 +2436,16 @@
         private Panel panelControl8;
         private Label labelControl13;
         private Button simpleButton9;
+        private System.Windows.Forms.Timer timer_BlinkButtonRed;
+        private BackgroundWorker backgroundWorkerCheckAndon;
+        private System.Windows.Forms.Timer timerCheckAndon;
+        public BackgroundWorker backgroundOracle;
+        private System.Windows.Forms.Timer timerBindProduction;
+        private System.Windows.Forms.Timer timer_CheckStopLine;
+        private BackgroundWorker backgroundWorkerStopLine;
+        private System.Windows.Forms.Timer timer_SyncData;
+        public BackgroundWorker backgroundSyncData;
+        private System.Windows.Forms.Timer timer_BlinkButtonYellow;
+        private System.Windows.Forms.Timer timer_BlinkButtonGreen;
     }
 }
