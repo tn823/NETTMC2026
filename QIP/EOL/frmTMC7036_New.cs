@@ -1117,37 +1117,37 @@ namespace QIP.EOL
         }
         private async void processStopLine(string partname, string partid, string reasonid, string reason)
         {
-            //await Task.Run(() =>
-            //{
-            //    if (InsertIntoLogHistory(reasonid))
-            //    {
-            //        //SetAlarm(lblLineInfo.Text + " Stop line", "Part : " + partname + " Defect " + reason + " now over 6 times. Please check it", 10, reason);
-            //        SetAlarm(txtLineName.Text + " Stop line ", " Reason : " + reason + ". Please check it", 10, reason);
-            //        var resultStoplineOn = TurnOnStopLineAsync();
-            //        if (resultStoplineOn.IsCompleted)
-            //        {
-            //            var resultAndonOn = TurnOnAndonAsync("R");
-            //        }
+            await Task.Run(() =>
+            {
+                if (InsertIntoLogHistory(reasonid))
+                {
+                    //SetAlarm(lblLineInfo.Text + " Stop line", "Part : " + partname + " Defect " + reason + " now over 6 times. Please check it", 10, reason);
+                    SetAlarm(txtLineName.Text + " Stop line ", " Reason : " + reason + ". Please check it", 10, reason);
+                    var resultStoplineOn = TurnOnStopLineAsync();
+                    if (resultStoplineOn.IsCompleted)
+                    {
+                        var resultAndonOn = TurnOnAndonAsync("R");
+                    }
 
-            //        ThreadSafe(() =>
-            //        {
-            //            using (frmTMC7032_MsgAlarm alarm = new frmTMC7032_MsgAlarm())
-            //            {
-            //                alarm.IPADDRESS = ipAddress;
-            //                alarm.IsStopLine = true;
-            //                alarm.MessageText = txtLineName.Text + " Stop line " + " Reason : " + reason + ". Please check it";
-            //                alarm.ShowDialog(this);
-            //            }
-            //        });
+                    ThreadSafe(() =>
+                    {
+                        using (frmTMC7032_MsgAlarm alarm = new frmTMC7032_MsgAlarm())
+                        {
+                            alarm.IPADDRESS = ipAddress;
+                            alarm.IsStopLine = true;
+                            alarm.MessageText = txtLineName.Text + " Stop line " + " Reason : " + reason + ". Please check it";
+                            alarm.ShowDialog(this);
+                        }
+                    });
 
-            //        isstartcountreason = false;
-            //        var resultStoplineOff = TurnOffStopLineAsync();
-            //        if (resultStoplineOff.IsCompleted)
-            //        {
-            //            var resultAndonOff = TurnOffAndonAsync("R");
-            //        }
-            //    }
-            //});
+                    isstartcountreason = false;
+                    var resultStoplineOff = TurnOffStopLineAsync();
+                    if (resultStoplineOff.IsCompleted)
+                    {
+                        var resultAndonOff = TurnOffAndonAsync("R");
+                    }
+                }
+            });
         }
         private void ThreadSafe(MethodInvoker method)
         {
@@ -1158,69 +1158,69 @@ namespace QIP.EOL
             }
             catch (ObjectDisposedException) { }
         }
-        //private async Task<bool> TurnOnAndonAsync(string lightColor)
-        //{
-        //    bool result = false;
+        private async Task<bool> TurnOnAndonAsync(string lightColor)
+        {
+            bool result = false;
 
-        //    if (MQTTConnected)
-        //    {
-        //        if (lightColor == "R")
-        //        {
-        //            result = await MQTT.Main.PublishAsync("R_ON", true, 1);
-        //        }
-        //        if (lightColor == "Y")
-        //        {
-        //            result = await MQTT.Main.PublishAsync("Y_ON", true, 1);
-        //        }
-        //        if (lightColor == "G")
-        //        {
-        //            result = await MQTT.Main.PublishAsync("G_ON", true, 1);
-        //        }
-        //    }
-        //    return result;
-        //}
-        //private async Task<bool> TurnOffAndonAsync(string lightColor)
-        //{
-        //    bool result = false;
+            if (MQTTConnected)
+            {
+                if (lightColor == "R")
+                {
+                    result = await MQTT.Main.PublishAsync("R_ON", true, 1);
+                }
+                if (lightColor == "Y")
+                {
+                    result = await MQTT.Main.PublishAsync("Y_ON", true, 1);
+                }
+                if (lightColor == "G")
+                {
+                    result = await MQTT.Main.PublishAsync("G_ON", true, 1);
+                }
+            }
+            return result;
+        }
+        private async Task<bool> TurnOffAndonAsync(string lightColor)
+        {
+            bool result = false;
 
-        //    if (MQTTConnected)
-        //    {
-        //        if (lightColor == "R")
-        //        {
-        //            result = await MQTT.Main.PublishAsync("R_OFF", true, 1);
+            if (MQTTConnected)
+            {
+                if (lightColor == "R")
+                {
+                    result = await MQTT.Main.PublishAsync("R_OFF", true, 1);
 
-        //        }
-        //        if (lightColor == "Y")
-        //        {
-        //            result = await MQTT.Main.PublishAsync("Y_OFF", true, 1);
-        //        }
-        //        if (lightColor == "G")
-        //        {
-        //            result = await MQTT.Main.PublishAsync("G_OFF", true, 1);
-        //        }
-        //    }
-        //    return result;
-        //}
-        //private async Task<bool> TurnOnStopLineAsync()
-        //{
-        //    bool result = false;
+                }
+                if (lightColor == "Y")
+                {
+                    result = await MQTT.Main.PublishAsync("Y_OFF", true, 1);
+                }
+                if (lightColor == "G")
+                {
+                    result = await MQTT.Main.PublishAsync("G_OFF", true, 1);
+                }
+            }
+            return result;
+        }
+        private async Task<bool> TurnOnStopLineAsync()
+        {
+            bool result = false;
 
-        //    if (MQTTConnected)
-        //    {
-        //        result = await MQTT.Main.PublishAsync("STOP_ON", true, 1);
-        //    }
-        //    return result;
-        //}
-        //private async Task<bool> TurnOffStopLineAsync()
-        //{
-        //    bool result = false;
+            if (MQTTConnected)
+            {
+                result = await MQTT.Main.PublishAsync("STOP_ON", true, 1);
+            }
+            return result;
+        }
+        private async Task<bool> TurnOffStopLineAsync()
+        {
+            bool result = false;
 
-        //    if (MQTTConnected)
-        //    {
-        //        result = await MQTT.Main.PublishAsync("STOP_OFF", true, 1);
-        //    }
-        //    return result;
-        //}
+            if (MQTTConnected)
+            {
+                result = await MQTT.Main.PublishAsync("STOP_OFF", true, 1);
+            }
+            return result;
+        }
         private void SetAlarm(string header, string message, int longtime, string reasonID)
         {
             StringBuilder query = new StringBuilder();
@@ -3219,8 +3219,8 @@ namespace QIP.EOL
             //        {
             //            btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất";
             //            timer_BlinkButtonGreen.Enabled = false;
-            //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.DarkGreen;
-            //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.DarkGreen;
+            //            btn_reasonCode3.BackColor = System.Drawing.Color.DarkGreen;
+            //            //btn_reasonCode3.BackColor2 = System.Drawing.Color.DarkGreen;
             //        });
             //    }
             //    else if (btn_reasonCode3.Text.ToString().Contains("Calling"))
@@ -3232,8 +3232,8 @@ namespace QIP.EOL
             //        {
             //            btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Waiting";
             //            timer_BlinkButtonGreen.Enabled = false;
-            //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.DarkGreen;
-            //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.DarkGreen;
+            //            btn_reasonCode3.BackColor = System.Drawing.Color.DarkGreen;
+            //            //btn_reasonCode3.BackColor2 = System.Drawing.Color.DarkGreen;
             //        });
             //    }
             //    else

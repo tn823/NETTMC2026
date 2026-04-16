@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="ConnectionClass/ConnectionClass.csproj" />
+  <Project Path="DEV/DEV.csproj" Id="36edd4bf-57be-4b9f-a7fa-f786ba0789e7" />
   <Project Path="GlobalFunction/GlobalFunction.csproj" />
   <Project Path="MQTT/MQTT.csproj" Id="56d6cfe6-54a7-46d6-b908-bf470d733779" />
   <Project Path="NETTMC/NETTMC.csproj" />

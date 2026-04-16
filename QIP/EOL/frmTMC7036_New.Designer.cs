@@ -1899,70 +1899,83 @@
             // 
             // panelStatus
             // 
-            panelStatus.Location = new Point(838, 20);
+            panelStatus.Dock = DockStyle.Left;
+            panelStatus.Location = new Point(759, 0);
             panelStatus.Name = "panelStatus";
-            panelStatus.Size = new Size(68, 10);
+            panelStatus.Size = new Size(20, 56);
             panelStatus.TabIndex = 12;
             panelStatus.Visible = false;
             // 
             // grdOfflineData
             // 
             grdOfflineData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            grdOfflineData.Location = new Point(855, 30);
+            grdOfflineData.Dock = DockStyle.Left;
+            grdOfflineData.Location = new Point(744, 0);
             grdOfflineData.Name = "grdOfflineData";
-            grdOfflineData.Size = new Size(39, 26);
+            grdOfflineData.Size = new Size(15, 56);
             grdOfflineData.TabIndex = 11;
             grdOfflineData.Visible = false;
             // 
             // lblSyncStatus
             // 
-            lblSyncStatus.AutoSize = true;
-            lblSyncStatus.Location = new Point(903, 44);
+            lblSyncStatus.Dock = DockStyle.Left;
+            lblSyncStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
+            lblSyncStatus.Location = new Point(730, 0);
             lblSyncStatus.Name = "lblSyncStatus";
-            lblSyncStatus.Size = new Size(38, 15);
+            lblSyncStatus.Size = new Size(14, 56);
             lblSyncStatus.TabIndex = 10;
-            lblSyncStatus.Text = "label3";
+            lblSyncStatus.Text = "0/0";
+            lblSyncStatus.TextAlign = ContentAlignment.MiddleCenter;
             lblSyncStatus.Visible = false;
             // 
             // lblProdTotal
             // 
-            lblProdTotal.AutoSize = true;
-            lblProdTotal.Location = new Point(903, 29);
+            lblProdTotal.Dock = DockStyle.Left;
+            lblProdTotal.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblProdTotal.ForeColor = Color.Navy;
+            lblProdTotal.Location = new Point(711, 0);
             lblProdTotal.Name = "lblProdTotal";
-            lblProdTotal.Size = new Size(38, 15);
+            lblProdTotal.Size = new Size(19, 56);
             lblProdTotal.TabIndex = 8;
-            lblProdTotal.Text = "label3";
+            lblProdTotal.Text = "SX : 0";
+            lblProdTotal.TextAlign = ContentAlignment.MiddleCenter;
             lblProdTotal.Visible = false;
             // 
             // txtDefectQty
             // 
-            txtDefectQty.AutoSize = true;
-            txtDefectQty.Location = new Point(903, 2);
+            txtDefectQty.Dock = DockStyle.Left;
+            txtDefectQty.Font = new Font("Tahoma", 20.25F, FontStyle.Bold);
+            txtDefectQty.ForeColor = Color.Red;
+            txtDefectQty.Location = new Point(683, 0);
             txtDefectQty.Name = "txtDefectQty";
-            txtDefectQty.Size = new Size(38, 15);
+            txtDefectQty.Size = new Size(28, 56);
             txtDefectQty.TabIndex = 7;
-            txtDefectQty.Text = "label8";
+            txtDefectQty.Text = "TOTAL : ";
+            txtDefectQty.TextAlign = ContentAlignment.MiddleCenter;
             txtDefectQty.Visible = false;
             // 
             // txtSensorCount
             // 
-            txtSensorCount.AutoSize = true;
-            txtSensorCount.Location = new Point(900, 14);
+            txtSensorCount.BackColor = SystemColors.ActiveCaption;
+            txtSensorCount.Dock = DockStyle.Left;
+            txtSensorCount.Font = new Font("Tahoma", 30F, FontStyle.Bold);
+            txtSensorCount.ForeColor = Color.Navy;
+            txtSensorCount.Location = new Point(667, 0);
             txtSensorCount.Name = "txtSensorCount";
-            txtSensorCount.Size = new Size(38, 15);
+            txtSensorCount.Size = new Size(16, 56);
             txtSensorCount.TabIndex = 6;
-            txtSensorCount.Text = "label8";
+            txtSensorCount.Text = "0";
+            txtSensorCount.TextAlign = ContentAlignment.MiddleCenter;
             txtSensorCount.Visible = false;
             // 
             // txtMessage
             // 
-            txtMessage.AutoSize = true;
-            txtMessage.Dock = DockStyle.Fill;
+            txtMessage.Dock = DockStyle.Left;
             txtMessage.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtMessage.ForeColor = Color.Red;
             txtMessage.Location = new Point(0, 0);
             txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(120, 30);
+            txtMessage.Size = new Size(667, 56);
             txtMessage.TabIndex = 5;
             txtMessage.Text = "Thông Báo";
             // 
@@ -2117,7 +2130,6 @@
             tableLayoutPanel22.ResumeLayout(false);
             tableLayoutPanel7.ResumeLayout(false);
             panel8.ResumeLayout(false);
-            panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)grdOfflineData).EndInit();
             ResumeLayout(false);
         }
