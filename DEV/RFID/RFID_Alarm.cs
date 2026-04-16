@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static GlobalFunction.PublicFunction;
+
 
 
 namespace DEV.RFID
@@ -27,8 +29,8 @@ namespace DEV.RFID
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            //GlobalFunction.PublicFunction pub = new GlobalFunction.PublicFunction();
-           // pub.ExportToExcelFile(gridControl2, gridControl2, "Sheet1");
+            GlobalFunction.PublicFunction pub = new GlobalFunction.PublicFunction();
+            //pub.ExportToExcelFile(gridControl2, gridControl2, "Sheet1");  
         }
     }
 }
