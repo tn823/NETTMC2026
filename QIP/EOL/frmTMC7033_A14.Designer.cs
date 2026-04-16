@@ -2168,52 +2168,68 @@ namespace QIP.EOL
             // 
             backgroundWorkerCheckAndon.WorkerReportsProgress = true;
             backgroundWorkerCheckAndon.WorkerSupportsCancellation = true;
+            this.backgroundWorkerCheckAndon.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerCheckAndon_DoWork);
+            this.backgroundWorkerCheckAndon.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerCheckAndon_RunWorkerCompleted);
             // 
             // timerCheckAndon
             // 
             timerCheckAndon.Enabled = true;
             timerCheckAndon.Interval = 1000;
+            this.timerCheckAndon.Tick += new System.EventHandler(this.timerCheckAndon_Tick);
             // 
             // backgroundOracle
             // 
             backgroundOracle.WorkerReportsProgress = true;
             backgroundOracle.WorkerSupportsCancellation = true;
+            this.backgroundOracle.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundOracle_DoWork);
+            this.backgroundOracle.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundOracle_ProgressChanged);
+            this.backgroundOracle.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundOracle_RunWorkerCompleted);
             // 
             // timerBindProduction
             // 
             timerBindProduction.Enabled = true;
             timerBindProduction.Interval = 20000;
+            this.timerBindProduction.Tick += new System.EventHandler(this.timerBindProduction_Tick);
             // 
             // timer_CheckStopLine
             // 
             timer_CheckStopLine.Enabled = true;
             timer_CheckStopLine.Interval = 3000;
+            this.timer_CheckStopLine.Tick += new System.EventHandler(this.timer_CheckStopLine_Tick);
             // 
             // backgroundWorkerStopLine
             // 
             backgroundWorkerStopLine.WorkerReportsProgress = true;
             backgroundWorkerStopLine.WorkerSupportsCancellation = true;
+            this.backgroundWorkerStopLine.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerStopLine_DoWork);
+            this.backgroundWorkerStopLine.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerStopLine_RunWorkerCompleted);
             // 
             // timer_SyncData
             // 
             timer_SyncData.Interval = 20000;
+            this.timer_SyncData.Tick += new System.EventHandler(this.timer_SyncData_Tick);
             // 
             // backgroundSyncData
             // 
             backgroundSyncData.WorkerReportsProgress = true;
             backgroundSyncData.WorkerSupportsCancellation = true;
+            this.backgroundSyncData.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundSyncData_DoWork);
+            this.backgroundSyncData.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundSyncData_ProgressChanged);
             // 
             // timer_BlinkButtonRed
             // 
             timer_BlinkButtonRed.Interval = 1000;
+            this.timer_BlinkButtonRed.Tick += new System.EventHandler(this.timer_BlinkButtonRed_Tick);
             // 
             // timer_BlinkButtonYellow
             // 
             timer_BlinkButtonYellow.Interval = 1000;
+            this.timer_BlinkButtonYellow.Tick += new System.EventHandler(this.timer_BlinkButtonYellow_Tick);
             // 
             // timer_BlinkButtonGreen
             // 
             timer_BlinkButtonGreen.Interval = 1000;
+            this.timer_BlinkButtonGreen.Tick += new System.EventHandler(this.timer_BlinkButtonGreen_Tick);
             // 
             // frmTMC7033_A14
             // 

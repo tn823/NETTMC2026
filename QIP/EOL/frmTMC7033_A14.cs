@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,95 +11,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ConnectionClass.Oracle;
 using static GlobalFunction.PublicFunction;
+using System.Diagnostics;
 
 namespace QIP.EOL
 {
-    //        public partial class frmTMC7033_A14 : UserControl
-    //    {
-
-    //        //main
-    //        public frmTMC7033_A14()
-    //        {
-    //            InitializeComponent();
-
-    //        }
-
-    //        private void frmTMC7033_A14_Load(object sender, EventArgs e)
-    //        {            
-    //        }
-
-    //        private void btnChonModel_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-    //        private void chkPlanOneMonth_CheckedChanged(object sender, EventArgs e)
-    //        {
-    //            // TODO: xử lý
-    //        }
-
-    //        private void checkEdit2_CheckedChanged(object sender, EventArgs e)
-    //        {
-    //            // TODO: xử lý
-    //        }
-
-    //        private void txtTime_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-
-    //        private void lblFailTotal_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-
-    //        private void label1_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-
-    //        private void txtTime_Click_1(object sender, EventArgs e)
-    //        {
-
-    //        }
-
-    //        private void lblPart1_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-
-
-    //        private void simpleButton23_Click(object sender, EventArgs e) { }
-
-    //        private void btnRePass_Click(object sender, EventArgs e) { }
-    //        private void btnPass_Click(object sender, EventArgs e) { }
-    //        private void btnFail_Click(object sender, EventArgs e) { }
-    //        private void btnReFail_Click(object sender, EventArgs e) { }
-    //        private void btnClear_Click(object sender, EventArgs e) { }
-    //        private void simpleButton14_Click(object sender, EventArgs e) { }
-    //        private void btn_reasonCode1_Click(object sender, EventArgs e) { }
-    //        private void btn_reasonCode2_Click(object sender, EventArgs e)
-    //        { }
-    //        private void btn_reasonCode3_Click(object sender, EventArgs e)
-    //        { }
-    //        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-    //        {
-
-    //        }
-    //        private void btnSPCCleanliness_Click(object sender, EventArgs e) { }
-    //        private void btnSPCStitching_Click(object sender, EventArgs e) { }
-    //        private void btnSPCBonding_Click(object sender, EventArgs e) { }
-    //        private void labelControl2_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-    //        private void labelControl7_Click(object sender, EventArgs e)
-    //        {
-
-    //        }
-    //    }
-    //}
-
-
     public partial class frmTMC7033_A14 : UserControl
     {
         private bool isRed = true;
@@ -177,14 +92,15 @@ namespace QIP.EOL
         private void frmTMC7033_A14_Load(object sender, EventArgs e)
         {
             ipAddress = GlobalFunction.PublicFunction.myIpaddress;
+            ipAddress = "192.168.31.249";
             TryToUpdateSystemDateTime();
             BindingControl();
             try
             {
 
                 #region OnlineIfCannotUseExcelLocal
-                //GetLineName(ipAddress);
-                //GetError(spDeptCode);
+                GetLineName(ipAddress);
+                GetError(spDeptCode);
                 #endregion
                 dtReason = new DataTable();
                 dtReason.Columns.Add("PART");
@@ -222,7 +138,7 @@ namespace QIP.EOL
                 ShowMessage(ex.ToString() + Environment.NewLine + "MỞ CHUONG TRÌNH KHÔNG ÐƯỢC...RỚT MẠNG HOẶC CHUONG TRÌNH LỖI RỒI. " + Environment.NewLine + " CHƯƠNG TRÌNH SẼ TẮT, THÌ MỞ LẠI. " +
                      Environment.NewLine + " KHÔNG ÐUỢC THÌ GỌI IT " +
                      Environment.NewLine + " SDT : 0903518945. CÁM ON NHIỀU", Color.Red);
-                //Application.Exit();
+                Application.Exit();
             }
         }
         private async void MQTT_Init()
@@ -282,169 +198,324 @@ namespace QIP.EOL
 
 
 
-        //private void GetLineName(string ip)
-        //{
-        //    DataTable dt = new DataTable();
-        //    var b = new BackgroundWorker();
-        //    b.DoWork += new DoWorkEventHandler(
-        //        delegate (object sender, DoWorkEventArgs e)
-        //        {
-        //            StringBuilder query = new StringBuilder();
-        //            query.AppendLine("");
-        //            query.AppendLine("SELECT SUBSTR(C_COMCODE,4,4) C_COMCODE,                                                                               ");
-        //            query.AppendLine("  case when SUBSTR(C_COMCODE,4,2) = 'P7' THEN SUBSTR(C_COMCODE,4,4)                                                   ");
-        //            query.AppendLine("     ELSE                                                                                                             ");
-        //            query.AppendLine("         DECODE(SUBSTR(C_COMCODE, 6, 1), 'A', 'P1', 'B', 'P2', 'C', 'P3', 'D', 'P4', 'E', 'P5', 'F', 'P6', 'PP') ||   ");
-        //            query.AppendLine("         CASE WHEN SUBSTR(C_COMCODE,7,1) >= 'A'                                                                       ");
-        //            query.AppendLine("                   THEN TO_CHAR(ASCII(SUBSTR(C_COMCODE,7,1))-55)                                                      ");
-        //            query.AppendLine("             Else '0' || SUBSTR(C_COMCODE, 7, 1)                                                                      ");
-        //            query.AppendLine("         END                                                                                                          ");
-        //            query.AppendLine("END SHOW_LINE                                                                                                         ");
-        //            query.AppendLine("    FROM (                                                                                                            ");
-        //            query.AppendLine("          SELECT SUBSTR(C_COMCODE,1,7) C_COMCODE,N_COMNAME                                                            ");
-        //            query.AppendLine("            From TRTB_M_COMMON                                                                                        ");
-        //            query.AppendLine("           WHERE C_GROUP = 'BTS'                                                                                      ");
-        //            query.AppendLine("             AND N_COMNAME = '" + ip + "'                                                                             ");
-        //            query.AppendLine("         )                                                                                                            ");
-        //            dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
-        //            e.Result = dt;
-        //            dt = (DataTable)e.Result;
-        //        }
-        //    );
-        //    b.RunWorkerCompleted += new RunWorkerCompletedEventHandler(delegate (object sender, RunWorkerCompletedEventArgs e)
-        //    {
-        //        if (e.Error != null)
-        //        {
-        //            lblLineInfo.Text = "Err";
-        //            if (File.Exists(Application.StartupPath + "\\LineName.xls"))
-        //            {
-        //                var source = new ExcelDataSource();
-        //                source.FileName = Application.StartupPath + "\\LineName.xls";
-        //                var worksheetSettings = new ExcelWorksheetSettings("Sheet");
-        //                source.SourceOptions = new ExcelSourceOptions(worksheetSettings);
-        //                source.Fill();
-        //                grdOfflineData.DataSource = source;
-        //                DataTable dtLineName = GetDataTable(grdvOfflineData);
-        //                LineName = dtLineName.Rows[0]["SHOW_LINE"].ToString();
-        //                spLine = dt.Rows[0]["C_COMCODE"].ToString();
-        //                lblLineInfo.Text = LineName;
-        //            }
-        //        }
-        //        dt = (DataTable)e.Result;
-        //        if (dt == null || dt.Rows.Count < 0)
-        //        {
-        //            var source = new ExcelDataSource();
-        //            source.FileName = Application.StartupPath + "\\LineName.xls";
-        //            var worksheetSettings = new ExcelWorksheetSettings("Sheet");
-        //            source.SourceOptions = new ExcelSourceOptions(worksheetSettings);
-        //            source.Fill();
-        //            grdOfflineData.DataSource = source;
-        //            DataTable dtLineName = GetDataTable(grdvOfflineData);
-        //            LineName = dtLineName.Rows[0]["SHOW_LINE"].ToString();
-        //            spLine = dt.Rows[0]["C_COMCODE"].ToString();
-        //            lblLineInfo.Text = LineName;
-        //        }
-        //        else if (dt.Rows.Count > 0)
-        //        {
-        //            this.grdOfflineData.DataSource = dt;
-        //            XlsExportOptions options = new XlsExportOptions();
-        //            if (File.Exists(Application.StartupPath + "\\LineName.xls"))
-        //            {
-        //                File.Delete(Application.StartupPath + "\\LineName.xls");
-        //            }
-        //            else
-        //            {
+        private void GetLineName(string ip)
+        {
+            //Debug.WriteLine("Get Line Name with IP: " + ip);
+            //string cacheFile = Path.Combine(Application.StartupPath, "LineName.csv");
 
-        //            }
-        //            this.grdOfflineData.ExportToXls(Application.StartupPath + "\\LineName.xls");
-        //            //spLine = dt.Rows[0]["C_COMCODE"].ToString();
-        //            spLine = dt.Rows[0]["C_COMCODE"].ToString();
-        //            LineName = dt.Rows[0]["SHOW_LINE"].ToString();
-        //            lblLineInfo.Text = LineName;
-        //        }
-        //        if (lblLineInfo.Text != "P114")
-        //        {
-        //            lblSensorCount.Visible = false;
-        //            //label1.Visible = false;
-        //        }
-        //    });
-        //    b.RunWorkerAsync();
-        //}
+            DataTable dt = new DataTable();
+            var b = new BackgroundWorker();
+
+            b.DoWork += (sender, e) =>
+            {
+                    StringBuilder query = new StringBuilder();
+                    query.AppendLine("");
+                    query.AppendLine("SELECT SUBSTR(C_COMCODE,4,4) C_COMCODE,                                                                               ");
+                    query.AppendLine("  case when SUBSTR(C_COMCODE,4,2) = 'P7' THEN SUBSTR(C_COMCODE,4,4)                                                   ");
+                    query.AppendLine("     ELSE                                                                                                             ");
+                    query.AppendLine("         DECODE(SUBSTR(C_COMCODE, 6, 1), 'A', 'P1', 'B', 'P2', 'C', 'P3', 'D', 'P4', 'E', 'P5', 'F', 'P6', 'PP') ||   ");
+                    query.AppendLine("         CASE WHEN SUBSTR(C_COMCODE,7,1) >= 'A'                                                                       ");
+                    query.AppendLine("                   THEN TO_CHAR(ASCII(SUBSTR(C_COMCODE,7,1))-55)                                                      ");
+                    query.AppendLine("             Else '0' || SUBSTR(C_COMCODE, 7, 1)                                                                      ");
+                    query.AppendLine("         END                                                                                                          ");
+                    query.AppendLine("END SHOW_LINE                                                                                                         ");
+                    query.AppendLine("    FROM (                                                                                                            ");
+                    query.AppendLine("          SELECT SUBSTR(C_COMCODE,1,7) C_COMCODE,N_COMNAME                                                            ");
+                    query.AppendLine("            From TRTB_M_COMMON                                                                                        ");
+                    query.AppendLine("           WHERE C_GROUP = 'BTS'                                                                                      ");
+                    query.AppendLine("             AND N_COMNAME = '" + ip + "'                                                                             ");
+                    query.AppendLine("         )                                                                                                            ");
+                dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                e.Result = dt;
+            };
+
+            b.RunWorkerCompleted += (sender, e) =>
+            {
+                string cacheFile = Path.Combine(Application.StartupPath, "LineName.csv");
+                // [TH1] Lỗi kết nối DB → đọc cache CSV
+                if (e.Error != null || e.Result == null)
+                {
+                    Debug.WriteLine("GetLineName: DB error, trying cache. " + e.Error?.Message);
+                    lblLineInfo.Text = "Offline";
+
+                    if (File.Exists(cacheFile))
+                    {
+                        DataTable dtCache = ReadLineNameFromCsv(cacheFile);
+                        if (dtCache != null && dtCache.Rows.Count > 0)
+                        {
+                            LineName = dtCache.Rows[0]["SHOW_LINE"].ToString();
+                            spLine = dtCache.Rows[0]["C_COMCODE"].ToString();
+                            lblLineInfo.Text = LineName;
+                        }
+                    }
+                    return;
+                }
+
+                dt = (DataTable)e.Result;
+
+                // [TH2] DB trả về null hoặc rỗng → đọc cache CSV
+                if (dt == null || dt.Rows.Count <= 0)
+                {
+                    Debug.WriteLine("GetLineName: DB returned empty, trying cache.");
+                    if (File.Exists(cacheFile))
+                    {
+                        DataTable dtCache = ReadLineNameFromCsv(cacheFile);
+                        if (dtCache != null && dtCache.Rows.Count > 0)
+                        {
+                            LineName = dtCache.Rows[0]["SHOW_LINE"].ToString();
+                            spLine = dtCache.Rows[0]["C_COMCODE"].ToString();
+                            lblLineInfo.Text = LineName;
+                        }
+                    }
+                    return;
+                }
+
+                // [TH3] DB trả dữ liệu hợp lệ → gán giá trị và lưu cache CSV
+                spLine = dt.Rows[0]["C_COMCODE"].ToString();
+                LineName = dt.Rows[0]["SHOW_LINE"].ToString();
+                lblLineInfo.Text = LineName;
+
+                // Lưu cache CSV để dùng khi offline
+                SaveLineNameToCsv(dt, cacheFile);
+
+                // Ẩn sensor nếu không phải line P114
+                if (lblLineInfo.Text != "P114")
+                {
+                    lblSensorCount.Visible = false;
+                }
+
+                Debug.WriteLine($"GetLineName OK: spLine={spLine}, LineName={LineName}");
+            };
+            b.RunWorkerAsync();
+        }
+
+        private void SaveLineNameToCsv(DataTable dt, string filePath)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                // Header
+                sb.AppendLine("C_COMCODE,SHOW_LINE");
+                // Data rows
+                foreach (DataRow row in dt.Rows)
+                {
+                    string code = row["C_COMCODE"].ToString().Replace(",", "");
+                    string showLine = row["SHOW_LINE"].ToString().Replace(",", "");
+                    sb.AppendLine($"{code},{showLine}");
+                }
+                File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+                Debug.WriteLine("SaveLineNameToCsv OK: " + filePath);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("SaveLineNameToCsv Error: " + ex.Message);
+            }
+        }
+
+        private DataTable ReadLineNameFromCsv(string filePath)
+        {
+            try
+            {
+                var dt = new DataTable();
+                dt.Columns.Add("C_COMCODE");
+                dt.Columns.Add("SHOW_LINE");
+
+                string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+                // Bỏ qua dòng header (index 0)
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(lines[i])) continue;
+                    string[] parts = lines[i].Split(',');
+                    if (parts.Length >= 2)
+                    {
+                        DataRow row = dt.NewRow();
+                        row["C_COMCODE"] = parts[0].Trim();
+                        row["SHOW_LINE"] = parts[1].Trim();
+                        dt.Rows.Add(row);
+                    }
+                }
+                Debug.WriteLine($"ReadLineNameFromCsv OK: {dt.Rows.Count} rows");
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ReadLineNameFromCsv Error: " + ex.Message);
+                return null;
+            }
+        }
 
         //========================================================================================================
 
-        //private void GetError(string type)
-        //{
-        //    DataTable dt = new DataTable();
+        private void GetError(string type)
+        {
+            string cacheFile = Path.Combine(Application.StartupPath, "ErrorButton.csv");
 
-        //    var b = new BackgroundWorker();
-        //    b.DoWork += new DoWorkEventHandler(
-        //        delegate (object sender, DoWorkEventArgs e)
-        //        {
-        //            StringBuilder query = new StringBuilder();
-        //            query.AppendLine("");
-        //            query.AppendLine("        SELECT PART_ID, REASON_ID, REASON_SHORT, REASON_EN, REASON_VN                                ");
-        //            query.AppendLine(" FROM MES.TRTB_M_BTS_REASON3@inf_m_e                                                                  ");
-        //            query.AppendLine("WHERE DEPT_CODE = '" + type + "' AND REASON_ID <= 82                                                  ");
-        //            dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
-        //            e.Result = dt;
-        //            dt = (DataTable)e.Result;
-        //        }
-        //    );
-        //    b.RunWorkerCompleted += new RunWorkerCompletedEventHandler(delegate (object sender, RunWorkerCompletedEventArgs e)
-        //    {
-        //        if (e.Error != null)
-        //        {
-        //            lblLineInfo.Text = "Err";
-        //            if (File.Exists(Application.StartupPath + "\\ErrorButton.xls"))
-        //            {
-        //                var source = new ExcelDataSource();
-        //                source.FileName = Application.StartupPath + "\\ErrorButton.xls";
-        //                var worksheetSettings = new ExcelWorksheetSettings("Sheet");
-        //                source.SourceOptions = new ExcelSourceOptions(worksheetSettings);
-        //                source.Fill();
-        //                grdOfflineData.DataSource = source;
-        //                DataTable dtErrorButton = GetDataTable(grdvOfflineData);
-        //                SetErrorToButton(type, dtErrorButton);
-        //                ConffigErrorButton(false);
-        //            }
-        //        }
-        //        dt = (DataTable)e.Result;
+            DataTable dt = new DataTable();
 
-        //        if (dt == null || dt.Rows.Count < 0)
-        //        {
-        //            if (File.Exists(Application.StartupPath + "\\ErrorButton.xls"))
-        //            {
-        //                var source = new ExcelDataSource();
-        //                source.FileName = Application.StartupPath + "\\ErrorButton.xls";
-        //                var worksheetSettings = new ExcelWorksheetSettings("Sheet");
-        //                source.SourceOptions = new ExcelSourceOptions(worksheetSettings);
-        //                source.Fill();
-        //                grdOfflineData.DataSource = source;
-        //                DataTable dtErrorButton = GetDataTable(grdvOfflineData);
-        //                SetErrorToButton(type, dtErrorButton);
-        //                ConffigErrorButton(false);
-        //            }
-        //        }
-        //        else if (dt.Rows.Count > 0)
-        //        {
-        //            this.grdOfflineData.DataSource = dt;
-        //            XlsExportOptions options = new XlsExportOptions();
-        //            if (File.Exists(Application.StartupPath + "\\ErrorButton.xls"))
-        //            {
-        //                File.Delete(Application.StartupPath + "\\ErrorButton.xls");
-        //            }
-        //            else
-        //            {
+            var b = new BackgroundWorker();
+            b.DoWork += new DoWorkEventHandler(
+                delegate (object sender, DoWorkEventArgs e)
+                {
+                    StringBuilder query = new StringBuilder();
+                    query.AppendLine("");
+                    query.AppendLine("        SELECT PART_ID, REASON_ID, REASON_SHORT, REASON_EN, REASON_VN                                ");
+                    query.AppendLine(" FROM MES.TRTB_M_BTS_REASON3@inf_m_e                                                                  ");
+                    query.AppendLine("WHERE DEPT_CODE = '" + type + "' AND REASON_ID <= 82                                                  ");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    e.Result = dt;
+                    dt = (DataTable)e.Result;
+                }
+            );
 
-        //            }
-        //            this.grdOfflineData.ExportToXls(Application.StartupPath + "\\ErrorButton.xls");
-        //            SetErrorToButton(type, dt);
-        //            ConffigErrorButton(false);
-        //        }
-        //    });
-        //    b.RunWorkerAsync();
-        //}
+
+            b.RunWorkerCompleted += (sender, e) =>
+            {
+                // ── [TH1] Lỗi kết nối DB → đọc cache CSV ──────────────────────────
+                if (e.Error != null || e.Result == null)
+                {
+                    Debug.WriteLine("[GetError][Completed] TH1 – DB lỗi: " + e.Error?.Message);
+                    if (File.Exists(cacheFile))
+                    {
+                        DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
+                        if (dtCache != null && dtCache.Rows.Count > 0)
+                        {
+                            SetErrorToButton(type, dtCache);
+                            ConffigErrorButton(false);
+                            Debug.WriteLine("[GetError][Completed] Đọc cache thành công: " + dtCache.Rows.Count + " rows");
+                        }
+                    }
+                    else
+                    {
+                        Debug.WriteLine("[GetError][Completed] Không có cache file: " + cacheFile);
+                    }
+                    return;
+                }
+
+                dt = (DataTable)e.Result;
+
+                // ── [TH2] DB trả 0 rows → đọc cache CSV ────────────────────────────
+                if (dt == null || dt.Rows.Count <= 0)
+                {
+                    Debug.WriteLine("[GetError][Completed] TH2 – DB trả 0 rows, thử cache");
+                    if (File.Exists(cacheFile))
+                    {
+                        DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
+                        if (dtCache != null && dtCache.Rows.Count > 0)
+                        {
+                            SetErrorToButton(type, dtCache);
+                            ConffigErrorButton(false);
+                        }
+                    }
+                    return;
+                }
+
+                // ── [TH3] DB trả data hợp lệ → gán nút + lưu cache ─────────────────
+                Debug.WriteLine("[GetError][Completed] TH3 – DB OK: " + dt.Rows.Count + " rows");
+                SetErrorToButton(type, dt);
+                ConffigErrorButton(false);
+                SaveErrorButtonToCsv(dt, cacheFile);
+            };
+            b.RunWorkerAsync();
+        }
+        // -----------------------------------------------------------------------
+        // Helper: Lưu DataTable ErrorButton ra file CSV
+        // -----------------------------------------------------------------------
+        private void SaveErrorButtonToCsv(DataTable dt, string filePath)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                // Header — 5 cột giống hệt query SELECT
+                sb.AppendLine("PART_ID,REASON_ID,REASON_SHORT,REASON_EN,REASON_VN");
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    // Escape dấu phẩy và dấu nháy trong nội dung
+                    string partId = EscapeCsv(row["PART_ID"].ToString());
+                    string reasonId = EscapeCsv(row["REASON_ID"].ToString());
+                    string reasonShort = EscapeCsv(row["REASON_SHORT"].ToString());
+                    string reasonEn = EscapeCsv(row["REASON_EN"].ToString());
+                    string reasonVn = EscapeCsv(row["REASON_VN"].ToString());
+                    sb.AppendLine($"{partId},{reasonId},{reasonShort},{reasonEn},{reasonVn}");
+                }
+
+                File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+                Debug.WriteLine("SaveErrorButtonToCsv OK: " + filePath);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("SaveErrorButtonToCsv Error: " + ex.Message);
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // Helper: Đọc file CSV ErrorButton → DataTable
+        // -----------------------------------------------------------------------
+        private DataTable ReadErrorButtonFromCsv(string filePath)
+        {
+            try
+            {
+                var dt = new DataTable();
+                dt.Columns.Add("PART_ID");
+                dt.Columns.Add("REASON_ID");
+                dt.Columns.Add("REASON_SHORT");
+                dt.Columns.Add("REASON_EN");
+                dt.Columns.Add("REASON_VN");
+
+                string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+                // Bỏ dòng header (index 0)
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(lines[i])) continue;
+                    string[] parts = ParseCsvLine(lines[i]);
+                    if (parts.Length >= 5)
+                    {
+                        DataRow row = dt.NewRow();
+                        row["PART_ID"] = parts[0].Trim();
+                        row["REASON_ID"] = parts[1].Trim();
+                        row["REASON_SHORT"] = parts[2].Trim();
+                        row["REASON_EN"] = parts[3].Trim();
+                        row["REASON_VN"] = parts[4].Trim();
+                        dt.Rows.Add(row);
+                    }
+                }
+                Debug.WriteLine($"ReadErrorButtonFromCsv OK: {dt.Rows.Count} rows");
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ReadErrorButtonFromCsv Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // Helper: Escape giá trị CSV (bọc nháy kép nếu có dấu phẩy/nháy)
+        // -----------------------------------------------------------------------
+        private string EscapeCsv(string value)
+        {
+            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n"))
+                return "\"" + value.Replace("\"", "\"\"") + "\"";
+            return value;
+        }
+
+        // -----------------------------------------------------------------------
+        // Helper: Parse 1 dòng CSV có hỗ trợ nháy kép
+        // -----------------------------------------------------------------------
+        private string[] ParseCsvLine(string line)
+        {
+            var result = new List<string>();
+            bool inQuotes = false;
+            var current = new StringBuilder();
+            foreach (char c in line)
+            {
+                if (c == '"') { inQuotes = !inQuotes; }
+                else if (c == ',' && !inQuotes) { result.Add(current.ToString()); current.Clear(); }
+                else { current.Append(c); }
+            }
+            result.Add(current.ToString());
+            return result.ToArray();
+        }
 
 
         //========================================================================================================
@@ -3483,69 +3554,117 @@ namespace QIP.EOL
                 return false;
             }
         }
+        //private void timer_BlinkButtonRed_Tick(object sender, EventArgs e)
+        //{
+        //        if (btn_reasonCode1.Appearance.BackColor2 == System.Drawing.Color.DarkRed)
+        //    {
+        //        this.btn_reasonCode1.Invoke(new Action(() =>
+        //        {
+        //            btn_reasonCode1.Appearance.BackColor = System.Drawing.Color.IndianRed;
+        //            btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.IndianRed;
+        //        }));
+
+        //    }
+        //    else
+        //    {
+        //        this.btn_reasonCode1.Invoke(new Action(() =>
+        //        {
+        //            btn_reasonCode1.Appearance.BackColor = System.Drawing.Color.DarkRed;
+        //            btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+        //        }));
+
+        //    }
+        //}
+        //private void timer_BlinkButtonYellow_Tick(object sender, EventArgs e)
+        //{
+        //    if (btn_reasonCode2.Appearance.BackColor2 == System.Drawing.Color.Orange)
+        //    {
+        //        this.btn_reasonCode2.Invoke(new Action(() =>
+        //        {
+        //            btn_reasonCode2.Appearance.BackColor = System.Drawing.Color.OrangeRed;
+        //            btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.OrangeRed;
+        //        }));
+
+        //    }
+        //    else
+        //    {
+        //        this.btn_reasonCode2.Invoke(new Action(() =>
+        //        {
+        //            btn_reasonCode2.Appearance.BackColor = System.Drawing.Color.Orange;
+        //            btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.Orange;
+        //        }));
+
+        //    }
+        //}
+        //private void timer_BlinkButtonGreen_Tick(object sender, EventArgs e)
+        //{
+        //        if (btn_reasonCode3.Appearance.BackColor2 == System.Drawing.Color.ForestGreen)
+        //    {
+        //        this.btn_reasonCode3.Invoke(new Action(() =>
+        //        {
+        //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.LightGreen;
+        //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.LightGreen;
+        //        }));
+
+        //    }
+        //    else
+        //    {
+        //        this.btn_reasonCode3.Invoke(new Action(() =>
+        //        {
+        //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.ForestGreen;
+        //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.ForestGreen;
+        //        }));
+
+        //    }
+        //}
         private void timer_BlinkButtonRed_Tick(object sender, EventArgs e)
         {
-            //    if (btn_reasonCode1.Appearance.BackColor2 == System.Drawing.Color.DarkRed)
-            //    {
-            //        this.btn_reasonCode1.Invoke(new Action(() =>
-            //        {
-            //            btn_reasonCode1.Appearance.BackColor = System.Drawing.Color.IndianRed;
-            //            btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.IndianRed;
-            //        }));
-
-            //    }
-            //    else
-            //    {
-            //        this.btn_reasonCode1.Invoke(new Action(() =>
-            //        {
-            //            btn_reasonCode1.Appearance.BackColor = System.Drawing.Color.DarkRed;
-            //            btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
-            //        }));
-
-            //    }
+            btn_reasonCode1.UseVisualStyleBackColor = false;
+            if (btn_reasonCode1.BackColor == System.Drawing.Color.DarkRed)
+            {
+                btn_reasonCode1.BackColor = System.Drawing.Color.IndianRed;
+                btn_reasonCode1.ForeColor = System.Drawing.Color.White;
+            }
+            else
+            {
+                btn_reasonCode1.BackColor = System.Drawing.Color.DarkRed;
+                btn_reasonCode1.ForeColor = System.Drawing.Color.White;
+            }
         }
+
         private void timer_BlinkButtonYellow_Tick(object sender, EventArgs e)
         {
-            //if (btn_reasonCode2.Appearance.BackColor2 == System.Drawing.Color.Orange)
-            //{
-            //    this.btn_reasonCode2.Invoke(new Action(() =>
-            //    {
-            //        btn_reasonCode2.Appearance.BackColor = System.Drawing.Color.OrangeRed;
-            //        btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.OrangeRed;
-            //    }));
-
-            //}
-            //else
-            //{
-            //    this.btn_reasonCode2.Invoke(new Action(() =>
-            //    {
-            //        btn_reasonCode2.Appearance.BackColor = System.Drawing.Color.Orange;
-            //        btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.Orange;
-            //    }));
-
-            //}
+            btn_reasonCode2.UseVisualStyleBackColor = false;
+            if (btn_reasonCode2.BackColor == System.Drawing.Color.Orange)
+            {
+                btn_reasonCode2.BackColor = System.Drawing.Color.OrangeRed;
+                btn_reasonCode2.ForeColor = System.Drawing.Color.White;
+            }
+            else
+            {
+                btn_reasonCode2.BackColor = System.Drawing.Color.Orange;
+                btn_reasonCode2.ForeColor = System.Drawing.Color.White;
+            }
         }
+
         private void timer_BlinkButtonGreen_Tick(object sender, EventArgs e)
         {
-            //    if (btn_reasonCode3.Appearance.BackColor2 == System.Drawing.Color.ForestGreen)
-            //    {
-            //        this.btn_reasonCode3.Invoke(new Action(() =>
-            //        {
-            //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.LightGreen;
-            //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.LightGreen;
-            //        }));
-
-            //    }
-            //    else
-            //    {
-            //        this.btn_reasonCode3.Invoke(new Action(() =>
-            //        {
-            //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.ForestGreen;
-            //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.ForestGreen;
-            //        }));
-
-            //    }
+            btn_reasonCode3.UseVisualStyleBackColor = false;
+            if (btn_reasonCode3.BackColor == System.Drawing.Color.ForestGreen)
+            {
+                btn_reasonCode3.BackColor = System.Drawing.Color.LightGreen;
+                btn_reasonCode3.ForeColor = System.Drawing.Color.Black;
+            }
+            else
+            {
+                btn_reasonCode3.BackColor = System.Drawing.Color.ForestGreen;
+                btn_reasonCode3.ForeColor = System.Drawing.Color.White;
+            }
         }
+
+
+
+
         private void timer_SyncData_Tick(object sender, EventArgs e)
         {
             if (backgroundSyncData.IsBusy)
@@ -3591,30 +3710,26 @@ namespace QIP.EOL
             dtAlarmReturn = dt;
             return dtAlarmReturn;
         }
-        private void ConffigErrorButtonColor(string id, System.Drawing.Color c)
+        private void ConffigErrorButtonColor(string id, Color c)
         {
-            //foreach (var p in tableLayoutPanel2.Controls)
-            //{
-            //    if (p.ToString() == "DevExpress.XtraEditors.PanelControl")
-            //    {
-            //        PanelControl panel = (PanelControl)p;
-            //        foreach (var a in panel.Controls)
-            //        {
-            //            if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-            //            {
-            //                SimpleButton btnID = (SimpleButton)a;
-            //                if (btnID.AccessibleName == id)
-            //                {
-            //                    btnID.Appearance.BackColor = c;
-            //                    btnID.Appearance.BackColor2 = c;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            ResetButtonsInContainer(tableLayoutPanel2);
-
-
+            foreach (Control p in tableLayoutPanel2.Controls)
+            {
+                if (p is Panel panel)
+                { 
+                    foreach (Control a in panel.Controls)
+                    {
+                        if (a is Button btnID)
+                        {
+                            if (btnID.AccessibleName == id)
+                            {
+                                btnID.UseVisualStyleBackColor = false;
+                                btnID.BackColor = c;
+                                btnID.ForeColor = c;
+                            }
+                        }
+                    }
+                }
+            }
         }
         private void backgroundWorkerStopLine_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
