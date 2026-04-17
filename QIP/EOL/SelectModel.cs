@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,6 +34,11 @@ namespace QIP.EOL
         //}
         private void SelectModel_Load(object sender, EventArgs e)
         {
+            //set datapropertyname
+            foreach (DataGridViewColumn col in gridView1.Columns)
+                col.DataPropertyName = col.Name;
+
+            gridView1.AutoGenerateColumns = false;
             gridView1.DataSource = dtModel;
         }
 

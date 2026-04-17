@@ -78,6 +78,7 @@ namespace QIP.EOL
         {
             InitializeComponent();
             crud = new CRUDOracle("VSMES");
+            pictureShoes.SizeChanged += pictureShoes_SizeChanged;
         }
         private void ShowMessage(string message, Color color)
         {
@@ -124,6 +125,8 @@ namespace QIP.EOL
                 lblPart5.Font = new Font("Arial", 100);
                 lblPart6.Font = new Font("Arial", 100);
 
+                BindingControl();
+
 
 
                 SetTouchCount();
@@ -140,6 +143,38 @@ namespace QIP.EOL
                      Environment.NewLine + " SDT : 0903518945. CÁM ON NHIỀU", Color.Red);
                 Application.Exit();
             }
+        }
+        private void pictureShoes_SizeChanged(object sender, EventArgs e)
+        {
+            if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            BindingControl();
+        }
+        private Rectangle GetDisplayedImageBounds(PictureBox pictureBox)
+        {
+            if (pictureBox.Image == null || pictureBox.ClientSize.Width <= 0 || pictureBox.ClientSize.Height <= 0)
+            {
+                return pictureBox.ClientRectangle;
+            }
+
+            if (pictureBox.SizeMode != PictureBoxSizeMode.Zoom)
+            {
+                return pictureBox.ClientRectangle;
+            }
+
+            Size imageSize = pictureBox.Image.Size;
+            float scale = Math.Min((float)pictureBox.ClientSize.Width / imageSize.Width,
+                                   (float)pictureBox.ClientSize.Height / imageSize.Height);
+
+            int scaledWidth = (int)Math.Round(imageSize.Width * scale);
+            int scaledHeight = (int)Math.Round(imageSize.Height * scale);
+            int offsetX = (pictureBox.ClientSize.Width - scaledWidth) / 2;
+            int offsetY = (pictureBox.ClientSize.Height - scaledHeight) / 2;
+
+            return new Rectangle(offsetX, offsetY, scaledWidth, scaledHeight);
         }
         private async void MQTT_Init()
         {
@@ -850,10 +885,11 @@ namespace QIP.EOL
         {
             try
             {
-                int xPic = pictureShoes.Location.X;
-                int yPic = pictureShoes.Location.Y;
-                int wPic = pictureShoes.Width;
-                int hPic = pictureShoes.Height;
+                Rectangle displayedImageBounds = GetDisplayedImageBounds(pictureShoes);
+                int xPic = displayedImageBounds.X;
+                int yPic = displayedImageBounds.Y;
+                int wPic = displayedImageBounds.Width;
+                int hPic = displayedImageBounds.Height;
                 ///<sumary>Configuration Part Location on Shoe Picture
                 ///</sumary>
                 #region Configuration Part Location on Shoe Picture
@@ -1185,6 +1221,8 @@ namespace QIP.EOL
             {
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT MES_GROUP_SUM FROM MES.MES_MODEL@inf_m_e WHERE MES_STYLE_NO = '" + btnChonModel.Text + "'");
+                //string modeltest = btnChonModel.Text;
+                //Debug.WriteLine("Choose model: ", modeltest);
                 DataTable dt = new DataTable();
                 dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                 Bitmap bm = null;
@@ -1193,6 +1231,8 @@ namespace QIP.EOL
                     try
                     {
                         bm = ByteToImage(GetImgByte("ftp://" + etc.FileServerPath + @"/Mes/BTS/" + spDeptCode + "_" + dt.Rows[0]["MES_GROUP_SUM"].ToString().Replace("/", "") + ".jpg"));
+                        //string testlog = "ftp://" + etc.FileServerPath + @"/Mes/BTS/" + spDeptCode + "_" + dt.Rows[0]["MES_GROUP_SUM"].ToString().Replace("/", "") + ".jpg";
+                        //Debug.WriteLine("path modlle: ", testlog);
 
                         if (bm != null)
                         {
@@ -1257,8 +1297,11 @@ namespace QIP.EOL
                 }
                 if (countcol == 5)
                 {
-                    dr = dt.Rows.Add();
                     countcol = 0;
+                    // Chỉ thêm hàng mới nếu còn item phía sau
+                    // (tránh thêm hàng trống khi item cuối vừa điền xong)
+                    if (a < oldDataModel.Rows.Count - 1)
+                        dr = dt.Rows.Add();
                 }
             }
             return dt;
