@@ -1,8 +1,11 @@
 ﻿using ConnectionClass.Oracle;
+using QIP.EOL.Popup;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.OleDb;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
@@ -10,9 +13,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.OleDb;
+using static DEV.RFID.RFID_Alarm;
 using static GlobalFunction.PublicFunction;
-using System.Diagnostics;
+
 
 namespace QIP.EOL
 {
@@ -1555,6 +1558,7 @@ namespace QIP.EOL
                 backgroundProduction.RunWorkerAsync();
             }
         }
+        // Đây là phần code từ 2019 không dùng vì 2019 layout 9 lồng layout 10 còn 2026 không lồng nhau nha
         private void ConffigErrorButton(bool visible)
         {
             foreach (Button btnID in tableLayoutPanel7.Controls)
@@ -1603,7 +1607,9 @@ namespace QIP.EOL
                     }
                 }
             }
+           
         }
+
 
         private void backgroundProduction_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -1631,15 +1637,15 @@ namespace QIP.EOL
 
                 if (chkVN.Checked)
                 {
-                    lblError1.Text = topdefect.Rows.Count > 0 ? topdefect.Rows[0]["TOP_DEFECT_VN"].ToString() : "";
-                    lblError2.Text = topdefect.Rows.Count > 1 ? topdefect.Rows[1]["TOP_DEFECT_VN"].ToString() : "";
-                    lblError3.Text = topdefect.Rows.Count > 2 ? topdefect.Rows[2]["TOP_DEFECT_VN"].ToString() : "";
+                    lblTop1Defect.Text = topdefect.Rows.Count > 0 ? topdefect.Rows[0]["TOP_DEFECT_VN"].ToString() : "";
+                    lblTop2Defect.Text = topdefect.Rows.Count > 1 ? topdefect.Rows[1]["TOP_DEFECT_VN"].ToString() : "";
+                    lblTop3Defect.Text = topdefect.Rows.Count > 2 ? topdefect.Rows[2]["TOP_DEFECT_VN"].ToString() : "";
                 }
                 else
                 {
-                    lblError1.Text = topdefect.Rows.Count > 0 ? topdefect.Rows[0]["TOP_DEFECT_EN"].ToString() : "";
-                    lblError2.Text = topdefect.Rows.Count > 1 ? topdefect.Rows[1]["TOP_DEFECT_EN"].ToString() : "";
-                    lblError3.Text = topdefect.Rows.Count > 2 ? topdefect.Rows[2]["TOP_DEFECT_EN"].ToString() : "";
+                    lblTop1Defect.Text = topdefect.Rows.Count > 0 ? topdefect.Rows[0]["TOP_DEFECT_EN"].ToString() : "";
+                    lblTop2Defect.Text = topdefect.Rows.Count > 1 ? topdefect.Rows[1]["TOP_DEFECT_EN"].ToString() : "";
+                    lblTop3Defect.Text = topdefect.Rows.Count > 2 ? topdefect.Rows[2]["TOP_DEFECT_EN"].ToString() : "";
                 }
             };
 
@@ -3206,63 +3212,63 @@ namespace QIP.EOL
         private static string Comname;
         private void btn_reasonCode3_Click(object sender, EventArgs e)
         {
-            //string onoff = "on";
-            //try
-            //{
-            //    if (btn_reasonCode3.Text.ToString().Contains("Waiting"))
-            //    {
-            //        onoff = "off";
-            //        //TurnOffAndon("G");
-            //        //var result = TurnOffAndonAsync("G");
+            string onoff = "on";
+            try
+            {
+                if (btn_reasonCode3.Text.ToString().Contains("Waiting"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("G");
+                    //var result = TurnOffAndonAsync("G");
 
-            //        ThreadSafe(() =>
-            //        {
-            //            btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất";
-            //            timer_BlinkButtonGreen.Enabled = false;
-            //            btn_reasonCode3.BackColor = System.Drawing.Color.DarkGreen;
-            //            //btn_reasonCode3.BackColor2 = System.Drawing.Color.DarkGreen;
-            //        });
-            //    }
-            //    else if (btn_reasonCode3.Text.ToString().Contains("Calling"))
-            //    {
-            //        onoff = "off";
-            //        //TurnOffAndon("R");
-            //        var result = TurnOffAndonAsync("G");
-            //        ThreadSafe(() =>
-            //        {
-            //            btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Waiting";
-            //            timer_BlinkButtonGreen.Enabled = false;
-            //            btn_reasonCode3.BackColor = System.Drawing.Color.DarkGreen;
-            //            //btn_reasonCode3.BackColor2 = System.Drawing.Color.DarkGreen;
-            //        });
-            //    }
-            //    else
-            //    {
-            //        var result = TurnOnAndonAsync("G");
-            //        //if (result.IsCompleted)
-            //        //{
-            //        //    btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Calling";
-            //        //    timer_BlinkButtonGreen.Enabled = true;
-            //        //}
-            //        btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Calling";
-            //        timer_BlinkButtonGreen.Enabled = true;
-            //        //TurnOnAndon("G");
-            //    }
-            //    using (TimedWebClient wc = new TimedWebClient { Timeout = 2000 })
-            //    {
-            //        string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, RecievedIpaddress, onoff, "1");
-            //        //string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, "", onoff, "1");
-            //        //TunrOnOfAlarmSound(false, "one", 1);
-            //        var json = wc.DownloadString(a);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất";
+                        timer_BlinkButtonGreen.Enabled = false;
+                        btn_reasonCode3.BackColor = System.Drawing.Color.DarkGreen;
+                        //btn_reasonCode3.BackColor2 = System.Drawing.Color.DarkGreen;
+                    });
+                }
+                else if (btn_reasonCode3.Text.ToString().Contains("Calling"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("R");
+                    var result = TurnOffAndonAsync("G");
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Waiting";
+                        timer_BlinkButtonGreen.Enabled = false;
+                        btn_reasonCode3.BackColor = System.Drawing.Color.DarkGreen;
+                        //btn_reasonCode3.BackColor2 = System.Drawing.Color.DarkGreen;
+                    });
+                }
+                else
+                {
+                    var result = TurnOnAndonAsync("G");
+                    //if (result.IsCompleted)
+                    //{
+                    //    btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Calling";
+                    //    timer_BlinkButtonGreen.Enabled = true;
+                    //}
+                    btn_reasonCode3.Text = "(Andon) Gọi Sản Xuất " + Environment.NewLine + "Calling";
+                    timer_BlinkButtonGreen.Enabled = true;
+                    //TurnOnAndon("G");
+                }
+                using (TimedWebClient wc = new TimedWebClient { Timeout = 2000 })
+                {
+                    string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, RecievedIpaddress, onoff, "1");
+                    //string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, "", onoff, "1");
+                    //TunrOnOfAlarmSound(false, "one", 1);
+                    var json = wc.DownloadString(a);
+                }
+            }
+            catch (Exception ex)
+            {
 
-            //    //lblMessage.Text = "Không gọi được " + ex.Message;
-            //}
+                //lblMessage.Text = "Không gọi được " + ex.Message;
+            }
         }
-        
+
         private static List<string> btnfail;
         private void btnFail_Click(object sender, EventArgs e)
         {
@@ -3488,6 +3494,349 @@ namespace QIP.EOL
                 SetButtonsEnabledRecursive(tableLayoutPanel9, false, Color.Red);
                 btnPass.Enabled = true;
                 btnRePass.Enabled = true;
+            }
+        }
+
+        private void btn_reasonCode2_Click(object sender, EventArgs e)
+        {
+            string onoff = "on";
+
+            try
+            {
+                if (btn_reasonCode2.Text.ToString().Contains("Waiting"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("Y");
+                    //var result = TurnOffAndonAsync("Y");
+
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode2.Text = "(Andon) Gọi Bảo Trì";
+                        timer_BlinkButtonYellow.Enabled = false;
+                        btn_reasonCode2.BackColor = System.Drawing.Color.Orange;
+                        //btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.Orange;
+                    });
+                }
+                else if (btn_reasonCode2.Text.ToString().Contains("Calling"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("R");
+                    var result = TurnOffAndonAsync("Y");
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode2.Text = "(Andon) Gọi Bảo Trì " + Environment.NewLine + "Waiting";
+                        timer_BlinkButtonYellow.Enabled = false;
+                        btn_reasonCode2.BackColor = System.Drawing.Color.DarkRed;
+                        //btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+                    });
+                }
+                else
+                {
+
+                    var result = TurnOnAndonAsync("Y");
+                    if (result.IsCompleted)
+                    {
+                        btn_reasonCode2.Text = "(Andon) Gọi Bảo Trì" + Environment.NewLine + "Calling";
+                        timer_BlinkButtonYellow.Enabled = true;
+                    }
+
+                    //TurnOnAndon("Y");
+                }
+                using (TimedWebClient wc = new TimedWebClient { Timeout = 2000 })
+                {
+                    WriteAndonToLogFile(onoff, "2");
+                    string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, RecievedIpaddress, onoff, "2");
+                    //string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, "", onoff, "2");
+                    //TunrOnOfAlarmSound(false, "two", 1);
+                    var json = wc.DownloadString(a);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                //lblMessage.Text = "Không gọi được " + ex.Message;
+            }
+        }
+        private bool WriteAndonToLogFile(string onff, string errorcode)
+        {
+            try
+            {
+                string filename; string content = "";
+                content = onff + " " + errorcode;
+                filename = "Andon" + DateTime.Now.ToString("yyyyMMdd");
+                etc.WriteToFile(content, "Andon", filename);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
+
+        private void btn_reasonCode1_Click(object sender, EventArgs e)
+        {
+            string onoff = "on";
+            try
+            {
+
+                if (btn_reasonCode1.Text.ToString().Contains("Waiting"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("R");
+                    //var result = TurnOffAndonAsync("R");
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode1.Text = "(Andon) Gọi QA ";
+                        timer_BlinkButtonRed.Enabled = false;
+                        btn_reasonCode1.BackColor = System.Drawing.Color.DarkRed;
+                        //btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+                    });
+                }
+                else if (btn_reasonCode1.Text.ToString().Contains("Calling"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("R");
+                    var result = TurnOffAndonAsync("R");
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode1.Text = "(Andon) Gọi QA " + Environment.NewLine + "Waiting";
+                        timer_BlinkButtonRed.Enabled = false;
+                        btn_reasonCode1.BackColor = System.Drawing.Color.DarkRed;
+                        //btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+                    });
+                }
+                else
+                {
+                    //TurnOnAndon("R");
+                    var result = TurnOnAndonAsync("R");
+                    if (result.IsCompleted)
+                    {
+                        btn_reasonCode1.Text = "(Andon) Gọi QA " + Environment.NewLine + "Calling";
+                        timer_BlinkButtonRed.Enabled = true;
+                    }
+                }
+                using (TimedWebClient wc = new TimedWebClient { Timeout = 2000 })
+                {
+                    WriteAndonToLogFile(onoff, "3");
+                    //TunrOnOfAlarmSound(false, "three", 1);
+                    string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, RecievedIpaddress, onoff, "3");
+                    //string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, "", onoff, "3");
+                    var json = wc.DownloadString(a);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Cannot turnoff ---- " + ex.Message);
+                //lblMessage.Text = "Không gọi được " + ex.Message;
+            }
+        }
+
+        private void timer_BlinkButtonGreen_Tick(object sender, EventArgs e)
+        {
+            if (btn_reasonCode3.BackColor == System.Drawing.Color.ForestGreen)
+            {
+                this.btn_reasonCode3.Invoke(new Action(() =>
+                {
+                    btn_reasonCode3.BackColor = System.Drawing.Color.LightGreen;
+                    //btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.LightGreen;
+                }));
+
+            }
+            else
+            {
+                this.btn_reasonCode3.Invoke(new Action(() =>
+                {
+                    btn_reasonCode3.BackColor = System.Drawing.Color.ForestGreen;
+                    //btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.ForestGreen;
+                }));
+
+            }
+        }
+
+        private void timer_BlinkButtonYellow_Tick(object sender, EventArgs e)
+        {
+            if (btn_reasonCode2.BackColor == System.Drawing.Color.Orange)
+            {
+                this.btn_reasonCode2.Invoke(new Action(() =>
+                {
+                    btn_reasonCode2.BackColor = System.Drawing.Color.OrangeRed;
+                    //btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.OrangeRed;
+                }));
+
+            }
+            else
+            {
+                this.btn_reasonCode2.Invoke(new Action(() =>
+                {
+                    btn_reasonCode2.BackColor = System.Drawing.Color.Orange;
+                    //btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.Orange;
+                }));
+
+            }
+        }
+
+        private void btn_reasonCode1_Click_1(object sender, EventArgs e)
+        {
+            string onoff = "on";
+            try
+            {
+
+                if (btn_reasonCode1.Text.ToString().Contains("Waiting"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("R");
+                    //var result = TurnOffAndonAsync("R");
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode1.Text = "(Andon) Gọi QA ";
+                        timer_BlinkButtonRed.Enabled = false;
+                        btn_reasonCode1.BackColor = System.Drawing.Color.DarkRed;
+                        //btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+                    });
+                }
+                else if (btn_reasonCode1.Text.ToString().Contains("Calling"))
+                {
+                    onoff = "off";
+                    //TurnOffAndon("R");
+                    var result = TurnOffAndonAsync("R");
+                    ThreadSafe(() =>
+                    {
+                        btn_reasonCode1.Text = "(Andon) Gọi QA " + Environment.NewLine + "Waiting";
+                        timer_BlinkButtonRed.Enabled = false;
+                        btn_reasonCode1.BackColor = System.Drawing.Color.DarkRed;
+                        //btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+                    });
+                }
+                else
+                {
+                    //TurnOnAndon("R");
+                    var result = TurnOnAndonAsync("R");
+                    if (result.IsCompleted)
+                    {
+                        btn_reasonCode1.Text = "(Andon) Gọi QA " + Environment.NewLine + "Calling";
+                        timer_BlinkButtonRed.Enabled = true;
+                    }
+                }
+                using (TimedWebClient wc = new TimedWebClient { Timeout = 2000 })
+                {
+                    WriteAndonToLogFile(onoff, "3");
+                    //TunrOnOfAlarmSound(false, "three", 1);
+                    string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, RecievedIpaddress, onoff, "3");
+                    //string a = String.Format("http://192.168.1.7:8080/test/ARDUINO/executeAndonOnOff?ipadd='{0}'&comname={1}&recieveip='{2}'&onoff={3}&reasoncd={4}", ipAddress, Comname, "", onoff, "3");
+                    var json = wc.DownloadString(a);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Cannot turnoff ---- " + ex.Message);
+                //lblMessage.Text = "Không gọi được " + ex.Message;
+            }
+        }
+
+        private void timer_BlinkButtonRed_Tick(object sender, EventArgs e)
+        {
+            if (btn_reasonCode1.BackColor == System.Drawing.Color.DarkRed)
+            {
+                this.btn_reasonCode1.Invoke(new Action(() =>
+                {
+                    btn_reasonCode1.BackColor = System.Drawing.Color.IndianRed;
+                    //btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.IndianRed;
+                }));
+
+            }
+            else
+            {
+                this.btn_reasonCode1.Invoke(new Action(() =>
+                {
+                    btn_reasonCode1.BackColor = System.Drawing.Color.DarkRed;
+                    //btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
+                }));
+
+            }
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            EOL.Popup.SPCClean spcclean = new Popup.SPCClean();
+
+
+            StringBuilder qry = new StringBuilder();
+            qry.AppendLine(" SELECT * FROM V_PCHART");
+            var _dt = crud.dac.DtSelectExcuteWithQuery(qry.ToString());
+
+            if (_dt == null || _dt.Rows.Count == 0)
+            {
+                ShowMessage("Không có data SPC Clenliness", Color.Red);
+                return;
+            }
+            else
+            {
+                spcclean.dtSPC = _dt;
+                spcclean.Text = "SPC CLEANLINESS";
+                spcclean.ShowDialog();
+            }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+            EOL.Popup.SPCClean spcclean = new Popup.SPCClean();
+
+
+            StringBuilder qry = new StringBuilder();
+            qry.AppendLine(" SELECT * FROM V_PCHART_STT");
+            var _dt = crud.dac.DtSelectExcuteWithQuery(qry.ToString());
+
+            if (_dt == null || _dt.Rows.Count == 0)
+            {
+                ShowMessage("Không có data SPC Clenliness", Color.Red);
+                return;
+            }
+            else
+            {
+                spcclean.dtSPC = _dt;
+                spcclean.Text = "SPC STITCHING";
+                spcclean.ShowDialog();
+            }
+        }
+
+        private void label11_Click_1(object sender, EventArgs e)
+        {
+            EOL.Popup.SPCClean spcclean = new Popup.SPCClean();
+
+
+            StringBuilder qry = new StringBuilder();
+            qry.AppendLine(" SELECT * FROM V_PCHART_BONDING");
+            var _dt = crud.dac.DtSelectExcuteWithQuery(qry.ToString());
+
+            if (_dt == null || _dt.Rows.Count == 0)
+            {
+                ShowMessage("Không có data SPC Clenliness", Color.Red);
+                return;
+            }
+            else
+            {
+                spcclean.dtSPC = _dt;
+                spcclean.Text = "SPC BONDING";
+                spcclean.ShowDialog();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Bitmap bm = null;
+                Popuppdf pdf = new Popuppdf();
+                string path = ("ftp://" + etc.FileServerPath + @"/Mes/BTS/PDF/Go-No_Go_Standard.pdf");
+                //pdf.pdfid = "1";
+                pdf.filepath = path;
+                pdf.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải file PDF. Rớt mạng!!!\n" + ex.Message, "Rớt mạng", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

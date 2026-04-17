@@ -60,7 +60,7 @@ namespace QIP.EOL.Popup
             series.ChartType = SeriesChartType.Line;
             series.BorderWidth = 2;
             series.Color = color;
-            series.XValueType = ChartValueType.String;
+            series.XValueType = ChartValueType.DateTime;
             series.MarkerStyle = MarkerStyle.Circle;
             series.MarkerSize = 7;
             series.ChartArea = "MainArea";
@@ -68,15 +68,32 @@ namespace QIP.EOL.Popup
 
             foreach (DataRow row in dtSPC.Rows)
             {
-                string xValue = row[xColumn]?.ToString() ?? "";
+                string raw = row[xColumn]?.ToString();
 
-                double yValue = 0;
-                double.TryParse(row[yColumn]?.ToString(), out yValue);
+                DateTime xDate = DateTime.Now;
 
-                series.Points.AddXY(xValue, yValue);
+                try
+                {
+                    // raw: 16(0730-0830)
+                    int day = int.Parse(raw.Substring(0, 2));
+                    int hour = int.Parse(raw.Substring(3, 2));
+                    int minute = int.Parse(raw.Substring(5, 2));
+
+                    xDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day, hour, minute, 0);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                if (double.TryParse(row[yColumn]?.ToString(), out double yValue))
+                {
+                    series.Points.AddXY(xDate, yValue);
+                }
             }
 
             chartControl1.Series.Add(series);
+            
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)

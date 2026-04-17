@@ -91,7 +91,7 @@ namespace NETTMC.Authentication
         private bool CheckDefaultProgram()
         {
             var a = new GlobalFunction.PublicFunction().ReadFromFileNotMesage("DefaultProgram");
-            Debug.WriteLine("Default Program: " + a);
+            //Debug.WriteLine("Default Program: " + a);
             if (a == null)
             {
                 return false;
@@ -322,10 +322,10 @@ namespace NETTMC.Authentication
                 return crud.ConnectionStatus();
 
             });
-            if (CheckDefaultProgram())
-            {
-                this.Hide();
-            }
+            //if (CheckDefaultProgram())
+            //{
+            //    this.Hide();
+            //}
             if (connectionstatus)
             {
                 labelControl5.Text = "Database Connected";

@@ -145,6 +145,7 @@
             button18 = new Button();
             button17 = new Button();
             panel8 = new Panel();
+            button1 = new Button();
             btnClear = new Button();
             panelStatus = new FlowLayoutPanel();
             grdOfflineData = new DataGridView();
@@ -402,6 +403,7 @@
             // txtPo
             // 
             txtPo.Dock = DockStyle.Left;
+            txtPo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtPo.Location = new Point(0, 0);
             txtPo.Multiline = true;
             txtPo.Name = "txtPo";
@@ -530,6 +532,7 @@
             // lblPartCount4
             // 
             lblPartCount4.AutoSize = true;
+            lblPartCount4.BackColor = Color.Transparent;
             lblPartCount4.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblPartCount4.Location = new Point(774, 129);
             lblPartCount4.Name = "lblPartCount4";
@@ -540,6 +543,7 @@
             // lblPartCount3
             // 
             lblPartCount3.AutoSize = true;
+            lblPartCount3.BackColor = Color.Transparent;
             lblPartCount3.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblPartCount3.Location = new Point(552, 129);
             lblPartCount3.Name = "lblPartCount3";
@@ -550,6 +554,7 @@
             // lblPartCount2
             // 
             lblPartCount2.AutoSize = true;
+            lblPartCount2.BackColor = Color.Transparent;
             lblPartCount2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblPartCount2.Location = new Point(377, 129);
             lblPartCount2.Name = "lblPartCount2";
@@ -560,8 +565,9 @@
             // lblPartCount1
             // 
             lblPartCount1.AutoSize = true;
+            lblPartCount1.BackColor = Color.Transparent;
             lblPartCount1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPartCount1.Location = new Point(180, 137);
+            lblPartCount1.Location = new Point(141, 147);
             lblPartCount1.Name = "lblPartCount1";
             lblPartCount1.Size = new Size(23, 25);
             lblPartCount1.TabIndex = 6;
@@ -569,6 +575,7 @@
             // 
             // lblPart4
             // 
+            lblPart4.AccessibleName = "10";
             lblPart4.AutoSize = true;
             lblPart4.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPart4.Location = new Point(714, 42);
@@ -582,6 +589,7 @@
             // 
             // lblPart3
             // 
+            lblPart3.AccessibleName = "9";
             lblPart3.AutoSize = true;
             lblPart3.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPart3.Location = new Point(495, 42);
@@ -595,6 +603,7 @@
             // 
             // lblPart2
             // 
+            lblPart2.AccessibleName = "8";
             lblPart2.AutoSize = true;
             lblPart2.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPart2.Location = new Point(313, 42);
@@ -608,9 +617,10 @@
             // 
             // lblPart1
             // 
+            lblPart1.AccessibleName = "7";
             lblPart1.AutoSize = true;
             lblPart1.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPart1.Location = new Point(117, 57);
+            lblPart1.Location = new Point(80, 57);
             lblPart1.Name = "lblPart1";
             lblPart1.Size = new Size(148, 197);
             lblPart1.TabIndex = 1;
@@ -876,6 +886,7 @@
             label11.TabIndex = 14;
             label11.Text = "SPC BONDING";
             label11.TextAlign = ContentAlignment.MiddleCenter;
+            label11.Click += label11_Click_1;
             // 
             // label8
             // 
@@ -890,6 +901,7 @@
             label8.TabIndex = 13;
             label8.Text = "SPC STITCHING";
             label8.TextAlign = ContentAlignment.MiddleCenter;
+            label8.Click += label8_Click;
             // 
             // label7
             // 
@@ -904,6 +916,7 @@
             label7.TabIndex = 12;
             label7.Text = "SPC CLEANLINESS";
             label7.TextAlign = ContentAlignment.MiddleCenter;
+            label7.Click += label7_Click;
             // 
             // tableLayoutPanel19
             // 
@@ -1320,7 +1333,6 @@
             // 
             lblTop3Defect.AutoSize = true;
             lblTop3Defect.BackColor = SystemColors.ButtonHighlight;
-            lblTop3Defect.BorderStyle = BorderStyle.FixedSingle;
             lblTop3Defect.Dock = DockStyle.Fill;
             lblTop3Defect.Location = new Point(128, 0);
             lblTop3Defect.Name = "lblTop3Defect";
@@ -1866,6 +1878,7 @@
             // 
             // panel8
             // 
+            panel8.Controls.Add(button1);
             panel8.Controls.Add(btnClear);
             panel8.Controls.Add(panelStatus);
             panel8.Controls.Add(grdOfflineData);
@@ -1883,15 +1896,30 @@
             panel8.Size = new Size(1937, 56);
             panel8.TabIndex = 1;
             // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(255, 128, 128);
+            button1.Dock = DockStyle.Right;
+            button1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button1.ForeColor = SystemColors.ButtonFace;
+            button1.Location = new Point(847, 0);
+            button1.Name = "button1";
+            button1.Size = new Size(197, 56);
+            button1.TabIndex = 14;
+            button1.Text = "Go-No Go Standard";
+            button1.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // btnClear
             // 
             btnClear.BackColor = Color.Gray;
             btnClear.Dock = DockStyle.Right;
             btnClear.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnClear.ForeColor = SystemColors.ButtonFace;
-            btnClear.Location = new Point(1116, 0);
+            btnClear.Location = new Point(1044, 0);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(116, 56);
+            btnClear.Size = new Size(188, 56);
             btnClear.TabIndex = 13;
             btnClear.Text = "CLEAR";
             btnClear.UseVisualStyleBackColor = false;
@@ -2005,10 +2033,11 @@
             btn_reasonCode2.TabIndex = 3;
             btn_reasonCode2.Text = "(Andon) Gọi Bảo trì";
             btn_reasonCode2.UseVisualStyleBackColor = false;
+            btn_reasonCode2.Click += btn_reasonCode2_Click;
             // 
             // btn_reasonCode1
             // 
-            btn_reasonCode1.BackColor = Color.FromArgb(192, 64, 0);
+            btn_reasonCode1.BackColor = Color.Red;
             btn_reasonCode1.Dock = DockStyle.Right;
             btn_reasonCode1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode1.ForeColor = SystemColors.ButtonFace;
@@ -2018,6 +2047,7 @@
             btn_reasonCode1.TabIndex = 2;
             btn_reasonCode1.Text = "(Andon) Gọi QA";
             btn_reasonCode1.UseVisualStyleBackColor = false;
+            btn_reasonCode1.Click += btn_reasonCode1_Click_1;
             // 
             // timerStopMessage
             // 
@@ -2048,7 +2078,7 @@
             // timer3
             // 
             timer3.Enabled = true;
-            timer3.Interval = 10000;
+            timer3.Interval = 60000;
             timer3.Tick += timer3_Tick_1;
             // 
             // backgroundOracle
@@ -2068,6 +2098,18 @@
             timerBindProduction.Enabled = true;
             timerBindProduction.Interval = 10000;
             timerBindProduction.Tick += timerBindProduction_Tick;
+            // 
+            // timer_BlinkButtonGreen
+            // 
+            timer_BlinkButtonGreen.Tick += timer_BlinkButtonGreen_Tick;
+            // 
+            // timer_BlinkButtonRed
+            // 
+            timer_BlinkButtonRed.Tick += timer_BlinkButtonRed_Tick;
+            // 
+            // timer_BlinkButtonYellow
+            // 
+            timer_BlinkButtonYellow.Tick += timer_BlinkButtonYellow_Tick;
             // 
             // frmTMC7036_New
             // 
@@ -2273,9 +2315,10 @@
         private Label label13;
         private Button btnClear;
         private System.Windows.Forms.Timer timer_BlinkButtonGreen;
-        private System.Windows.Forms.Timer timer_BlinkButtonRed;
         private System.Windows.Forms.Timer timer_BlinkButtonYellow;
         private Label label21;
         private Label label20;
+        private System.Windows.Forms.Timer timer_BlinkButtonRed;
+        private Button button1;
     }
 }

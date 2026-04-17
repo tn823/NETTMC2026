@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -514,7 +514,7 @@ namespace ConnectionClass.Oracle.OracleHelper
                 {
 
                     case DBTYPE.ORACLE:
-                        ORAuseQuery = new OracleClass.QueryString(strConnectionString);
+                        ORAuseQuery = new OracleClass.QueryString(strConnectionString, AppSettingKey); // fix: thêm AppSettingKey như các hàm SELECT
                         ORAuseQuery.Execute(_strquery);
                         result = true;
                         break;
@@ -550,7 +550,7 @@ namespace ConnectionClass.Oracle.OracleHelper
                 {
 
                     case DBTYPE.ORACLE:
-                        ORAuseQuery = new OracleClass.QueryString(strConnectionString);
+                        ORAuseQuery = new OracleClass.QueryString(strConnectionString, AppSettingKey); // fix: thêm AppSettingKey như các hàm SELECT
                         ORAuseQuery.ExecuteWithParamenter(_strquery, dic);
                         result = true;
                         break;
