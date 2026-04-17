@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -65,13 +65,25 @@ namespace QIP.EOL.Popup
             series.MarkerSize = 7;
             series.ChartArea = "MainArea";
             series.Legend = "DefaultLegend";
+            series.IsXValueIndexed = true; // Fix để các điểm không bị gom lại nếu trùng X
 
             foreach (DataRow row in dtSPC.Rows)
             {
                 string xValue = row[xColumn]?.ToString() ?? "";
 
                 double yValue = 0;
-                double.TryParse(row[yColumn]?.ToString(), out yValue);
+                // Parse double an toàn không bị ảnh hưởng bởi culture (dấu phẩy hay dấu chấm)
+                if (row[yColumn] != DBNull.Value && row[yColumn] != null)
+                {
+                    if (row[yColumn] is IConvertible)
+                    {
+                        yValue = Convert.ToDouble(row[yColumn], System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        double.TryParse(row[yColumn].ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out yValue);
+                    }
+                }
 
                 series.Points.AddXY(xValue, yValue);
             }
