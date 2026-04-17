@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using OfficeOpenXml;
+using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace GlobalFunction
 {
@@ -1544,7 +1546,53 @@ namespace GlobalFunction
             return true;
         }
 
+        public void ExportToExcelFile(DataGridView gv, string sheetName)
+        {
+            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            {
+                fbd.Description = "Select path to export excel";
 
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    string path = Path.Combine(
+                        fbd.SelectedPath,
+                        $"{sheetName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+                    );
+
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                    using (var package = new ExcelPackage())
+                    {
+                        var ws = package.Workbook.Worksheets.Add(sheetName);
+
+                        // Header
+                        for (int i = 0; i < gv.Columns.Count; i++)
+                        {
+                            ws.Cells[1, i + 1].Value = gv.Columns[i].HeaderText;
+                        }
+
+                        // Data
+                        for (int i = 0; i < gv.Rows.Count; i++)
+                        {
+                            for (int j = 0; j < gv.Columns.Count; j++)
+                            {
+                                ws.Cells[i + 2, j + 1].Value = gv.Rows[i].Cells[j].Value;
+                            }
+                        }
+
+                        ws.Cells.AutoFitColumns();
+
+                        File.WriteAllBytes(path, package.GetAsByteArray());
+                    }
+
+                    if (MessageBox.Show("Export complete", "Information",
+                        MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                    }
+                }
+            }
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

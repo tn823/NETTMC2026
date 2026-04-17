@@ -30,7 +30,7 @@ namespace DEV.RFID
         private void btnExcel_Click(object sender, EventArgs e)
         {
             GlobalFunction.PublicFunction pub = new GlobalFunction.PublicFunction();
-            //pub.ExportToExcelFile(gridControl2, gridControl2, "Sheet1");  
+            pub.ExportToExcelFile(gridControl2, "Sheet1");  
         }
     }
 }
