@@ -139,6 +139,7 @@ namespace QIP.EOL
             countSensorQC = 0;
 
             ipAddress = GlobalFunction.PublicFunction.myIpaddress;
+            ipAddress = "192.168.0.85";
             GetLineName(ipAddress);
             spDeptCode = "STF";
             //SetErrorToButton("STF");

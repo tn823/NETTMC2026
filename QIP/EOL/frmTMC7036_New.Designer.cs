@@ -1961,9 +1961,9 @@
             button1.Dock = DockStyle.Right;
             button1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button1.ForeColor = SystemColors.ButtonFace;
-            button1.Location = new Point(847, 0);
+            button1.Location = new Point(1024, 0);
             button1.Name = "button1";
-            button1.Size = new Size(197, 56);
+            button1.Size = new Size(197, 75);
             button1.TabIndex = 14;
             button1.Text = "Go-No Go Standard";
             button1.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1976,9 +1976,9 @@
             btnClear.Dock = DockStyle.Right;
             btnClear.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnClear.ForeColor = SystemColors.ButtonFace;
-            btnClear.Location = new Point(1044, 0);
+            btnClear.Location = new Point(1221, 0);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(188, 56);
+            btnClear.Size = new Size(188, 75);
             btnClear.TabIndex = 13;
             btnClear.Text = "CLEAR";
             btnClear.UseVisualStyleBackColor = false;

@@ -407,7 +407,7 @@ namespace NETTMC.Authentication
             mf.mainMenuStrip.Visible = false;
             mf.Show();
             UserControl uc;
-            if (GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
+            if (GlobalFunction.PublicFunction.myIpaddress == "192.168.1.197" || GlobalFunction.PublicFunction.myIpaddress == "192.168.0.85")
             {
                 uc = new QIP.EOL.frmTMC7036_New();
             }

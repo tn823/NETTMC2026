@@ -69,7 +69,8 @@ namespace QIP.EOL.Popup
 
             foreach (DataRow row in dtSPC.Rows)
             {
-                string raw = row[xColumn]?.ToString();
+                //string raw = row[xColumn]?.ToString();
+                string xValue = row[xColumn]?.ToString() ?? "";
 
                 double yValue = 0;
                 // Parse double an toàn không bị ảnh hưởng bởi culture (dấu phẩy hay dấu chấm)

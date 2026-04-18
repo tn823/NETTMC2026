@@ -995,13 +995,13 @@ namespace QIP.EOL
 
                             if (chkVN.Checked)
                             {
-                                btn.Font = new Font("VNI-Times", 28);
+                                btn.Font = new Font("VNI-Times", 24);
                                 reasonText = dr["REASON_VN"].ToString();
                             }
                             else
                             {
                                 // Trả về font mặc định hoặc font tiếng Anh nếu cần
-                                btn.Font = new Font("Microsoft Sans Serif", 12);
+                                btn.Font = new Font("Microsoft Sans Serif", 24);
                                 reasonText = dr["REASON_EN"].ToString();
                             }
 
@@ -3831,12 +3831,21 @@ namespace QIP.EOL
                             {
                                 btnID.UseVisualStyleBackColor = false;
                                 btnID.BackColor = c;
-                                btnID.ForeColor = c;
+                                btnID.ForeColor = GetReadableTextColor(c);
                             }
                         }
                     }
                 }
             }
+        }
+
+        private Color GetReadableTextColor(Color backgroundColor)
+        {
+            double brightness = (backgroundColor.R * 0.299) +
+                                (backgroundColor.G * 0.587) +
+                                (backgroundColor.B * 0.114);
+
+            return brightness >= 186 ? Color.Black : Color.White;
         }
         private void backgroundWorkerStopLine_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
