@@ -34,6 +34,7 @@ namespace QIP.EOL
         private DataTable ErrorCount;
         private DataTable RFT_DPPM;
         private DataTable Top3DPPM;
+        private DataTable defectLibrary;
         private DataTable dtStopLine = new DataTable();
         private DataTable dtAlarmReturn = new DataTable();
         private string finishedCountScan;
@@ -424,6 +425,7 @@ namespace QIP.EOL
                         DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
+                            defectLibrary = dtCache.Copy();
                             SetErrorToButton(type, dtCache);
                             ConffigErrorButton(false);
                             Debug.WriteLine("[GetError][Completed] Đọc cache thành công: " + dtCache.Rows.Count + " rows");
@@ -447,6 +449,7 @@ namespace QIP.EOL
                         DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
+                            defectLibrary = dtCache.Copy();
                             SetErrorToButton(type, dtCache);
                             ConffigErrorButton(false);
                         }
@@ -456,6 +459,7 @@ namespace QIP.EOL
 
                 // ── [TH3] DB trả data hợp lệ → gán nút + lưu cache ─────────────────
                 Debug.WriteLine("[GetError][Completed] TH3 – DB OK: " + dt.Rows.Count + " rows");
+                defectLibrary = dt.Copy();
                 SetErrorToButton(type, dt);
                 ConffigErrorButton(false);
                 SaveErrorButtonToCsv(dt, cacheFile);
@@ -1565,6 +1569,39 @@ namespace QIP.EOL
             {
                 chkPlanOneMonth.Checked = false;
             }
+        }
+        private void chkVN_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkVN.Checked)
+            {
+                chkEng.Checked = false;
+                RefreshReasonButtonsLanguage();
+            }
+            else if (!chkEng.Checked)
+            {
+                chkEng.Checked = true;
+            }
+        }
+        private void chkEng_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng.Checked)
+            {
+                chkVN.Checked = false;
+                RefreshReasonButtonsLanguage();
+            }
+            else if (!chkVN.Checked)
+            {
+                chkVN.Checked = true;
+            }
+        }
+        private void RefreshReasonButtonsLanguage()
+        {
+            if (defectLibrary == null || defectLibrary.Rows.Count == 0)
+            {
+                return;
+            }
+
+            SetErrorToButton(spDeptCode, defectLibrary);
         }
         private void backgroundOracle_DoWork(object sender, DoWorkEventArgs e)
         {

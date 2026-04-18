@@ -782,6 +782,7 @@ namespace QIP.EOL
             chkEng.Text = "ENG";
             chkEng.TextAlign = ContentAlignment.MiddleCenter;
             chkEng.UseVisualStyleBackColor = true;
+            chkEng.CheckedChanged += chkEng_CheckedChanged;
             // 
             // chkVN
             // 
@@ -797,6 +798,7 @@ namespace QIP.EOL
             chkVN.Text = "VN";
             chkVN.TextAlign = ContentAlignment.MiddleCenter;
             chkVN.UseVisualStyleBackColor = true;
+            chkVN.CheckedChanged += chkVN_CheckedChanged;
             // 
             // lblSyncStatus
             // 
