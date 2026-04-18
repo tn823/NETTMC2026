@@ -123,6 +123,7 @@ namespace QIP.EOL
         SerialPort serialPort1;
         private void frmTMC7036_New_Load(object sender, EventArgs e)
         {
+            
             lblTop1Defect.Text = "";
             lblTop2Defect.Text = "";
             lblTop3Defect.Text = "";
@@ -1608,10 +1609,10 @@ namespace QIP.EOL
                     }
                 }
             }
-           
+
         }
 
-
+        
         private void backgroundProduction_DoWork(object sender, DoWorkEventArgs e)
         {
             Production();
