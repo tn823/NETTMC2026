@@ -747,8 +747,8 @@ namespace QIP.EOL
 
             if (!btn.Enabled)
             {
-                backgroundColor = BlendColor(backgroundColor, surfaceColor, 0.45f);
-                textColor = BlendColor(textColor, surfaceColor, 0.55f);
+                backgroundColor = BlendColor(backgroundColor, surfaceColor, 0.7f);
+                textColor = BlendColor(textColor, surfaceColor, 0.75f);
             }
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
