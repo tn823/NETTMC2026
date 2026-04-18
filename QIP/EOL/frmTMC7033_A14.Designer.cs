@@ -89,7 +89,7 @@ namespace QIP.EOL
             simpleButton6 = new Button();
             panel11 = new Panel();
             tableLayoutPanel3 = new TableLayoutPanel();
-            panel14 = new Panel();
+            panel12 = new Panel();
             grdOfflineData = new DataGridView();
             lblPartCount6 = new Label();
             lblPartCount5 = new Label();
@@ -198,7 +198,7 @@ namespace QIP.EOL
             panelControl14.SuspendLayout();
             panel11.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
-            panel14.SuspendLayout();
+            panel12.SuspendLayout();
             ((ISupportInitialize)grdOfflineData).BeginInit();
             ((ISupportInitialize)gridControl1).BeginInit();
             ((ISupportInitialize)pictureShoes).BeginInit();
@@ -782,6 +782,7 @@ namespace QIP.EOL
             chkEng.Text = "ENG";
             chkEng.TextAlign = ContentAlignment.MiddleCenter;
             chkEng.UseVisualStyleBackColor = true;
+            chkEng.CheckedChanged += chkEng_CheckedChanged;
             // 
             // chkVN
             // 
@@ -797,6 +798,7 @@ namespace QIP.EOL
             chkVN.Text = "VN";
             chkVN.TextAlign = ContentAlignment.MiddleCenter;
             chkVN.UseVisualStyleBackColor = true;
+            chkVN.CheckedChanged += chkVN_CheckedChanged;
             // 
             // lblSyncStatus
             // 
@@ -889,7 +891,7 @@ namespace QIP.EOL
             checkEdit2.Font = new Font("Tahoma", 8.25F);
             checkEdit2.Location = new Point(166, 36);
             checkEdit2.Name = "checkEdit2";
-            checkEdit2.Size = new Size(82, 17);
+            checkEdit2.Size = new Size(102, 21);
             checkEdit2.TabIndex = 2;
             checkEdit2.Text = "Plan 7 ngày";
             checkEdit2.UseVisualStyleBackColor = true;
@@ -901,7 +903,7 @@ namespace QIP.EOL
             chkPlanOneMonth.Font = new Font("Tahoma", 8.25F);
             chkPlanOneMonth.Location = new Point(166, 9);
             chkPlanOneMonth.Name = "chkPlanOneMonth";
-            chkPlanOneMonth.Size = new Size(86, 17);
+            chkPlanOneMonth.Size = new Size(107, 21);
             chkPlanOneMonth.TabIndex = 1;
             chkPlanOneMonth.Text = "Plan 1 tháng";
             chkPlanOneMonth.UseVisualStyleBackColor = true;
@@ -1000,7 +1002,7 @@ namespace QIP.EOL
             labelControl17.Location = new Point(2, 0);
             labelControl17.Margin = new Padding(3, 4, 3, 4);
             labelControl17.Name = "labelControl17";
-            labelControl17.Size = new Size(30, 33);
+            labelControl17.Size = new Size(37, 41);
             labelControl17.TabIndex = 5;
             labelControl17.Text = "0";
             // 
@@ -1035,7 +1037,7 @@ namespace QIP.EOL
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel3.Controls.Add(panel14, 1, 0);
+            tableLayoutPanel3.Controls.Add(panel12, 1, 0);
             tableLayoutPanel3.Controls.Add(tableLayoutErrorLeft, 0, 0);
             tableLayoutPanel3.Controls.Add(tableLayoutErrorRight, 2, 0);
             tableLayoutPanel3.Dock = DockStyle.Fill;
@@ -1047,31 +1049,31 @@ namespace QIP.EOL
             tableLayoutPanel3.Size = new Size(2730, 375);
             tableLayoutPanel3.TabIndex = 0;
             // 
-            // panel14
+            // panel12
             // 
-            panel14.BackColor = Color.Red;
-            panel14.Controls.Add(grdOfflineData);
-            panel14.Controls.Add(lblPartCount6);
-            panel14.Controls.Add(lblPartCount5);
-            panel14.Controls.Add(lblPartCount4);
-            panel14.Controls.Add(lblPartCount3);
-            panel14.Controls.Add(lblPartCount2);
-            panel14.Controls.Add(labelControl10);
-            panel14.Controls.Add(lblPartCount1);
-            panel14.Controls.Add(lblPart6);
-            panel14.Controls.Add(lblPart5);
-            panel14.Controls.Add(lblPart4);
-            panel14.Controls.Add(lblPart3);
-            panel14.Controls.Add(lblPart2);
-            panel14.Controls.Add(lblPart1);
-            panel14.Controls.Add(txtMessage);
-            panel14.Controls.Add(gridControl1);
-            panel14.Controls.Add(pictureShoes);
-            panel14.Dock = DockStyle.Fill;
-            panel14.Location = new Point(549, 3);
-            panel14.Name = "panel14";
-            panel14.Size = new Size(1632, 369);
-            panel14.TabIndex = 1;
+            panel12.BackColor = Color.White;
+            panel12.Controls.Add(grdOfflineData);
+            panel12.Controls.Add(lblPartCount6);
+            panel12.Controls.Add(lblPartCount5);
+            panel12.Controls.Add(lblPartCount4);
+            panel12.Controls.Add(lblPartCount3);
+            panel12.Controls.Add(lblPartCount2);
+            panel12.Controls.Add(labelControl10);
+            panel12.Controls.Add(lblPartCount1);
+            panel12.Controls.Add(lblPart6);
+            panel12.Controls.Add(lblPart5);
+            panel12.Controls.Add(lblPart4);
+            panel12.Controls.Add(lblPart3);
+            panel12.Controls.Add(lblPart2);
+            panel12.Controls.Add(lblPart1);
+            panel12.Controls.Add(txtMessage);
+            panel12.Controls.Add(gridControl1);
+            panel12.Controls.Add(pictureShoes);
+            panel12.Dock = DockStyle.Fill;
+            panel12.Location = new Point(549, 3);
+            panel12.Name = "panel12";
+            panel12.Size = new Size(1632, 369);
+            panel12.TabIndex = 1;
             // 
             // grdOfflineData
             // 
@@ -1092,7 +1094,7 @@ namespace QIP.EOL
             lblPartCount6.Location = new Point(1002, 297);
             lblPartCount6.Margin = new Padding(3, 4, 3, 4);
             lblPartCount6.Name = "lblPartCount6";
-            lblPartCount6.Size = new Size(0, 33);
+            lblPartCount6.Size = new Size(0, 41);
             lblPartCount6.TabIndex = 37;
             // 
             // lblPartCount5
@@ -1103,7 +1105,7 @@ namespace QIP.EOL
             lblPartCount5.Location = new Point(961, 100);
             lblPartCount5.Margin = new Padding(3, 4, 3, 4);
             lblPartCount5.Name = "lblPartCount5";
-            lblPartCount5.Size = new Size(0, 33);
+            lblPartCount5.Size = new Size(0, 41);
             lblPartCount5.TabIndex = 36;
             // 
             // lblPartCount4
@@ -1114,7 +1116,7 @@ namespace QIP.EOL
             lblPartCount4.Location = new Point(831, 308);
             lblPartCount4.Margin = new Padding(3, 4, 3, 4);
             lblPartCount4.Name = "lblPartCount4";
-            lblPartCount4.Size = new Size(0, 33);
+            lblPartCount4.Size = new Size(0, 41);
             lblPartCount4.TabIndex = 35;
             // 
             // lblPartCount3
@@ -1125,7 +1127,7 @@ namespace QIP.EOL
             lblPartCount3.Location = new Point(652, 62);
             lblPartCount3.Margin = new Padding(3, 4, 3, 4);
             lblPartCount3.Name = "lblPartCount3";
-            lblPartCount3.Size = new Size(0, 33);
+            lblPartCount3.Size = new Size(0, 41);
             lblPartCount3.TabIndex = 34;
             // 
             // lblPartCount2
@@ -1136,7 +1138,7 @@ namespace QIP.EOL
             lblPartCount2.Location = new Point(576, 297);
             lblPartCount2.Margin = new Padding(3, 4, 3, 4);
             lblPartCount2.Name = "lblPartCount2";
-            lblPartCount2.Size = new Size(0, 33);
+            lblPartCount2.Size = new Size(0, 41);
             lblPartCount2.TabIndex = 33;
             // 
             // labelControl10
@@ -1147,7 +1149,7 @@ namespace QIP.EOL
             labelControl10.Location = new Point(712, 199);
             labelControl10.Margin = new Padding(3, 4, 3, 4);
             labelControl10.Name = "labelControl10";
-            labelControl10.Size = new Size(0, 33);
+            labelControl10.Size = new Size(0, 41);
             labelControl10.TabIndex = 32;
             // 
             // lblPartCount1
@@ -1158,7 +1160,7 @@ namespace QIP.EOL
             lblPartCount1.Location = new Point(398, 258);
             lblPartCount1.Margin = new Padding(3, 4, 3, 4);
             lblPartCount1.Name = "lblPartCount1";
-            lblPartCount1.Size = new Size(0, 33);
+            lblPartCount1.Size = new Size(0, 41);
             lblPartCount1.TabIndex = 31;
             // 
             // lblPart6
@@ -1171,9 +1173,10 @@ namespace QIP.EOL
             lblPart6.Location = new Point(988, 270);
             lblPart6.Margin = new Padding(3, 4, 3, 4);
             lblPart6.Name = "lblPart6";
-            lblPart6.Size = new Size(80, 72);
+            lblPart6.Size = new Size(100, 89);
             lblPart6.TabIndex = 30;
             lblPart6.Text = "O";
+            lblPart6.Click += lblPart_Click;
             // 
             // lblPart5
             // 
@@ -1185,9 +1188,10 @@ namespace QIP.EOL
             lblPart5.Location = new Point(944, 80);
             lblPart5.Margin = new Padding(3, 4, 3, 4);
             lblPart5.Name = "lblPart5";
-            lblPart5.Size = new Size(80, 72);
+            lblPart5.Size = new Size(100, 89);
             lblPart5.TabIndex = 29;
             lblPart5.Text = "O";
+            lblPart5.Click += lblPart_Click;
             // 
             // lblPart4
             // 
@@ -1199,9 +1203,10 @@ namespace QIP.EOL
             lblPart4.Location = new Point(807, 284);
             lblPart4.Margin = new Padding(3, 4, 3, 4);
             lblPart4.Name = "lblPart4";
-            lblPart4.Size = new Size(80, 72);
+            lblPart4.Size = new Size(100, 89);
             lblPart4.TabIndex = 28;
             lblPart4.Text = "O";
+            lblPart4.Click += lblPart_Click;
             // 
             // lblPart3
             // 
@@ -1213,9 +1218,10 @@ namespace QIP.EOL
             lblPart3.Location = new Point(636, 39);
             lblPart3.Margin = new Padding(3, 4, 3, 4);
             lblPart3.Name = "lblPart3";
-            lblPart3.Size = new Size(80, 72);
+            lblPart3.Size = new Size(100, 89);
             lblPart3.TabIndex = 27;
             lblPart3.Text = "O";
+            lblPart3.Click += lblPart_Click;
             // 
             // lblPart2
             // 
@@ -1227,9 +1233,10 @@ namespace QIP.EOL
             lblPart2.Location = new Point(556, 270);
             lblPart2.Margin = new Padding(3, 4, 3, 4);
             lblPart2.Name = "lblPart2";
-            lblPart2.Size = new Size(80, 72);
+            lblPart2.Size = new Size(100, 89);
             lblPart2.TabIndex = 26;
             lblPart2.Text = "O";
+            lblPart2.Click += lblPart_Click;
             // 
             // lblPart1
             // 
@@ -1240,9 +1247,10 @@ namespace QIP.EOL
             lblPart1.Location = new Point(377, 238);
             lblPart1.Margin = new Padding(3, 4, 3, 4);
             lblPart1.Name = "lblPart1";
-            lblPart1.Size = new Size(80, 72);
+            lblPart1.Size = new Size(100, 89);
             lblPart1.TabIndex = 25;
             lblPart1.Text = "O";
+            lblPart1.Click += lblPart_Click;
             // 
             // txtMessage
             // 
@@ -1277,7 +1285,7 @@ namespace QIP.EOL
             pictureShoes.BackColor = Color.White;
             pictureShoes.Dock = DockStyle.Fill;
             pictureShoes.ErrorImage = Properties.Resources.sASS_3;
-            pictureShoes.ImageLocation = "D:\\NETTMC_\\NETTMC2026\\NETTMC\\QIP\\Resources\\sASS_3.jpg";
+            pictureShoes.Image = Properties.Resources.sASS_3;
             pictureShoes.Location = new Point(0, 0);
             pictureShoes.Name = "pictureShoes";
             pictureShoes.Size = new Size(1632, 369);
@@ -1331,7 +1339,7 @@ namespace QIP.EOL
             labelControl15.Location = new Point(2, -5);
             labelControl15.Margin = new Padding(3, 4, 3, 4);
             labelControl15.Name = "labelControl15";
-            labelControl15.Size = new Size(30, 33);
+            labelControl15.Size = new Size(37, 41);
             labelControl15.TabIndex = 5;
             labelControl15.Text = "0";
             // 
@@ -1371,7 +1379,7 @@ namespace QIP.EOL
             labelControl16.Location = new Point(2, 0);
             labelControl16.Margin = new Padding(3, 4, 3, 4);
             labelControl16.Name = "labelControl16";
-            labelControl16.Size = new Size(30, 33);
+            labelControl16.Size = new Size(37, 41);
             labelControl16.TabIndex = 5;
             labelControl16.Text = "0";
             // 
@@ -1411,7 +1419,7 @@ namespace QIP.EOL
             labelControl18.Location = new Point(2, 0);
             labelControl18.Margin = new Padding(3, 4, 3, 4);
             labelControl18.Name = "labelControl18";
-            labelControl18.Size = new Size(30, 33);
+            labelControl18.Size = new Size(37, 41);
             labelControl18.TabIndex = 5;
             labelControl18.Text = "0";
             // 
@@ -1451,7 +1459,7 @@ namespace QIP.EOL
             labelControl19.Location = new Point(2, 0);
             labelControl19.Margin = new Padding(3, 4, 3, 4);
             labelControl19.Name = "labelControl19";
-            labelControl19.Size = new Size(30, 33);
+            labelControl19.Size = new Size(37, 41);
             labelControl19.TabIndex = 5;
             labelControl19.Text = "0";
             // 
@@ -1491,7 +1499,7 @@ namespace QIP.EOL
             labelControl14.Location = new Point(2, 0);
             labelControl14.Margin = new Padding(3, 4, 3, 4);
             labelControl14.Name = "labelControl14";
-            labelControl14.Size = new Size(30, 33);
+            labelControl14.Size = new Size(37, 41);
             labelControl14.TabIndex = 5;
             labelControl14.Text = "0";
             // 
@@ -1836,7 +1844,7 @@ namespace QIP.EOL
             labelControl13.Location = new Point(2, 0);
             labelControl13.Margin = new Padding(3, 4, 3, 4);
             labelControl13.Name = "labelControl13";
-            labelControl13.Size = new Size(30, 33);
+            labelControl13.Size = new Size(37, 41);
             labelControl13.TabIndex = 5;
             labelControl13.Text = "0";
             // 
@@ -1876,7 +1884,7 @@ namespace QIP.EOL
             labelControl12.Location = new Point(2, 0);
             labelControl12.Margin = new Padding(3, 4, 3, 4);
             labelControl12.Name = "labelControl12";
-            labelControl12.Size = new Size(30, 33);
+            labelControl12.Size = new Size(37, 41);
             labelControl12.TabIndex = 5;
             labelControl12.Text = "0";
             // 
@@ -2104,7 +2112,7 @@ namespace QIP.EOL
             lblCount21.Location = new Point(2, 0);
             lblCount21.Margin = new Padding(3, 4, 3, 4);
             lblCount21.Name = "lblCount21";
-            lblCount21.Size = new Size(30, 33);
+            lblCount21.Size = new Size(37, 41);
             lblCount21.TabIndex = 5;
             lblCount21.Text = "0";
             // 
@@ -2145,7 +2153,7 @@ namespace QIP.EOL
             lblCount0.Location = new Point(0, 0);
             lblCount0.Margin = new Padding(3, 4, 3, 4);
             lblCount0.Name = "lblCount0";
-            lblCount0.Size = new Size(30, 33);
+            lblCount0.Size = new Size(37, 41);
             lblCount0.TabIndex = 6;
             lblCount0.Text = "0";
             // 
@@ -2168,72 +2176,72 @@ namespace QIP.EOL
             // 
             backgroundWorkerCheckAndon.WorkerReportsProgress = true;
             backgroundWorkerCheckAndon.WorkerSupportsCancellation = true;
-            this.backgroundWorkerCheckAndon.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerCheckAndon_DoWork);
-            this.backgroundWorkerCheckAndon.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerCheckAndon_RunWorkerCompleted);
+            backgroundWorkerCheckAndon.DoWork += backgroundWorkerCheckAndon_DoWork;
+            backgroundWorkerCheckAndon.RunWorkerCompleted += backgroundWorkerCheckAndon_RunWorkerCompleted;
             // 
             // timerCheckAndon
             // 
             timerCheckAndon.Enabled = true;
             timerCheckAndon.Interval = 1000;
-            this.timerCheckAndon.Tick += new System.EventHandler(this.timerCheckAndon_Tick);
+            timerCheckAndon.Tick += timerCheckAndon_Tick;
             // 
             // backgroundOracle
             // 
             backgroundOracle.WorkerReportsProgress = true;
             backgroundOracle.WorkerSupportsCancellation = true;
-            this.backgroundOracle.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundOracle_DoWork);
-            this.backgroundOracle.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundOracle_ProgressChanged);
-            this.backgroundOracle.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundOracle_RunWorkerCompleted);
+            backgroundOracle.DoWork += backgroundOracle_DoWork;
+            backgroundOracle.ProgressChanged += backgroundOracle_ProgressChanged;
+            backgroundOracle.RunWorkerCompleted += backgroundOracle_RunWorkerCompleted;
             // 
             // timerBindProduction
             // 
             timerBindProduction.Enabled = true;
             timerBindProduction.Interval = 20000;
-            this.timerBindProduction.Tick += new System.EventHandler(this.timerBindProduction_Tick);
+            timerBindProduction.Tick += timerBindProduction_Tick;
             // 
             // timer_CheckStopLine
             // 
             timer_CheckStopLine.Enabled = true;
             timer_CheckStopLine.Interval = 3000;
-            this.timer_CheckStopLine.Tick += new System.EventHandler(this.timer_CheckStopLine_Tick);
+            timer_CheckStopLine.Tick += timer_CheckStopLine_Tick;
             // 
             // backgroundWorkerStopLine
             // 
             backgroundWorkerStopLine.WorkerReportsProgress = true;
             backgroundWorkerStopLine.WorkerSupportsCancellation = true;
-            this.backgroundWorkerStopLine.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerStopLine_DoWork);
-            this.backgroundWorkerStopLine.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerStopLine_RunWorkerCompleted);
+            backgroundWorkerStopLine.DoWork += backgroundWorkerStopLine_DoWork;
+            backgroundWorkerStopLine.RunWorkerCompleted += backgroundWorkerStopLine_RunWorkerCompleted;
             // 
             // timer_SyncData
             // 
             timer_SyncData.Interval = 20000;
-            this.timer_SyncData.Tick += new System.EventHandler(this.timer_SyncData_Tick);
+            timer_SyncData.Tick += timer_SyncData_Tick;
             // 
             // backgroundSyncData
             // 
             backgroundSyncData.WorkerReportsProgress = true;
             backgroundSyncData.WorkerSupportsCancellation = true;
-            this.backgroundSyncData.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundSyncData_DoWork);
-            this.backgroundSyncData.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundSyncData_ProgressChanged);
+            backgroundSyncData.DoWork += backgroundSyncData_DoWork;
+            backgroundSyncData.ProgressChanged += backgroundSyncData_ProgressChanged;
             // 
             // timer_BlinkButtonRed
             // 
             timer_BlinkButtonRed.Interval = 1000;
-            this.timer_BlinkButtonRed.Tick += new System.EventHandler(this.timer_BlinkButtonRed_Tick);
+            timer_BlinkButtonRed.Tick += timer_BlinkButtonRed_Tick;
             // 
             // timer_BlinkButtonYellow
             // 
             timer_BlinkButtonYellow.Interval = 1000;
-            this.timer_BlinkButtonYellow.Tick += new System.EventHandler(this.timer_BlinkButtonYellow_Tick);
+            timer_BlinkButtonYellow.Tick += timer_BlinkButtonYellow_Tick;
             // 
             // timer_BlinkButtonGreen
             // 
             timer_BlinkButtonGreen.Interval = 1000;
-            this.timer_BlinkButtonGreen.Tick += new System.EventHandler(this.timer_BlinkButtonGreen_Tick);
+            timer_BlinkButtonGreen.Tick += timer_BlinkButtonGreen_Tick;
             // 
             // frmTMC7033_A14
             // 
-            AutoScaleDimensions = new SizeF(6F, 12F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = SystemColors.ButtonFace;
@@ -2268,8 +2276,8 @@ namespace QIP.EOL
             panelControl14.PerformLayout();
             panel11.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
-            panel14.ResumeLayout(false);
-            panel14.PerformLayout();
+            panel12.ResumeLayout(false);
+            panel12.PerformLayout();
             ((ISupportInitialize)grdOfflineData).EndInit();
             ((ISupportInitialize)gridControl1).EndInit();
             ((ISupportInitialize)pictureShoes).EndInit();
@@ -2389,7 +2397,7 @@ namespace QIP.EOL
         private Panel panelControl15;
         private Button simpleButton7;
         private Label labelControl18;
-        private Panel panel14;
+        private Panel panel12;
         private TableLayoutPanel tableLayoutErrorRight;
         private Panel panelControl17;
         private Button simpleButton11;
