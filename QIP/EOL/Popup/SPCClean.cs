@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -65,31 +65,48 @@ namespace QIP.EOL.Popup
             series.MarkerSize = 7;
             series.ChartArea = "MainArea";
             series.Legend = "DefaultLegend";
+            series.IsXValueIndexed = true; // Fix để các điểm không bị gom lại nếu trùng X
 
             foreach (DataRow row in dtSPC.Rows)
             {
                 string raw = row[xColumn]?.ToString();
 
-                DateTime xDate = DateTime.Now;
-
-                try
+                double yValue = 0;
+                // Parse double an toàn không bị ảnh hưởng bởi culture (dấu phẩy hay dấu chấm)
+                if (row[yColumn] != DBNull.Value && row[yColumn] != null)
                 {
-                    // raw: 16(0730-0830)
-                    int day = int.Parse(raw.Substring(0, 2));
-                    int hour = int.Parse(raw.Substring(3, 2));
-                    int minute = int.Parse(raw.Substring(5, 2));
+                    if (row[yColumn] is IConvertible)
+                    {
+                        yValue = Convert.ToDouble(row[yColumn], System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        double.TryParse(row[yColumn].ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out yValue);
+                    }
+                }
+                series.Points.AddXY(xValue, yValue);
+                //quyentest
+                //DateTime xDate = DateTime.Now;
 
-                    xDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day, hour, minute, 0);
-                }
-                catch
-                {
-                    continue;
-                }
+                //try
+                //{
+                //    // raw: 16(0730-0830)
+                //    int day = int.Parse(raw.Substring(0, 2));
+                //    int hour = int.Parse(raw.Substring(3, 2));
+                //    int minute = int.Parse(raw.Substring(5, 2));
 
-                if (double.TryParse(row[yColumn]?.ToString(), out double yValue))
-                {
-                    series.Points.AddXY(xDate, yValue);
-                }
+                //    xDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day, hour, minute, 0);
+                //}
+                //catch
+                //{
+                //    continue;
+                //}
+
+                //if (double.TryParse(row[yColumn]?.ToString(), out double yValue))
+                //{
+                //    series.Points.AddXY(xDate, yValue);
+                //}
+                //quyentest
             }
 
             chartControl1.Series.Add(series);

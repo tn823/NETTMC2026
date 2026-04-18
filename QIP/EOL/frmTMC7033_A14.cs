@@ -9,6 +9,7 @@ using System.Text;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 using ConnectionClass.Oracle;
 using static GlobalFunction.PublicFunction;
 using System.Diagnostics;
@@ -33,6 +34,7 @@ namespace QIP.EOL
         private DataTable ErrorCount;
         private DataTable RFT_DPPM;
         private DataTable Top3DPPM;
+        private DataTable defectLibrary;
         private DataTable dtStopLine = new DataTable();
         private DataTable dtAlarmReturn = new DataTable();
         private string finishedCountScan;
@@ -48,6 +50,12 @@ namespace QIP.EOL
         private static string spLine;
         public bool MQTTConnected = false;
         public string MQTTClient = "";
+        //private static readonly Color ReasonButtonDefaultColor = Color.FromArgb(192, 255, 255);
+        private static readonly Color ReasonButtonDefaultColor = Color.AliceBlue;
+        private static readonly Color ReasonButtonSelectedColor = Color.FromArgb(224, 224, 224);
+        private static readonly Color PassButtonColor = Color.Blue;
+        private static readonly Color FailButtonColor = Color.FromArgb(231, 76, 60);
+        private static readonly Color ClearButtonColor = Color.Gray;
         Dictionary<string, string> Reason = new Dictionary<string, string>();
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
         SYSTEMTIME st = new SYSTEMTIME();
@@ -78,6 +86,8 @@ namespace QIP.EOL
         {
             InitializeComponent();
             crud = new CRUDOracle("VSMES");
+            InitializeActionButtons();
+            pictureShoes.SizeChanged += pictureShoes_SizeChanged;
         }
         private void ShowMessage(string message, Color color)
         {
@@ -124,6 +134,10 @@ namespace QIP.EOL
                 lblPart5.Font = new Font("Arial", 100);
                 lblPart6.Font = new Font("Arial", 100);
 
+                BindingControl();
+                SetInspectionActionState(true, false, true, false);
+                ConffigErrorButton(false);
+
 
 
                 SetTouchCount();
@@ -140,6 +154,38 @@ namespace QIP.EOL
                      Environment.NewLine + " SDT : 0903518945. CÁM ON NHIỀU", Color.Red);
                 Application.Exit();
             }
+        }
+        private void pictureShoes_SizeChanged(object sender, EventArgs e)
+        {
+            if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            BindingControl();
+        }
+        private Rectangle GetDisplayedImageBounds(PictureBox pictureBox)
+        {
+            if (pictureBox.Image == null || pictureBox.ClientSize.Width <= 0 || pictureBox.ClientSize.Height <= 0)
+            {
+                return pictureBox.ClientRectangle;
+            }
+
+            if (pictureBox.SizeMode != PictureBoxSizeMode.Zoom)
+            {
+                return pictureBox.ClientRectangle;
+            }
+
+            Size imageSize = pictureBox.Image.Size;
+            float scale = Math.Min((float)pictureBox.ClientSize.Width / imageSize.Width,
+                                   (float)pictureBox.ClientSize.Height / imageSize.Height);
+
+            int scaledWidth = (int)Math.Round(imageSize.Width * scale);
+            int scaledHeight = (int)Math.Round(imageSize.Height * scale);
+            int offsetX = (pictureBox.ClientSize.Width - scaledWidth) / 2;
+            int offsetY = (pictureBox.ClientSize.Height - scaledHeight) / 2;
+
+            return new Rectangle(offsetX, offsetY, scaledWidth, scaledHeight);
         }
         private async void MQTT_Init()
         {
@@ -379,6 +425,7 @@ namespace QIP.EOL
                         DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
+                            defectLibrary = dtCache.Copy();
                             SetErrorToButton(type, dtCache);
                             ConffigErrorButton(false);
                             Debug.WriteLine("[GetError][Completed] Đọc cache thành công: " + dtCache.Rows.Count + " rows");
@@ -402,6 +449,7 @@ namespace QIP.EOL
                         DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
+                            defectLibrary = dtCache.Copy();
                             SetErrorToButton(type, dtCache);
                             ConffigErrorButton(false);
                         }
@@ -411,6 +459,7 @@ namespace QIP.EOL
 
                 // ── [TH3] DB trả data hợp lệ → gán nút + lưu cache ─────────────────
                 Debug.WriteLine("[GetError][Completed] TH3 – DB OK: " + dt.Rows.Count + " rows");
+                defectLibrary = dt.Copy();
                 SetErrorToButton(type, dt);
                 ConffigErrorButton(false);
                 SaveErrorButtonToCsv(dt, cacheFile);
@@ -576,23 +625,173 @@ namespace QIP.EOL
         //}
         private void ConffigErrorButton(bool visible)
         {
-            SetButtonEnabled(tableLayoutPanel2, visible);
-            SetButtonEnabled(tableLayoutErrorLeft, visible);
-            SetButtonEnabled(tableLayoutErrorRight, visible);
+            foreach (Button btn in GetReasonButtons())
+            {
+                btn.Enabled = visible;
+            }
         }
 
-        private void SetButtonEnabled(Control parent, bool enabled)
+        private IEnumerable<Button> GetReasonButtons()
+        {
+            Control[] reasonContainers =
+            {
+                panelControl8,
+                panelControl7,
+                panelControl9,
+                panelControl10,
+                tableLayoutErrorLeft,
+                tableLayoutErrorRight
+            };
+
+            foreach (Control container in reasonContainers)
+            {
+                foreach (Button btn in GetButtonsRecursive(container))
+                {
+                    yield return btn;
+                }
+            }
+        }
+
+        private IEnumerable<Button> GetButtonsRecursive(Control parent)
         {
             foreach (Control ctrl in parent.Controls)
             {
                 if (ctrl is Button btn)
                 {
-                    btn.Enabled = enabled;
+                    yield return btn;
                 }
-                if (ctrl.HasChildren)
+
+                if (!ctrl.HasChildren)
                 {
-                    SetButtonEnabled(ctrl, enabled);
+                    continue;
                 }
+
+                foreach (Button nestedButton in GetButtonsRecursive(ctrl))
+                {
+                    yield return nestedButton;
+                }
+            }
+        }
+
+        private void SetInspectionActionState(bool passEnabled, bool failEnabled, bool rePassEnabled, bool reFailEnabled)
+        {
+            btnPass.Enabled = passEnabled;
+            btnFail.Enabled = failEnabled;
+            btnRePass.Enabled = rePassEnabled;
+            btnReFail.Enabled = reFailEnabled;
+            btnClear.Enabled = true;
+
+            RestoreActionButtonColors();
+        }
+
+        private void RestoreActionButtonColors()
+        {
+            RestoreButtonColor(btnPass, PassButtonColor, Color.White);
+            RestoreButtonColor(btnFail, FailButtonColor, Color.White);
+            RestoreButtonColor(btnRePass, PassButtonColor, Color.White);
+            RestoreButtonColor(btnReFail, FailButtonColor, Color.White);
+            RestoreButtonColor(btnClear, ClearButtonColor, Color.White);
+        }
+
+        private void RestoreButtonColor(Button btn, Color backColor, Color foreColor)
+        {
+            btn.UseVisualStyleBackColor = false;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.BackColor = backColor;
+            btn.ForeColor = foreColor;
+        }
+
+        private void InitializeActionButtons()
+        {
+            Button[] actionButtons = { btnPass, btnFail, btnRePass, btnReFail };
+
+            foreach (Button btn in actionButtons)
+            {
+                btn.UseVisualStyleBackColor = false;
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.FlatAppearance.BorderSize = 0;
+                btn.Paint += ActionButton_Paint;
+                btn.EnabledChanged += ActionButton_VisualStateChanged;
+                btn.TextChanged += ActionButton_VisualStateChanged;
+                btn.Resize += ActionButton_VisualStateChanged;
+                btn.BackColorChanged += ActionButton_VisualStateChanged;
+                btn.ForeColorChanged += ActionButton_VisualStateChanged;
+            }
+        }
+
+        private void ActionButton_VisualStateChanged(object sender, EventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                btn.Invalidate();
+            }
+        }
+
+        private void ActionButton_Paint(object sender, PaintEventArgs e)
+        {
+            if (sender is not Button btn)
+            {
+                return;
+            }
+
+            Rectangle rect = btn.ClientRectangle;
+            if (rect.Width <= 0 || rect.Height <= 0)
+            {
+                return;
+            }
+
+            Color backgroundColor = btn.BackColor;
+            Color textColor = btn.ForeColor;
+            Color surfaceColor = btn.Parent?.BackColor ?? SystemColors.Control;
+
+            if (!btn.Enabled)
+            {
+                backgroundColor = BlendColor(backgroundColor, surfaceColor, 0.45f);
+                textColor = BlendColor(textColor, surfaceColor, 0.55f);
+            }
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            using (SolidBrush backgroundBrush = new SolidBrush(backgroundColor))
+            using (Pen borderPen = new Pen(BlendColor(backgroundColor, Color.Black, btn.Enabled ? 0.15f : 0.05f)))
+            {
+                e.Graphics.FillRectangle(backgroundBrush, rect);
+                e.Graphics.DrawRectangle(borderPen, 0, 0, rect.Width - 1, rect.Height - 1);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                btn.Text,
+                btn.Font,
+                rect,
+                textColor,
+                TextFormatFlags.HorizontalCenter |
+                TextFormatFlags.VerticalCenter |
+                TextFormatFlags.WordBreak);
+        }
+
+        private Color BlendColor(Color sourceColor, Color targetColor, float amount)
+        {
+            amount = Math.Max(0f, Math.Min(1f, amount));
+
+            int r = (int)Math.Round(sourceColor.R + ((targetColor.R - sourceColor.R) * amount));
+            int g = (int)Math.Round(sourceColor.G + ((targetColor.G - sourceColor.G) * amount));
+            int b = (int)Math.Round(sourceColor.B + ((targetColor.B - sourceColor.B) * amount));
+
+            return Color.FromArgb(r, g, b);
+        }
+
+        private void ResetReasonButtonColors()
+        {
+            foreach (Button btn in GetReasonButtons())
+            {
+                btn.UseVisualStyleBackColor = false;
+                btn.FlatStyle = FlatStyle.Standard;
+                //btn.BackColor = Color.FromArgb(192, 255, 255);
+                btn.BackColor = Color.FromArgb(192, 255, 255);
+
+                btn.ForeColor = SystemColors.ControlText;
             }
         }
 
@@ -850,10 +1049,11 @@ namespace QIP.EOL
         {
             try
             {
-                int xPic = pictureShoes.Location.X;
-                int yPic = pictureShoes.Location.Y;
-                int wPic = pictureShoes.Width;
-                int hPic = pictureShoes.Height;
+                Rectangle displayedImageBounds = GetDisplayedImageBounds(pictureShoes);
+                int xPic = displayedImageBounds.X;
+                int yPic = displayedImageBounds.Y;
+                int wPic = displayedImageBounds.Width;
+                int hPic = displayedImageBounds.Height;
                 ///<sumary>Configuration Part Location on Shoe Picture
                 ///</sumary>
                 #region Configuration Part Location on Shoe Picture
@@ -1185,6 +1385,8 @@ namespace QIP.EOL
             {
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT MES_GROUP_SUM FROM MES.MES_MODEL@inf_m_e WHERE MES_STYLE_NO = '" + btnChonModel.Text + "'");
+                //string modeltest = btnChonModel.Text;
+                //Debug.WriteLine("Choose model: ", modeltest);
                 DataTable dt = new DataTable();
                 dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                 Bitmap bm = null;
@@ -1193,6 +1395,8 @@ namespace QIP.EOL
                     try
                     {
                         bm = ByteToImage(GetImgByte("ftp://" + etc.FileServerPath + @"/Mes/BTS/" + spDeptCode + "_" + dt.Rows[0]["MES_GROUP_SUM"].ToString().Replace("/", "") + ".jpg"));
+                        //string testlog = "ftp://" + etc.FileServerPath + @"/Mes/BTS/" + spDeptCode + "_" + dt.Rows[0]["MES_GROUP_SUM"].ToString().Replace("/", "") + ".jpg";
+                        //Debug.WriteLine("path modlle: ", testlog);
 
                         if (bm != null)
                         {
@@ -1257,8 +1461,11 @@ namespace QIP.EOL
                 }
                 if (countcol == 5)
                 {
-                    dr = dt.Rows.Add();
                     countcol = 0;
+                    // Chỉ thêm hàng mới nếu còn item phía sau
+                    // (tránh thêm hàng trống khi item cuối vừa điền xong)
+                    if (a < oldDataModel.Rows.Count - 1)
+                        dr = dt.Rows.Add();
                 }
             }
             return dt;
@@ -1362,6 +1569,39 @@ namespace QIP.EOL
             {
                 chkPlanOneMonth.Checked = false;
             }
+        }
+        private void chkVN_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkVN.Checked)
+            {
+                chkEng.Checked = false;
+                RefreshReasonButtonsLanguage();
+            }
+            else if (!chkEng.Checked)
+            {
+                chkEng.Checked = true;
+            }
+        }
+        private void chkEng_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng.Checked)
+            {
+                chkVN.Checked = false;
+                RefreshReasonButtonsLanguage();
+            }
+            else if (!chkVN.Checked)
+            {
+                chkVN.Checked = true;
+            }
+        }
+        private void RefreshReasonButtonsLanguage()
+        {
+            if (defectLibrary == null || defectLibrary.Rows.Count == 0)
+            {
+                return;
+            }
+
+            SetErrorToButton(spDeptCode, defectLibrary);
         }
         private void backgroundOracle_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -2237,38 +2477,14 @@ namespace QIP.EOL
             lbl.ForeColor = Color.Red;
 
             
-            btnPass.Enabled = false;
-            btnFail.Enabled = false;
-            btnRePass.Enabled = false;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(false, false, false, false);
 
             
             ConffigErrorButton(true);
             partID = lbl.AccessibleName;
 
             
-            Color defaultColor = Color.FromArgb(192, 255, 255);
-            SetButtonBackColor(tableLayoutPanel2, defaultColor);
-            SetButtonBackColor(tableLayoutErrorLeft, defaultColor);
-            SetButtonBackColor(tableLayoutErrorRight, defaultColor);
-        }
-
-
-        private void SetButtonBackColor(Control parent, Color color)
-        {
-            foreach (Control ctrl in parent.Controls)
-            {
-                
-                if (ctrl is Button btn)
-                {
-                    btn.BackColor = color;
-                }
-
-                if (ctrl.HasChildren)
-                {
-                    SetButtonBackColor(ctrl, color);
-                }
-            }
+            ResetReasonButtonColors();
         }
 
 
@@ -2285,8 +2501,7 @@ namespace QIP.EOL
                 selectFail.ShowDialog(this);
                 if (selectFail.returnData != null)
                 {
-                    btnFail.Enabled = true;
-                    btnReFail.Enabled = true;
+                    SetInspectionActionState(false, true, false, true);
                     DataTable dt = selectFail.returnData;
 
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -2307,19 +2522,16 @@ namespace QIP.EOL
             else
             {
 
-                btnPass.Enabled = false;
-                btnFail.Enabled = true;
-                btnRePass.Enabled = false;
-                btnReFail.Enabled = true;
-                if (btn.BackColor == System.Drawing.Color.FromArgb(192, 255, 255))
+                SetInspectionActionState(false, true, false, true);
+                if (btn.BackColor == ReasonButtonDefaultColor)
                 {
-                    btn.BackColor = System.Drawing.Color.FromArgb(224, 224, 224);
+                    btn.BackColor = ReasonButtonSelectedColor;
                     
                     UpdateDtReason(btn);
                 }
                 else
                 {
-                    btn.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
+                    btn.BackColor = ReasonButtonDefaultColor;
                     UpdateDtReason(btn);
                 }
             }
@@ -2597,10 +2809,7 @@ namespace QIP.EOL
             this.lblFailTotal.Text = "" + TotalDefect;
 
             lblRFT.Text = Math.Round(TotalDefect * 1.0 / (TotalDefect + TotalPass * 1.0) * 100, 2) + " %";
-            btnPass.Enabled = true;
-            btnFail.Enabled = false;
-            btnRePass.Enabled = true;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(true, false, true, false);
             ConffigErrorButton(false);
             lblPart1.ForeColor = System.Drawing.Color.Green;
             lblPart2.ForeColor = System.Drawing.Color.Green;
@@ -2624,21 +2833,7 @@ namespace QIP.EOL
             //        }
             //    }
             //}
-            foreach (Control panel in tableLayoutPanel2.Controls)
-            {
-                if (panel is Panel pnl)
-                {
-                    foreach (Control ctrl in pnl.Controls)
-                    {
-                        if (ctrl is Button btn)
-                        {
-                            btn.BackColor = Color.FromArgb(192, 255, 255);
-                            btn.ForeColor = SystemColors.ControlText;
-                            btn.FlatStyle = FlatStyle.Standard;
-                        }
-                    }
-                }
-            }
+            ResetReasonButtonColors();
 
             if (backgroundSyncData.IsBusy)
             {
@@ -2727,10 +2922,7 @@ namespace QIP.EOL
             this.lblFailTotal.Text = "" + TotalDefect;
 
             lblRFT.Text = Math.Round(TotalDefect * 1.0 / (TotalDefect + TotalPass * 1.0) * 100, 2) + " %";
-            btnPass.Enabled = true;
-            btnFail.Enabled = false;
-            btnRePass.Enabled = true;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(true, false, true, false);
             ConffigErrorButton(false);
             lblPart1.ForeColor = System.Drawing.Color.Green;
             lblPart2.ForeColor = System.Drawing.Color.Green;
@@ -2755,21 +2947,7 @@ namespace QIP.EOL
             //        }
             //    }
             //}
-            foreach (Control panel in tableLayoutPanel2.Controls)
-            {
-                if (panel is Panel pnl)
-                {
-                    foreach (Control ctrl in pnl.Controls)
-                    {
-                        if (ctrl is Button btn)
-                        {
-                            btn.BackColor = Color.FromArgb(192, 255, 255);
-                            btn.ForeColor = SystemColors.ControlText;
-                            btn.FlatStyle = FlatStyle.Standard;
-                        }
-                    }
-                }
-            }
+            ResetReasonButtonColors();
 
 
 
@@ -2792,10 +2970,7 @@ namespace QIP.EOL
         {
             dtReason.Clear();
             gridControl1.DataSource = dtReason;
-            btnPass.Enabled = true;
-            btnRePass.Enabled = true;
-            btnFail.Enabled = false;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(true, false, true, false);
             ConffigErrorButton(false);
             lblPart1.ForeColor = System.Drawing.Color.Green;
             lblPart2.ForeColor = System.Drawing.Color.Green;
@@ -2804,76 +2979,8 @@ namespace QIP.EOL
             lblPart4.ForeColor = System.Drawing.Color.Green;
             lblPart6.ForeColor = System.Drawing.Color.Green;
 
-            //foreach (var panel in tableLayoutPanel2.Controls)
-            //{
-            //    if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-            //    {
-            //        DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-            //        foreach (var a in pnl.Controls)
-            //        {
-            //            if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-            //            {
-            //                SimpleButton btn = (SimpleButton)a;
-            //                btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-            //                btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-            //            }
-            //        }
-            //    }
-            //}
-            //foreach (var panel in tableLayoutErrorLeft.Controls)
-            //{
-            //    if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-            //    {
-            //        DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-            //        foreach (var a in pnl.Controls)
-            //        {
-            //            if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-            //            {
-            //                SimpleButton btn = (SimpleButton)a;
-            //                btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-            //                btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-            //            }
-            //        }
-            //    }
-            //}
-            //foreach (var panel in tableLayoutErrorRight.Controls)
-            //{
-            //    if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-            //    {
-            //        DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-            //        foreach (var a in pnl.Controls)
-            //        {
-            //            if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-            //            {
-            //                SimpleButton btn = (SimpleButton)a;
-            //                btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-            //                btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-            //            }
-            //        }
-            //    }
-            //}
-            ResetButtonsInContainer(tableLayoutPanel2);
-            ResetButtonsInContainer(tableLayoutErrorLeft);
-            ResetButtonsInContainer(tableLayoutErrorRight);
+            ResetReasonButtonColors();
 
-        }
-        private void ResetButtonsInContainer(Control parent)
-        {
-            foreach (Control panel in parent.Controls)
-            {
-                if (panel is Panel pnl)
-                {
-                    foreach (Control ctrl in pnl.Controls)
-                    {
-                        if (ctrl is Button btn)
-                        {
-                            btn.BackColor = Color.FromArgb(192, 255, 255);
-                            btn.ForeColor = SystemColors.ControlText;
-                            btn.FlatStyle = FlatStyle.Standard;
-                        }
-                    }
-                }
-            }
         }
 
 
