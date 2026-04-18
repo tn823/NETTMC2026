@@ -1573,6 +1573,7 @@ namespace QIP.EOL
                     btnID.ForeColor = Color.Red;
                 }
             }
+            
             //foreach (var a in tableLayoutPanel9.Controls)
             //{
             //    if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
