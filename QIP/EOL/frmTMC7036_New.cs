@@ -32,7 +32,10 @@ namespace QIP.EOL
         private static string reasonID;
         public static DataTable errorTouch;
         private static string RecievedIpaddress;
-
+        private static readonly Color PassColor = Color.FromArgb(0, 120, 215);   // xanh
+        private static readonly Color FailColor = Color.FromArgb(231, 76, 60);   // đỏ
+        private static readonly Color PassLight = Color.FromArgb(220, 235, 255);
+        private static readonly Color FailLight = Color.FromArgb(255, 220, 220);
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
         Dictionary<string, string> Reason = new Dictionary<string, string>();
         public frmTMC7036_New()
@@ -44,7 +47,7 @@ namespace QIP.EOL
         {
 
         }
-
+        
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
 
@@ -138,7 +141,7 @@ namespace QIP.EOL
             finishedCount = 0;
             countSensor = 0;
             countSensorQC = 0;
-
+            
             ipAddress = GlobalFunction.PublicFunction.myIpaddress;
             GetLineName(ipAddress);
             spDeptCode = "STF";
