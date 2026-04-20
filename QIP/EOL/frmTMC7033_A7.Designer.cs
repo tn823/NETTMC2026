@@ -30,18 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             panelControlTop = new Panel();
-            panelControl3 = new Panel();
-            panelControl4 = new Panel();
-            panel11 = new Panel();
             tableLayoutPanelTop = new TableLayoutPanel();
-            lblPassTotal = new Label();
-            lblProdTotal = new Label();
-            lblLineInfo = new Label();
-            panelControl1 = new Panel();
-            checkEdit2 = new CheckBox();
-            chkPlanOneMonth = new CheckBox();
-            btnChonModel = new Button();
-            lbl1stPass = new Label();
             panelControl2 = new Panel();
             txtTime = new Label();
             toggleSwitchOnline = new CheckBox();
@@ -49,6 +38,15 @@
             chkEng = new CheckBox();
             chkVN = new CheckBox();
             lblSyncStatus = new Label();
+            lbl1stPass = new Label();
+            lblPassTotal = new Label();
+            lblProdTotal = new Label();
+            lblLineInfo = new Label();
+            panelControl1 = new Panel();
+            checkEdit2 = new CheckBox();
+            chkPlanOneMonth = new CheckBox();
+            btnChonModel = new Button();
+            panelControl3 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             btnSPCBonding = new Button();
             btnSPCStitching = new Button();
@@ -83,7 +81,10 @@
             panel10 = new Panel();
             lblFirstDefect = new Label();
             labelControl4 = new Label();
+            panelControl4 = new Panel();
             tableLayoutPanel2 = new TableLayoutPanel();
+            btnReFail = new Button();
+            btnFail = new Button();
             panelControl7 = new Panel();
             lblCount17 = new Label();
             simpleButton18 = new Button();
@@ -105,8 +106,7 @@
             panelControl10 = new Panel();
             lblCount0 = new Label();
             simpleButton5 = new Button();
-            btnFail = new Button();
-            btnReFail = new Button();
+            panel11 = new Panel();
             tableLayoutPanel3 = new TableLayoutPanel();
             panel12 = new Panel();
             grdOfflineData = new DataGridView();
@@ -138,12 +138,10 @@
             timer_BlinkButtonGreen = new System.Windows.Forms.Timer(components);
             timer_SyncData = new System.Windows.Forms.Timer(components);
             panelControlTop.SuspendLayout();
-            panelControl3.SuspendLayout();
-            panelControl4.SuspendLayout();
-            panel11.SuspendLayout();
             tableLayoutPanelTop.SuspendLayout();
-            panelControl1.SuspendLayout();
             panelControl2.SuspendLayout();
+            panelControl1.SuspendLayout();
+            panelControl3.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             panel7.SuspendLayout();
             panel1.SuspendLayout();
@@ -154,6 +152,7 @@
             panel8.SuspendLayout();
             panel9.SuspendLayout();
             panel10.SuspendLayout();
+            panelControl4.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             panelControl7.SuspendLayout();
             panelControl8.SuspendLayout();
@@ -162,6 +161,7 @@
             tableLayoutPanel4.SuspendLayout();
             panelControl9.SuspendLayout();
             panelControl10.SuspendLayout();
+            panel11.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             panel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdOfflineData).BeginInit();
@@ -178,35 +178,9 @@
             panelControlTop.Size = new Size(2301, 62);
             panelControlTop.TabIndex = 0;
             // 
-            // panelControl3
-            // 
-            panelControl3.Controls.Add(tableLayoutPanel1);
-            panelControl3.Dock = DockStyle.Top;
-            panelControl3.Location = new Point(0, 62);
-            panelControl3.Name = "panelControl3";
-            panelControl3.Size = new Size(2301, 165);
-            panelControl3.TabIndex = 1;
-            // 
-            // panelControl4
-            // 
-            panelControl4.Controls.Add(tableLayoutPanel2);
-            panelControl4.Dock = DockStyle.Bottom;
-            panelControl4.Location = new Point(0, 932);
-            panelControl4.Name = "panelControl4";
-            panelControl4.Size = new Size(2301, 313);
-            panelControl4.TabIndex = 2;
-            // 
-            // panel11
-            // 
-            panel11.Controls.Add(tableLayoutPanel3);
-            panel11.Dock = DockStyle.Fill;
-            panel11.Location = new Point(0, 227);
-            panel11.Name = "panel11";
-            panel11.Size = new Size(2301, 705);
-            panel11.TabIndex = 3;
-            // 
             // tableLayoutPanelTop
             // 
+            tableLayoutPanelTop.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanelTop.ColumnCount = 6;
             tableLayoutPanelTop.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 159F));
             tableLayoutPanelTop.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 256F));
@@ -229,6 +203,117 @@
             tableLayoutPanelTop.Size = new Size(2301, 62);
             tableLayoutPanelTop.TabIndex = 1;
             // 
+            // panelControl2
+            // 
+            panelControl2.Controls.Add(txtTime);
+            panelControl2.Controls.Add(toggleSwitchOnline);
+            panelControl2.Controls.Add(labelControl11);
+            panelControl2.Controls.Add(chkEng);
+            panelControl2.Controls.Add(chkVN);
+            panelControl2.Controls.Add(lblSyncStatus);
+            panelControl2.Dock = DockStyle.Fill;
+            panelControl2.Location = new Point(1311, 5);
+            panelControl2.Margin = new Padding(3, 4, 3, 4);
+            panelControl2.Name = "panelControl2";
+            panelControl2.Size = new Size(986, 52);
+            panelControl2.TabIndex = 13;
+            // 
+            // txtTime
+            // 
+            txtTime.BackColor = Color.Black;
+            txtTime.Dock = DockStyle.Fill;
+            txtTime.Font = new Font("Tahoma", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtTime.ForeColor = Color.Lavender;
+            txtTime.Location = new Point(0, 0);
+            txtTime.Margin = new Padding(3, 4, 3, 4);
+            txtTime.Name = "txtTime";
+            txtTime.Size = new Size(748, 52);
+            txtTime.TabIndex = 6;
+            txtTime.Text = "2018-11-19 15:46:45";
+            txtTime.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // toggleSwitchOnline
+            // 
+            toggleSwitchOnline.Dock = DockStyle.Right;
+            toggleSwitchOnline.Location = new Point(748, 0);
+            toggleSwitchOnline.Name = "toggleSwitchOnline";
+            toggleSwitchOnline.Size = new Size(10, 52);
+            toggleSwitchOnline.TabIndex = 27;
+            toggleSwitchOnline.Text = "Online";
+            toggleSwitchOnline.UseVisualStyleBackColor = true;
+            toggleSwitchOnline.Visible = false;
+            // 
+            // labelControl11
+            // 
+            labelControl11.BackColor = Color.Transparent;
+            labelControl11.Dock = DockStyle.Right;
+            labelControl11.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelControl11.ForeColor = Color.Navy;
+            labelControl11.Location = new Point(758, 0);
+            labelControl11.Margin = new Padding(3, 4, 3, 4);
+            labelControl11.Name = "labelControl11";
+            labelControl11.Size = new Size(77, 52);
+            labelControl11.TabIndex = 24;
+            labelControl11.Text = "Language";
+            labelControl11.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // chkEng
+            // 
+            chkEng.Dock = DockStyle.Right;
+            chkEng.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            chkEng.Location = new Point(835, 0);
+            chkEng.Margin = new Padding(3, 4, 3, 4);
+            chkEng.Name = "chkEng";
+            chkEng.Size = new Size(49, 52);
+            chkEng.TabIndex = 26;
+            chkEng.Text = "ENG";
+            chkEng.TextAlign = ContentAlignment.MiddleCenter;
+            chkEng.UseVisualStyleBackColor = true;
+            // 
+            // chkVN
+            // 
+            chkVN.Checked = true;
+            chkVN.CheckState = CheckState.Checked;
+            chkVN.Dock = DockStyle.Right;
+            chkVN.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            chkVN.Location = new Point(884, 0);
+            chkVN.Margin = new Padding(3, 4, 3, 4);
+            chkVN.Name = "chkVN";
+            chkVN.Size = new Size(45, 52);
+            chkVN.TabIndex = 25;
+            chkVN.Text = "VN";
+            chkVN.TextAlign = ContentAlignment.MiddleCenter;
+            chkVN.UseVisualStyleBackColor = true;
+            // 
+            // lblSyncStatus
+            // 
+            lblSyncStatus.BackColor = Color.WhiteSmoke;
+            lblSyncStatus.BorderStyle = BorderStyle.Fixed3D;
+            lblSyncStatus.Dock = DockStyle.Right;
+            lblSyncStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSyncStatus.ForeColor = SystemColors.ActiveCaptionText;
+            lblSyncStatus.Location = new Point(929, 0);
+            lblSyncStatus.Margin = new Padding(3, 4, 3, 4);
+            lblSyncStatus.Name = "lblSyncStatus";
+            lblSyncStatus.Size = new Size(57, 52);
+            lblSyncStatus.TabIndex = 23;
+            lblSyncStatus.Text = "0/0";
+            lblSyncStatus.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lbl1stPass
+            // 
+            lbl1stPass.AutoSize = true;
+            lbl1stPass.BorderStyle = BorderStyle.Fixed3D;
+            lbl1stPass.Dock = DockStyle.Fill;
+            lbl1stPass.Font = new Font("Arial", 27.75F, FontStyle.Bold);
+            lbl1stPass.ForeColor = Color.Blue;
+            lbl1stPass.Location = new Point(971, 1);
+            lbl1stPass.Name = "lbl1stPass";
+            lbl1stPass.Size = new Size(333, 60);
+            lbl1stPass.TabIndex = 8;
+            lbl1stPass.Text = "PASS :  0";
+            lbl1stPass.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // lblPassTotal
             // 
             lblPassTotal.AutoSize = true;
@@ -236,9 +321,9 @@
             lblPassTotal.Dock = DockStyle.Fill;
             lblPassTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
             lblPassTotal.ForeColor = Color.Blue;
-            lblPassTotal.Location = new Point(651, 0);
+            lblPassTotal.Location = new Point(655, 1);
             lblPassTotal.Name = "lblPassTotal";
-            lblPassTotal.Size = new Size(309, 62);
+            lblPassTotal.Size = new Size(309, 60);
             lblPassTotal.TabIndex = 7;
             lblPassTotal.Text = "PASS :  0";
             lblPassTotal.TextAlign = ContentAlignment.MiddleLeft;
@@ -249,9 +334,9 @@
             lblProdTotal.Dock = DockStyle.Fill;
             lblProdTotal.Font = new Font("Arial", 27.75F, FontStyle.Bold);
             lblProdTotal.ForeColor = Color.Navy;
-            lblProdTotal.Location = new Point(418, 0);
+            lblProdTotal.Location = new Point(421, 1);
             lblProdTotal.Name = "lblProdTotal";
-            lblProdTotal.Size = new Size(227, 62);
+            lblProdTotal.Size = new Size(227, 60);
             lblProdTotal.TabIndex = 6;
             lblProdTotal.Text = "SX : 0";
             lblProdTotal.TextAlign = ContentAlignment.MiddleLeft;
@@ -262,9 +347,9 @@
             lblLineInfo.BorderStyle = BorderStyle.Fixed3D;
             lblLineInfo.Dock = DockStyle.Fill;
             lblLineInfo.Font = new Font("Arial", 30F, FontStyle.Bold);
-            lblLineInfo.Location = new Point(3, 0);
+            lblLineInfo.Location = new Point(4, 1);
             lblLineInfo.Name = "lblLineInfo";
-            lblLineInfo.Size = new Size(153, 62);
+            lblLineInfo.Size = new Size(153, 60);
             lblLineInfo.TabIndex = 11;
             lblLineInfo.Text = "P515";
             lblLineInfo.TextAlign = ContentAlignment.MiddleCenter;
@@ -276,9 +361,9 @@
             panelControl1.Controls.Add(chkPlanOneMonth);
             panelControl1.Controls.Add(btnChonModel);
             panelControl1.Dock = DockStyle.Fill;
-            panelControl1.Location = new Point(162, 3);
+            panelControl1.Location = new Point(164, 4);
             panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(250, 56);
+            panelControl1.Size = new Size(250, 54);
             panelControl1.TabIndex = 1;
             // 
             // checkEdit2
@@ -310,123 +395,21 @@
             btnChonModel.BackColor = Color.FromArgb(255, 255, 128);
             btnChonModel.Font = new Font("Arial", 11.25F, FontStyle.Bold);
             btnChonModel.ForeColor = SystemColors.ControlText;
-            btnChonModel.Location = new Point(3, 9);
+            btnChonModel.Location = new Point(-2, 3);
             btnChonModel.Name = "btnChonModel";
             btnChonModel.Size = new Size(158, 48);
             btnChonModel.TabIndex = 0;
             btnChonModel.Text = "Chọn MODEL";
             btnChonModel.UseVisualStyleBackColor = false;
             // 
-            // lbl1stPass
+            // panelControl3
             // 
-            lbl1stPass.AutoSize = true;
-            lbl1stPass.BorderStyle = BorderStyle.Fixed3D;
-            lbl1stPass.Dock = DockStyle.Fill;
-            lbl1stPass.Font = new Font("Arial", 27.75F, FontStyle.Bold);
-            lbl1stPass.ForeColor = Color.Blue;
-            lbl1stPass.Location = new Point(966, 0);
-            lbl1stPass.Name = "lbl1stPass";
-            lbl1stPass.Size = new Size(333, 62);
-            lbl1stPass.TabIndex = 8;
-            lbl1stPass.Text = "PASS :  0";
-            lbl1stPass.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // panelControl2
-            // 
-            panelControl2.Controls.Add(txtTime);
-            panelControl2.Controls.Add(toggleSwitchOnline);
-            panelControl2.Controls.Add(labelControl11);
-            panelControl2.Controls.Add(chkEng);
-            panelControl2.Controls.Add(chkVN);
-            panelControl2.Controls.Add(lblSyncStatus);
-            panelControl2.Dock = DockStyle.Fill;
-            panelControl2.Location = new Point(1305, 4);
-            panelControl2.Margin = new Padding(3, 4, 3, 4);
-            panelControl2.Name = "panelControl2";
-            panelControl2.Size = new Size(993, 54);
-            panelControl2.TabIndex = 13;
-            // 
-            // txtTime
-            // 
-            txtTime.BackColor = Color.Black;
-            txtTime.Dock = DockStyle.Fill;
-            txtTime.Font = new Font("Tahoma", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtTime.ForeColor = Color.Lavender;
-            txtTime.Location = new Point(0, 0);
-            txtTime.Margin = new Padding(3, 4, 3, 4);
-            txtTime.Name = "txtTime";
-            txtTime.Size = new Size(755, 54);
-            txtTime.TabIndex = 6;
-            txtTime.Text = "2018-11-19 15:46:45";
-            txtTime.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // toggleSwitchOnline
-            // 
-            toggleSwitchOnline.Dock = DockStyle.Right;
-            toggleSwitchOnline.Location = new Point(755, 0);
-            toggleSwitchOnline.Name = "toggleSwitchOnline";
-            toggleSwitchOnline.Size = new Size(10, 54);
-            toggleSwitchOnline.TabIndex = 27;
-            toggleSwitchOnline.Text = "Online";
-            toggleSwitchOnline.UseVisualStyleBackColor = true;
-            toggleSwitchOnline.Visible = false;
-            // 
-            // labelControl11
-            // 
-            labelControl11.BackColor = Color.Transparent;
-            labelControl11.Dock = DockStyle.Right;
-            labelControl11.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelControl11.ForeColor = Color.Navy;
-            labelControl11.Location = new Point(765, 0);
-            labelControl11.Margin = new Padding(3, 4, 3, 4);
-            labelControl11.Name = "labelControl11";
-            labelControl11.Size = new Size(77, 54);
-            labelControl11.TabIndex = 24;
-            labelControl11.Text = "Language";
-            labelControl11.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // chkEng
-            // 
-            chkEng.Dock = DockStyle.Right;
-            chkEng.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            chkEng.Location = new Point(842, 0);
-            chkEng.Margin = new Padding(3, 4, 3, 4);
-            chkEng.Name = "chkEng";
-            chkEng.Size = new Size(49, 54);
-            chkEng.TabIndex = 26;
-            chkEng.Text = "ENG";
-            chkEng.TextAlign = ContentAlignment.MiddleCenter;
-            chkEng.UseVisualStyleBackColor = true;
-            // 
-            // chkVN
-            // 
-            chkVN.Checked = true;
-            chkVN.CheckState = CheckState.Checked;
-            chkVN.Dock = DockStyle.Right;
-            chkVN.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            chkVN.Location = new Point(891, 0);
-            chkVN.Margin = new Padding(3, 4, 3, 4);
-            chkVN.Name = "chkVN";
-            chkVN.Size = new Size(45, 54);
-            chkVN.TabIndex = 25;
-            chkVN.Text = "VN";
-            chkVN.TextAlign = ContentAlignment.MiddleCenter;
-            chkVN.UseVisualStyleBackColor = true;
-            // 
-            // lblSyncStatus
-            // 
-            lblSyncStatus.BackColor = Color.WhiteSmoke;
-            lblSyncStatus.BorderStyle = BorderStyle.Fixed3D;
-            lblSyncStatus.Dock = DockStyle.Right;
-            lblSyncStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblSyncStatus.ForeColor = SystemColors.ActiveCaptionText;
-            lblSyncStatus.Location = new Point(936, 0);
-            lblSyncStatus.Margin = new Padding(3, 4, 3, 4);
-            lblSyncStatus.Name = "lblSyncStatus";
-            lblSyncStatus.Size = new Size(57, 54);
-            lblSyncStatus.TabIndex = 23;
-            lblSyncStatus.Text = "0/0";
-            lblSyncStatus.TextAlign = ContentAlignment.MiddleCenter;
+            panelControl3.Controls.Add(tableLayoutPanel1);
+            panelControl3.Dock = DockStyle.Top;
+            panelControl3.Location = new Point(0, 62);
+            panelControl3.Name = "panelControl3";
+            panelControl3.Size = new Size(2301, 165);
+            panelControl3.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
@@ -910,6 +893,15 @@
             labelControl4.Text = "1st INS DEFECT :";
             labelControl4.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // panelControl4
+            // 
+            panelControl4.Controls.Add(tableLayoutPanel2);
+            panelControl4.Dock = DockStyle.Bottom;
+            panelControl4.Location = new Point(0, 932);
+            panelControl4.Name = "panelControl4";
+            panelControl4.Size = new Size(2301, 313);
+            panelControl4.TabIndex = 2;
+            // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.ColumnCount = 5;
@@ -938,6 +930,36 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
             tableLayoutPanel2.Size = new Size(2301, 313);
             tableLayoutPanel2.TabIndex = 2;
+            // 
+            // btnReFail
+            // 
+            btnReFail.BackColor = Color.FromArgb(231, 76, 60);
+            tableLayoutPanel2.SetColumnSpan(btnReFail, 2);
+            btnReFail.Dock = DockStyle.Fill;
+            btnReFail.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnReFail.ForeColor = Color.White;
+            btnReFail.Location = new Point(923, 91);
+            btnReFail.Margin = new Padding(3, 4, 3, 4);
+            btnReFail.Name = "btnReFail";
+            btnReFail.Size = new Size(914, 79);
+            btnReFail.TabIndex = 16;
+            btnReFail.Text = "RE-INS FAIL";
+            btnReFail.UseVisualStyleBackColor = false;
+            // 
+            // btnFail
+            // 
+            btnFail.BackColor = Color.FromArgb(231, 76, 60);
+            tableLayoutPanel2.SetColumnSpan(btnFail, 2);
+            btnFail.Dock = DockStyle.Fill;
+            btnFail.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnFail.ForeColor = Color.White;
+            btnFail.Location = new Point(3, 91);
+            btnFail.Margin = new Padding(3, 4, 3, 4);
+            btnFail.Name = "btnFail";
+            btnFail.Size = new Size(914, 79);
+            btnFail.TabIndex = 15;
+            btnFail.Text = "1st FAIL";
+            btnFail.UseVisualStyleBackColor = false;
             // 
             // panelControl7
             // 
@@ -1219,35 +1241,14 @@
             simpleButton5.Text = "Lỗi khác";
             simpleButton5.UseVisualStyleBackColor = false;
             // 
-            // btnFail
+            // panel11
             // 
-            btnFail.BackColor = Color.FromArgb(231, 76, 60);
-            tableLayoutPanel2.SetColumnSpan(btnFail, 2);
-            btnFail.Dock = DockStyle.Fill;
-            btnFail.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnFail.ForeColor = Color.White;
-            btnFail.Location = new Point(3, 91);
-            btnFail.Margin = new Padding(3, 4, 3, 4);
-            btnFail.Name = "btnFail";
-            btnFail.Size = new Size(914, 79);
-            btnFail.TabIndex = 15;
-            btnFail.Text = "1st FAIL";
-            btnFail.UseVisualStyleBackColor = false;
-            // 
-            // btnReFail
-            // 
-            btnReFail.BackColor = Color.FromArgb(231, 76, 60);
-            tableLayoutPanel2.SetColumnSpan(btnReFail, 2);
-            btnReFail.Dock = DockStyle.Fill;
-            btnReFail.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnReFail.ForeColor = Color.White;
-            btnReFail.Location = new Point(923, 91);
-            btnReFail.Margin = new Padding(3, 4, 3, 4);
-            btnReFail.Name = "btnReFail";
-            btnReFail.Size = new Size(914, 79);
-            btnReFail.TabIndex = 16;
-            btnReFail.Text = "RE-INS FAIL";
-            btnReFail.UseVisualStyleBackColor = false;
+            panel11.Controls.Add(tableLayoutPanel3);
+            panel11.Dock = DockStyle.Fill;
+            panel11.Location = new Point(0, 227);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(2301, 705);
+            panel11.TabIndex = 3;
             // 
             // tableLayoutPanel3
             // 
@@ -1566,14 +1567,12 @@
             Name = "frmTMC7033_A7";
             Size = new Size(2301, 1245);
             panelControlTop.ResumeLayout(false);
-            panelControl3.ResumeLayout(false);
-            panelControl4.ResumeLayout(false);
-            panel11.ResumeLayout(false);
             tableLayoutPanelTop.ResumeLayout(false);
             tableLayoutPanelTop.PerformLayout();
+            panelControl2.ResumeLayout(false);
             panelControl1.ResumeLayout(false);
             panelControl1.PerformLayout();
-            panelControl2.ResumeLayout(false);
+            panelControl3.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             panel7.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -1584,6 +1583,7 @@
             panel8.ResumeLayout(false);
             panel9.ResumeLayout(false);
             panel10.ResumeLayout(false);
+            panelControl4.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             panelControl7.ResumeLayout(false);
             panelControl7.PerformLayout();
@@ -1597,6 +1597,7 @@
             panelControl9.PerformLayout();
             panelControl10.ResumeLayout(false);
             panelControl10.PerformLayout();
+            panel11.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel12.ResumeLayout(false);
             panel12.PerformLayout();
