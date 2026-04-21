@@ -2040,7 +2040,7 @@
             // 
             // btn_reasonCode1
             // 
-            btn_reasonCode1.BackColor = Color.Red;
+            btn_reasonCode1.BackColor = Color.FromArgb(192, 0, 0);
             btn_reasonCode1.Dock = DockStyle.Right;
             btn_reasonCode1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode1.ForeColor = SystemColors.ButtonFace;

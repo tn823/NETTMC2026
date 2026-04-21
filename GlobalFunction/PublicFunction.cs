@@ -457,8 +457,8 @@ namespace GlobalFunction
                     if (ip.ToString() == "192.168.1.55" || ip.ToString() == "192.168.1.196" || ip.ToString() == "192.168.0.118" || ip.ToString() == "192.168.1.150")
                     {
                         //return ip.ToString();
-                        return "192.168.0.85";
-                        //return "192.168.1.197";
+                        //return "192.168.0.85";
+                        return "192.168.1.197";
                         //return "192.168.17.241";
                         //return "192.168.0.236";
                         //return "192.168.3.174";
