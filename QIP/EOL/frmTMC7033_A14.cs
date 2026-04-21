@@ -13,6 +13,7 @@ using System.Drawing.Drawing2D;
 using ConnectionClass.Oracle;
 using static GlobalFunction.PublicFunction;
 using System.Diagnostics;
+using GlobalFunction;
 
 namespace QIP.EOL
 {
@@ -286,7 +287,7 @@ namespace QIP.EOL
 
                     if (File.Exists(cacheFile))
                     {
-                        DataTable dtCache = ReadLineNameFromCsv(cacheFile);
+                        DataTable dtCache = EolCommonHelper.ReadLineNameFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
                             LineName = dtCache.Rows[0]["SHOW_LINE"].ToString();
@@ -305,7 +306,7 @@ namespace QIP.EOL
                     Debug.WriteLine("GetLineName: DB returned empty, trying cache.");
                     if (File.Exists(cacheFile))
                     {
-                        DataTable dtCache = ReadLineNameFromCsv(cacheFile);
+                        DataTable dtCache = EolCommonHelper.ReadLineNameFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
                             LineName = dtCache.Rows[0]["SHOW_LINE"].ToString();
@@ -322,7 +323,7 @@ namespace QIP.EOL
                 lblLineInfo.Text = LineName;
 
                 // Lưu cache CSV để dùng khi offline
-                SaveLineNameToCsv(dt, cacheFile);
+                EolCommonHelper.SaveLineNameToCsv(dt, cacheFile);
 
                 // Ẩn sensor nếu không phải line P114
                 if (lblLineInfo.Text != "P114")
@@ -335,60 +336,7 @@ namespace QIP.EOL
             b.RunWorkerAsync();
         }
 
-        private void SaveLineNameToCsv(DataTable dt, string filePath)
-        {
-            try
-            {
-                var sb = new StringBuilder();
-                // Header
-                sb.AppendLine("C_COMCODE,SHOW_LINE");
-                // Data rows
-                foreach (DataRow row in dt.Rows)
-                {
-                    string code = row["C_COMCODE"].ToString().Replace(",", "");
-                    string showLine = row["SHOW_LINE"].ToString().Replace(",", "");
-                    sb.AppendLine($"{code},{showLine}");
-                }
-                File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
-                Debug.WriteLine("SaveLineNameToCsv OK: " + filePath);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("SaveLineNameToCsv Error: " + ex.Message);
-            }
-        }
-
-        private DataTable ReadLineNameFromCsv(string filePath)
-        {
-            try
-            {
-                var dt = new DataTable();
-                dt.Columns.Add("C_COMCODE");
-                dt.Columns.Add("SHOW_LINE");
-
-                string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
-                // Bỏ qua dòng header (index 0)
-                for (int i = 1; i < lines.Length; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(lines[i])) continue;
-                    string[] parts = lines[i].Split(',');
-                    if (parts.Length >= 2)
-                    {
-                        DataRow row = dt.NewRow();
-                        row["C_COMCODE"] = parts[0].Trim();
-                        row["SHOW_LINE"] = parts[1].Trim();
-                        dt.Rows.Add(row);
-                    }
-                }
-                Debug.WriteLine($"ReadLineNameFromCsv OK: {dt.Rows.Count} rows");
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("ReadLineNameFromCsv Error: " + ex.Message);
-                return null;
-            }
-        }
+        
 
         //========================================================================================================
 
@@ -422,7 +370,7 @@ namespace QIP.EOL
                     Debug.WriteLine("[GetError][Completed] TH1 – DB lỗi: " + e.Error?.Message);
                     if (File.Exists(cacheFile))
                     {
-                        DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
+                        DataTable dtCache = EolCommonHelper.ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
                             defectLibrary = dtCache.Copy();
@@ -446,7 +394,7 @@ namespace QIP.EOL
                     Debug.WriteLine("[GetError][Completed] TH2 – DB trả 0 rows, thử cache");
                     if (File.Exists(cacheFile))
                     {
-                        DataTable dtCache = ReadErrorButtonFromCsv(cacheFile);
+                        DataTable dtCache = EolCommonHelper.ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
                             defectLibrary = dtCache.Copy();
@@ -462,109 +410,11 @@ namespace QIP.EOL
                 defectLibrary = dt.Copy();
                 SetErrorToButton(type, dt);
                 ConffigErrorButton(false);
-                SaveErrorButtonToCsv(dt, cacheFile);
+                EolCommonHelper.SaveErrorButtonToCsv(dt, cacheFile);
             };
             b.RunWorkerAsync();
         }
-        // -----------------------------------------------------------------------
-        // Helper: Lưu DataTable ErrorButton ra file CSV
-        // -----------------------------------------------------------------------
-        private void SaveErrorButtonToCsv(DataTable dt, string filePath)
-        {
-            try
-            {
-                var sb = new StringBuilder();
-                // Header — 5 cột giống hệt query SELECT
-                sb.AppendLine("PART_ID,REASON_ID,REASON_SHORT,REASON_EN,REASON_VN");
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    // Escape dấu phẩy và dấu nháy trong nội dung
-                    string partId = EscapeCsv(row["PART_ID"].ToString());
-                    string reasonId = EscapeCsv(row["REASON_ID"].ToString());
-                    string reasonShort = EscapeCsv(row["REASON_SHORT"].ToString());
-                    string reasonEn = EscapeCsv(row["REASON_EN"].ToString());
-                    string reasonVn = EscapeCsv(row["REASON_VN"].ToString());
-                    sb.AppendLine($"{partId},{reasonId},{reasonShort},{reasonEn},{reasonVn}");
-                }
-
-                File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
-                Debug.WriteLine("SaveErrorButtonToCsv OK: " + filePath);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("SaveErrorButtonToCsv Error: " + ex.Message);
-            }
-        }
-
-        // -----------------------------------------------------------------------
-        // Helper: Đọc file CSV ErrorButton → DataTable
-        // -----------------------------------------------------------------------
-        private DataTable ReadErrorButtonFromCsv(string filePath)
-        {
-            try
-            {
-                var dt = new DataTable();
-                dt.Columns.Add("PART_ID");
-                dt.Columns.Add("REASON_ID");
-                dt.Columns.Add("REASON_SHORT");
-                dt.Columns.Add("REASON_EN");
-                dt.Columns.Add("REASON_VN");
-
-                string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
-                // Bỏ dòng header (index 0)
-                for (int i = 1; i < lines.Length; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(lines[i])) continue;
-                    string[] parts = ParseCsvLine(lines[i]);
-                    if (parts.Length >= 5)
-                    {
-                        DataRow row = dt.NewRow();
-                        row["PART_ID"] = parts[0].Trim();
-                        row["REASON_ID"] = parts[1].Trim();
-                        row["REASON_SHORT"] = parts[2].Trim();
-                        row["REASON_EN"] = parts[3].Trim();
-                        row["REASON_VN"] = parts[4].Trim();
-                        dt.Rows.Add(row);
-                    }
-                }
-                Debug.WriteLine($"ReadErrorButtonFromCsv OK: {dt.Rows.Count} rows");
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("ReadErrorButtonFromCsv Error: " + ex.Message);
-                return null;
-            }
-        }
-
-        // -----------------------------------------------------------------------
-        // Helper: Escape giá trị CSV (bọc nháy kép nếu có dấu phẩy/nháy)
-        // -----------------------------------------------------------------------
-        private string EscapeCsv(string value)
-        {
-            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n"))
-                return "\"" + value.Replace("\"", "\"\"") + "\"";
-            return value;
-        }
-
-        // -----------------------------------------------------------------------
-        // Helper: Parse 1 dòng CSV có hỗ trợ nháy kép
-        // -----------------------------------------------------------------------
-        private string[] ParseCsvLine(string line)
-        {
-            var result = new List<string>();
-            bool inQuotes = false;
-            var current = new StringBuilder();
-            foreach (char c in line)
-            {
-                if (c == '"') { inQuotes = !inQuotes; }
-                else if (c == ',' && !inQuotes) { result.Add(current.ToString()); current.Clear(); }
-                else { current.Append(c); }
-            }
-            result.Add(current.ToString());
-            return result.ToArray();
-        }
+        
 
 
         //========================================================================================================
@@ -2475,7 +2325,7 @@ namespace QIP.EOL
             
             Label lbl = (Label)sender;
             lbl.ForeColor = Color.Red;
-
+             
             
             SetInspectionActionState(false, false, false, false);
 
