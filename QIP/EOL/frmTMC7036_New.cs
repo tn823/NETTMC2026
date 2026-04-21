@@ -51,7 +51,7 @@ namespace QIP.EOL
         {
 
         }
-
+        
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
 
@@ -130,6 +130,7 @@ namespace QIP.EOL
         SerialPort serialPort1;
         private void frmTMC7036_New_Load(object sender, EventArgs e)
         {
+            
             lblTop1Defect.Text = "";
             lblTop2Defect.Text = "";
             lblTop3Defect.Text = "";
@@ -144,7 +145,7 @@ namespace QIP.EOL
             finishedCount = 0;
             countSensor = 0;
             countSensorQC = 0;
-
+            
             ipAddress = GlobalFunction.PublicFunction.myIpaddress;
             ipAddress = "192.168.0.85";
             GetLineName(ipAddress);
@@ -1746,7 +1747,7 @@ namespace QIP.EOL
             lblPart4.ForeColor = Color.Red;
         }
 
-
+        
         private void backgroundProduction_DoWork(object sender, DoWorkEventArgs e)
         {
             Production();

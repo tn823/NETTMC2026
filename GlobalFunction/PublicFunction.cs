@@ -458,7 +458,7 @@ namespace GlobalFunction
                     {
                         //return ip.ToString();
                         return "192.168.0.85";
-                        //return "192.168.2.180";
+                        //return "192.168.1.197";
                         //return "192.168.17.241";
                         //return "192.168.0.236";
                         //return "192.168.3.174";

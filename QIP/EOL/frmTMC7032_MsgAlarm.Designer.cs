@@ -28,12 +28,86 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "frmTMC7032_MsgAlarm";
+            lblMessage = new Label();
+            button1 = new Button();
+            panel1 = new Panel();
+            label2 = new Label();
+            textBox1 = new TextBox();
+            panel1.SuspendLayout();
+            SuspendLayout();
+            // 
+            // lblMessage
+            // 
+            lblMessage.BackColor = Color.Red;
+            lblMessage.Dock = DockStyle.Fill;
+            lblMessage.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            lblMessage.Location = new Point(0, 140);
+            lblMessage.Name = "lblMessage";
+            lblMessage.Size = new Size(1102, 380);
+            lblMessage.TabIndex = 0;
+            // 
+            // button1
+            // 
+            button1.Dock = DockStyle.Top;
+            button1.Font = new Font("Tahoma", 50.25F, FontStyle.Bold);
+            button1.Location = new Point(0, 0);
+            button1.Name = "button1";
+            button1.Size = new Size(1102, 101);
+            button1.TabIndex = 1;
+            button1.Text = "CLOSE ( Đóng )";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(label2);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 101);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1102, 39);
+            panel1.TabIndex = 2;
+            // 
+            // label2
+            // 
+            label2.Dock = DockStyle.Left;
+            label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            label2.Location = new Point(0, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(694, 39);
+            label2.TabIndex = 0;
+            label2.Text = "Vui Lòng Nhập Số Thẻ Để Mở Máy Lại :";
+            // 
+            // textBox1
+            // 
+            textBox1.Dock = DockStyle.Fill;
+            textBox1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            textBox1.Location = new Point(694, 0);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(408, 39);
+            textBox1.TabIndex = 1;
+            // 
+            // frmTMC7032_MsgAlarm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1102, 520);
+            Controls.Add(lblMessage);
+            Controls.Add(panel1);
+            Controls.Add(button1);
+            Name = "frmTMC7032_MsgAlarm";
+            Text = "frmTMC7032_MsgAlarm";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Label lblMessage;
+        private Button button1;
+        private Panel panel1;
+        private Label label2;
+        private TextBox textBox1;
     }
 }
