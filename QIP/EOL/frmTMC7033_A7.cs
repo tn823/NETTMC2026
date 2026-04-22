@@ -432,6 +432,34 @@ namespace QIP.EOL
                 }
             }
         }
+
+        private IEnumerable<Button> GetErrorButtons()
+        {
+            foreach (Control ctrl in tableLayoutPanel2.Controls)
+            {
+                if (ctrl is Panel panel)
+                {
+                    foreach (Button btn in GetButtonsRecursive(panel))
+                    {
+                        yield return btn;
+                    }
+                }
+            }
+        }
+
+        private void SetButtonBackColor(Button btn, Color color)
+        {
+            btn.UseVisualStyleBackColor = false;
+            btn.BackColor = color;
+        }
+
+        private void ResetErrorButtonColor()
+        {
+            foreach (Button btn in GetErrorButtons())
+            {
+                SetButtonBackColor(btn, Color.FromArgb(192, 255, 255));
+            }
+        }
         
         private void TryToUpdateSystemDateTime()
         {
@@ -1580,22 +1608,7 @@ namespace QIP.EOL
             ConffigErrorButton(true);
             partID = lbl.AccessibleName;
 
-            foreach (var pnl in tableLayoutPanel2.Controls)
-            {
-                if (pnl.ToString() == "DevExpress.XtraEditors.PanelControl")
-                {
-                    DevExpress.XtraEditors.PanelControl panel = (DevExpress.XtraEditors.PanelControl)pnl;
-                    foreach (var a in panel.Controls)
-                    {
-                        if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-                        {
-                            SimpleButton btnID = (SimpleButton)a;
-                            btnID.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-                            btnID.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-                        }
-                    }
-                }
-            }
+            ResetErrorButtonColor();
 
 
 
@@ -1636,16 +1649,14 @@ namespace QIP.EOL
                 btnFail.Enabled = true;
                 // btnRePass.Enabled = false;
                 btnReFail.Enabled = true;
-                if (btn.Appearance.BackColor == System.Drawing.Color.FromArgb(192, 255, 255))
+                if (btn.BackColor == System.Drawing.Color.FromArgb(192, 255, 255))
                 {
-                    btn.Appearance.BackColor = System.Drawing.Color.FromArgb(224, 224, 224);
-                    btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(224, 224, 224);
+                    SetButtonBackColor(btn, System.Drawing.Color.FromArgb(224, 224, 224));
                     UpdateDtReason(btn);
                 }
                 else
                 {
-                    btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-                    btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
+                    SetButtonBackColor(btn, System.Drawing.Color.FromArgb(192, 255, 255));
                     UpdateDtReason(btn);
                 }
             }
@@ -1910,22 +1921,7 @@ namespace QIP.EOL
             lblPart5.ForeColor = System.Drawing.Color.Green;
             lblPart4.ForeColor = System.Drawing.Color.Green;
             lblPart6.ForeColor = System.Drawing.Color.Green;
-            foreach (var panel in tableLayoutPanel2.Controls)
-            {
-                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-                {
-                    DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-                    foreach (var a in pnl.Controls)
-                    {
-                        if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-                        {
-                            SimpleButton btn = (SimpleButton)a;
-                            btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-                            btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-                        }
-                    }
-                }
-            }
+            ResetErrorButtonColor();
         }
         private void UpdateFail(List<string> btn)
         {
@@ -2009,22 +2005,7 @@ namespace QIP.EOL
             lblPart4.ForeColor = System.Drawing.Color.Green;
             lblPart6.ForeColor = System.Drawing.Color.Green;
 
-            foreach (var panel in tableLayoutPanel2.Controls)
-            {
-                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-                {
-                    DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-                    foreach (var a in pnl.Controls)
-                    {
-                        if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-                        {
-                            SimpleButton btn = (SimpleButton)a;
-                            btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-                            btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-                        }
-                    }
-                }
-            }
+            ResetErrorButtonColor();
         }
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -2041,22 +2022,7 @@ namespace QIP.EOL
             lblPart5.ForeColor = System.Drawing.Color.Green;
             lblPart4.ForeColor = System.Drawing.Color.Green;
             lblPart6.ForeColor = System.Drawing.Color.Green;
-            foreach (var panel in tableLayoutPanel2.Controls)
-            {
-                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-                {
-                    DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-                    foreach (var a in pnl.Controls)
-                    {
-                        if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-                        {
-                            SimpleButton btn = (SimpleButton)a;
-                            btn.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-                            btn.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-                        }
-                    }
-                }
-            }
+            ResetErrorButtonColor();
 
         }
         private void btn_reasonCode2_Click(object sender, EventArgs e)
@@ -2821,27 +2787,13 @@ namespace QIP.EOL
         }
         private void ConffigErrorButtonColor(string id, System.Drawing.Color c)
         {
-            foreach (var p in tableLayoutPanel2.Controls)
+            foreach (Button btnID in GetErrorButtons())
             {
-                if (p.ToString() == "DevExpress.XtraEditors.PanelControl")
+                if (btnID.AccessibleName == id)
                 {
-                    PanelControl panel = (PanelControl)p;
-                    foreach (var a in panel.Controls)
-                    {
-                        if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-                        {
-                            SimpleButton btnID = (SimpleButton)a;
-                            if (btnID.AccessibleName == id)
-                            {
-                                btnID.Appearance.BackColor = c;
-                                btnID.Appearance.BackColor2 = c;
-                            }
-                        }
-                    }
+                    SetButtonBackColor(btnID, c);
                 }
             }
-
-
         }
         private void backgroundWorkerStopLine_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {

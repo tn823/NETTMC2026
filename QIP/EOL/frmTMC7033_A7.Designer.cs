@@ -393,6 +393,7 @@
             checkEdit2.TabIndex = 2;
             checkEdit2.Text = "Plan 7 ngày";
             checkEdit2.UseVisualStyleBackColor = true;
+            checkEdit2.CheckedChanged += checkEdit2_CheckedChanged;
             // 
             // chkPlanOneMonth
             // 
@@ -405,6 +406,7 @@
             chkPlanOneMonth.TabIndex = 1;
             chkPlanOneMonth.Text = "Plan 1 tháng";
             chkPlanOneMonth.UseVisualStyleBackColor = true;
+            chkPlanOneMonth.CheckedChanged += chkPlanOneMonth_CheckedChanged;
             // 
             // btnChonModel
             // 
@@ -418,6 +420,7 @@
             btnChonModel.TabIndex = 0;
             btnChonModel.Text = "Chọn MODEL";
             btnChonModel.UseVisualStyleBackColor = false;
+            btnChonModel.Click += btnChonModel_Click;
             // 
             // panelControl3
             // 
@@ -476,6 +479,7 @@
             btnSPCBonding.Text = "SPC BONDING";
             btnSPCBonding.TextAlign = ContentAlignment.MiddleLeft;
             btnSPCBonding.UseVisualStyleBackColor = false;
+            btnSPCBonding.Click += btnSPCBonding_Click;
             // 
             // btnSPCStitching
             // 
@@ -492,6 +496,7 @@
             btnSPCStitching.Text = "SPC STITCHING";
             btnSPCStitching.TextAlign = ContentAlignment.MiddleLeft;
             btnSPCStitching.UseVisualStyleBackColor = false;
+            btnSPCStitching.Click += btnSPCStitching_Click;
             // 
             // btnSPCCleanliness
             // 
@@ -508,6 +513,7 @@
             btnSPCCleanliness.Text = "SPC CLEANLINESS";
             btnSPCCleanliness.TextAlign = ContentAlignment.MiddleLeft;
             btnSPCCleanliness.UseVisualStyleBackColor = false;
+            btnSPCCleanliness.Click += btnSPCCleanliness_Click;
             // 
             // panel7
             // 
@@ -533,6 +539,7 @@
             lblRFT.TabIndex = 1;
             lblRFT.Text = "10.1";
             lblRFT.TextAlign = ContentAlignment.MiddleCenter;
+            lblRFT.Click += lblRFT_Click;
             // 
             // labelControl9
             // 
@@ -931,11 +938,11 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.Controls.Add(btnReFail, 2, 1);
             tableLayoutPanel2.Controls.Add(btnFail, 0, 1);
-            tableLayoutPanel2.Controls.Add(panelControl7, 0, 0);
-            tableLayoutPanel2.Controls.Add(panelControl8, 1, 0);
             tableLayoutPanel2.Controls.Add(panelControl5, 0, 2);
             tableLayoutPanel2.Controls.Add(panelControl6, 2, 2);
             tableLayoutPanel2.Controls.Add(btnClear, 4, 1);
+            tableLayoutPanel2.Controls.Add(panelControl7, 0, 0);
+            tableLayoutPanel2.Controls.Add(panelControl8, 1, 0);
             tableLayoutPanel2.Controls.Add(panelControl9, 2, 0);
             tableLayoutPanel2.Controls.Add(panelControl10, 3, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
@@ -964,6 +971,7 @@
             btnReFail.TabIndex = 16;
             btnReFail.Text = "RE-INS FAIL";
             btnReFail.UseVisualStyleBackColor = false;
+            btnReFail.Click += btnReFail_Click;
             // 
             // btnFail
             // 
@@ -979,6 +987,7 @@
             btnFail.TabIndex = 15;
             btnFail.Text = "1st FAIL";
             btnFail.UseVisualStyleBackColor = false;
+            btnFail.Click += btnFail_Click;
             // 
             // panelControl7
             // 
@@ -1018,6 +1027,7 @@
             simpleButton18.TabIndex = 4;
             simpleButton18.Text = "Lieu da that/ da gia bi hu";
             simpleButton18.UseVisualStyleBackColor = false;
+            this.simpleButton18.Click += new System.EventHandler(this.simpleButton23_Click);
             // 
             // panelControl8
             // 
@@ -1057,6 +1067,7 @@
             simpleButton23.TabIndex = 4;
             simpleButton23.Text = "Lieu da that/ da gia bi hu";
             simpleButton23.UseVisualStyleBackColor = false;
+            this.simpleButton23.Click += new System.EventHandler(this.simpleButton23_Click);
             // 
             // panelControl5
             // 
@@ -1126,6 +1137,7 @@
             simpleButton14.TabIndex = 5;
             simpleButton14.TextImageRelation = TextImageRelation.ImageAboveText;
             simpleButton14.UseVisualStyleBackColor = false;
+            simpleButton14.Click += simpleButton14_Click;
             // 
             // btn_reasonCode1
             // 
@@ -1140,6 +1152,7 @@
             btn_reasonCode1.TabIndex = 0;
             btn_reasonCode1.Text = "ANDON ( QA )";
             btn_reasonCode1.UseVisualStyleBackColor = false;
+            btn_reasonCode1.Click += btn_reasonCode1_Click;
             // 
             // btn_reasonCode2
             // 
@@ -1153,6 +1166,7 @@
             btn_reasonCode2.TabIndex = 0;
             btn_reasonCode2.Text = "ANDON ( BẢO TRÌ )";
             btn_reasonCode2.UseVisualStyleBackColor = false;
+            btn_reasonCode2.Click += btn_reasonCode2_Click;
             // 
             // btn_reasonCode3
             // 
@@ -1166,6 +1180,7 @@
             btn_reasonCode3.TabIndex = 0;
             btn_reasonCode3.Text = "ANDON ( SẢN XUẤT )";
             btn_reasonCode3.UseVisualStyleBackColor = false;
+            btn_reasonCode3.Click += btn_reasonCode3_Click;
             // 
             // btnClear
             // 
@@ -1180,6 +1195,7 @@
             btnClear.TabIndex = 8;
             btnClear.Text = "CLEAR";
             btnClear.UseVisualStyleBackColor = false;
+            btnClear.Click += btnClear_Click;
             // 
             // panelControl9
             // 
@@ -1219,6 +1235,7 @@
             simpleButton4.TabIndex = 4;
             simpleButton4.Text = "Lieu da that/ da gia bi hu";
             simpleButton4.UseVisualStyleBackColor = false;
+            this.simpleButton4.Click += new System.EventHandler(this.simpleButton23_Click);
             // 
             // panelControl10
             // 
@@ -1259,6 +1276,7 @@
             simpleButton5.TabIndex = 5;
             simpleButton5.Text = "Lỗi khác";
             simpleButton5.UseVisualStyleBackColor = false;
+            this.simpleButton5.Click += new System.EventHandler(this.simpleButton23_Click);
             // 
             // panel11
             // 
@@ -1414,6 +1432,7 @@
             lblPart6.Size = new Size(100, 89);
             lblPart6.TabIndex = 30;
             lblPart6.Text = "O";
+            this.lblPart6.Click += new System.EventHandler(this.lblPart_Click);
             // 
             // lblPart5
             // 
@@ -1428,6 +1447,7 @@
             lblPart5.Size = new Size(100, 89);
             lblPart5.TabIndex = 29;
             lblPart5.Text = "O";
+            this.lblPart5.Click += new System.EventHandler(this.lblPart_Click);
             // 
             // lblPart4
             // 
@@ -1442,6 +1462,7 @@
             lblPart4.Size = new Size(100, 89);
             lblPart4.TabIndex = 28;
             lblPart4.Text = "O";
+            this.lblPart4.Click += new System.EventHandler(this.lblPart_Click);
             // 
             // lblPart3
             // 
@@ -1456,6 +1477,7 @@
             lblPart3.Size = new Size(100, 89);
             lblPart3.TabIndex = 27;
             lblPart3.Text = "O";
+            this.lblPart3.Click += new System.EventHandler(this.lblPart_Click);
             // 
             // lblPart2
             // 
@@ -1470,6 +1492,7 @@
             lblPart2.Size = new Size(100, 89);
             lblPart2.TabIndex = 26;
             lblPart2.Text = "O";
+            this.lblPart2.Click += new System.EventHandler(this.lblPart_Click);
             // 
             // lblPart1
             // 
@@ -1483,6 +1506,7 @@
             lblPart1.Size = new Size(100, 89);
             lblPart1.TabIndex = 25;
             lblPart1.Text = "O";
+            this.lblPart1.Click += new System.EventHandler(this.lblPart_Click);
             // 
             // txtMessage
             // 
@@ -1530,52 +1554,71 @@
             // 
             backgroundWorkerCheckAndon.WorkerReportsProgress = true;
             backgroundWorkerCheckAndon.WorkerSupportsCancellation = true;
+            this.backgroundWorkerCheckAndon.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerCheckAndon_DoWork);
+            this.backgroundWorkerCheckAndon.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerCheckAndon_RunWorkerCompleted);
             // 
             // timerCheckAndon
             // 
             timerCheckAndon.Enabled = true;
             timerCheckAndon.Interval = 1000;
+            this.timerCheckAndon.Tick += new System.EventHandler(this.timerCheckAndon_Tick);
             // 
             // backgroundOracle
             // 
             backgroundOracle.WorkerReportsProgress = true;
             backgroundOracle.WorkerSupportsCancellation = true;
+            this.backgroundOracle.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundOracle_DoWork);
+            this.backgroundOracle.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundOracle_ProgressChanged);
+            this.backgroundOracle.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundOracle_RunWorkerCompleted);
             // 
             // timerBindProduction
             // 
             timerBindProduction.Enabled = true;
             timerBindProduction.Interval = 20000;
+            this.timerBindProduction.Tick += new System.EventHandler(this.timerBindProduction_Tick);
             // 
             // timer_CheckStopLine
             // 
             timer_CheckStopLine.Enabled = true;
             timer_CheckStopLine.Interval = 3000;
+            this.timer_CheckStopLine.Tick += new System.EventHandler(this.timer_CheckStopLine_Tick);
             // 
             // backgroundWorkerStopLine
             // 
             backgroundWorkerStopLine.WorkerReportsProgress = true;
             backgroundWorkerStopLine.WorkerSupportsCancellation = true;
+            this.backgroundWorkerStopLine.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerStopLine_DoWork);
+            this.backgroundWorkerStopLine.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerStopLine_RunWorkerCompleted);
             // 
             // backgroundSyncData
             // 
             backgroundSyncData.WorkerReportsProgress = true;
             backgroundSyncData.WorkerSupportsCancellation = true;
+            this.backgroundSyncData.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundSyncData_DoWork);
+            this.backgroundSyncData.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundSyncData_ProgressChanged);
             // 
             // timer_BlinkButtonRed
             // 
             timer_BlinkButtonRed.Interval = 1000;
+            this.timer_BlinkButtonRed.Tick += new System.EventHandler(this.timer_BlinkButtonRed_Tick);
+
             // 
             // timer_BlinkButtonYellow
             // 
             timer_BlinkButtonYellow.Interval = 1000;
+            this.timer_BlinkButtonYellow.Tick += new System.EventHandler(this.timer_BlinkButtonYellow_Tick);
+
             // 
             // timer_BlinkButtonGreen
             // 
             timer_BlinkButtonGreen.Interval = 1000;
+            this.timer_BlinkButtonGreen.Tick += new System.EventHandler(this.timer_BlinkButtonGreen_Tick);
+
             // 
             // timer_SyncData
             // 
             timer_SyncData.Interval = 20000;
+            this.timer_SyncData.Tick += new System.EventHandler(this.timer_SyncData_Tick);
             // 
             // frmTMC7033_A7
             // 
@@ -1589,6 +1632,7 @@
             Margin = new Padding(3, 4, 3, 4);
             Name = "frmTMC7033_A7";
             Size = new Size(2630, 1660);
+            this.Load += new System.EventHandler(this.frmTMC7033_A7_Load);
             panelControlTop.ResumeLayout(false);
             tableLayoutPanelTop.ResumeLayout(false);
             tableLayoutPanelTop.PerformLayout();
