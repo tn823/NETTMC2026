@@ -125,6 +125,7 @@
             button9 = new Button();
             button8 = new Button();
             panelControl2 = new Panel();
+            txtMessage = new Label();
             button19 = new Button();
             btn_reasonCode1 = new Button();
             btn_reasonCode2 = new Button();
@@ -139,7 +140,6 @@
             btnCheckStep = new Button();
             btnVideoClip = new Button();
             btnBA = new Button();
-            txtMessage = new Label();
             oracleCommandBuilder1 = new Oracle.ManagedDataAccess.Client.OracleCommandBuilder();
             timerStopMessage = new System.Windows.Forms.Timer(components);
             timerSuccess = new System.Windows.Forms.Timer(components);
@@ -1174,11 +1174,12 @@
             // 
             // labelControl2
             // 
+            labelControl2.BorderStyle = BorderStyle.FixedSingle;
             labelControl2.Dock = DockStyle.Right;
             labelControl2.Font = new Font("Tahoma", 9F, FontStyle.Bold);
-            labelControl2.Location = new Point(439, 0);
+            labelControl2.Location = new Point(454, 0);
             labelControl2.Name = "labelControl2";
-            labelControl2.Size = new Size(130, 50);
+            labelControl2.Size = new Size(121, 50);
             labelControl2.TabIndex = 7;
             labelControl2.Text = "SENSOR STATUS : ";
             labelControl2.TextAlign = ContentAlignment.MiddleRight;
@@ -1186,12 +1187,13 @@
             // 
             // txtStatus
             // 
+            txtStatus.BorderStyle = BorderStyle.FixedSingle;
             txtStatus.Dock = DockStyle.Right;
             txtStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold | FontStyle.Italic);
             txtStatus.ForeColor = Color.Navy;
-            txtStatus.Location = new Point(569, 0);
+            txtStatus.Location = new Point(575, 0);
             txtStatus.Name = "txtStatus";
-            txtStatus.Size = new Size(95, 50);
+            txtStatus.Size = new Size(89, 50);
             txtStatus.TabIndex = 6;
             txtStatus.Text = "CONNECTED";
             txtStatus.TextAlign = ContentAlignment.MiddleCenter;
@@ -1442,6 +1444,18 @@
             panelControl2.Size = new Size(1334, 106);
             panelControl2.TabIndex = 0;
             // 
+            // txtMessage
+            // 
+            txtMessage.Dock = DockStyle.Fill;
+            txtMessage.Font = new Font("Tahoma", 27.75F, FontStyle.Bold);
+            txtMessage.ForeColor = Color.Red;
+            txtMessage.Location = new Point(0, 0);
+            txtMessage.Name = "txtMessage";
+            txtMessage.Size = new Size(225, 106);
+            txtMessage.TabIndex = 14;
+            txtMessage.Text = "Thông Báo";
+            txtMessage.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // button19
             // 
             button19.BackColor = Color.FromArgb(255, 128, 128);
@@ -1623,18 +1637,6 @@
             btnBA.Text = "BA 9 Criteria";
             btnBA.UseVisualStyleBackColor = false;
             btnBA.Visible = false;
-            // 
-            // txtMessage
-            // 
-            txtMessage.Dock = DockStyle.Fill;
-            txtMessage.Font = new Font("Tahoma", 27.75F, FontStyle.Bold);
-            txtMessage.ForeColor = Color.Red;
-            txtMessage.Location = new Point(0, 0);
-            txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(225, 106);
-            txtMessage.TabIndex = 14;
-            txtMessage.Text = "Thông Báo";
-            txtMessage.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // timerStopMessage
             // 
