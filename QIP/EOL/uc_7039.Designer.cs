@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
             lblCount = new Label();
@@ -37,6 +38,7 @@
             panel3 = new Panel();
             lblReasonEN = new Label();
             lblReasonVN = new Label();
+            timer1 = new System.Windows.Forms.Timer(components);
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -177,5 +179,6 @@
         private Panel panel3;
         private Label lblReasonVN;
         private Label lblReasonEN;
+        private System.Windows.Forms.Timer timer1;
     }
 }
