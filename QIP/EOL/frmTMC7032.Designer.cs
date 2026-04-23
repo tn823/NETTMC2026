@@ -1077,6 +1077,7 @@
             btnFail.TabIndex = 0;
             btnFail.Text = "FAIL";
             btnFail.UseVisualStyleBackColor = false;
+            btnFail.Click += btnFail_Click;
             // 
             // btnPass
             // 

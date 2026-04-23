@@ -10,19 +10,14 @@ using System.Windows.Forms;
 
 namespace QIP.EOL
 {
-    public partial class frmTMC7032 : UserControl
+    public partial class frmTMC7034 : UserControl
     {
-        public frmTMC7032()
+        public frmTMC7034()
         {
             InitializeComponent();
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnFail_Click(object sender, EventArgs e)
+        private void panelControl2_Paint(object sender, PaintEventArgs e)
         {
 
         }

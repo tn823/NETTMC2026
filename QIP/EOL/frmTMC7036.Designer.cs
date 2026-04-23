@@ -476,7 +476,7 @@
             // 
             // btnLeft
             // 
-            btnLeft.BackColor = Color.IndianRed;
+            btnLeft.BackColor = Color.LightCoral;
             btnLeft.Dock = DockStyle.Fill;
             btnLeft.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
             btnLeft.Location = new Point(3, 3);
