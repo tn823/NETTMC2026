@@ -220,6 +220,7 @@
             // 
             // splitContainer1
             // 
+            splitContainer1.BorderStyle = BorderStyle.FixedSingle;
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Location = new Point(0, 0);
             splitContainer1.Margin = new Padding(3, 4, 3, 4);
@@ -235,6 +236,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -246,27 +248,27 @@
             tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(1532, 1269);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 59.2397041F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 40.7602959F));
+            tableLayoutPanel1.Size = new Size(1338, 950);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel6
             // 
+            tableLayoutPanel6.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel6.ColumnCount = 1;
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel6.Controls.Add(tbpTop, 0, 1);
             tableLayoutPanel6.Controls.Add(panelControl5, 0, 2);
             tableLayoutPanel6.Controls.Add(panelControl4, 0, 0);
             tableLayoutPanel6.Dock = DockStyle.Fill;
-            tableLayoutPanel6.Location = new Point(3, 4);
-            tableLayoutPanel6.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel6.Location = new Point(6, 6);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
             tableLayoutPanel6.RowCount = 3;
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 28.8F));
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 12.14F));
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 59.06F));
-            tableLayoutPanel6.Size = new Size(760, 626);
+            tableLayoutPanel6.Size = new Size(658, 551);
             tableLayoutPanel6.TabIndex = 0;
             // 
             // tbpTop
@@ -279,12 +281,11 @@
             tbpTop.Controls.Add(lblError2, 1, 0);
             tbpTop.Controls.Add(lblError1, 0, 0);
             tbpTop.Dock = DockStyle.Fill;
-            tbpTop.Location = new Point(3, 184);
-            tbpTop.Margin = new Padding(3, 4, 3, 4);
+            tbpTop.Location = new Point(4, 162);
             tbpTop.Name = "tbpTop";
             tbpTop.RowCount = 1;
             tbpTop.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tbpTop.Size = new Size(754, 67);
+            tbpTop.Size = new Size(650, 60);
             tbpTop.TabIndex = 0;
             // 
             // lblError3
@@ -293,13 +294,12 @@
             lblError3.BackColor = Color.Lime;
             lblError3.Dock = DockStyle.Fill;
             lblError3.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblError3.Location = new Point(505, 0);
+            lblError3.Location = new Point(435, 0);
             lblError3.Name = "lblError3";
-            lblError3.Size = new Size(246, 67);
+            lblError3.Size = new Size(212, 60);
             lblError3.TabIndex = 3;
             lblError3.Text = "label1";
             lblError3.TextAlign = ContentAlignment.MiddleCenter;
-            lblError3.Visible = false;
             // 
             // lblError2
             // 
@@ -307,13 +307,12 @@
             lblError2.BackColor = Color.Yellow;
             lblError2.Dock = DockStyle.Fill;
             lblError2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblError2.Location = new Point(254, 0);
+            lblError2.Location = new Point(219, 0);
             lblError2.Name = "lblError2";
-            lblError2.Size = new Size(245, 67);
+            lblError2.Size = new Size(210, 60);
             lblError2.TabIndex = 2;
             lblError2.Text = "label1";
             lblError2.TextAlign = ContentAlignment.MiddleCenter;
-            lblError2.Visible = false;
             // 
             // lblError1
             // 
@@ -323,11 +322,10 @@
             lblError1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblError1.Location = new Point(3, 0);
             lblError1.Name = "lblError1";
-            lblError1.Size = new Size(245, 67);
+            lblError1.Size = new Size(210, 60);
             lblError1.TabIndex = 1;
             lblError1.Text = "label1";
             lblError1.TextAlign = ContentAlignment.MiddleCenter;
-            lblError1.Visible = false;
             // 
             // panelControl5
             // 
@@ -343,10 +341,9 @@
             panelControl5.Controls.Add(tableLayoutPanel3);
             panelControl5.Controls.Add(panelControl10);
             panelControl5.Dock = DockStyle.Fill;
-            panelControl5.Location = new Point(3, 259);
-            panelControl5.Margin = new Padding(3, 4, 3, 4);
+            panelControl5.Location = new Point(4, 229);
             panelControl5.Name = "panelControl5";
-            panelControl5.Size = new Size(754, 363);
+            panelControl5.Size = new Size(650, 318);
             panelControl5.TabIndex = 1;
             // 
             // lblPartCount4
@@ -448,7 +445,7 @@
             picShoeImage.Location = new Point(75, 0);
             picShoeImage.Margin = new Padding(3, 4, 3, 4);
             picShoeImage.Name = "picShoeImage";
-            picShoeImage.Size = new Size(600, 363);
+            picShoeImage.Size = new Size(515, 318);
             picShoeImage.SizeMode = PictureBoxSizeMode.StretchImage;
             picShoeImage.TabIndex = 3;
             picShoeImage.TabStop = false;
@@ -461,13 +458,12 @@
             tableLayoutPanel3.Controls.Add(btnRight, 0, 1);
             tableLayoutPanel3.Controls.Add(btnLeft, 0, 0);
             tableLayoutPanel3.Dock = DockStyle.Right;
-            tableLayoutPanel3.Location = new Point(675, 0);
-            tableLayoutPanel3.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel3.Location = new Point(581, 0);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Size = new Size(79, 363);
+            tableLayoutPanel3.Size = new Size(69, 318);
             tableLayoutPanel3.TabIndex = 1;
             // 
             // btnRight
@@ -475,10 +471,9 @@
             btnRight.BackColor = SystemColors.ActiveBorder;
             btnRight.Dock = DockStyle.Fill;
             btnRight.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
-            btnRight.Location = new Point(3, 185);
-            btnRight.Margin = new Padding(3, 4, 3, 4);
+            btnRight.Location = new Point(3, 162);
             btnRight.Name = "btnRight";
-            btnRight.Size = new Size(73, 174);
+            btnRight.Size = new Size(63, 153);
             btnRight.TabIndex = 2;
             btnRight.Text = "RIGHT (PHẢI )";
             btnRight.UseVisualStyleBackColor = false;
@@ -491,7 +486,7 @@
             btnLeft.Location = new Point(3, 4);
             btnLeft.Margin = new Padding(3, 4, 3, 4);
             btnLeft.Name = "btnLeft";
-            btnLeft.Size = new Size(73, 173);
+            btnLeft.Size = new Size(63, 153);
             btnLeft.TabIndex = 1;
             btnLeft.Text = "LEFT (TRÁI )";
             btnLeft.UseVisualStyleBackColor = false;
@@ -503,7 +498,7 @@
             panelControl10.Location = new Point(0, 0);
             panelControl10.Margin = new Padding(3, 4, 3, 4);
             panelControl10.Name = "panelControl10";
-            panelControl10.Size = new Size(75, 363);
+            panelControl10.Size = new Size(66, 318);
             panelControl10.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -521,7 +516,7 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel2.Size = new Size(75, 363);
+            tableLayoutPanel2.Size = new Size(66, 318);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // btnCSS
@@ -529,10 +524,9 @@
             btnCSS.BackColor = SystemColors.ActiveBorder;
             btnCSS.Dock = DockStyle.Fill;
             btnCSS.Font = new Font("Tahoma", 14.25F);
-            btnCSS.Location = new Point(3, 246);
-            btnCSS.Margin = new Padding(3, 4, 3, 4);
+            btnCSS.Location = new Point(3, 215);
             btnCSS.Name = "btnCSS";
-            btnCSS.Size = new Size(69, 113);
+            btnCSS.Size = new Size(60, 100);
             btnCSS.TabIndex = 2;
             btnCSS.Text = "CSS";
             btnCSS.UseVisualStyleBackColor = false;
@@ -542,10 +536,9 @@
             btnCSU.BackColor = SystemColors.ActiveBorder;
             btnCSU.Dock = DockStyle.Fill;
             btnCSU.Font = new Font("Tahoma", 14.25F);
-            btnCSU.Location = new Point(3, 125);
-            btnCSU.Margin = new Padding(3, 4, 3, 4);
+            btnCSU.Location = new Point(3, 109);
             btnCSU.Name = "btnCSU";
-            btnCSU.Size = new Size(69, 113);
+            btnCSU.Size = new Size(60, 100);
             btnCSU.TabIndex = 1;
             btnCSU.Text = "CSU";
             btnCSU.UseVisualStyleBackColor = false;
@@ -558,7 +551,7 @@
             btnFT.Location = new Point(3, 4);
             btnFT.Margin = new Padding(3, 4, 3, 4);
             btnFT.Name = "btnFT";
-            btnFT.Size = new Size(69, 113);
+            btnFT.Size = new Size(60, 100);
             btnFT.TabIndex = 0;
             btnFT.Text = "FT";
             btnFT.UseVisualStyleBackColor = false;
@@ -569,10 +562,9 @@
             panelControl4.Controls.Add(panelControl6);
             panelControl4.Controls.Add(panelRFT);
             panelControl4.Dock = DockStyle.Fill;
-            panelControl4.Location = new Point(3, 4);
-            panelControl4.Margin = new Padding(3, 4, 3, 4);
+            panelControl4.Location = new Point(4, 4);
             panelControl4.Name = "panelControl4";
-            panelControl4.Size = new Size(754, 172);
+            panelControl4.Size = new Size(650, 151);
             panelControl4.TabIndex = 2;
             // 
             // tableLayoutPanel5
@@ -589,7 +581,7 @@
             tableLayoutPanel5.RowCount = 1;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Size = new Size(602, 109);
+            tableLayoutPanel5.Size = new Size(517, 103);
             tableLayoutPanel5.TabIndex = 2;
             // 
             // btnModel
@@ -602,7 +594,7 @@
             btnModel.Location = new Point(3, 4);
             btnModel.Margin = new Padding(3, 4, 3, 4);
             btnModel.Name = "btnModel";
-            btnModel.Size = new Size(295, 101);
+            btnModel.Size = new Size(252, 97);
             btnModel.TabIndex = 1;
             btnModel.Text = "Chọn MODEL";
             btnModel.UseVisualStyleBackColor = false;
@@ -614,9 +606,9 @@
             txtDefectQty.Font = new Font("Tahoma", 20.25F, FontStyle.Bold);
             txtDefectQty.ForeColor = Color.Red;
             txtDefectQty.ImageAlign = ContentAlignment.TopLeft;
-            txtDefectQty.Location = new Point(304, 0);
+            txtDefectQty.Location = new Point(261, 0);
             txtDefectQty.Name = "txtDefectQty";
-            txtDefectQty.Size = new Size(295, 109);
+            txtDefectQty.Size = new Size(253, 103);
             txtDefectQty.TabIndex = 2;
             txtDefectQty.Text = "TOTAL : ";
             // 
@@ -630,7 +622,7 @@
             panelControl6.Location = new Point(152, 0);
             panelControl6.Margin = new Padding(3, 4, 3, 4);
             panelControl6.Name = "panelControl6";
-            panelControl6.Size = new Size(602, 63);
+            panelControl6.Size = new Size(517, 48);
             panelControl6.TabIndex = 1;
             // 
             // panelControl9
@@ -640,7 +632,7 @@
             panelControl9.Location = new Point(319, 0);
             panelControl9.Margin = new Padding(3, 4, 3, 4);
             panelControl9.Name = "panelControl9";
-            panelControl9.Size = new Size(281, 61);
+            panelControl9.Size = new Size(236, 46);
             panelControl9.TabIndex = 2;
             // 
             // txtProdQty
@@ -652,7 +644,7 @@
             txtProdQty.ForeColor = Color.Navy;
             txtProdQty.Location = new Point(0, 0);
             txtProdQty.Name = "txtProdQty";
-            txtProdQty.Size = new Size(281, 61);
+            txtProdQty.Size = new Size(236, 46);
             txtProdQty.TabIndex = 3;
             txtProdQty.Text = "SX : ";
             // 
@@ -709,7 +701,7 @@
             panelRFT.Location = new Point(0, 0);
             panelRFT.Margin = new Padding(3, 4, 3, 4);
             panelRFT.Name = "panelRFT";
-            panelRFT.Size = new Size(152, 172);
+            panelRFT.Size = new Size(133, 151);
             panelRFT.TabIndex = 0;
             // 
             // pictureEdit2
@@ -719,7 +711,7 @@
             pictureEdit2.Location = new Point(0, 0);
             pictureEdit2.Margin = new Padding(3, 4, 3, 4);
             pictureEdit2.Name = "pictureEdit2";
-            pictureEdit2.Size = new Size(152, 172);
+            pictureEdit2.Size = new Size(133, 151);
             pictureEdit2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureEdit2.TabIndex = 1;
             pictureEdit2.TabStop = false;
@@ -729,14 +721,14 @@
             panelControl12.Controls.Add(tableLayoutError1);
             panelControl12.Controls.Add(panelControl13);
             panelControl12.Dock = DockStyle.Fill;
-            panelControl12.Location = new Point(769, 4);
-            panelControl12.Margin = new Padding(3, 4, 3, 4);
+            panelControl12.Location = new Point(673, 6);
             panelControl12.Name = "panelControl12";
-            panelControl12.Size = new Size(760, 626);
+            panelControl12.Size = new Size(659, 551);
             panelControl12.TabIndex = 1;
             // 
             // tableLayoutError1
             // 
+            tableLayoutError1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutError1.ColumnCount = 3;
             tableLayoutError1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 31.51151F));
             tableLayoutError1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35.1251259F));
@@ -759,7 +751,7 @@
             tableLayoutError1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutError1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutError1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutError1.Size = new Size(760, 559);
+            tableLayoutError1.Size = new Size(659, 501);
             tableLayoutError1.TabIndex = 1;
             // 
             // button7
@@ -767,11 +759,10 @@
             button7.AccessibleName = "43";
             button7.BackColor = Color.PaleTurquoise;
             button7.Dock = DockStyle.Fill;
-            button7.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button7.Location = new Point(508, 448);
-            button7.Margin = new Padding(3, 4, 3, 4);
+            button7.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button7.Location = new Point(442, 404);
             button7.Name = "button7";
-            button7.Size = new Size(249, 107);
+            button7.Size = new Size(213, 93);
             button7.TabIndex = 9;
             button7.Text = "BTN";
             button7.UseVisualStyleBackColor = false;
@@ -781,11 +772,10 @@
             button6.AccessibleName = "42";
             button6.BackColor = Color.PaleTurquoise;
             button6.Dock = DockStyle.Fill;
-            button6.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button6.Location = new Point(242, 448);
-            button6.Margin = new Padding(3, 4, 3, 4);
+            button6.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button6.Location = new Point(211, 404);
             button6.Name = "button6";
-            button6.Size = new Size(260, 107);
+            button6.Size = new Size(224, 93);
             button6.TabIndex = 8;
             button6.Text = "BTN";
             button6.UseVisualStyleBackColor = false;
@@ -795,11 +785,10 @@
             button5.AccessibleName = "41";
             button5.BackColor = Color.PaleTurquoise;
             button5.Dock = DockStyle.Fill;
-            button5.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button5.Location = new Point(3, 448);
-            button5.Margin = new Padding(3, 4, 3, 4);
+            button5.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button5.Location = new Point(4, 404);
             button5.Name = "button5";
-            button5.Size = new Size(233, 107);
+            button5.Size = new Size(200, 93);
             button5.TabIndex = 7;
             button5.Text = "BTN";
             button5.UseVisualStyleBackColor = false;
@@ -809,11 +798,10 @@
             button3.AccessibleName = "55";
             button3.BackColor = Color.PaleTurquoise;
             button3.Dock = DockStyle.Fill;
-            button3.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button3.Location = new Point(3, 337);
-            button3.Margin = new Padding(3, 4, 3, 4);
+            button3.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button3.Location = new Point(4, 304);
             button3.Name = "button3";
-            button3.Size = new Size(233, 103);
+            button3.Size = new Size(200, 93);
             button3.TabIndex = 6;
             button3.Text = "BTN";
             button3.UseVisualStyleBackColor = false;
@@ -823,11 +811,10 @@
             button2.AccessibleName = "40";
             button2.BackColor = Color.PaleTurquoise;
             button2.Dock = DockStyle.Fill;
-            button2.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.Location = new Point(3, 226);
-            button2.Margin = new Padding(3, 4, 3, 4);
+            button2.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(4, 204);
             button2.Name = "button2";
-            button2.Size = new Size(233, 103);
+            button2.Size = new Size(200, 93);
             button2.TabIndex = 5;
             button2.Text = "BTN";
             button2.UseVisualStyleBackColor = false;
@@ -837,11 +824,10 @@
             button1.AccessibleName = "44";
             button1.BackColor = Color.PaleTurquoise;
             button1.Dock = DockStyle.Fill;
-            button1.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button1.Location = new Point(3, 115);
-            button1.Margin = new Padding(3, 4, 3, 4);
+            button1.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button1.Location = new Point(4, 104);
             button1.Name = "button1";
-            button1.Size = new Size(233, 103);
+            button1.Size = new Size(200, 93);
             button1.TabIndex = 4;
             button1.Text = "BTN";
             button1.UseVisualStyleBackColor = false;
@@ -851,11 +837,10 @@
             button4.AccessibleName = "39";
             button4.BackColor = Color.PaleTurquoise;
             button4.Dock = DockStyle.Fill;
-            button4.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button4.Location = new Point(3, 4);
-            button4.Margin = new Padding(3, 4, 3, 4);
+            button4.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button4.Location = new Point(4, 4);
             button4.Name = "button4";
-            button4.Size = new Size(233, 103);
+            button4.Size = new Size(200, 93);
             button4.TabIndex = 2;
             button4.Text = "BTN";
             button4.UseVisualStyleBackColor = false;
@@ -867,11 +852,10 @@
             panel1.Controls.Add(label21);
             panel1.Controls.Add(label20);
             panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(242, 4);
-            panel1.Margin = new Padding(3, 4, 3, 4);
+            panel1.Location = new Point(211, 4);
             panel1.Name = "panel1";
             tableLayoutError1.SetRowSpan(panel1, 4);
-            panel1.Size = new Size(515, 436);
+            panel1.Size = new Size(444, 393);
             panel1.TabIndex = 3;
             // 
             // tableLayoutPanel4
@@ -902,17 +886,16 @@
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel4.Size = new Size(515, 309);
+            tableLayoutPanel4.Size = new Size(444, 298);
             tableLayoutPanel4.TabIndex = 17;
             // 
             // panel13
             // 
             panel13.Controls.Add(lblCurRate);
             panel13.Dock = DockStyle.Fill;
-            panel13.Location = new Point(341, 250);
-            panel13.Margin = new Padding(3, 4, 3, 4);
+            panel13.Location = new Point(296, 231);
             panel13.Name = "panel13";
-            panel13.Size = new Size(170, 54);
+            panel13.Size = new Size(144, 63);
             panel13.TabIndex = 11;
             // 
             // lblCurRate
@@ -923,7 +906,7 @@
             lblCurRate.ForeColor = Color.White;
             lblCurRate.Location = new Point(0, 0);
             lblCurRate.Name = "lblCurRate";
-            lblCurRate.Size = new Size(170, 54);
+            lblCurRate.Size = new Size(144, 63);
             lblCurRate.TabIndex = 3;
             lblCurRate.Text = "-";
             lblCurRate.TextAlign = ContentAlignment.MiddleCenter;
@@ -932,10 +915,9 @@
             // 
             panel9.Controls.Add(lblTTLRate);
             panel9.Dock = DockStyle.Fill;
-            panel9.Location = new Point(165, 250);
-            panel9.Margin = new Padding(3, 4, 3, 4);
+            panel9.Location = new Point(145, 231);
             panel9.Name = "panel9";
-            panel9.Size = new Size(169, 54);
+            panel9.Size = new Size(144, 63);
             panel9.TabIndex = 10;
             // 
             // lblTTLRate
@@ -946,7 +928,7 @@
             lblTTLRate.ForeColor = Color.White;
             lblTTLRate.Location = new Point(0, 0);
             lblTTLRate.Name = "lblTTLRate";
-            lblTTLRate.Size = new Size(169, 54);
+            lblTTLRate.Size = new Size(144, 63);
             lblTTLRate.TabIndex = 3;
             lblTTLRate.Text = "-";
             lblTTLRate.TextAlign = ContentAlignment.MiddleCenter;
@@ -955,10 +937,9 @@
             // 
             panel8.Controls.Add(label5);
             panel8.Dock = DockStyle.Fill;
-            panel8.Location = new Point(4, 250);
-            panel8.Margin = new Padding(3, 4, 3, 4);
+            panel8.Location = new Point(4, 231);
             panel8.Name = "panel8";
-            panel8.Size = new Size(154, 54);
+            panel8.Size = new Size(134, 63);
             panel8.TabIndex = 9;
             // 
             // label5
@@ -969,7 +950,7 @@
             label5.ForeColor = Color.White;
             label5.Location = new Point(0, 0);
             label5.Name = "label5";
-            label5.Size = new Size(154, 54);
+            label5.Size = new Size(134, 63);
             label5.TabIndex = 3;
             label5.Text = "RATE %";
             label5.TextAlign = ContentAlignment.MiddleCenter;
@@ -978,10 +959,9 @@
             // 
             panel12.Controls.Add(lblCurProd);
             panel12.Dock = DockStyle.Fill;
-            panel12.Location = new Point(341, 188);
-            panel12.Margin = new Padding(3, 4, 3, 4);
+            panel12.Location = new Point(296, 163);
             panel12.Name = "panel12";
-            panel12.Size = new Size(170, 53);
+            panel12.Size = new Size(144, 61);
             panel12.TabIndex = 8;
             // 
             // lblCurProd
@@ -992,7 +972,7 @@
             lblCurProd.ForeColor = Color.White;
             lblCurProd.Location = new Point(0, 0);
             lblCurProd.Name = "lblCurProd";
-            lblCurProd.Size = new Size(170, 53);
+            lblCurProd.Size = new Size(144, 61);
             lblCurProd.TabIndex = 3;
             lblCurProd.Text = "-";
             lblCurProd.TextAlign = ContentAlignment.MiddleCenter;
@@ -1001,10 +981,9 @@
             // 
             panel7.Controls.Add(lblTTLProd);
             panel7.Dock = DockStyle.Fill;
-            panel7.Location = new Point(165, 188);
-            panel7.Margin = new Padding(3, 4, 3, 4);
+            panel7.Location = new Point(145, 163);
             panel7.Name = "panel7";
-            panel7.Size = new Size(169, 53);
+            panel7.Size = new Size(144, 61);
             panel7.TabIndex = 7;
             // 
             // lblTTLProd
@@ -1015,7 +994,7 @@
             lblTTLProd.ForeColor = Color.White;
             lblTTLProd.Location = new Point(0, 0);
             lblTTLProd.Name = "lblTTLProd";
-            lblTTLProd.Size = new Size(169, 53);
+            lblTTLProd.Size = new Size(144, 61);
             lblTTLProd.TabIndex = 3;
             lblTTLProd.Text = "-";
             lblTTLProd.TextAlign = ContentAlignment.MiddleCenter;
@@ -1024,10 +1003,9 @@
             // 
             panel6.Controls.Add(label4);
             panel6.Dock = DockStyle.Fill;
-            panel6.Location = new Point(4, 188);
-            panel6.Margin = new Padding(3, 4, 3, 4);
+            panel6.Location = new Point(4, 163);
             panel6.Name = "panel6";
-            panel6.Size = new Size(154, 53);
+            panel6.Size = new Size(134, 61);
             panel6.TabIndex = 6;
             // 
             // label4
@@ -1038,7 +1016,7 @@
             label4.ForeColor = Color.White;
             label4.Location = new Point(0, 0);
             label4.Name = "label4";
-            label4.Size = new Size(154, 53);
+            label4.Size = new Size(134, 61);
             label4.TabIndex = 3;
             label4.Text = "PROD";
             label4.TextAlign = ContentAlignment.MiddleCenter;
@@ -1047,10 +1025,9 @@
             // 
             panel11.Controls.Add(lblCurPlan);
             panel11.Dock = DockStyle.Fill;
-            panel11.Location = new Point(341, 126);
-            panel11.Margin = new Padding(3, 4, 3, 4);
+            panel11.Location = new Point(296, 95);
             panel11.Name = "panel11";
-            panel11.Size = new Size(170, 53);
+            panel11.Size = new Size(144, 61);
             panel11.TabIndex = 5;
             // 
             // lblCurPlan
@@ -1061,7 +1038,7 @@
             lblCurPlan.ForeColor = Color.White;
             lblCurPlan.Location = new Point(0, 0);
             lblCurPlan.Name = "lblCurPlan";
-            lblCurPlan.Size = new Size(170, 53);
+            lblCurPlan.Size = new Size(144, 61);
             lblCurPlan.TabIndex = 3;
             lblCurPlan.Text = "-";
             lblCurPlan.TextAlign = ContentAlignment.MiddleCenter;
@@ -1073,7 +1050,7 @@
             panel5.Location = new Point(165, 126);
             panel5.Margin = new Padding(3, 4, 3, 4);
             panel5.Name = "panel5";
-            panel5.Size = new Size(169, 53);
+            panel5.Size = new Size(144, 61);
             panel5.TabIndex = 4;
             // 
             // lblTTLPlan
@@ -1084,7 +1061,7 @@
             lblTTLPlan.ForeColor = Color.White;
             lblTTLPlan.Location = new Point(0, 0);
             lblTTLPlan.Name = "lblTTLPlan";
-            lblTTLPlan.Size = new Size(169, 53);
+            lblTTLPlan.Size = new Size(144, 61);
             lblTTLPlan.TabIndex = 3;
             lblTTLPlan.Text = "-";
             lblTTLPlan.TextAlign = ContentAlignment.MiddleCenter;
@@ -1096,7 +1073,7 @@
             panel4.Location = new Point(4, 126);
             panel4.Margin = new Padding(3, 4, 3, 4);
             panel4.Name = "panel4";
-            panel4.Size = new Size(154, 53);
+            panel4.Size = new Size(134, 61);
             panel4.TabIndex = 3;
             // 
             // label3
@@ -1107,7 +1084,7 @@
             label3.ForeColor = Color.White;
             label3.Location = new Point(0, 0);
             label3.Name = "label3";
-            label3.Size = new Size(154, 53);
+            label3.Size = new Size(134, 61);
             label3.TabIndex = 3;
             label3.Text = "PLAN";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -1116,10 +1093,9 @@
             // 
             panel10.Controls.Add(label6);
             panel10.Dock = DockStyle.Fill;
-            panel10.Location = new Point(341, 5);
-            panel10.Margin = new Padding(3, 4, 3, 4);
+            panel10.Location = new Point(296, 4);
             panel10.Name = "panel10";
-            panel10.Size = new Size(170, 112);
+            panel10.Size = new Size(144, 84);
             panel10.TabIndex = 2;
             // 
             // label6
@@ -1130,7 +1106,7 @@
             label6.ForeColor = Color.White;
             label6.Location = new Point(0, 0);
             label6.Name = "label6";
-            label6.Size = new Size(170, 112);
+            label6.Size = new Size(144, 84);
             label6.TabIndex = 3;
             label6.Text = "Now";
             label6.TextAlign = ContentAlignment.MiddleCenter;
@@ -1142,7 +1118,7 @@
             panel3.Location = new Point(165, 5);
             panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(169, 112);
+            panel3.Size = new Size(144, 84);
             panel3.TabIndex = 1;
             // 
             // lblPlan2
@@ -1153,7 +1129,7 @@
             lblPlan2.ForeColor = Color.White;
             lblPlan2.Location = new Point(0, 0);
             lblPlan2.Name = "lblPlan2";
-            lblPlan2.Size = new Size(169, 112);
+            lblPlan2.Size = new Size(144, 84);
             lblPlan2.TabIndex = 3;
             lblPlan2.Text = "TTL";
             lblPlan2.TextAlign = ContentAlignment.MiddleCenter;
@@ -1187,7 +1163,7 @@
             label21.ForeColor = SystemColors.ButtonHighlight;
             label21.Location = new Point(0, 67);
             label21.Name = "label21";
-            label21.Size = new Size(515, 60);
+            label21.Size = new Size(444, 45);
             label21.TabIndex = 16;
             label21.Text = "Remark :";
             label21.TextAlign = ContentAlignment.MiddleLeft;
@@ -1200,7 +1176,7 @@
             label20.ForeColor = SystemColors.ButtonHighlight;
             label20.Location = new Point(0, 0);
             label20.Name = "label20";
-            label20.Size = new Size(515, 67);
+            label20.Size = new Size(444, 50);
             label20.TabIndex = 15;
             label20.Text = "PRODUCTION INFORMATION";
             label20.TextAlign = ContentAlignment.MiddleCenter;
@@ -1217,7 +1193,7 @@
             panelControl13.Location = new Point(0, 0);
             panelControl13.Margin = new Padding(3, 4, 3, 4);
             panelControl13.Name = "panelControl13";
-            panelControl13.Size = new Size(760, 67);
+            panelControl13.Size = new Size(659, 50);
             panelControl13.TabIndex = 0;
             // 
             // labelControl2
@@ -1225,7 +1201,7 @@
             labelControl2.BorderStyle = BorderStyle.FixedSingle;
             labelControl2.Dock = DockStyle.Right;
             labelControl2.Font = new Font("Tahoma", 9F, FontStyle.Bold);
-            labelControl2.Location = new Point(521, 0);
+            labelControl2.Location = new Point(449, 0);
             labelControl2.Name = "labelControl2";
             labelControl2.Size = new Size(138, 67);
             labelControl2.TabIndex = 7;
@@ -1239,7 +1215,7 @@
             txtStatus.Dock = DockStyle.Right;
             txtStatus.Font = new Font("Tahoma", 8.25F, FontStyle.Bold | FontStyle.Italic);
             txtStatus.ForeColor = Color.Navy;
-            txtStatus.Location = new Point(659, 0);
+            txtStatus.Location = new Point(570, 0);
             txtStatus.Name = "txtStatus";
             txtStatus.Size = new Size(101, 67);
             txtStatus.TabIndex = 6;
@@ -1294,14 +1270,14 @@
             panelControl1.Controls.Add(tableLayoutError);
             panelControl1.Controls.Add(panelControl2);
             panelControl1.Dock = DockStyle.Fill;
-            panelControl1.Location = new Point(3, 638);
-            panelControl1.Margin = new Padding(3, 4, 3, 4);
+            panelControl1.Location = new Point(6, 566);
             panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(1526, 627);
+            panelControl1.Size = new Size(1326, 378);
             panelControl1.TabIndex = 2;
             // 
             // tableLayoutError
             // 
+            tableLayoutError.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutError.ColumnCount = 6;
             tableLayoutError.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.6184826F));
             tableLayoutError.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.6184826F));
@@ -1321,13 +1297,12 @@
             tableLayoutError.Controls.Add(button9, 1, 0);
             tableLayoutError.Controls.Add(button8, 0, 0);
             tableLayoutError.Dock = DockStyle.Fill;
-            tableLayoutError.Location = new Point(0, 141);
-            tableLayoutError.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutError.Location = new Point(0, 78);
             tableLayoutError.Name = "tableLayoutError";
             tableLayoutError.RowCount = 2;
             tableLayoutError.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutError.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutError.Size = new Size(1526, 486);
+            tableLayoutError.Size = new Size(1326, 300);
             tableLayoutError.TabIndex = 1;
             // 
             // button18
@@ -1335,11 +1310,10 @@
             button18.AccessibleName = "54";
             button18.BackColor = Color.PaleTurquoise;
             button18.Dock = DockStyle.Fill;
-            button18.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button18.Location = new Point(1015, 247);
-            button18.Margin = new Padding(3, 4, 3, 4);
+            button18.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button18.Location = new Point(880, 153);
             button18.Name = "button18";
-            button18.Size = new Size(249, 235);
+            button18.Size = new Size(215, 143);
             button18.TabIndex = 18;
             button18.Text = "BTN";
             button18.UseVisualStyleBackColor = false;
@@ -1349,11 +1323,10 @@
             button17.AccessibleName = "53";
             button17.BackColor = Color.PaleTurquoise;
             button17.Dock = DockStyle.Fill;
-            button17.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button17.Location = new Point(762, 247);
-            button17.Margin = new Padding(3, 4, 3, 4);
+            button17.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button17.Location = new Point(661, 153);
             button17.Name = "button17";
-            button17.Size = new Size(247, 235);
+            button17.Size = new Size(212, 143);
             button17.TabIndex = 17;
             button17.Text = "BTN";
             button17.UseVisualStyleBackColor = false;
@@ -1363,11 +1336,10 @@
             button16.AccessibleName = "51";
             button16.BackColor = Color.PaleTurquoise;
             button16.Dock = DockStyle.Fill;
-            button16.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button16.Location = new Point(509, 247);
-            button16.Margin = new Padding(3, 4, 3, 4);
+            button16.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button16.Location = new Point(442, 153);
             button16.Name = "button16";
-            button16.Size = new Size(247, 235);
+            button16.Size = new Size(212, 143);
             button16.TabIndex = 16;
             button16.Text = "BTN";
             button16.UseVisualStyleBackColor = false;
@@ -1377,11 +1349,10 @@
             button15.AccessibleName = "50";
             button15.BackColor = Color.PaleTurquoise;
             button15.Dock = DockStyle.Fill;
-            button15.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button15.Location = new Point(256, 247);
-            button15.Margin = new Padding(3, 4, 3, 4);
+            button15.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button15.Location = new Point(223, 153);
             button15.Name = "button15";
-            button15.Size = new Size(247, 235);
+            button15.Size = new Size(212, 143);
             button15.TabIndex = 15;
             button15.Text = "BTN";
             button15.UseVisualStyleBackColor = false;
@@ -1391,11 +1362,10 @@
             button14.AccessibleName = "52";
             button14.BackColor = Color.PaleTurquoise;
             button14.Dock = DockStyle.Fill;
-            button14.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button14.Location = new Point(3, 247);
-            button14.Margin = new Padding(3, 4, 3, 4);
+            button14.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button14.Location = new Point(4, 153);
             button14.Name = "button14";
-            button14.Size = new Size(247, 235);
+            button14.Size = new Size(212, 143);
             button14.TabIndex = 14;
             button14.Text = "BTN";
             button14.UseVisualStyleBackColor = false;
@@ -1405,11 +1375,10 @@
             button13.AccessibleName = "55";
             button13.BackColor = Color.PaleTurquoise;
             button13.Dock = DockStyle.Fill;
-            button13.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button13.Location = new Point(1270, 4);
-            button13.Margin = new Padding(3, 4, 3, 4);
+            button13.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button13.Location = new Point(1102, 4);
             button13.Name = "button13";
-            button13.Size = new Size(253, 235);
+            button13.Size = new Size(220, 142);
             button13.TabIndex = 13;
             button13.Text = "BTN";
             button13.UseVisualStyleBackColor = false;
@@ -1419,11 +1388,10 @@
             button12.AccessibleName = "46";
             button12.BackColor = Color.PaleTurquoise;
             button12.Dock = DockStyle.Fill;
-            button12.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button12.Location = new Point(1015, 4);
-            button12.Margin = new Padding(3, 4, 3, 4);
+            button12.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button12.Location = new Point(880, 4);
             button12.Name = "button12";
-            button12.Size = new Size(249, 235);
+            button12.Size = new Size(215, 142);
             button12.TabIndex = 12;
             button12.Text = "BTN";
             button12.UseVisualStyleBackColor = false;
@@ -1433,11 +1401,10 @@
             button11.AccessibleName = "47";
             button11.BackColor = Color.PaleTurquoise;
             button11.Dock = DockStyle.Fill;
-            button11.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button11.Location = new Point(762, 4);
-            button11.Margin = new Padding(3, 4, 3, 4);
+            button11.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button11.Location = new Point(661, 4);
             button11.Name = "button11";
-            button11.Size = new Size(247, 235);
+            button11.Size = new Size(212, 142);
             button11.TabIndex = 11;
             button11.Text = "BTN";
             button11.UseVisualStyleBackColor = false;
@@ -1447,11 +1414,10 @@
             button10.AccessibleName = "48";
             button10.BackColor = Color.PaleTurquoise;
             button10.Dock = DockStyle.Fill;
-            button10.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button10.Location = new Point(509, 4);
-            button10.Margin = new Padding(3, 4, 3, 4);
+            button10.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button10.Location = new Point(442, 4);
             button10.Name = "button10";
-            button10.Size = new Size(247, 235);
+            button10.Size = new Size(212, 142);
             button10.TabIndex = 10;
             button10.Text = "BTN";
             button10.UseVisualStyleBackColor = false;
@@ -1461,11 +1427,10 @@
             button9.AccessibleName = "45";
             button9.BackColor = Color.PaleTurquoise;
             button9.Dock = DockStyle.Fill;
-            button9.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button9.Location = new Point(256, 4);
-            button9.Margin = new Padding(3, 4, 3, 4);
+            button9.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button9.Location = new Point(223, 4);
             button9.Name = "button9";
-            button9.Size = new Size(247, 235);
+            button9.Size = new Size(212, 142);
             button9.TabIndex = 9;
             button9.Text = "BTN";
             button9.UseVisualStyleBackColor = false;
@@ -1475,11 +1440,10 @@
             button8.AccessibleName = "49";
             button8.BackColor = Color.PaleTurquoise;
             button8.Dock = DockStyle.Fill;
-            button8.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button8.Location = new Point(3, 4);
-            button8.Margin = new Padding(3, 4, 3, 4);
+            button8.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button8.Location = new Point(4, 4);
             button8.Name = "button8";
-            button8.Size = new Size(247, 235);
+            button8.Size = new Size(212, 142);
             button8.TabIndex = 8;
             button8.Text = "BTN";
             button8.UseVisualStyleBackColor = false;
@@ -1505,7 +1469,7 @@
             panelControl2.Location = new Point(0, 0);
             panelControl2.Margin = new Padding(3, 4, 3, 4);
             panelControl2.Name = "panelControl2";
-            panelControl2.Size = new Size(1526, 141);
+            panelControl2.Size = new Size(1326, 78);
             panelControl2.TabIndex = 0;
             // 
             // txtMessage
@@ -1515,7 +1479,7 @@
             txtMessage.ForeColor = Color.Red;
             txtMessage.Location = new Point(0, 0);
             txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(257, 141);
+            txtMessage.Size = new Size(217, 78);
             txtMessage.TabIndex = 14;
             txtMessage.Text = "Thông Báo";
             txtMessage.TextAlign = ContentAlignment.MiddleCenter;
@@ -1526,10 +1490,9 @@
             button19.Dock = DockStyle.Right;
             button19.Font = new Font("Microsoft Sans Serif", 15.75F);
             button19.ForeColor = SystemColors.ButtonHighlight;
-            button19.Location = new Point(257, 0);
-            button19.Margin = new Padding(3, 4, 3, 4);
+            button19.Location = new Point(217, 0);
             button19.Name = "button19";
-            button19.Size = new Size(139, 141);
+            button19.Size = new Size(122, 78);
             button19.TabIndex = 13;
             button19.Text = "Go-No Go Standard";
             button19.UseVisualStyleBackColor = false;
@@ -1540,10 +1503,9 @@
             btn_reasonCode1.Dock = DockStyle.Right;
             btn_reasonCode1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode1.ForeColor = SystemColors.ButtonFace;
-            btn_reasonCode1.Location = new Point(396, 0);
-            btn_reasonCode1.Margin = new Padding(3, 4, 3, 4);
+            btn_reasonCode1.Location = new Point(339, 0);
             btn_reasonCode1.Name = "btn_reasonCode1";
-            btn_reasonCode1.Size = new Size(269, 141);
+            btn_reasonCode1.Size = new Size(235, 78);
             btn_reasonCode1.TabIndex = 12;
             btn_reasonCode1.Text = "(Andon) Gọi QA";
             btn_reasonCode1.UseVisualStyleBackColor = false;
@@ -1554,10 +1516,9 @@
             btn_reasonCode2.Dock = DockStyle.Right;
             btn_reasonCode2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode2.ForeColor = SystemColors.ButtonFace;
-            btn_reasonCode2.Location = new Point(665, 0);
-            btn_reasonCode2.Margin = new Padding(3, 4, 3, 4);
+            btn_reasonCode2.Location = new Point(574, 0);
             btn_reasonCode2.Name = "btn_reasonCode2";
-            btn_reasonCode2.Size = new Size(269, 141);
+            btn_reasonCode2.Size = new Size(235, 78);
             btn_reasonCode2.TabIndex = 11;
             btn_reasonCode2.Text = "(Andon) Gọi Bảo trì";
             btn_reasonCode2.UseVisualStyleBackColor = false;
@@ -1568,10 +1529,9 @@
             btn_reasonCode3.Dock = DockStyle.Right;
             btn_reasonCode3.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode3.ForeColor = SystemColors.ButtonFace;
-            btn_reasonCode3.Location = new Point(934, 0);
-            btn_reasonCode3.Margin = new Padding(3, 4, 3, 4);
+            btn_reasonCode3.Location = new Point(809, 0);
             btn_reasonCode3.Name = "btn_reasonCode3";
-            btn_reasonCode3.Size = new Size(262, 141);
+            btn_reasonCode3.Size = new Size(229, 78);
             btn_reasonCode3.TabIndex = 10;
             btn_reasonCode3.Text = "(Andon) Gọi Sản xuất";
             btn_reasonCode3.UseVisualStyleBackColor = false;
@@ -1582,12 +1542,13 @@
             labelControl4.Dock = DockStyle.Right;
             labelControl4.Font = new Font("Tahoma", 9F, FontStyle.Bold);
             labelControl4.ForeColor = Color.FromArgb(255, 128, 0);
-            labelControl4.Location = new Point(1196, 0);
+            labelControl4.Location = new Point(1038, 0);
             labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(32, 141);
+            labelControl4.Size = new Size(28, 78);
             labelControl4.TabIndex = 9;
             labelControl4.Text = "KIM LOẠI";
             labelControl4.TextAlign = ContentAlignment.MiddleCenter;
+            labelControl4.Visible = false;
             // 
             // txtMetalDetect
             // 
@@ -1595,12 +1556,13 @@
             txtMetalDetect.Dock = DockStyle.Right;
             txtMetalDetect.Font = new Font("Tahoma", 30F, FontStyle.Bold);
             txtMetalDetect.ForeColor = Color.Black;
-            txtMetalDetect.Location = new Point(1228, 0);
+            txtMetalDetect.Location = new Point(1066, 0);
             txtMetalDetect.Name = "txtMetalDetect";
-            txtMetalDetect.Size = new Size(25, 141);
+            txtMetalDetect.Size = new Size(22, 78);
             txtMetalDetect.TabIndex = 8;
             txtMetalDetect.Text = "0";
             txtMetalDetect.TextAlign = ContentAlignment.MiddleCenter;
+            txtMetalDetect.Visible = false;
             // 
             // labelControl1
             // 
@@ -1608,12 +1570,13 @@
             labelControl1.Dock = DockStyle.Right;
             labelControl1.Font = new Font("Tahoma", 25F, FontStyle.Bold);
             labelControl1.ForeColor = Color.Red;
-            labelControl1.Location = new Point(1253, 0);
+            labelControl1.Location = new Point(1088, 0);
             labelControl1.Name = "labelControl1";
-            labelControl1.Size = new Size(32, 141);
+            labelControl1.Size = new Size(28, 78);
             labelControl1.TabIndex = 7;
             labelControl1.Text = "RFT :";
             labelControl1.TextAlign = ContentAlignment.MiddleCenter;
+            labelControl1.Visible = false;
             // 
             // txtRFTValue
             // 
@@ -1621,12 +1584,13 @@
             txtRFTValue.Dock = DockStyle.Right;
             txtRFTValue.Font = new Font("Tahoma", 25F, FontStyle.Bold);
             txtRFTValue.ForeColor = Color.Red;
-            txtRFTValue.Location = new Point(1285, 0);
+            txtRFTValue.Location = new Point(1116, 0);
             txtRFTValue.Name = "txtRFTValue";
-            txtRFTValue.Size = new Size(32, 141);
+            txtRFTValue.Size = new Size(28, 78);
             txtRFTValue.TabIndex = 6;
             txtRFTValue.Text = "RFT :75%";
             txtRFTValue.TextAlign = ContentAlignment.MiddleCenter;
+            txtRFTValue.Visible = false;
             // 
             // txtStatus1
             // 
@@ -1634,12 +1598,13 @@
             txtStatus1.Dock = DockStyle.Right;
             txtStatus1.Font = new Font("Tahoma", 9F, FontStyle.Bold);
             txtStatus1.ForeColor = Color.Navy;
-            txtStatus1.Location = new Point(1317, 0);
+            txtStatus1.Location = new Point(1144, 0);
             txtStatus1.Name = "txtStatus1";
-            txtStatus1.Size = new Size(32, 141);
+            txtStatus1.Size = new Size(28, 78);
             txtStatus1.TabIndex = 5;
             txtStatus1.Text = "PASS MD:";
             txtStatus1.TextAlign = ContentAlignment.MiddleCenter;
+            txtStatus1.Visible = false;
             // 
             // txtSensorCount
             // 
@@ -1647,22 +1612,22 @@
             txtSensorCount.Dock = DockStyle.Right;
             txtSensorCount.Font = new Font("Tahoma", 30F, FontStyle.Bold);
             txtSensorCount.ForeColor = Color.Navy;
-            txtSensorCount.Location = new Point(1349, 0);
+            txtSensorCount.Location = new Point(1172, 0);
             txtSensorCount.Name = "txtSensorCount";
-            txtSensorCount.Size = new Size(25, 141);
+            txtSensorCount.Size = new Size(22, 78);
             txtSensorCount.TabIndex = 4;
             txtSensorCount.Text = "0";
             txtSensorCount.TextAlign = ContentAlignment.MiddleCenter;
+            txtSensorCount.Visible = false;
             // 
             // btnManual
             // 
             btnManual.BackColor = Color.PowderBlue;
             btnManual.Dock = DockStyle.Right;
             btnManual.Font = new Font("Tahoma", 11.25F);
-            btnManual.Location = new Point(1374, 0);
-            btnManual.Margin = new Padding(3, 4, 3, 4);
+            btnManual.Location = new Point(1194, 0);
             btnManual.Name = "btnManual";
-            btnManual.Size = new Size(38, 141);
+            btnManual.Size = new Size(33, 78);
             btnManual.TabIndex = 3;
             btnManual.Text = "Top 3 Defect";
             btnManual.UseVisualStyleBackColor = false;
@@ -1673,10 +1638,9 @@
             btnCheckStep.BackColor = Color.AliceBlue;
             btnCheckStep.Dock = DockStyle.Right;
             btnCheckStep.Font = new Font("Tahoma", 11.25F);
-            btnCheckStep.Location = new Point(1412, 0);
-            btnCheckStep.Margin = new Padding(3, 4, 3, 4);
+            btnCheckStep.Location = new Point(1227, 0);
             btnCheckStep.Name = "btnCheckStep";
-            btnCheckStep.Size = new Size(38, 141);
+            btnCheckStep.Size = new Size(33, 78);
             btnCheckStep.TabIndex = 2;
             btnCheckStep.Text = "Check 9 Step";
             btnCheckStep.UseVisualStyleBackColor = false;
@@ -1687,10 +1651,9 @@
             btnVideoClip.BackColor = Color.FromArgb(255, 255, 192);
             btnVideoClip.Dock = DockStyle.Right;
             btnVideoClip.Font = new Font("Tahoma", 11.25F);
-            btnVideoClip.Location = new Point(1450, 0);
-            btnVideoClip.Margin = new Padding(3, 4, 3, 4);
+            btnVideoClip.Location = new Point(1260, 0);
             btnVideoClip.Name = "btnVideoClip";
-            btnVideoClip.Size = new Size(38, 141);
+            btnVideoClip.Size = new Size(33, 78);
             btnVideoClip.TabIndex = 1;
             btnVideoClip.Text = "Video Clip";
             btnVideoClip.UseVisualStyleBackColor = false;
@@ -1701,10 +1664,9 @@
             btnBA.BackColor = Color.Khaki;
             btnBA.Dock = DockStyle.Right;
             btnBA.Font = new Font("Tahoma", 11.25F);
-            btnBA.Location = new Point(1488, 0);
-            btnBA.Margin = new Padding(3, 4, 3, 4);
+            btnBA.Location = new Point(1293, 0);
             btnBA.Name = "btnBA";
-            btnBA.Size = new Size(38, 141);
+            btnBA.Size = new Size(33, 78);
             btnBA.TabIndex = 0;
             btnBA.Text = "BA 9 Criteria";
             btnBA.UseVisualStyleBackColor = false;
