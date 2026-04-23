@@ -1380,6 +1380,22 @@ namespace GlobalFunction
                         }
                     }
                     break;
+                case "frmTMC7033_A7":
+                    if (isDevIP) return true;
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "frmTMC7033_A14":
 
                     if (isDevIP) return true;

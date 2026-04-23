@@ -371,6 +371,7 @@ namespace NETTMC.Authentication
             if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.1.197") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
             {
                 uc = new QIP.EOL.frmTMC7033_A14();
+                //uc = new QIP.EOL.frmTMC7033_A7();
             }
             else
             {

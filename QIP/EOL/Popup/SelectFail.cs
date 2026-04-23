@@ -150,12 +150,35 @@ namespace QIP.EOL.Popup
         //{
         //    this.Close();
         //}
+
+        private bool HasSelectedReason(DataTable dt)
+        {
+            if (dt == null) return false;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (int.TryParse(row["COUNT"]?.ToString(), out int count) && count > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             gridView1.EndEdit();
 
             if (gridView1.DataSource is DataTable dt)
             {
+                //if (!HasSelectedReason(dt))
+                //{
+                //    MessageBox.Show("Bạn chưa chọn lỗi nào.");
+                //    return;
+                //}
+
+                //returnData = dt.Copy();
                 returnData = dt;
             }
 
@@ -164,6 +187,7 @@ namespace QIP.EOL.Popup
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            returnData = null;
             this.Close();
         }
 
