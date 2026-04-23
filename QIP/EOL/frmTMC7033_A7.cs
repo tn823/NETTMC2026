@@ -1,4 +1,4 @@
-﻿using ConnectionClass.Oracle;
+using ConnectionClass.Oracle;
 using GlobalFunction;
 using System;
 using System.Collections.Generic;
@@ -33,12 +33,13 @@ namespace QIP.EOL
         private DataTable ErrorCount;
         private DataTable RFT_DPPM;
         private DataTable Top3DPPM;
+        private DataTable defectLibrary;
         private DataTable dtStopLine = new DataTable();
         private DataTable dtAlarmReturn = new DataTable();
         private string finishedCountScan;
         public string alarmGather;
         private static string partID;
-        private static List<string> btnfail;
+        private static List<string> btnfail; 
         private static string LeftOrRight;
         private static string reasonID;
         private string Mes_Group_Sum;
@@ -78,6 +79,7 @@ namespace QIP.EOL
         {
             InitializeComponent();
             crud = new CRUDOracle("VSMES");
+            pictureShoes.SizeChanged += pictureShoes_SizeChanged;
         }
         private void ShowMessage(string message, Color color)
         {
@@ -139,6 +141,15 @@ namespace QIP.EOL
                      Environment.NewLine + " SDT : 0903518945. CÁM ON NHIỀU", Color.Red);
                 Application.Exit();
             }
+        }
+        private void pictureShoes_SizeChanged(object sender, EventArgs e)
+        {
+            if (!IsHandleCreated)
+            {
+                return;
+            }
+
+            BindingControl();
         }
         private async void MQTT_Init()
         {
@@ -311,6 +322,7 @@ namespace QIP.EOL
                         DataTable dtCache = EolCommonHelper.ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
+                            defectLibrary = dtCache.Copy();
                             SetErrorToButton(type, dtCache);
                             ConffigErrorButton(false);
                             Debug.WriteLine("[GetError][Completed] Đọc cache thành công: " + dtCache.Rows.Count + " rows");
@@ -330,6 +342,7 @@ namespace QIP.EOL
                         DataTable dtCache = EolCommonHelper.ReadErrorButtonFromCsv(cacheFile);
                         if (dtCache != null && dtCache.Rows.Count > 0)
                         {
+                            defectLibrary = dtCache.Copy();
                             SetErrorToButton(type, dtCache);
                             ConffigErrorButton(false);
                         }
@@ -339,6 +352,7 @@ namespace QIP.EOL
 
                 // [TH3] DB trả data hợp lệ → gán nút + lưu cache CSV
                 Debug.WriteLine("[GetError][Completed] TH3 – DB OK: " + dt.Rows.Count + " rows");
+                defectLibrary = dt.Copy();
                 SetErrorToButton(type, dt);
                 ConffigErrorButton(false);
                 EolCommonHelper.SaveErrorButtonToCsv(dt, cacheFile);
@@ -974,6 +988,39 @@ namespace QIP.EOL
                 chkPlanOneMonth.Checked = false;
             }
         }
+        private void chkVN_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkVN.Checked)
+            {
+                chkEng.Checked = false;
+                RefreshReasonButtonsLanguage();
+            }
+            else if (!chkEng.Checked)
+            {
+                chkEng.Checked = true;
+            }
+        }
+        private void chkEng_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng.Checked)
+            {
+                chkVN.Checked = false;
+                RefreshReasonButtonsLanguage();
+            }
+            else if (!chkVN.Checked)
+            {
+                chkVN.Checked = true;
+            }
+        }
+        private void RefreshReasonButtonsLanguage()
+        {
+            if (defectLibrary == null || defectLibrary.Rows.Count == 0)
+            {
+                return;
+            }
+
+            SetErrorToButton(spDeptCode, defectLibrary);
+        }
         private void backgroundOracle_DoWork(object sender, DoWorkEventArgs e)
         {
             backgroundOracle.ReportProgress(10);
@@ -1588,12 +1635,6 @@ namespace QIP.EOL
                 ShowMessage("Chọn Model trước khi chấm lỗi. !! Please choose model", Color.Red);
                 return;
             }
-            //lblPart1.ForeColor = System.Drawing.Color.Green;
-            //lblPart2.ForeColor = System.Drawing.Color.Green;
-            //lblPart3.ForeColor = System.Drawing.Color.Green;
-            //lblPart5.ForeColor = System.Drawing.Color.Green;
-            //lblPart4.ForeColor = System.Drawing.Color.Green;
-            //lblPart6.ForeColor = System.Drawing.Color.Green;
 
             Label[] allParts = { lblPart1, lblPart2, lblPart3, lblPart4, lblPart5, lblPart6 };
             foreach (var p in allParts) p.ForeColor = Color.Green;
