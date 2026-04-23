@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -49,6 +50,10 @@ namespace QIP.EOL
         private static string spLine;
         public bool MQTTConnected = false;
         public string MQTTClient = "";
+        private static readonly Color ReasonButtonDefaultColor = Color.AliceBlue;
+        private static readonly Color ReasonButtonSelectedColor = Color.FromArgb(224, 224, 224);
+        private static readonly Color FailButtonColor = Color.FromArgb(231, 76, 60);
+        private static readonly Color ClearButtonColor = Color.Gray;
         Dictionary<string, string> Reason = new Dictionary<string, string>();
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
         SYSTEMTIME st = new SYSTEMTIME();
@@ -79,6 +84,7 @@ namespace QIP.EOL
         {
             InitializeComponent();
             crud = new CRUDOracle("VSMES");
+            InitializeActionButtons();
             pictureShoes.SizeChanged += pictureShoes_SizeChanged;
         }
         private void ShowMessage(string message, Color color)
@@ -126,6 +132,8 @@ namespace QIP.EOL
                 lblPart6.Font = new Font("Arial", 100);
 
 
+                SetInspectionActionState(false, false);
+                ConffigErrorButton(false);
 
                 SetTouchCount();
                 BindTouchCount(TouchCount);
@@ -361,10 +369,28 @@ namespace QIP.EOL
         }
         private void ConffigErrorButton(bool visible)
         {
-            // Tìm tất cả các Button tiêu chuẩn bên trong tableLayoutPanel2
-            foreach (Button btn in GetButtonsRecursive(tableLayoutPanel2))
+            foreach (Button btn in GetReasonButtons())
             {
                 btn.Enabled = visible;
+            }
+        }
+
+        private IEnumerable<Button> GetReasonButtons()
+        {
+            Control[] reasonContainers =
+            {
+                panelControl7,
+                panelControl8,
+                panelControl9,
+                panelControl10
+            };
+
+            foreach (Control container in reasonContainers)
+            {
+                foreach (Button btn in GetButtonsRecursive(container))
+                {
+                    yield return btn;
+                }
             }
         }
 
@@ -449,29 +475,132 @@ namespace QIP.EOL
 
         private IEnumerable<Button> GetErrorButtons()
         {
-            foreach (Control ctrl in tableLayoutPanel2.Controls)
+            foreach (Button btn in GetReasonButtons())
             {
-                if (ctrl is Panel panel)
-                {
-                    foreach (Button btn in GetButtonsRecursive(panel))
-                    {
-                        yield return btn;
-                    }
-                }
+                yield return btn;
             }
+        }
+
+        private void SetInspectionActionState(bool failEnabled, bool reFailEnabled)
+        {
+            btnFail.Enabled = failEnabled;
+            btnReFail.Enabled = reFailEnabled;
+            btnClear.Enabled = true;
+
+            RestoreActionButtonColors();
+        }
+
+        private void RestoreActionButtonColors()
+        {
+            RestoreButtonColor(btnFail, FailButtonColor, Color.White);
+            RestoreButtonColor(btnReFail, FailButtonColor, Color.White);
+            RestoreButtonColor(btnClear, ClearButtonColor, Color.White);
+        }
+
+        private void RestoreButtonColor(Button btn, Color backColor, Color foreColor)
+        {
+            btn.UseVisualStyleBackColor = false;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.BackColor = backColor;
+            btn.ForeColor = foreColor;
+        }
+
+        private void InitializeActionButtons()
+        {
+            Button[] actionButtons = { btnFail, btnReFail };
+
+            foreach (Button btn in actionButtons)
+            {
+                btn.UseVisualStyleBackColor = false;
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.FlatAppearance.BorderSize = 0;
+                btn.Paint += ActionButton_Paint;
+                btn.EnabledChanged += ActionButton_VisualStateChanged;
+                btn.TextChanged += ActionButton_VisualStateChanged;
+                btn.Resize += ActionButton_VisualStateChanged;
+                btn.BackColorChanged += ActionButton_VisualStateChanged;
+                btn.ForeColorChanged += ActionButton_VisualStateChanged;
+            }
+        }
+
+        private void ActionButton_VisualStateChanged(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.Invalidate();
+            }
+        }
+
+        private void ActionButton_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null)
+            {
+                return;
+            }
+
+            Rectangle rect = btn.ClientRectangle;
+            if (rect.Width <= 0 || rect.Height <= 0)
+            {
+                return;
+            }
+
+            Color backgroundColor = btn.BackColor;
+            Color textColor = btn.ForeColor;
+            Color surfaceColor = btn.Parent != null ? btn.Parent.BackColor : SystemColors.Control;
+
+            if (!btn.Enabled)
+            {
+                backgroundColor = BlendColor(backgroundColor, surfaceColor, 0.7f);
+                textColor = BlendColor(textColor, surfaceColor, 0.75f);
+            }
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            using (SolidBrush backgroundBrush = new SolidBrush(backgroundColor))
+            using (Pen borderPen = new Pen(BlendColor(backgroundColor, Color.Black, btn.Enabled ? 0.15f : 0.05f)))
+            {
+                e.Graphics.FillRectangle(backgroundBrush, rect);
+                e.Graphics.DrawRectangle(borderPen, 0, 0, rect.Width - 1, rect.Height - 1);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                btn.Text,
+                btn.Font,
+                rect,
+                textColor,
+                TextFormatFlags.HorizontalCenter |
+                TextFormatFlags.VerticalCenter |
+                TextFormatFlags.WordBreak);
+        }
+
+        private Color BlendColor(Color sourceColor, Color targetColor, float amount)
+        {
+            amount = Math.Max(0f, Math.Min(1f, amount));
+
+            int r = (int)Math.Round(sourceColor.R + ((targetColor.R - sourceColor.R) * amount));
+            int g = (int)Math.Round(sourceColor.G + ((targetColor.G - sourceColor.G) * amount));
+            int b = (int)Math.Round(sourceColor.B + ((targetColor.B - sourceColor.B) * amount));
+
+            return Color.FromArgb(r, g, b);
         }
 
         private void SetButtonBackColor(Button btn, Color color)
         {
             btn.UseVisualStyleBackColor = false;
+            btn.FlatStyle = FlatStyle.Standard;
             btn.BackColor = color;
+            btn.ForeColor = GetReadableTextColor(color);
         }
 
         private void ResetErrorButtonColor()
         {
             foreach (Button btn in GetErrorButtons())
             {
-                SetButtonBackColor(btn, Color.FromArgb(192, 255, 255));
+                SetButtonBackColor(btn, ReasonButtonDefaultColor);
             }
         }
         
@@ -1642,10 +1771,7 @@ namespace QIP.EOL
             Label lbl = (Label)sender;
             lbl.ForeColor = Color.Red;
 
-            //btnPass.Enabled = false;
-            btnFail.Enabled = false;
-            //btnRePass.Enabled = false;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(false, false);
             ConffigErrorButton(true);
             partID = lbl.AccessibleName;
 
@@ -1664,8 +1790,7 @@ namespace QIP.EOL
                 selectFail.ShowDialog(this);
                 if (selectFail.returnData != null)
                 {
-                    btnFail.Enabled = true;
-                    btnReFail.Enabled = true;
+                    SetInspectionActionState(true, true);
                     DataTable dt = selectFail.returnData;
 
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -1686,18 +1811,15 @@ namespace QIP.EOL
             else
             {
 
-                //btnPass.Enabled = false;
-                btnFail.Enabled = true;
-                // btnRePass.Enabled = false;
-                btnReFail.Enabled = true;
-                if (btn.BackColor == System.Drawing.Color.FromArgb(192, 255, 255))
+                SetInspectionActionState(true, true);
+                if (btn.BackColor == ReasonButtonDefaultColor)
                 {
-                    SetButtonBackColor(btn, System.Drawing.Color.FromArgb(224, 224, 224));
+                    SetButtonBackColor(btn, ReasonButtonSelectedColor);
                     UpdateDtReason(btn);
                 }
                 else
                 {
-                    SetButtonBackColor(btn, System.Drawing.Color.FromArgb(192, 255, 255));
+                    SetButtonBackColor(btn, ReasonButtonDefaultColor);
                     UpdateDtReason(btn);
                 }
             }
@@ -1951,10 +2073,7 @@ namespace QIP.EOL
             this.lblFailTotal.Text = "" + TotalDefect;
 
             lblRFT.Text = Math.Round(TotalDefect * 1.0 / (TotalDefect + TotalPass * 1.0) * 100, 2) + " %";
-            //btnPass.Enabled = true;
-            btnFail.Enabled = false;
-            //btnRePass.Enabled = true;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(false, false);
             ConffigErrorButton(false);
             lblPart1.ForeColor = System.Drawing.Color.Green;
             lblPart2.ForeColor = System.Drawing.Color.Green;
@@ -2034,10 +2153,7 @@ namespace QIP.EOL
             this.lblFailTotal.Text = "" + TotalDefect;
 
             lblRFT.Text = Math.Round(TotalDefect * 1.0 / (TotalDefect + TotalPass * 1.0) * 100, 2) + " %";
-            //btnPass.Enabled = true;
-            btnFail.Enabled = false;
-            //btnRePass.Enabled = true;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(false, false);
             ConffigErrorButton(false);
             lblPart1.ForeColor = System.Drawing.Color.Green;
             lblPart2.ForeColor = System.Drawing.Color.Green;
@@ -2052,10 +2168,7 @@ namespace QIP.EOL
         {
             dtReason.Clear();
             gridControl1.DataSource = dtReason;
-            //btnPass.Enabled = true;
-            //btnRePass.Enabled = true;
-            btnFail.Enabled = false;
-            btnReFail.Enabled = false;
+            SetInspectionActionState(false, false);
             ConffigErrorButton(false);
             lblPart1.ForeColor = System.Drawing.Color.Green;
             lblPart2.ForeColor = System.Drawing.Color.Green;
@@ -2836,6 +2949,16 @@ namespace QIP.EOL
                 }
             }
         }
+
+        private Color GetReadableTextColor(Color backgroundColor)
+        {
+            double brightness = (backgroundColor.R * 0.299) +
+                                (backgroundColor.G * 0.587) +
+                                (backgroundColor.B * 0.114);
+
+            return brightness >= 186 ? Color.Black : Color.White;
+        }
+
         private void backgroundWorkerStopLine_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)

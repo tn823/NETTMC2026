@@ -172,13 +172,14 @@ namespace QIP.EOL.Popup
 
             if (gridView1.DataSource is DataTable dt)
             {
-                if (!HasSelectedReason(dt))
-                {
-                    MessageBox.Show("Bạn chưa chọn lỗi nào.");
-                    return;
-                }
+                //if (!HasSelectedReason(dt))
+                //{
+                //    MessageBox.Show("Bạn chưa chọn lỗi nào.");
+                //    return;
+                //}
 
-                returnData = dt.Copy();
+                //returnData = dt.Copy();
+                returnData = dt;
             }
 
             this.Close();
