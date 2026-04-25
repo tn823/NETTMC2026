@@ -14,11 +14,28 @@ using ConnectionClass.Oracle;
 using static GlobalFunction.PublicFunction;
 using System.Diagnostics;
 using GlobalFunction;
+using NETTMC.VoiceRecognition;
 
 namespace QIP.EOL
 {
-    public partial class frmTMC7033_A14 : UserControl
+    public partial class frmTMC7033_A14 : UserControl, IVoiceEnabledForm
     {
+        private VoiceEngine _voiceEngine;
+        private bool _isRecordingVoice = false;
+
+        // ── Tự thiết lập tên voice cho từng part (thứ tự = lblPart1, lblPart2, ...) ──
+        // Thay đổi mảng này để tùy chỉnh lệnh voice và alias cho từng vị trí.
+        // Mỗi phần tử: (voiceCode, displayName, aliases thêm)
+        private static readonly (string Code, string Display, string[] ExtraAliases)[] _partVoiceCodes =
+        {
+            //  Code   Hiển thị    Alias thêm (ngoài "Code", "điểm Code", "vị trí Code", "part Code")
+            ( "A",  "Part A",  new string[0] ),
+            ( "B",  "Part B",  new string[0] ),
+            ( "C",  "Part C",  new string[0] ),
+            ( "D",  "Part D",  new string[0] ),
+            ( "E",  "Part E",  new string[0] ),
+            ( "F",  "Part F",  new string[0] ),
+        };
         private bool isRed = true;
         public static string ipAddress;
         public static string spDeptCode = "ASS";
@@ -89,12 +106,15 @@ namespace QIP.EOL
             crud = new CRUDOracle("VSMES");
             InitializeActionButtons();
             pictureShoes.SizeChanged += pictureShoes_SizeChanged;
+            Disposed += (s, e) => _voiceEngine?.Dispose();
         }
+        private const float MessageFontSize = 14f;
+        private const string MessageFontName = "Segoe UI";
         private void ShowMessage(string message, Color color)
         {
-            memoEditMessage.Text = "";
             memoEditMessage.Text = message;
             memoEditMessage.ForeColor = color;
+            memoEditMessage.Font = new Font(MessageFontName, MessageFontSize, FontStyle.Bold);
         }
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
@@ -106,6 +126,7 @@ namespace QIP.EOL
             ipAddress = "192.168.31.249";
             TryToUpdateSystemDateTime();
             BindingControl();
+            InitializeVoiceEngine();
             try
             {
 
@@ -255,23 +276,23 @@ namespace QIP.EOL
 
             b.DoWork += (sender, e) =>
             {
-                    StringBuilder query = new StringBuilder();
-                    query.AppendLine("");
-                    query.AppendLine("SELECT SUBSTR(C_COMCODE,4,4) C_COMCODE,                                                                               ");
-                    query.AppendLine("  case when SUBSTR(C_COMCODE,4,2) = 'P7' THEN SUBSTR(C_COMCODE,4,4)                                                   ");
-                    query.AppendLine("     ELSE                                                                                                             ");
-                    query.AppendLine("         DECODE(SUBSTR(C_COMCODE, 6, 1), 'A', 'P1', 'B', 'P2', 'C', 'P3', 'D', 'P4', 'E', 'P5', 'F', 'P6', 'PP') ||   ");
-                    query.AppendLine("         CASE WHEN SUBSTR(C_COMCODE,7,1) >= 'A'                                                                       ");
-                    query.AppendLine("                   THEN TO_CHAR(ASCII(SUBSTR(C_COMCODE,7,1))-55)                                                      ");
-                    query.AppendLine("             Else '0' || SUBSTR(C_COMCODE, 7, 1)                                                                      ");
-                    query.AppendLine("         END                                                                                                          ");
-                    query.AppendLine("END SHOW_LINE                                                                                                         ");
-                    query.AppendLine("    FROM (                                                                                                            ");
-                    query.AppendLine("          SELECT SUBSTR(C_COMCODE,1,7) C_COMCODE,N_COMNAME                                                            ");
-                    query.AppendLine("            From TRTB_M_COMMON                                                                                        ");
-                    query.AppendLine("           WHERE C_GROUP = 'BTS'                                                                                      ");
-                    query.AppendLine("             AND N_COMNAME = '" + ip + "'                                                                             ");
-                    query.AppendLine("         )                                                                                                            ");
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("");
+                query.AppendLine("SELECT SUBSTR(C_COMCODE,4,4) C_COMCODE,                                                                               ");
+                query.AppendLine("  case when SUBSTR(C_COMCODE,4,2) = 'P7' THEN SUBSTR(C_COMCODE,4,4)                                                   ");
+                query.AppendLine("     ELSE                                                                                                             ");
+                query.AppendLine("         DECODE(SUBSTR(C_COMCODE, 6, 1), 'A', 'P1', 'B', 'P2', 'C', 'P3', 'D', 'P4', 'E', 'P5', 'F', 'P6', 'PP') ||   ");
+                query.AppendLine("         CASE WHEN SUBSTR(C_COMCODE,7,1) >= 'A'                                                                       ");
+                query.AppendLine("                   THEN TO_CHAR(ASCII(SUBSTR(C_COMCODE,7,1))-55)                                                      ");
+                query.AppendLine("             Else '0' || SUBSTR(C_COMCODE, 7, 1)                                                                      ");
+                query.AppendLine("         END                                                                                                          ");
+                query.AppendLine("END SHOW_LINE                                                                                                         ");
+                query.AppendLine("    FROM (                                                                                                            ");
+                query.AppendLine("          SELECT SUBSTR(C_COMCODE,1,7) C_COMCODE,N_COMNAME                                                            ");
+                query.AppendLine("            From TRTB_M_COMMON                                                                                        ");
+                query.AppendLine("           WHERE C_GROUP = 'BTS'                                                                                      ");
+                query.AppendLine("             AND N_COMNAME = '" + ip + "'                                                                             ");
+                query.AppendLine("         )                                                                                                            ");
                 dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                 e.Result = dt;
             };
@@ -336,7 +357,7 @@ namespace QIP.EOL
             b.RunWorkerAsync();
         }
 
-        
+
 
         //========================================================================================================
 
@@ -409,12 +430,13 @@ namespace QIP.EOL
                 Debug.WriteLine("[GetError][Completed] TH3 – DB OK: " + dt.Rows.Count + " rows");
                 defectLibrary = dt.Copy();
                 SetErrorToButton(type, dt);
+                RefreshVoiceCommandDefinitions();
                 ConffigErrorButton(false);
                 EolCommonHelper.SaveErrorButtonToCsv(dt, cacheFile);
             };
             b.RunWorkerAsync();
         }
-        
+
 
 
         //========================================================================================================
@@ -814,7 +836,7 @@ namespace QIP.EOL
 
         private void SetErrorToButton(string type, DataTable DefectLibary)
         {
-            try 
+            try
             {
                 if (DefectLibary == null) return;
                 Control[] containers = { tableLayoutPanel2, tableLayoutErrorLeft, tableLayoutErrorRight };
@@ -1469,11 +1491,11 @@ namespace QIP.EOL
         {
             if (e.ProgressPercentage == 10)
             {
-                ShowMessage("Background worker oracle running....", Color.Blue);
+                //ShowMessage("Background worker oracle running....", Color.Blue);
             }
             else if (e.ProgressPercentage == 100)
             {
-                ShowMessage("Background worker oracle finish", Color.Blue);
+                //ShowMessage("Background worker oracle finish", Color.Blue);
             }
         }
         private void backgroundOracle_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -2311,29 +2333,29 @@ namespace QIP.EOL
 
         private void lblPart_Click(object sender, EventArgs e)
         {
-            
+
             if (string.IsNullOrEmpty(btnChonModel.Text) || btnChonModel.Text == "Chọn MODEL")
             {
                 ShowMessage("Chọn Model trước khi chấm lỗi. !! Please choose model", Color.Red);
                 return;
             }
 
-            
+
             Label[] allParts = { lblPart1, lblPart2, lblPart3, lblPart4, lblPart5, lblPart6 };
             foreach (var p in allParts) p.ForeColor = Color.Green;
 
-            
+
             Label lbl = (Label)sender;
             lbl.ForeColor = Color.Red;
-             
-            
+
+
             SetInspectionActionState(false, false, false, false);
 
-            
+
             ConffigErrorButton(true);
             partID = lbl.AccessibleName;
 
-            
+
             ResetReasonButtonColors();
         }
 
@@ -2376,7 +2398,7 @@ namespace QIP.EOL
                 if (btn.BackColor == ReasonButtonDefaultColor)
                 {
                     btn.BackColor = ReasonButtonSelectedColor;
-                    
+
                     UpdateDtReason(btn);
                 }
                 else
@@ -2852,7 +2874,7 @@ namespace QIP.EOL
                         this.btn_reasonCode2.Text = "(Andon) Gọi Bảo Trì";
                         this.timer_BlinkButtonYellow.Enabled = false;
                         this.btn_reasonCode2.BackColor = Color.Orange;
-                        
+
                     });
                 }
                 else if (this.btn_reasonCode2.Text.ToString().Contains("Calling"))
@@ -2864,7 +2886,7 @@ namespace QIP.EOL
                         this.btn_reasonCode2.Text = "(Andon) Gọi Bảo Trì " + Environment.NewLine + "Waiting";
                         this.timer_BlinkButtonYellow.Enabled = false;
                         this.btn_reasonCode2.BackColor = Color.DarkRed;
-                        
+
                     });
                 }
                 else
@@ -2912,7 +2934,7 @@ namespace QIP.EOL
                         this.btn_reasonCode1.Text = "(Andon) Gọi QA ";
                         this.timer_BlinkButtonRed.Enabled = false;
                         this.btn_reasonCode1.BackColor = Color.DarkRed;
-                        
+
                     });
                 }
                 else if (this.btn_reasonCode1.Text.ToString().Contains("Calling"))
@@ -2924,7 +2946,7 @@ namespace QIP.EOL
                         this.btn_reasonCode1.Text = "(Andon) Gọi QA " + Environment.NewLine + "Waiting";
                         this.timer_BlinkButtonRed.Enabled = false;
                         this.btn_reasonCode1.BackColor = Color.DarkRed;
-                        
+
                     });
                 }
                 else
@@ -3672,7 +3694,7 @@ namespace QIP.EOL
             foreach (Control p in tableLayoutPanel2.Controls)
             {
                 if (p is Panel panel)
-                { 
+                {
                     foreach (Control a in panel.Controls)
                     {
                         if (a is Button btnID)
@@ -3985,74 +4007,362 @@ namespace QIP.EOL
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //private void txtTime_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void lblFailTotal_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void label1_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void txtTime_Click_1(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void lblPart1_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-
-        //private void simpleButton23_Click(object sender, EventArgs e) { }
-
-        //private void btnRePass_Click(object sender, EventArgs e) { }
-        //private void btnPass_Click(object sender, EventArgs e) { }
-        //private void btnFail_Click(object sender, EventArgs e) { }
-        //private void btnReFail_Click(object sender, EventArgs e) { }
-        //private void btnClear_Click(object sender, EventArgs e) { }
-
-        //private void btn_reasonCode1_Click(object sender, EventArgs e) { }
-        //private void btn_reasonCode2_Click(object sender, EventArgs e)
-        //{ }
-        //private void btn_reasonCode3_Click(object sender, EventArgs e)
-        //{ }
-
-        //private void btnSPCCleanliness_Click(object sender, EventArgs e) { }
-        //private void btnSPCStitching_Click(object sender, EventArgs e) { }
-        //private void btnSPCBonding_Click(object sender, EventArgs e) { }
-        //private void labelControl2_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //}
-
         private void lbl1stPass_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        private async void btnVoiceWhisper_Click(object sender, EventArgs e)
+        {
+            if (_voiceEngine == null)
+            {
+                ShowMessage("VoiceWhisper chưa sẵn sàng.", Color.Red);
+                return;
+            }
+
+            if (_isRecordingVoice) return; // Chặn bấm khi đang ghi
+            RefreshVoiceCommandDefinitions();
+
+            try
+            {
+                _isRecordingVoice = true;
+                btnVoiceWhisper.Enabled = false; // Disable nút trong suốt quá trình
+
+                ShowMessage("Đang nghe voice... nói lệnh trong tối đa 8 giây", Color.Red);
+                await _voiceEngine.StartSmartPushToTalkAsync(8000);
+                
+
+                // Đếm ngược 5 giây hiển thị lên UI
+                for (int i = 0; i > 0; i--)
+                {
+                    ShowMessage($"Đang ghi âm... còn {i} giây", Color.Red);
+                    await Task.Delay(1000);
+                }
+
+                if (_voiceEngine.IsRecording) ShowMessage("Đang xử lý giọng nói...", Color.Blue);
+                await _voiceEngine.StopAndRecognizeAsync();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Lỗi voice: " + ex.Message, Color.Red);
+            }
+            finally
+            {
+                _isRecordingVoice = false;
+                btnVoiceWhisper.Enabled = true; // Bật lại nút sau khi xong
+            }
+        }
+
+        private async void InitializeVoiceEngine()
+        {
+            _voiceEngine = new VoiceEngine();
+            _voiceEngine.CommandRecognized += _voiceEngine_CommandRecognized;
+            _voiceEngine.StateChanged += _voiceEngine_StateChanged;
+            _voiceEngine.LogMessage += _voiceEngine_LogMessage;
+            RefreshVoiceCommandDefinitions();
+            
+            // Lệnh tạm thời để test
+            _voiceEngine.SetCommandList(new List<string> { "A", "1", "hở keo", "dơ", "pass", "fail", "xóa" });
+            RefreshVoiceCommandDefinitions();
+            
+            try
+            {
+                await _voiceEngine.InitializeAsync("whisper-model.bin", Whisper.net.Ggml.GgmlType.Base);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Lỗi khởi tạo VoiceEngine: " + ex.Message, Color.Red);
+            }
+        }
+
+        private void _voiceEngine_LogMessage(object sender, string e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => ShowMessage("Voice Log: " + e, Color.Blue)));
+            }
+            else
+            {
+                ShowMessage("Voice Log: " + e, Color.Blue);
+            }
+        }
+
+        private void _voiceEngine_StateChanged(object sender, VoiceEngineState e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => _voiceEngine_StateChanged(sender, e)));
+                return;
+            }
+
+            switch (e)
+            {
+                case VoiceEngineState.Ready:
+                    btnVoiceWhisper.Enabled = true;
+                    break;
+                case VoiceEngineState.Recording:
+                    btnVoiceWhisper.Enabled = false;
+                    break;
+                case VoiceEngineState.Processing:
+                    btnVoiceWhisper.Enabled = false;
+                    break;
+                case VoiceEngineState.Error:
+                    btnVoiceWhisper.Enabled = true;
+                    ShowMessage("⚠ Voice Engine lỗi!", Color.Red);
+                    break;
+            }
+        }
+
+        private void _voiceEngine_CommandRecognized(object sender, VoiceMatchResult e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => ProcessVoiceCommand(e)));
+            }
+            else
+            {
+                ProcessVoiceCommand(e);
+            }
+        }
+
+        private void ProcessVoiceCommand(VoiceMatchResult result)
+        {
+            if (result?.ParsedCommand?.IsSuccess == true)
+            {
+                VoiceCommandMatch command = result.ParsedCommand;
+
+                if (!string.IsNullOrWhiteSpace(command.PartCode))
+                {
+                    SelectPart(command.PartCode);
+                }
+
+                if (!string.IsNullOrWhiteSpace(command.ErrorCode))
+                {
+                    SelectError(command.ErrorCode);
+                }
+
+                if (!string.IsNullOrWhiteSpace(command.ActionType))
+                {
+                    ConfirmAction(command.ActionType);
+                }
+
+                ShowMessage($"[Voice OK] {command.ToDisplayText()} ({command.ConfidenceScore:P0})", Color.Green);
+                return;
+            }
+            if (result.IsSuccess)
+            {
+                ShowMessage($"[Voice Match] Lệnh: {result.MatchedCommand} (Độ tin cậy: {result.ConfidenceScore:P0})", Color.Green);
+            }
+            else
+            {
+                ShowMessage($"[Voice Fail] Không nhận diện được lệnh. Nghe được: '{result.RecognizedText}'", Color.Red);
+            }
+        }
+
+        private void RefreshVoiceCommandDefinitions()
+        {
+            _voiceEngine?.SetCommandDefinitions(BuildVoiceCommands());
+        }
+
+        public IReadOnlyCollection<VoiceCommandDefinition> BuildVoiceCommands()
+        {
+            var commands = new List<VoiceCommandDefinition>();
+
+            for (int i = 0; i < _partVoiceCodes.Length; i++)
+            {
+                string code = _partVoiceCodes[i].Code;
+                string display = _partVoiceCodes[i].Display;
+                string[] extra = _partVoiceCodes[i].ExtraAliases ?? new string[0];
+
+                var aliases = new List<string>
+                {
+                    code,
+                    "điểm " + code,
+                    "vị trí " + code,
+                    "part " + code,
+                };
+                aliases.AddRange(extra);
+
+                commands.Add(new VoiceCommandDefinition
+                {
+                    Kind = VoiceCommandKind.Part,
+                    Code = code,
+                    DisplayText = display,
+                    Aliases = aliases
+                });
+            }
+
+            foreach (Button button in GetReasonButtons())
+            {
+                if (string.IsNullOrWhiteSpace(button.AccessibleName))
+                {
+                    continue;
+                }
+
+                string text = string.IsNullOrWhiteSpace(button.Text)
+                    ? button.AccessibleName
+                    : button.Text.Replace(Environment.NewLine, " ");
+
+                commands.Add(new VoiceCommandDefinition
+                {
+                    Kind = VoiceCommandKind.Error,
+                    Code = button.AccessibleName,
+                    DisplayText = text,
+                    Aliases = BuildReasonAliases(button.AccessibleName, text)
+                });
+            }
+
+            commands.Add(new VoiceCommandDefinition
+            {
+                Kind = VoiceCommandKind.Action,
+                ActionType = "pass",
+                DisplayText = "đạt",
+                Aliases = new[] { "pass", "đạt", "qua", "ok" }
+            });
+            commands.Add(new VoiceCommandDefinition
+            {
+                Kind = VoiceCommandKind.Action,
+                ActionType = "fail",
+                DisplayText = "lỗi",
+                Aliases = new[] { "fail", "lỗi", "không đạt", "ng" }
+            });
+            commands.Add(new VoiceCommandDefinition
+            {
+                Kind = VoiceCommandKind.Action,
+                ActionType = "re-pass",
+                DisplayText = "đạt lại",
+                Aliases = new[] { "re pass", "đạt lại", "kiểm lại đạt" }
+            });
+            commands.Add(new VoiceCommandDefinition
+            {
+                Kind = VoiceCommandKind.Action,
+                ActionType = "re-fail",
+                DisplayText = "lỗi lại",
+                Aliases = new[] { "re fail", "lỗi lại", "kiểm lại lỗi" }
+            });
+            commands.Add(new VoiceCommandDefinition
+            {
+                Kind = VoiceCommandKind.Action,
+                ActionType = "clear",
+                DisplayText = "xóa",
+                Aliases = new[] { "xóa", "hủy", "clear", "bỏ chọn" }
+            });
+
+            return commands;
+        }
+
+        private IReadOnlyCollection<string> BuildReasonAliases(string reasonCode, string reasonText)
+        {
+            var aliases = new List<string>
+            {
+                reasonCode,
+                "lỗi " + reasonCode,
+                "mã lỗi " + reasonCode,
+                reasonText,
+                "lỗi " + reasonText
+            };
+
+            var numberWords = new Dictionary<string, string>
+            {
+                { "1", "một" },
+                { "2", "hai" },
+                { "3", "ba" },
+                { "4", "bốn" },
+                { "5", "năm" },
+                { "6", "sáu" },
+                { "7", "bảy" },
+                { "8", "tám" },
+                { "9", "chín" },
+                { "10", "mười" }
+            };
+
+            if (numberWords.TryGetValue(reasonCode, out string word))
+            {
+                aliases.Add(word);
+                aliases.Add("lỗi " + word);
+            }
+
+            return aliases;
+        }
+
+        public void SelectPart(string partCode)
+        {
+            // Tìm index trong _partVoiceCodes theo code (chữ cái) người dùng tự định nghĩa
+            int idx = -1;
+            for (int i = 0; i < _partVoiceCodes.Length; i++)
+            {
+                if (string.Equals(_partVoiceCodes[i].Code, partCode, StringComparison.OrdinalIgnoreCase))
+                {
+                    idx = i;
+                    break;
+                }
+            }
+
+            Label partLabel = idx >= 0 ? GetPartLabels().ElementAtOrDefault(idx) : null;
+
+            if (partLabel == null)
+            {
+                ShowMessage("Voice: không tìm thấy part " + partCode, Color.Red);
+                return;
+            }
+
+            lblPart_Click(partLabel, EventArgs.Empty);
+        }
+
+        public void SelectError(string errorCode)
+        {
+            if (string.IsNullOrWhiteSpace(partID))
+            {
+                ShowMessage("Voice: chọn part trước khi chọn lỗi.", Color.Red);
+                return;
+            }
+
+            Button reasonButton = GetReasonButtons()
+                .FirstOrDefault(button => string.Equals(button.AccessibleName, errorCode, StringComparison.OrdinalIgnoreCase));
+
+            if (reasonButton == null)
+            {
+                ShowMessage("Voice: không tìm thấy mã lỗi " + errorCode, Color.Red);
+                return;
+            }
+
+            simpleButton23_Click(reasonButton, EventArgs.Empty);
+        }
+
+        public void ConfirmAction(string actionType)
+        {
+            switch ((actionType ?? string.Empty).ToLowerInvariant())
+            {
+                case "pass":
+                    btnPass_Click(btnPass, EventArgs.Empty);
+                    break;
+                case "re-pass":
+                    btnRePass_Click(btnRePass, EventArgs.Empty);
+                    break;
+                case "fail":
+                    btnFail_Click(btnFail, EventArgs.Empty);
+                    break;
+                case "re-fail":
+                    btnReFail_Click(btnReFail, EventArgs.Empty);
+                    break;
+                case "clear":
+                    btnClear_Click(btnClear, EventArgs.Empty);
+                    break;
+                default:
+                    ShowMessage("Voice: không hỗ trợ lệnh " + actionType, Color.Red);
+                    break;
+            }
+        }
+
+        private IEnumerable<Label> GetPartLabels()
+        {
+            yield return lblPart1;
+            yield return lblPart2;
+            yield return lblPart3;
+            yield return lblPart4;
+            yield return lblPart5;
+            yield return lblPart6;
         }
     }
 }
