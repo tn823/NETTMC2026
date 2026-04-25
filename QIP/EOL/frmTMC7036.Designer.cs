@@ -39,13 +39,13 @@
             lblError1 = new Label();
             panelControl5 = new Panel();
             lblPartCount4 = new Label();
-            lblPart4 = new Label();
             lblPartCount3 = new Label();
-            lblPart3 = new Label();
             lblPartCount2 = new Label();
-            lblPart2 = new Label();
             lblPartCount1 = new Label();
             lblPart1 = new Label();
+            lblPart4 = new Label();
+            lblPart3 = new Label();
+            lblPart2 = new Label();
             picShoeImage = new PictureBox();
             tableLayoutPanel3 = new TableLayoutPanel();
             btnRight = new Button();
@@ -103,7 +103,7 @@
             lblPlan2 = new Label();
             panel2 = new Panel();
             label2 = new Label();
-            label21 = new Label();
+            label7 = new Label();
             label20 = new Label();
             panelControl13 = new Panel();
             labelControl2 = new Label();
@@ -131,9 +131,11 @@
             btn_reasonCode2 = new Button();
             btn_reasonCode3 = new Button();
             labelControl4 = new Label();
+            txtPassQC = new Label();
             txtMetalDetect = new Label();
             labelControl1 = new Label();
             txtRFTValue = new Label();
+            panelStatus = new Panel();
             txtStatus1 = new Label();
             txtSensorCount = new Label();
             btnManual = new Button();
@@ -204,6 +206,7 @@
             panelControl1.SuspendLayout();
             tableLayoutError.SuspendLayout();
             panelControl2.SuspendLayout();
+            panelStatus.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -292,7 +295,7 @@
             lblError3.AutoSize = true;
             lblError3.BackColor = Color.Lime;
             lblError3.Dock = DockStyle.Fill;
-            lblError3.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblError3.Font = new Font("VNI-Times", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblError3.Location = new Point(435, 0);
             lblError3.Name = "lblError3";
             lblError3.Size = new Size(212, 62);
@@ -305,7 +308,7 @@
             lblError2.AutoSize = true;
             lblError2.BackColor = Color.Yellow;
             lblError2.Dock = DockStyle.Fill;
-            lblError2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblError2.Font = new Font("VNI-Times", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblError2.Location = new Point(219, 0);
             lblError2.Name = "lblError2";
             lblError2.Size = new Size(210, 62);
@@ -318,24 +321,25 @@
             lblError1.AutoSize = true;
             lblError1.BackColor = Color.Red;
             lblError1.Dock = DockStyle.Fill;
-            lblError1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblError1.Font = new Font("VNI-Times", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblError1.Location = new Point(3, 0);
             lblError1.Name = "lblError1";
             lblError1.Size = new Size(210, 62);
             lblError1.TabIndex = 1;
             lblError1.Text = "label1";
             lblError1.TextAlign = ContentAlignment.MiddleCenter;
+            lblError1.Click += lblError1_Click;
             // 
             // panelControl5
             // 
             panelControl5.Controls.Add(lblPartCount4);
-            panelControl5.Controls.Add(lblPart4);
             panelControl5.Controls.Add(lblPartCount3);
-            panelControl5.Controls.Add(lblPart3);
             panelControl5.Controls.Add(lblPartCount2);
-            panelControl5.Controls.Add(lblPart2);
             panelControl5.Controls.Add(lblPartCount1);
             panelControl5.Controls.Add(lblPart1);
+            panelControl5.Controls.Add(lblPart4);
+            panelControl5.Controls.Add(lblPart3);
+            panelControl5.Controls.Add(lblPart2);
             panelControl5.Controls.Add(picShoeImage);
             panelControl5.Controls.Add(tableLayoutPanel3);
             panelControl5.Controls.Add(panelControl10);
@@ -356,18 +360,7 @@
             lblPartCount4.Size = new Size(23, 25);
             lblPartCount4.TabIndex = 13;
             lblPartCount4.Text = "4";
-            // 
-            // lblPart4
-            // 
-            lblPart4.AccessibleName = "10";
-            lblPart4.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPart4.Location = new Point(471, 56);
-            lblPart4.Name = "lblPart4";
-            lblPart4.Size = new Size(103, 149);
-            lblPart4.TabIndex = 12;
-            lblPart4.Text = "O";
-            lblPart4.TextAlign = ContentAlignment.MiddleCenter;
-            lblPart4.UseCompatibleTextRendering = true;
+            lblPartCount4.Visible = false;
             // 
             // lblPartCount3
             // 
@@ -379,18 +372,7 @@
             lblPartCount3.Size = new Size(23, 25);
             lblPartCount3.TabIndex = 11;
             lblPartCount3.Text = "3";
-            // 
-            // lblPart3
-            // 
-            lblPart3.AccessibleName = "9";
-            lblPart3.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPart3.Location = new Point(342, 56);
-            lblPart3.Name = "lblPart3";
-            lblPart3.Size = new Size(103, 149);
-            lblPart3.TabIndex = 10;
-            lblPart3.Text = "O";
-            lblPart3.TextAlign = ContentAlignment.MiddleCenter;
-            lblPart3.UseCompatibleTextRendering = true;
+            lblPartCount3.Visible = false;
             // 
             // lblPartCount2
             // 
@@ -402,18 +384,7 @@
             lblPartCount2.Size = new Size(23, 25);
             lblPartCount2.TabIndex = 9;
             lblPartCount2.Text = "2";
-            // 
-            // lblPart2
-            // 
-            lblPart2.AccessibleName = "8";
-            lblPart2.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPart2.Location = new Point(202, 56);
-            lblPart2.Name = "lblPart2";
-            lblPart2.Size = new Size(103, 149);
-            lblPart2.TabIndex = 8;
-            lblPart2.Text = "O";
-            lblPart2.TextAlign = ContentAlignment.MiddleCenter;
-            lblPart2.UseCompatibleTextRendering = true;
+            lblPartCount2.Visible = false;
             // 
             // lblPartCount1
             // 
@@ -425,18 +396,60 @@
             lblPartCount1.Size = new Size(22, 23);
             lblPartCount1.TabIndex = 7;
             lblPartCount1.Text = "1";
+            lblPartCount1.Visible = false;
             // 
             // lblPart1
             // 
             lblPart1.AccessibleName = "7";
             lblPart1.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPart1.Location = new Point(74, 56);
+            lblPart1.Location = new Point(80, 56);
             lblPart1.Name = "lblPart1";
             lblPart1.Size = new Size(103, 149);
             lblPart1.TabIndex = 4;
             lblPart1.Text = "O";
             lblPart1.TextAlign = ContentAlignment.MiddleCenter;
             lblPart1.UseCompatibleTextRendering = true;
+            lblPart1.AutoSizeChanged += lblPart1_AutoSizeChanged;
+            lblPart1.Click += lblPart3_Click;
+            // 
+            // lblPart4
+            // 
+            lblPart4.AccessibleName = "10";
+            lblPart4.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPart4.Location = new Point(342, 58);
+            lblPart4.Name = "lblPart4";
+            lblPart4.Size = new Size(103, 149);
+            lblPart4.TabIndex = 12;
+            lblPart4.Text = "O";
+            lblPart4.TextAlign = ContentAlignment.MiddleCenter;
+            lblPart4.UseCompatibleTextRendering = true;
+            lblPart4.Click += lblPart3_Click;
+            // 
+            // lblPart3
+            // 
+            lblPart3.AccessibleName = "9";
+            lblPart3.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPart3.Location = new Point(205, 58);
+            lblPart3.Name = "lblPart3";
+            lblPart3.Size = new Size(103, 149);
+            lblPart3.TabIndex = 10;
+            lblPart3.Text = "O";
+            lblPart3.TextAlign = ContentAlignment.MiddleCenter;
+            lblPart3.UseCompatibleTextRendering = true;
+            lblPart3.Click += lblPart3_Click;
+            // 
+            // lblPart2
+            // 
+            lblPart2.AccessibleName = "8";
+            lblPart2.Font = new Font("Segoe UI", 99.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPart2.Location = new Point(471, 56);
+            lblPart2.Name = "lblPart2";
+            lblPart2.Size = new Size(103, 149);
+            lblPart2.TabIndex = 8;
+            lblPart2.Text = "O";
+            lblPart2.TextAlign = ContentAlignment.MiddleCenter;
+            lblPart2.UseCompatibleTextRendering = true;
+            lblPart2.Click += lblPart3_Click;
             // 
             // picShoeImage
             // 
@@ -444,7 +457,7 @@
             picShoeImage.Image = Properties.Resources.sASS_3;
             picShoeImage.Location = new Point(58, 0);
             picShoeImage.Name = "picShoeImage";
-            picShoeImage.Size = new Size(532, 321);
+            picShoeImage.Size = new Size(522, 321);
             picShoeImage.SizeMode = PictureBoxSizeMode.StretchImage;
             picShoeImage.TabIndex = 3;
             picShoeImage.TabStop = false;
@@ -457,13 +470,13 @@
             tableLayoutPanel3.Controls.Add(btnRight, 0, 1);
             tableLayoutPanel3.Controls.Add(btnLeft, 0, 0);
             tableLayoutPanel3.Dock = DockStyle.Right;
-            tableLayoutPanel3.Location = new Point(590, 0);
+            tableLayoutPanel3.Location = new Point(580, 0);
             tableLayoutPanel3.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Size = new Size(60, 321);
+            tableLayoutPanel3.Size = new Size(70, 321);
             tableLayoutPanel3.TabIndex = 1;
             // 
             // btnRight
@@ -474,7 +487,7 @@
             btnRight.Location = new Point(3, 162);
             btnRight.Margin = new Padding(3, 2, 3, 2);
             btnRight.Name = "btnRight";
-            btnRight.Size = new Size(54, 157);
+            btnRight.Size = new Size(64, 157);
             btnRight.TabIndex = 2;
             btnRight.Text = "RIGHT (PHẢI )";
             btnRight.UseVisualStyleBackColor = false;
@@ -486,7 +499,7 @@
             btnLeft.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
             btnLeft.Location = new Point(3, 3);
             btnLeft.Name = "btnLeft";
-            btnLeft.Size = new Size(54, 154);
+            btnLeft.Size = new Size(64, 154);
             btnLeft.TabIndex = 1;
             btnLeft.Text = "LEFT (TRÁI )";
             btnLeft.UseVisualStyleBackColor = false;
@@ -575,12 +588,12 @@
             tableLayoutPanel5.Controls.Add(btnModel, 0, 0);
             tableLayoutPanel5.Controls.Add(txtDefectQty, 1, 0);
             tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(116, 36);
+            tableLayoutPanel5.Location = new Point(116, 59);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 1;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Size = new Size(534, 118);
+            tableLayoutPanel5.Size = new Size(534, 95);
             tableLayoutPanel5.TabIndex = 2;
             // 
             // btnModel
@@ -592,10 +605,11 @@
             btnModel.ForeColor = SystemColors.ControlText;
             btnModel.Location = new Point(3, 3);
             btnModel.Name = "btnModel";
-            btnModel.Size = new Size(261, 112);
+            btnModel.Size = new Size(261, 89);
             btnModel.TabIndex = 1;
-            btnModel.Text = "Chọn MODEL";
+            btnModel.Text = "CHỌN MODEL";
             btnModel.UseVisualStyleBackColor = false;
+            btnModel.Click += btnModel_Click;
             // 
             // txtDefectQty
             // 
@@ -606,9 +620,10 @@
             txtDefectQty.ImageAlign = ContentAlignment.TopLeft;
             txtDefectQty.Location = new Point(270, 0);
             txtDefectQty.Name = "txtDefectQty";
-            txtDefectQty.Size = new Size(261, 118);
+            txtDefectQty.Size = new Size(261, 95);
             txtDefectQty.TabIndex = 2;
             txtDefectQty.Text = "TOTAL : ";
+            txtDefectQty.Click += txtDefectQty_Click;
             // 
             // panelControl6
             // 
@@ -619,7 +634,7 @@
             panelControl6.Dock = DockStyle.Top;
             panelControl6.Location = new Point(116, 0);
             panelControl6.Name = "panelControl6";
-            panelControl6.Size = new Size(534, 36);
+            panelControl6.Size = new Size(534, 59);
             panelControl6.TabIndex = 1;
             // 
             // panelControl9
@@ -628,7 +643,7 @@
             panelControl9.Dock = DockStyle.Fill;
             panelControl9.Location = new Point(279, 0);
             panelControl9.Name = "panelControl9";
-            panelControl9.Size = new Size(253, 34);
+            panelControl9.Size = new Size(253, 57);
             panelControl9.TabIndex = 2;
             // 
             // txtProdQty
@@ -640,7 +655,7 @@
             txtProdQty.ForeColor = Color.Navy;
             txtProdQty.Location = new Point(0, 0);
             txtProdQty.Name = "txtProdQty";
-            txtProdQty.Size = new Size(253, 34);
+            txtProdQty.Size = new Size(253, 57);
             txtProdQty.TabIndex = 3;
             txtProdQty.Text = "SX : ";
             // 
@@ -650,7 +665,7 @@
             panelControl8.Dock = DockStyle.Left;
             panelControl8.Location = new Point(139, 0);
             panelControl8.Name = "panelControl8";
-            panelControl8.Size = new Size(140, 34);
+            panelControl8.Size = new Size(140, 57);
             panelControl8.TabIndex = 1;
             // 
             // txtReady
@@ -661,7 +676,7 @@
             txtReady.Font = new Font("Tahoma", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtReady.Location = new Point(0, 0);
             txtReady.Name = "txtReady";
-            txtReady.Size = new Size(140, 34);
+            txtReady.Size = new Size(140, 57);
             txtReady.TabIndex = 2;
             txtReady.Text = "READY";
             txtReady.TextAlign = ContentAlignment.MiddleCenter;
@@ -672,7 +687,7 @@
             panelControl7.Dock = DockStyle.Left;
             panelControl7.Location = new Point(0, 0);
             panelControl7.Name = "panelControl7";
-            panelControl7.Size = new Size(139, 34);
+            panelControl7.Size = new Size(139, 57);
             panelControl7.TabIndex = 0;
             // 
             // txtLineName
@@ -684,7 +699,7 @@
             txtLineName.ForeColor = Color.Navy;
             txtLineName.Location = new Point(0, 0);
             txtLineName.Name = "txtLineName";
-            txtLineName.Size = new Size(139, 34);
+            txtLineName.Size = new Size(139, 57);
             txtLineName.TabIndex = 1;
             txtLineName.Text = "P515";
             // 
@@ -707,6 +722,7 @@
             pictureEdit2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureEdit2.TabIndex = 1;
             pictureEdit2.TabStop = false;
+            pictureEdit2.Click += pictureEdit2_Click;
             // 
             // panelControl12
             // 
@@ -759,6 +775,7 @@
             button7.TabIndex = 9;
             button7.Text = "BTN";
             button7.UseVisualStyleBackColor = false;
+            button7.Click += btnError_Click;
             // 
             // button6
             // 
@@ -773,6 +790,7 @@
             button6.TabIndex = 8;
             button6.Text = "BTN";
             button6.UseVisualStyleBackColor = false;
+            button6.Click += btnError_Click;
             // 
             // button5
             // 
@@ -787,6 +805,7 @@
             button5.TabIndex = 7;
             button5.Text = "BTN";
             button5.UseVisualStyleBackColor = false;
+            button5.Click += btnError_Click;
             // 
             // button3
             // 
@@ -801,6 +820,7 @@
             button3.TabIndex = 6;
             button3.Text = "BTN";
             button3.UseVisualStyleBackColor = false;
+            button3.Click += btnError_Click;
             // 
             // button2
             // 
@@ -815,6 +835,7 @@
             button2.TabIndex = 5;
             button2.Text = "BTN";
             button2.UseVisualStyleBackColor = false;
+            button2.Click += btnError_Click;
             // 
             // button1
             // 
@@ -829,6 +850,7 @@
             button1.TabIndex = 4;
             button1.Text = "BTN";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += btnError_Click;
             // 
             // button4
             // 
@@ -843,12 +865,13 @@
             button4.TabIndex = 2;
             button4.Text = "BTN";
             button4.UseVisualStyleBackColor = false;
+            button4.Click += btnError_Click;
             // 
             // panel1
             // 
             tableLayoutError1.SetColumnSpan(panel1, 2);
             panel1.Controls.Add(tableLayoutPanel4);
-            panel1.Controls.Add(label21);
+            panel1.Controls.Add(label7);
             panel1.Controls.Add(label20);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(211, 3);
@@ -1070,6 +1093,7 @@
             lblTTLPlan.TabIndex = 3;
             lblTTLPlan.Text = "-";
             lblTTLPlan.TextAlign = ContentAlignment.MiddleCenter;
+            lblTTLPlan.Click += lblTTLPlan_Click;
             // 
             // panel4
             // 
@@ -1158,18 +1182,18 @@
             label2.TabIndex = 3;
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label21
+            // label7
             // 
-            label21.BackColor = SystemColors.ActiveCaptionText;
-            label21.Dock = DockStyle.Top;
-            label21.Font = new Font("Consolas", 18F, FontStyle.Bold);
-            label21.ForeColor = SystemColors.ButtonHighlight;
-            label21.Location = new Point(0, 38);
-            label21.Name = "label21";
-            label21.Size = new Size(444, 34);
-            label21.TabIndex = 16;
-            label21.Text = "Remark :";
-            label21.TextAlign = ContentAlignment.MiddleLeft;
+            label7.BackColor = SystemColors.ActiveCaptionText;
+            label7.Dock = DockStyle.Top;
+            label7.Font = new Font("Consolas", 18F, FontStyle.Bold);
+            label7.ForeColor = SystemColors.ButtonHighlight;
+            label7.Location = new Point(0, 38);
+            label7.Name = "label7";
+            label7.Size = new Size(444, 34);
+            label7.TabIndex = 16;
+            label7.Text = "Remark :";
+            label7.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // label20
             // 
@@ -1210,6 +1234,7 @@
             labelControl2.Text = "SENSOR STATUS : ";
             labelControl2.TextAlign = ContentAlignment.MiddleRight;
             labelControl2.Visible = false;
+            labelControl2.Click += labelControl2_Click;
             // 
             // txtStatus
             // 
@@ -1224,6 +1249,7 @@
             txtStatus.Text = "CONNECTED";
             txtStatus.TextAlign = ContentAlignment.MiddleCenter;
             txtStatus.Visible = false;
+            txtStatus.Click += txtStatus_Click;
             // 
             // chkVN
             // 
@@ -1238,6 +1264,7 @@
             chkVN.TabIndex = 4;
             chkVN.Text = "VN";
             chkVN.UseVisualStyleBackColor = true;
+            chkVN.CheckedChanged += chkVN_CheckedChanged;
             // 
             // chkEng
             // 
@@ -1250,6 +1277,7 @@
             chkEng.TabIndex = 3;
             chkEng.Text = "ENG";
             chkEng.UseVisualStyleBackColor = true;
+            chkEng.CheckedChanged += chkEng_CheckedChanged;
             // 
             // txtTime
             // 
@@ -1263,6 +1291,7 @@
             txtTime.Size = new Size(307, 45);
             txtTime.TabIndex = 1;
             txtTime.Text = "2018-11-19 15:46:45";
+            txtTime.Click += txtTime_Click;
             // 
             // panelControl1
             // 
@@ -1320,6 +1349,7 @@
             button18.TabIndex = 18;
             button18.Text = "BTN";
             button18.UseVisualStyleBackColor = false;
+            button18.Click += btnError_Click;
             // 
             // button17
             // 
@@ -1334,6 +1364,7 @@
             button17.TabIndex = 17;
             button17.Text = "BTN";
             button17.UseVisualStyleBackColor = false;
+            button17.Click += btnError_Click;
             // 
             // button16
             // 
@@ -1348,6 +1379,7 @@
             button16.TabIndex = 16;
             button16.Text = "BTN";
             button16.UseVisualStyleBackColor = false;
+            button16.Click += btnError_Click;
             // 
             // button15
             // 
@@ -1362,6 +1394,7 @@
             button15.TabIndex = 15;
             button15.Text = "BTN";
             button15.UseVisualStyleBackColor = false;
+            button15.Click += btnError_Click;
             // 
             // button14
             // 
@@ -1376,6 +1409,7 @@
             button14.TabIndex = 14;
             button14.Text = "BTN";
             button14.UseVisualStyleBackColor = false;
+            button14.Click += btnError_Click;
             // 
             // button13
             // 
@@ -1390,6 +1424,7 @@
             button13.TabIndex = 13;
             button13.Text = "BTN";
             button13.UseVisualStyleBackColor = false;
+            button13.Click += btnError_Click;
             // 
             // button12
             // 
@@ -1404,6 +1439,7 @@
             button12.TabIndex = 12;
             button12.Text = "BTN";
             button12.UseVisualStyleBackColor = false;
+            button12.Click += btnError_Click;
             // 
             // button11
             // 
@@ -1418,6 +1454,7 @@
             button11.TabIndex = 11;
             button11.Text = "BTN";
             button11.UseVisualStyleBackColor = false;
+            button11.Click += btnError_Click;
             // 
             // button10
             // 
@@ -1432,6 +1469,7 @@
             button10.TabIndex = 10;
             button10.Text = "BTN";
             button10.UseVisualStyleBackColor = false;
+            button10.Click += btnError_Click;
             // 
             // button9
             // 
@@ -1446,6 +1484,7 @@
             button9.TabIndex = 9;
             button9.Text = "BTN";
             button9.UseVisualStyleBackColor = false;
+            button9.Click += btnError_Click;
             // 
             // button8
             // 
@@ -1460,6 +1499,7 @@
             button8.TabIndex = 8;
             button8.Text = "BTN";
             button8.UseVisualStyleBackColor = false;
+            button8.Click += btnError_Click;
             // 
             // panelControl2
             // 
@@ -1469,10 +1509,11 @@
             panelControl2.Controls.Add(btn_reasonCode2);
             panelControl2.Controls.Add(btn_reasonCode3);
             panelControl2.Controls.Add(labelControl4);
+            panelControl2.Controls.Add(txtPassQC);
             panelControl2.Controls.Add(txtMetalDetect);
             panelControl2.Controls.Add(labelControl1);
             panelControl2.Controls.Add(txtRFTValue);
-            panelControl2.Controls.Add(txtStatus1);
+            panelControl2.Controls.Add(panelStatus);
             panelControl2.Controls.Add(txtSensorCount);
             panelControl2.Controls.Add(btnManual);
             panelControl2.Controls.Add(btnCheckStep);
@@ -1491,10 +1532,11 @@
             txtMessage.ForeColor = Color.Red;
             txtMessage.Location = new Point(0, 0);
             txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(357, 58);
+            txtMessage.Size = new Size(285, 58);
             txtMessage.TabIndex = 14;
             txtMessage.Text = "Thông Báo";
             txtMessage.TextAlign = ContentAlignment.MiddleCenter;
+            txtMessage.Click += txtMessage_Click;
             // 
             // button19
             // 
@@ -1502,13 +1544,14 @@
             button19.Dock = DockStyle.Right;
             button19.Font = new Font("Microsoft Sans Serif", 15.75F);
             button19.ForeColor = SystemColors.ButtonHighlight;
-            button19.Location = new Point(357, 0);
+            button19.Location = new Point(285, 0);
             button19.Margin = new Padding(3, 2, 3, 2);
             button19.Name = "button19";
-            button19.Size = new Size(107, 58);
+            button19.Size = new Size(168, 58);
             button19.TabIndex = 13;
             button19.Text = "Go-No Go Standard";
             button19.UseVisualStyleBackColor = false;
+            button19.Click += button19_Click;
             // 
             // btn_reasonCode1
             // 
@@ -1516,13 +1559,14 @@
             btn_reasonCode1.Dock = DockStyle.Right;
             btn_reasonCode1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode1.ForeColor = SystemColors.ButtonFace;
-            btn_reasonCode1.Location = new Point(464, 0);
+            btn_reasonCode1.Location = new Point(453, 0);
             btn_reasonCode1.Margin = new Padding(3, 2, 3, 2);
             btn_reasonCode1.Name = "btn_reasonCode1";
             btn_reasonCode1.Size = new Size(206, 58);
             btn_reasonCode1.TabIndex = 12;
             btn_reasonCode1.Text = "(Andon) Gọi QA";
             btn_reasonCode1.UseVisualStyleBackColor = false;
+            btn_reasonCode1.Click += btn_reasonCode1_Click;
             // 
             // btn_reasonCode2
             // 
@@ -1530,13 +1574,14 @@
             btn_reasonCode2.Dock = DockStyle.Right;
             btn_reasonCode2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode2.ForeColor = SystemColors.ButtonFace;
-            btn_reasonCode2.Location = new Point(670, 0);
+            btn_reasonCode2.Location = new Point(659, 0);
             btn_reasonCode2.Margin = new Padding(3, 2, 3, 2);
             btn_reasonCode2.Name = "btn_reasonCode2";
             btn_reasonCode2.Size = new Size(206, 58);
             btn_reasonCode2.TabIndex = 11;
             btn_reasonCode2.Text = "(Andon) Gọi Bảo trì";
             btn_reasonCode2.UseVisualStyleBackColor = false;
+            btn_reasonCode2.Click += btn_reasonCode2_Click;
             // 
             // btn_reasonCode3
             // 
@@ -1544,13 +1589,14 @@
             btn_reasonCode3.Dock = DockStyle.Right;
             btn_reasonCode3.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_reasonCode3.ForeColor = SystemColors.ButtonFace;
-            btn_reasonCode3.Location = new Point(876, 0);
+            btn_reasonCode3.Location = new Point(865, 0);
             btn_reasonCode3.Margin = new Padding(3, 2, 3, 2);
             btn_reasonCode3.Name = "btn_reasonCode3";
             btn_reasonCode3.Size = new Size(200, 58);
             btn_reasonCode3.TabIndex = 10;
             btn_reasonCode3.Text = "(Andon) Gọi Sản xuất";
             btn_reasonCode3.UseVisualStyleBackColor = false;
+            btn_reasonCode3.Click += btn_reasonCode3_Click;
             // 
             // labelControl4
             // 
@@ -1558,13 +1604,25 @@
             labelControl4.Dock = DockStyle.Right;
             labelControl4.Font = new Font("Tahoma", 9F, FontStyle.Bold);
             labelControl4.ForeColor = Color.FromArgb(255, 128, 0);
-            labelControl4.Location = new Point(1076, 0);
+            labelControl4.Location = new Point(1065, 0);
             labelControl4.Name = "labelControl4";
             labelControl4.Size = new Size(24, 58);
             labelControl4.TabIndex = 9;
             labelControl4.Text = "KIM LOẠI";
             labelControl4.TextAlign = ContentAlignment.MiddleCenter;
             labelControl4.Visible = false;
+            // 
+            // txtPassQC
+            // 
+            txtPassQC.Dock = DockStyle.Right;
+            txtPassQC.Font = new Font("Tahoma", 30F, FontStyle.Bold);
+            txtPassQC.ForeColor = Color.FromArgb(255, 128, 0);
+            txtPassQC.Location = new Point(1089, 0);
+            txtPassQC.Name = "txtPassQC";
+            txtPassQC.Size = new Size(11, 58);
+            txtPassQC.TabIndex = 16;
+            txtPassQC.Text = "0";
+            txtPassQC.Visible = false;
             // 
             // txtMetalDetect
             // 
@@ -1579,6 +1637,7 @@
             txtMetalDetect.Text = "0";
             txtMetalDetect.TextAlign = ContentAlignment.MiddleCenter;
             txtMetalDetect.Visible = false;
+            txtMetalDetect.Click += txtMetalDetect_Click;
             // 
             // labelControl1
             // 
@@ -1608,16 +1667,26 @@
             txtRFTValue.TextAlign = ContentAlignment.MiddleCenter;
             txtRFTValue.Visible = false;
             // 
+            // panelStatus
+            // 
+            panelStatus.Controls.Add(txtStatus1);
+            panelStatus.Dock = DockStyle.Right;
+            panelStatus.Location = new Point(1167, 0);
+            panelStatus.Name = "panelStatus";
+            panelStatus.Size = new Size(24, 58);
+            panelStatus.TabIndex = 15;
+            panelStatus.Visible = false;
+            // 
             // txtStatus1
             // 
             txtStatus1.BackColor = SystemColors.ActiveCaption;
             txtStatus1.Dock = DockStyle.Right;
             txtStatus1.Font = new Font("Tahoma", 9F, FontStyle.Bold);
             txtStatus1.ForeColor = Color.Navy;
-            txtStatus1.Location = new Point(1167, 0);
+            txtStatus1.Location = new Point(0, 0);
             txtStatus1.Name = "txtStatus1";
             txtStatus1.Size = new Size(24, 58);
-            txtStatus1.TabIndex = 5;
+            txtStatus1.TabIndex = 6;
             txtStatus1.Text = "PASS MD:";
             txtStatus1.TextAlign = ContentAlignment.MiddleCenter;
             txtStatus1.Visible = false;
@@ -1663,6 +1732,7 @@
             btnCheckStep.Text = "Check 9 Step";
             btnCheckStep.UseVisualStyleBackColor = false;
             btnCheckStep.Visible = false;
+            btnCheckStep.Click += btnCheckStep_Click;
             // 
             // btnVideoClip
             // 
@@ -1691,18 +1761,26 @@
             btnBA.Text = "BA 9 Criteria";
             btnBA.UseVisualStyleBackColor = false;
             btnBA.Visible = false;
+            btnBA.Click += btnBA_Click;
             // 
             // timerStopMessage
             // 
             timerStopMessage.Interval = 5000;
+            timerStopMessage.Tick += timerStopMessage_Tick;
+            // 
+            // timerSuccess
+            // 
+            timerSuccess.Tick += timerSuccess_Tick;
             // 
             // timerError
             // 
             timerError.Interval = 10;
+            timerError.Tick += timer3_Tick;
             // 
             // timerTouch
             // 
             timerTouch.Interval = 5000;
+            timerTouch.Tick += timerTouch_Tick;
             // 
             // backgroundSyncData
             // 
@@ -1713,6 +1791,7 @@
             // 
             timer3.Enabled = true;
             timer3.Interval = 60000;
+            timer3.Tick += timer3_Tick_1;
             // 
             // backgroundOracle
             // 
@@ -1724,13 +1803,27 @@
             timerBindProduction.Enabled = true;
             timerBindProduction.Interval = 10000;
             // 
+            // timer_BlinkButtonGreen
+            // 
+            timer_BlinkButtonGreen.Tick += timer_BlinkButtonGreen_Tick;
+            // 
+            // timer_BlinkButtonRed
+            // 
+            timer_BlinkButtonRed.Tick += timer_BlinkButtonRed_Tick;
+            // 
+            // timer_BlinkButtonYellow
+            // 
+            timer_BlinkButtonYellow.Tick += timer_BlinkButtonYellow_Tick;
+            // 
             // timer1
             // 
             timer1.Interval = 10000;
+            timer1.Tick += timer1_Tick;
             // 
             // timer2
             // 
             timer2.Interval = 1000;
+            timer2.Tick += timer2_Tick;
             // 
             // timer4
             // 
@@ -1740,29 +1833,40 @@
             // 
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             // 
             // fakeRFT
             // 
             fakeRFT.Interval = 5000;
+            fakeRFT.Tick += fakeRFT_Tick;
             // 
             // backgroundWorker2
             // 
             backgroundWorker2.WorkerReportsProgress = true;
             backgroundWorker2.WorkerSupportsCancellation = true;
+            backgroundWorker2.DoWork += backgroundWorker2_DoWork;
             // 
             // timerSyncOracle
             // 
             timerSyncOracle.Interval = 1000;
             // 
+            // backgroundWorker3
+            // 
+            backgroundWorker3.DoWork += backgroundWorker3_DoWork;
+            // 
             // timer_CheckStopLine
             // 
             timer_CheckStopLine.Enabled = true;
             timer_CheckStopLine.Interval = 3000;
+            timer_CheckStopLine.Tick += timer_CheckStopLine_Tick;
             // 
             // backgroundWorkerStopLine
             // 
             backgroundWorkerStopLine.WorkerReportsProgress = true;
             backgroundWorkerStopLine.WorkerSupportsCancellation = true;
+            backgroundWorkerStopLine.DoWork += backgroundWorkerStopLine_DoWork;
+            backgroundWorkerStopLine.ProgressChanged += backgroundWorkerStopLine_ProgressChanged;
+            backgroundWorkerStopLine.RunWorkerCompleted += backgroundWorkerStopLine_RunWorkerCompleted;
             // 
             // frmTMC7036
             // 
@@ -1816,6 +1920,7 @@
             panelControl1.ResumeLayout(false);
             tableLayoutError.ResumeLayout(false);
             panelControl2.ResumeLayout(false);
+            panelStatus.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1871,7 +1976,7 @@
         private Button button4;
         private Panel panel1;
         private Label label20;
-        private Label label21;
+        private Label label7;
         private TableLayoutPanel tableLayoutPanel4;
         private Panel panel2;
         private Panel panel10;
@@ -1923,7 +2028,6 @@
         private Button btnCheckStep;
         private Label labelControl1;
         private Label txtRFTValue;
-        private Label txtStatus1;
         private Label txtSensorCount;
         private Label labelControl4;
         private Label txtMetalDetect;
@@ -1956,5 +2060,8 @@
         private System.Windows.Forms.Timer timer5;
         private System.Windows.Forms.Timer timer_CheckStopLine;
         private System.ComponentModel.BackgroundWorker backgroundWorkerStopLine;
+        private Panel panelStatus;
+        private Label txtStatus1;
+        private Label txtPassQC;
     }
 }
