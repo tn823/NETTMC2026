@@ -85,6 +85,7 @@ namespace QIP.EOL
             panelControlTop = new Panel();
             panelControl3 = new Panel();
             panelControl14 = new Panel();
+            label4 = new Label();
             labelControl17 = new Label();
             simpleButton6 = new Button();
             panel11 = new Panel();
@@ -110,44 +111,57 @@ namespace QIP.EOL
             tableLayoutErrorLeft = new TableLayoutPanel();
             panelControl12 = new Panel();
             labelControl15 = new Label();
+            label2 = new Label();
             simpleButton2 = new Button();
             panelControl13 = new Panel();
             labelControl16 = new Label();
+            label3 = new Label();
             simpleButton3 = new Button();
             panelControl15 = new Panel();
+            label5 = new Label();
             labelControl18 = new Label();
             simpleButton7 = new Button();
             panelControl16 = new Panel();
+            label6 = new Label();
             labelControl19 = new Label();
             simpleButton8 = new Button();
             panelControl11 = new Panel();
+            label1 = new Label();
             labelControl14 = new Label();
             simpleButton1 = new Button();
             tableLayoutErrorRight = new TableLayoutPanel();
             panelControl17 = new Panel();
+            label11 = new Label();
             labelControl20 = new Label();
             simpleButton11 = new Button();
             panelControl18 = new Panel();
+            label12 = new Label();
             labelControl21 = new Label();
             simpleButton12 = new Button();
             panelControl19 = new Panel();
+            label13 = new Label();
             labelControl22 = new Label();
             simpleButton13 = new Button();
             panelControl20 = new Panel();
+            label14 = new Label();
             labelControl23 = new Label();
             simpleButton15 = new Button();
             panelControl21 = new Panel();
+            label15 = new Label();
             labelControl24 = new Label();
             simpleButton16 = new Button();
             panelControl22 = new Panel();
+            label16 = new Label();
             labelControl25 = new Label();
             simpleButton17 = new Button();
             panelControl4 = new Panel();
             tableLayoutPanel2 = new TableLayoutPanel();
             panelControl8 = new Panel();
+            label7 = new Label();
             labelControl13 = new Label();
             simpleButton9 = new Button();
             panelControl7 = new Panel();
+            label8 = new Label();
             labelControl12 = new Label();
             simpleButton10 = new Button();
             panelControl5 = new Panel();
@@ -166,9 +180,11 @@ namespace QIP.EOL
             btnPass = new Button();
             btnRePass = new Button();
             panelControl9 = new Panel();
+            label9 = new Label();
             lblCount21 = new Label();
             simpleButton4 = new Button();
             panelControl10 = new Panel();
+            label10 = new Label();
             lblCount0 = new Label();
             simpleButton5 = new Button();
             backgroundWorkerCheckAndon = new BackgroundWorker();
@@ -986,6 +1002,7 @@ namespace QIP.EOL
             // 
             // panelControl14
             // 
+            panelControl14.Controls.Add(label4);
             panelControl14.Controls.Add(labelControl17);
             panelControl14.Controls.Add(simpleButton6);
             panelControl14.Dock = DockStyle.Fill;
@@ -994,6 +1011,21 @@ namespace QIP.EOL
             panelControl14.Name = "panelControl14";
             panelControl14.Size = new Size(534, 53);
             panelControl14.TabIndex = 14;
+            // 
+            // label4
+            // 
+            label4.AccessibleName = "";
+            label4.AutoSize = true;
+            label4.BackColor = Color.Black;
+            label4.Dock = DockStyle.Right;
+            label4.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.White;
+            label4.Location = new Point(497, 0);
+            label4.Margin = new Padding(3, 4, 3, 4);
+            label4.Name = "label4";
+            label4.Size = new Size(37, 41);
+            label4.TabIndex = 6;
+            label4.Text = "4";
             // 
             // labelControl17
             // 
@@ -1324,6 +1356,7 @@ namespace QIP.EOL
             // 
             panelControl12.BackColor = Color.FromArgb(240, 240, 240);
             panelControl12.Controls.Add(labelControl15);
+            panelControl12.Controls.Add(label2);
             panelControl12.Controls.Add(simpleButton2);
             panelControl12.Dock = DockStyle.Fill;
             panelControl12.Location = new Point(3, 65);
@@ -1346,6 +1379,21 @@ namespace QIP.EOL
             labelControl15.TabIndex = 5;
             labelControl15.Text = "0";
             // 
+            // label2
+            // 
+            label2.AccessibleName = "";
+            label2.AutoSize = true;
+            label2.BackColor = Color.Black;
+            label2.Dock = DockStyle.Right;
+            label2.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(497, 0);
+            label2.Margin = new Padding(3, 4, 3, 4);
+            label2.Name = "label2";
+            label2.Size = new Size(37, 41);
+            label2.TabIndex = 6;
+            label2.Text = "2";
+            // 
             // simpleButton2
             // 
             simpleButton2.AccessibleName = "2";
@@ -1364,6 +1412,7 @@ namespace QIP.EOL
             // panelControl13
             // 
             panelControl13.Controls.Add(labelControl16);
+            panelControl13.Controls.Add(label3);
             panelControl13.Controls.Add(simpleButton3);
             panelControl13.Dock = DockStyle.Fill;
             panelControl13.Location = new Point(3, 126);
@@ -1386,6 +1435,21 @@ namespace QIP.EOL
             labelControl16.TabIndex = 5;
             labelControl16.Text = "0";
             // 
+            // label3
+            // 
+            label3.AccessibleName = "C3";
+            label3.AutoSize = true;
+            label3.BackColor = Color.Black;
+            label3.Dock = DockStyle.Right;
+            label3.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.ForeColor = Color.White;
+            label3.Location = new Point(497, 0);
+            label3.Margin = new Padding(3, 4, 3, 4);
+            label3.Name = "label3";
+            label3.Size = new Size(37, 41);
+            label3.TabIndex = 6;
+            label3.Text = "3";
+            // 
             // simpleButton3
             // 
             simpleButton3.AccessibleName = "3";
@@ -1403,6 +1467,7 @@ namespace QIP.EOL
             // 
             // panelControl15
             // 
+            panelControl15.Controls.Add(label5);
             panelControl15.Controls.Add(labelControl18);
             panelControl15.Controls.Add(simpleButton7);
             panelControl15.Dock = DockStyle.Fill;
@@ -1411,6 +1476,21 @@ namespace QIP.EOL
             panelControl15.Name = "panelControl15";
             panelControl15.Size = new Size(534, 53);
             panelControl15.TabIndex = 14;
+            // 
+            // label5
+            // 
+            label5.AccessibleName = "";
+            label5.AutoSize = true;
+            label5.BackColor = Color.Black;
+            label5.Dock = DockStyle.Right;
+            label5.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(497, 0);
+            label5.Margin = new Padding(3, 4, 3, 4);
+            label5.Name = "label5";
+            label5.Size = new Size(37, 41);
+            label5.TabIndex = 6;
+            label5.Text = "5";
             // 
             // labelControl18
             // 
@@ -1443,6 +1523,7 @@ namespace QIP.EOL
             // 
             // panelControl16
             // 
+            panelControl16.Controls.Add(label6);
             panelControl16.Controls.Add(labelControl19);
             panelControl16.Controls.Add(simpleButton8);
             panelControl16.Dock = DockStyle.Fill;
@@ -1451,6 +1532,21 @@ namespace QIP.EOL
             panelControl16.Name = "panelControl16";
             panelControl16.Size = new Size(534, 54);
             panelControl16.TabIndex = 14;
+            // 
+            // label6
+            // 
+            label6.AccessibleName = "";
+            label6.AutoSize = true;
+            label6.BackColor = Color.Black;
+            label6.Dock = DockStyle.Right;
+            label6.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.White;
+            label6.Location = new Point(497, 0);
+            label6.Margin = new Padding(3, 4, 3, 4);
+            label6.Name = "label6";
+            label6.Size = new Size(37, 41);
+            label6.TabIndex = 6;
+            label6.Text = "6";
             // 
             // labelControl19
             // 
@@ -1483,6 +1579,7 @@ namespace QIP.EOL
             // 
             // panelControl11
             // 
+            panelControl11.Controls.Add(label1);
             panelControl11.Controls.Add(labelControl14);
             panelControl11.Controls.Add(simpleButton1);
             panelControl11.Dock = DockStyle.Fill;
@@ -1491,6 +1588,21 @@ namespace QIP.EOL
             panelControl11.Name = "panelControl11";
             panelControl11.Size = new Size(534, 53);
             panelControl11.TabIndex = 14;
+            // 
+            // label1
+            // 
+            label1.AccessibleName = "";
+            label1.AutoSize = true;
+            label1.BackColor = Color.Black;
+            label1.Dock = DockStyle.Right;
+            label1.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(497, 0);
+            label1.Margin = new Padding(3, 4, 3, 4);
+            label1.Name = "label1";
+            label1.Size = new Size(37, 41);
+            label1.TabIndex = 6;
+            label1.Text = "1";
             // 
             // labelControl14
             // 
@@ -1547,6 +1659,7 @@ namespace QIP.EOL
             // 
             // panelControl17
             // 
+            panelControl17.Controls.Add(label11);
             panelControl17.Controls.Add(labelControl20);
             panelControl17.Controls.Add(simpleButton11);
             panelControl17.Dock = DockStyle.Fill;
@@ -1555,6 +1668,21 @@ namespace QIP.EOL
             panelControl17.Name = "panelControl17";
             panelControl17.Size = new Size(534, 53);
             panelControl17.TabIndex = 15;
+            // 
+            // label11
+            // 
+            label11.AccessibleName = "";
+            label11.AutoSize = true;
+            label11.BackColor = Color.Black;
+            label11.Dock = DockStyle.Right;
+            label11.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label11.ForeColor = Color.White;
+            label11.Location = new Point(497, 0);
+            label11.Margin = new Padding(3, 4, 3, 4);
+            label11.Name = "label11";
+            label11.Size = new Size(37, 41);
+            label11.TabIndex = 6;
+            label11.Text = "8";
             // 
             // labelControl20
             // 
@@ -1587,6 +1715,7 @@ namespace QIP.EOL
             // 
             // panelControl18
             // 
+            panelControl18.Controls.Add(label12);
             panelControl18.Controls.Add(labelControl21);
             panelControl18.Controls.Add(simpleButton12);
             panelControl18.Dock = DockStyle.Fill;
@@ -1595,6 +1724,21 @@ namespace QIP.EOL
             panelControl18.Name = "panelControl18";
             panelControl18.Size = new Size(534, 53);
             panelControl18.TabIndex = 15;
+            // 
+            // label12
+            // 
+            label12.AccessibleName = "";
+            label12.AutoSize = true;
+            label12.BackColor = Color.Black;
+            label12.Dock = DockStyle.Right;
+            label12.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label12.ForeColor = Color.White;
+            label12.Location = new Point(497, 0);
+            label12.Margin = new Padding(3, 4, 3, 4);
+            label12.Name = "label12";
+            label12.Size = new Size(37, 41);
+            label12.TabIndex = 6;
+            label12.Text = "9";
             // 
             // labelControl21
             // 
@@ -1627,6 +1771,7 @@ namespace QIP.EOL
             // 
             // panelControl19
             // 
+            panelControl19.Controls.Add(label13);
             panelControl19.Controls.Add(labelControl22);
             panelControl19.Controls.Add(simpleButton13);
             panelControl19.Dock = DockStyle.Fill;
@@ -1635,6 +1780,21 @@ namespace QIP.EOL
             panelControl19.Name = "panelControl19";
             panelControl19.Size = new Size(534, 53);
             panelControl19.TabIndex = 15;
+            // 
+            // label13
+            // 
+            label13.AccessibleName = "";
+            label13.AutoSize = true;
+            label13.BackColor = Color.Black;
+            label13.Dock = DockStyle.Right;
+            label13.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label13.ForeColor = Color.White;
+            label13.Location = new Point(478, 0);
+            label13.Margin = new Padding(3, 4, 3, 4);
+            label13.Name = "label13";
+            label13.Size = new Size(56, 41);
+            label13.TabIndex = 6;
+            label13.Text = "12";
             // 
             // labelControl22
             // 
@@ -1667,6 +1827,7 @@ namespace QIP.EOL
             // 
             // panelControl20
             // 
+            panelControl20.Controls.Add(label14);
             panelControl20.Controls.Add(labelControl23);
             panelControl20.Controls.Add(simpleButton15);
             panelControl20.Dock = DockStyle.Fill;
@@ -1675,6 +1836,21 @@ namespace QIP.EOL
             panelControl20.Name = "panelControl20";
             panelControl20.Size = new Size(534, 53);
             panelControl20.TabIndex = 15;
+            // 
+            // label14
+            // 
+            label14.AccessibleName = "";
+            label14.AutoSize = true;
+            label14.BackColor = Color.Black;
+            label14.Dock = DockStyle.Right;
+            label14.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label14.ForeColor = Color.White;
+            label14.Location = new Point(478, 0);
+            label14.Margin = new Padding(3, 4, 3, 4);
+            label14.Name = "label14";
+            label14.Size = new Size(56, 41);
+            label14.TabIndex = 6;
+            label14.Text = "23";
             // 
             // labelControl23
             // 
@@ -1707,6 +1883,7 @@ namespace QIP.EOL
             // 
             // panelControl21
             // 
+            panelControl21.Controls.Add(label15);
             panelControl21.Controls.Add(labelControl24);
             panelControl21.Controls.Add(simpleButton16);
             panelControl21.Dock = DockStyle.Fill;
@@ -1715,6 +1892,21 @@ namespace QIP.EOL
             panelControl21.Name = "panelControl21";
             panelControl21.Size = new Size(534, 53);
             panelControl21.TabIndex = 15;
+            // 
+            // label15
+            // 
+            label15.AccessibleName = "";
+            label15.AutoSize = true;
+            label15.BackColor = Color.Black;
+            label15.Dock = DockStyle.Right;
+            label15.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label15.ForeColor = Color.White;
+            label15.Location = new Point(478, 0);
+            label15.Margin = new Padding(3, 4, 3, 4);
+            label15.Name = "label15";
+            label15.Size = new Size(56, 41);
+            label15.TabIndex = 6;
+            label15.Text = "79";
             // 
             // labelControl24
             // 
@@ -1747,6 +1939,7 @@ namespace QIP.EOL
             // 
             // panelControl22
             // 
+            panelControl22.Controls.Add(label16);
             panelControl22.Controls.Add(labelControl25);
             panelControl22.Controls.Add(simpleButton17);
             panelControl22.Dock = DockStyle.Fill;
@@ -1755,6 +1948,21 @@ namespace QIP.EOL
             panelControl22.Name = "panelControl22";
             panelControl22.Size = new Size(534, 54);
             panelControl22.TabIndex = 15;
+            // 
+            // label16
+            // 
+            label16.AccessibleName = "";
+            label16.AutoSize = true;
+            label16.BackColor = Color.Black;
+            label16.Dock = DockStyle.Right;
+            label16.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label16.ForeColor = Color.White;
+            label16.Location = new Point(478, 0);
+            label16.Margin = new Padding(3, 4, 3, 4);
+            label16.Name = "label16";
+            label16.Size = new Size(56, 41);
+            label16.TabIndex = 6;
+            label16.Text = "22";
             // 
             // labelControl25
             // 
@@ -1828,6 +2036,7 @@ namespace QIP.EOL
             // 
             // panelControl8
             // 
+            panelControl8.Controls.Add(label7);
             panelControl8.Controls.Add(labelControl13);
             panelControl8.Controls.Add(simpleButton9);
             panelControl8.Dock = DockStyle.Fill;
@@ -1836,6 +2045,21 @@ namespace QIP.EOL
             panelControl8.Name = "panelControl8";
             panelControl8.Size = new Size(540, 115);
             panelControl8.TabIndex = 14;
+            // 
+            // label7
+            // 
+            label7.AccessibleName = "";
+            label7.AutoSize = true;
+            label7.BackColor = Color.Black;
+            label7.Dock = DockStyle.Right;
+            label7.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.ForeColor = Color.White;
+            label7.Location = new Point(484, 0);
+            label7.Margin = new Padding(3, 4, 3, 4);
+            label7.Name = "label7";
+            label7.Size = new Size(56, 41);
+            label7.TabIndex = 6;
+            label7.Text = "17";
             // 
             // labelControl13
             // 
@@ -1868,6 +2092,7 @@ namespace QIP.EOL
             // 
             // panelControl7
             // 
+            panelControl7.Controls.Add(label8);
             panelControl7.Controls.Add(labelControl12);
             panelControl7.Controls.Add(simpleButton10);
             panelControl7.Dock = DockStyle.Fill;
@@ -1876,6 +2101,21 @@ namespace QIP.EOL
             panelControl7.Name = "panelControl7";
             panelControl7.Size = new Size(540, 115);
             panelControl7.TabIndex = 13;
+            // 
+            // label8
+            // 
+            label8.AccessibleName = "";
+            label8.AutoSize = true;
+            label8.BackColor = Color.Black;
+            label8.Dock = DockStyle.Right;
+            label8.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.ForeColor = Color.White;
+            label8.Location = new Point(484, 0);
+            label8.Margin = new Padding(3, 4, 3, 4);
+            label8.Name = "label8";
+            label8.Size = new Size(56, 41);
+            label8.TabIndex = 6;
+            label8.Text = "18";
             // 
             // labelControl12
             // 
@@ -2129,6 +2369,7 @@ namespace QIP.EOL
             // 
             // panelControl9
             // 
+            panelControl9.Controls.Add(label9);
             panelControl9.Controls.Add(lblCount21);
             panelControl9.Controls.Add(simpleButton4);
             panelControl9.Dock = DockStyle.Fill;
@@ -2137,6 +2378,21 @@ namespace QIP.EOL
             panelControl9.Name = "panelControl9";
             panelControl9.Size = new Size(540, 115);
             panelControl9.TabIndex = 11;
+            // 
+            // label9
+            // 
+            label9.AccessibleName = "";
+            label9.AutoSize = true;
+            label9.BackColor = Color.Black;
+            label9.Dock = DockStyle.Right;
+            label9.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label9.ForeColor = Color.White;
+            label9.Location = new Point(484, 0);
+            label9.Margin = new Padding(3, 4, 3, 4);
+            label9.Name = "label9";
+            label9.Size = new Size(56, 41);
+            label9.TabIndex = 6;
+            label9.Text = "21";
             // 
             // lblCount21
             // 
@@ -2170,6 +2426,7 @@ namespace QIP.EOL
             // panelControl10
             // 
             tableLayoutPanel2.SetColumnSpan(panelControl10, 2);
+            panelControl10.Controls.Add(label10);
             panelControl10.Controls.Add(lblCount0);
             panelControl10.Controls.Add(simpleButton5);
             panelControl10.Dock = DockStyle.Fill;
@@ -2178,6 +2435,21 @@ namespace QIP.EOL
             panelControl10.Name = "panelControl10";
             panelControl10.Size = new Size(1086, 115);
             panelControl10.TabIndex = 12;
+            // 
+            // label10
+            // 
+            label10.AccessibleName = "";
+            label10.AutoSize = true;
+            label10.BackColor = Color.Black;
+            label10.Dock = DockStyle.Right;
+            label10.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(1030, 0);
+            label10.Margin = new Padding(3, 4, 3, 4);
+            label10.Name = "label10";
+            label10.Size = new Size(56, 41);
+            label10.TabIndex = 7;
+            label10.Text = "82";
             // 
             // lblCount0
             // 
@@ -2511,5 +2783,21 @@ namespace QIP.EOL
         private System.Windows.Forms.Timer timer_BlinkButtonGreen;
         private TableLayoutPanel tableLayoutPanel5;
         private Button btnVoiceWhisper;
+        private Label label4;
+        private Label label2;
+        private Label label3;
+        private Label label5;
+        private Label label6;
+        private Label label11;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private Label label10;
+        private Label label12;
+        private Label label13;
+        private Label label14;
+        private Label label15;
+        private Label label16;
+        private Label label1;
     }
 }
