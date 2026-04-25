@@ -1,9 +1,11 @@
 <Solution>
   <Project Path="ConnectionClass/ConnectionClass.csproj" />
+  <Project Path="DEV/DEV.csproj" Id="36edd4bf-57be-4b9f-a7fa-f786ba0789e7" />
   <Project Path="GlobalFunction/GlobalFunction.csproj" />
   <Project Path="MQTT/MQTT.csproj" Id="56d6cfe6-54a7-46d6-b908-bf470d733779" />
   <Project Path="NETTMC/NETTMC.csproj" />
   <Project Path="NetTMCVersion/NetTMCVersion.csproj" />
   <Project Path="QIP/QIP.csproj" Id="c667df0c-876b-4502-be97-54a6168f7c56" />
   <Project Path="SystemControl/SystemControl.csproj" Id="e29a23c8-86ee-44a4-a704-d274a7fe3d8e" />
+  <Project Path="VoiceRecognition/VoiceRecognition.csproj" Id="788ea97c-e68d-436e-b7d2-deaa1dfdee1b" />
 </Solution>

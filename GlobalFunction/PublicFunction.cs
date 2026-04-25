@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using OfficeOpenXml;
+using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace GlobalFunction
 {
@@ -455,11 +457,13 @@ namespace GlobalFunction
                     if (ip.ToString() == "192.168.1.55" || ip.ToString() == "192.168.1.196" || ip.ToString() == "192.168.0.118" || ip.ToString() == "192.168.1.150")
                     {
                         //return ip.ToString();
-                        return "192.168.0.85";
-                        //return "192.168.2.180";
+                        //return "192.168.0.85";
+                        //return "192.168.1.197";
                         //return "192.168.17.241";
                         //return "192.168.0.236";
                         //return "192.168.3.174";
+                        //return "192.168.0.105";
+                        return "192.168.0.163";
                     }
                     else
                     {
@@ -1378,6 +1382,22 @@ namespace GlobalFunction
                         }
                     }
                     break;
+                case "frmTMC7033_A7":
+                    if (isDevIP) return true;
+                    query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
+                    dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
+                    if (dt.Rows.Count > 0)
+                    {
+                        if (dt.Rows[0][0].ToString() == "1")
+                        {
+                            return true;
+                        }
+                        else if (dt.Rows[0][0].ToString() == "0")
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "frmTMC7033_A14":
 
                     if (isDevIP) return true;
@@ -1397,7 +1417,7 @@ namespace GlobalFunction
                     }
                     break;
                 case "frmTMC7036_New":
-                    if (isDevIP) return true;
+                    //if (isDevIP) return true;
                     query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
                     dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                     if (dt.Rows.Count > 0)
@@ -1437,7 +1457,7 @@ namespace GlobalFunction
                     return true;
                     break;
                 case "frmTMC7036":
-
+                    if (isDevIP) return true;
                     query.AppendLine("SELECT COUNT(*) FROM MES.TRTB_M_COMMON WHERE C_GROUP = 'BTS' AND N_COMNAME = '" + myIpaddress + "'");
                     dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                     if (dt.Rows.Count > 0)
@@ -1544,7 +1564,53 @@ namespace GlobalFunction
             return true;
         }
 
+        public void ExportToExcelFile(DataGridView gv, string sheetName)
+        {
+            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            {
+                fbd.Description = "Select path to export excel";
 
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    string path = Path.Combine(
+                        fbd.SelectedPath,
+                        $"{sheetName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+                    );
+
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                    using (var package = new ExcelPackage())
+                    {
+                        var ws = package.Workbook.Worksheets.Add(sheetName);
+
+                        // Header
+                        for (int i = 0; i < gv.Columns.Count; i++)
+                        {
+                            ws.Cells[1, i + 1].Value = gv.Columns[i].HeaderText;
+                        }
+
+                        // Data
+                        for (int i = 0; i < gv.Rows.Count; i++)
+                        {
+                            for (int j = 0; j < gv.Columns.Count; j++)
+                            {
+                                ws.Cells[i + 2, j + 1].Value = gv.Rows[i].Cells[j].Value;
+                            }
+                        }
+
+                        ws.Cells.AutoFitColumns();
+
+                        File.WriteAllBytes(path, package.GetAsByteArray());
+                    }
+
+                    if (MessageBox.Show("Export complete", "Information",
+                        MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                    }
+                }
+            }
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

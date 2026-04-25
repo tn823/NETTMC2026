@@ -92,7 +92,7 @@
             panel3 = new Panel();
             fgsfbsfx = new TableLayoutPanel();
             label4 = new Label();
-            button4 = new Button();
+            button1 = new Button();
             btnClear = new Button();
             btnPass = new Button();
             btnFail = new Button();
@@ -890,7 +890,7 @@
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
             panel3.Controls.Add(fgsfbsfx);
-            panel3.Controls.Add(button4);
+            panel3.Controls.Add(button1);
             panel3.Controls.Add(btnClear);
             panel3.Controls.Add(btnPass);
             panel3.Controls.Add(btnFail);
@@ -915,6 +915,7 @@
             // 
             // label4
             // 
+            label4.AccessibleDescription = "lblMessage";
             label4.AutoSize = true;
             label4.Dock = DockStyle.Fill;
             label4.Font = new Font("Arial", 26.25F);
@@ -926,18 +927,18 @@
             label4.Text = "THÔNG BÁO";
             label4.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button4
+            // button1
             // 
-            button4.BackColor = Color.FromArgb(255, 128, 128);
-            button4.Dock = DockStyle.Right;
-            button4.Font = new Font("Tahoma", 12F, FontStyle.Bold);
-            button4.ForeColor = SystemColors.ButtonHighlight;
-            button4.Location = new Point(223, 0);
-            button4.Name = "button4";
-            button4.Size = new Size(73, 125);
-            button4.TabIndex = 5;
-            button4.Text = "Go-No Go Standard";
-            button4.UseVisualStyleBackColor = false;
+            button1.BackColor = Color.FromArgb(255, 128, 128);
+            button1.Dock = DockStyle.Right;
+            button1.Font = new Font("Tahoma", 12F, FontStyle.Bold);
+            button1.ForeColor = SystemColors.ButtonHighlight;
+            button1.Location = new Point(223, 0);
+            button1.Name = "button1";
+            button1.Size = new Size(73, 125);
+            button1.TabIndex = 5;
+            button1.Text = "Go-No Go Standard";
+            button1.UseVisualStyleBackColor = false;
             // 
             // btnClear
             // 
@@ -1221,7 +1222,7 @@
         private Panel panel5;
         private TableLayoutPanel fgsfbsfx;
         private Label label4;
-        private Button button4;
+        private Button button1;
         private Button btnClear;
         private Button btn_reasonCode2;
         private Button btn_reasonCode3;

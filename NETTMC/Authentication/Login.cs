@@ -36,11 +36,11 @@ namespace NETTMC.Authentication
             //tableLayoutLogin.Hide();
 
 
-
+            tableLayoutLogin.Hide();
             //lblMessage.Text = "";
             txtUser.Focus();
             labelControl5.Text = "Try to connect database...";
-            progressPanel1.Show();
+            panelControl2.Show();
             //progressPanel2.Hide();
             string Ipadd = "";
             Ipadd = GlobalFunction.PublicFunction.myIpaddress;
@@ -85,13 +85,14 @@ namespace NETTMC.Authentication
             //ConnectionClass.Oracle.Site.ConnectionSite = "AG";
             crud = new CRUDOracle("VSMES");
             CheckConnectionStatus();
+            progressPanel1.Show();
         }
 
 
         private bool CheckDefaultProgram()
         {
             var a = new GlobalFunction.PublicFunction().ReadFromFileNotMesage("DefaultProgram");
-            Debug.WriteLine("Default Program: " + a);
+            //Debug.WriteLine("Default Program: " + a);
             if (a == null)
             {
                 return false;
@@ -322,14 +323,15 @@ namespace NETTMC.Authentication
                 return crud.ConnectionStatus();
 
             });
-            if (CheckDefaultProgram())
-            {
-                this.Hide();
-            }
+            //if (CheckDefaultProgram())
+            //{
+            //    this.Hide();
+            //}
             if (connectionstatus)
             {
                 labelControl5.Text = "Database Connected";
                 labelControl5.ForeColor = Color.Green;
+                progressPanel1.Hide();
             }
             else
             {
@@ -371,6 +373,7 @@ namespace NETTMC.Authentication
             if (GlobalFunction.PublicFunction.myIpaddress == ("192.168.1.197") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.249") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.62") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.145") || GlobalFunction.PublicFunction.myIpaddress == ("192.168.31.213"))
             {
                 uc = new QIP.EOL.frmTMC7033_A14();
+                //uc = new QIP.EOL.frmTMC7033_A7();
             }
             else
             {
@@ -430,9 +433,9 @@ namespace NETTMC.Authentication
             this.Hide();
         }
 
-        
 
-        
+
+
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -468,6 +471,37 @@ namespace NETTMC.Authentication
             //if (ok) MessageBox.Show("Đã lưu Pass");
             if (ok2) MessageBox.Show("Đã lưu Fail");
 
+        }
+
+        private void btnSystem_Click(object sender, EventArgs e)
+        {
+            tableLayoutLogin.Show();
+        }
+
+        private void simpleButton5_Click(object sender, EventArgs e)
+        {
+            //MainForm mf = new MainForm();
+            //mf.ribbon.Visible = false;
+            //mf.Show();
+            //UserControl uc1 = new HRMS.Security.frmTMC7099();
+            //UserControl uc2 = new HRMS.Security.frmTMC7098();
+            //if (!pubFunc.OpenUserControl(new HRMS.Security.frmTMC7099(), "Security Registration", "Security Registration", mf.tabControl))
+            //{
+            //    MessageBox.Show("Sorry ! You don’t have permission to open this program frmTMC7099", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    mf.Hide();
+            //    uc1.Dispose();
+            //    uc2.Dispose();
+            //    this.Focus();
+            //    return;
+            //}
+            //if (!pubFunc.OpenUserControl(new HRMS.Security.frmTMC7098(), "Log Book", "Log Book", mf.tabControl))
+            //{
+            //    MessageBox.Show("Sorry ! You don’t have permission to open this program frmTMC7098", "Security", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    mf.Hide();
+            //    this.Focus();
+            //    return;
+            //}
+            //this.Hide();
         }
     }
 }
