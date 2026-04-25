@@ -2934,11 +2934,11 @@ namespace QIP.EOL
                 dt = crud.dac.DtSelectExcuteWithQuery(query.ToString());
                 if (dt.Rows.Count > 0)
                 {
-                    //label7.Text = "Remark : " + dt.Rows[0]["C_REMARKS"].ToString();
+                    label21.Text = "Remark : " + dt.Rows[0]["C_REMARKS"].ToString();
                 }
                 else
                 {
-                    //label7.Text = "Remark : ";
+                    label21.Text = "Remark : ";
                 }
             }
             catch (Exception ex)
