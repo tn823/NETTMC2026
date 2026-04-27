@@ -5,6 +5,7 @@ using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
 using NAudio.Wave;
+using WebRtcVadSharp;
 using Whisper.net;
 using Whisper.net.Ggml;
 
@@ -37,14 +38,21 @@ namespace NETTMC.VoiceRecognition
         public event EventHandler<string> LogMessage;
 
         private const int SampleRate = 16000;
-        private const double VoiceLevelThreshold = 0.018;
+        // 20ms frame = 16000Hz * 0.02s * 2 bytes (16-bit) = 640 bytes
+        private const int VadFrameBytes = 640;
         private const int MinimumVoiceMs = 250;
-        private const int SilenceAfterVoiceMs = 650;
+        private const int SilenceAfterVoiceMs = 400;
+
+        // Từ khoá kết thúc câu — được strip trước khi match.
+        // Không dùng "ok"/"ô kê" vì có xung đột với action "pass".
+        // Người dùng nói: "A hở keo xong" → strip "xong" → xử lý "A hở keo"
+        private static readonly string[] EndKeywords = { "xong", "hết", "done" };
 
         private readonly double _threshold;
         private readonly List<string> _commandList = new List<string>();
         private readonly List<VoiceCommandDefinition> _commandDefinitions = new List<VoiceCommandDefinition>();
 
+        private WebRtcVad _vad;
         private WhisperFactory _whisperFactory;
         private WhisperProcessor _whisperProcessor;
         private bool _modelReady;
@@ -58,18 +66,21 @@ namespace NETTMC.VoiceRecognition
         private DateTime _recordingStartedAt;
         private DateTime _firstVoiceAt;
         private DateTime _lastVoiceAt;
-        private int _maxRecordingMs = 8000;
+        private int _maxRecordingMs = 5000;
 
         private SpeechSynthesizer _tts;
         private bool _isDisposed;
+        private string _lastErrorMessage;
 
         public VoiceEngine(double threshold = 0.80)
         {
             _threshold = threshold;
             InitializeTTS();
+            InitializeVad();
         }
 
         public bool IsRecording => _isRecording;
+        public string LastErrorMessage => _lastErrorMessage;
 
         public void SetCommandList(IEnumerable<string> commands)
         {
@@ -126,8 +137,7 @@ namespace NETTMC.VoiceRecognition
             }
             catch (Exception ex)
             {
-                Log($"Loi khoi tao Whisper: {ex.Message}");
-                ChangeState(VoiceEngineState.Error);
+                SetError("Loi khoi tao Whisper", ex);
                 throw;
             }
         }
@@ -167,14 +177,21 @@ namespace NETTMC.VoiceRecognition
             }
             catch (Exception ex)
             {
-                Log($"Loi mic: {ex.Message}");
-                ChangeState(VoiceEngineState.Error);
+                _isRecording = false;
+                _hasPendingAudio = false;
+                CleanupRecordingResources();
+                SetError("Loi mic", ex);
             }
         }
 
         public async Task StartSmartPushToTalkAsync(int maxRecordingMs = 5000)
         {
             StartPushToTalk(maxRecordingMs);
+
+            if (!_isRecording)
+            {
+                return;
+            }
 
             while (_isRecording)
             {
@@ -202,6 +219,7 @@ namespace NETTMC.VoiceRecognition
             ChangeState(VoiceEngineState.Processing);
 
             await Task.Delay(100);
+            FinalizeWaveWriter();
             await RecognizeAudioAsync();
         }
 
@@ -233,8 +251,7 @@ namespace NETTMC.VoiceRecognition
             }
             catch (Exception ex)
             {
-                Log($"Loi doc file: {ex.Message}");
-                ChangeState(VoiceEngineState.Error);
+                SetError("Loi doc file", ex);
             }
         }
 
@@ -243,8 +260,7 @@ namespace NETTMC.VoiceRecognition
             _waveWriter?.Write(e.Buffer, 0, e.BytesRecorded);
 
             DateTime now = DateTime.UtcNow;
-            double level = CalculateRms(e.Buffer, e.BytesRecorded);
-            bool hasVoice = level >= VoiceLevelThreshold;
+            bool hasVoice = HasVoiceVad(e.Buffer, e.BytesRecorded);
 
             if (hasVoice)
             {
@@ -268,9 +284,74 @@ namespace NETTMC.VoiceRecognition
             }
         }
 
+        // Phân tích giọng nói bằng WebRTC VAD (chia chunk 20ms)
+        // Nếu VAD chưa sẵn sàng, fallback về RMS cơ bản
+        private bool HasVoiceVad(byte[] buffer, int bytesRecorded)
+        {
+            if (_vad == null || bytesRecorded < VadFrameBytes)
+            {
+                return CalculateRms(buffer, bytesRecorded) >= 0.018;
+            }
+
+            int offset = 0;
+            int voiceFrames = 0;
+            int totalFrames = 0;
+
+            while (offset + VadFrameBytes <= bytesRecorded)
+            {
+                byte[] frame = new byte[VadFrameBytes];
+                Buffer.BlockCopy(buffer, offset, frame, 0, VadFrameBytes);
+
+                try
+                {
+                    if (_vad.HasSpeech(frame, WebRtcVadSharp.SampleRate.Is16kHz, FrameLength.Is20ms))
+                    {
+                        voiceFrames++;
+                    }
+                }
+                catch
+                {
+                    // Nếu VAD lỗi một frame, bỏ qua
+                }
+
+                totalFrames++;
+                offset += VadFrameBytes;
+            }
+
+            // Có giọng nói nếu >=30% frame bị phân loại là speech
+            return totalFrames > 0 && (double)voiceFrames / totalFrames >= 0.30;
+        }
+
         private void OnRecordingStopped(object sender, StoppedEventArgs e)
         {
-            _waveWriter?.Flush();
+            FinalizeWaveWriter();
+        }
+
+        private void FinalizeWaveWriter()
+        {
+            if (_waveWriter == null)
+            {
+                return;
+            }
+
+            try
+            {
+                _waveWriter.Flush();
+                _waveWriter.Dispose();
+                _waveWriter = null;
+
+                if (_audioBuffer != null)
+                {
+                    byte[] wavBytes = _audioBuffer.ToArray();
+                    _audioBuffer.Dispose();
+                    _audioBuffer = new MemoryStream(wavBytes);
+                    _audioBuffer.Position = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                SetError("Loi dong goi audio", ex);
+            }
         }
 
         private async Task RecognizeAudioAsync()
@@ -303,57 +384,64 @@ namespace NETTMC.VoiceRecognition
                     avgProb /= segCount;
                 }
 
-                if (string.IsNullOrWhiteSpace(recognizedText))
+                // Strip từ khoá kết thúc câu ("ok", "ô kê"...) trước khi parse
+                string cleanedText = StripEndKeyword(recognizedText);
+
+                if (string.IsNullOrWhiteSpace(cleanedText))
                 {
-                    Log("Khong nhan duoc gi.");
-                    SpeakAsync("Khong nghe thay gi.");
+                    Log("Chỉ nghe được từ kết thúc, bỏ qua.");
                     ChangeState(VoiceEngineState.Ready);
                     return;
                 }
 
-                Log($"Nghe duoc: \"{recognizedText}\" (Prob: {avgProb:P0})");
+                Log($"Nghe được: \"{recognizedText}\" → xử lý: \"{cleanedText}\" (Prob: {avgProb:P0})");
 
-                VoiceCommandMatch parsedCommand = null;
                 if (_commandDefinitions.Count > 0)
                 {
-                    parsedCommand = VoiceCommandParser.Parse(recognizedText, _commandDefinitions, _threshold);
+                    // ParseAll: nhận NHIỀU lệnh trong một câu (A 11 21 82 → part A + errors 11,21,82)
+                    var allMatches = VoiceCommandParser.ParseAll(cleanedText, _commandDefinitions, _threshold);
+
+                    if (allMatches.Count > 0)
+                    {
+                        foreach (var parsedCommand in allMatches)
+                        {
+                            Log($"[Voice OK] {parsedCommand.ToDisplayText()} ({parsedCommand.ConfidenceScore:P0})");
+                            var result = new VoiceMatchResult
+                            {
+                                RecognizedText  = recognizedText,
+                                ParsedCommand   = parsedCommand,
+                                MatchedCommand  = parsedCommand.ToDisplayText(),
+                                ConfidenceScore = parsedCommand.ConfidenceScore
+                            };
+                            CommandRecognized?.Invoke(this, result);
+                        }
+
+                        SpeakAsync($"Đã nhận {allMatches.Count} lệnh");
+                        return;
+                    }
                 }
 
-                var (matchedCommand, score) = FindBestMatch(recognizedText);
-                if (parsedCommand?.IsSuccess == true && parsedCommand.ConfidenceScore >= score)
+                // Fallback: dùng simple keyword list (không có _commandDefinitions)
+                var (matchedCommand, score) = FindBestMatch(cleanedText);
+                var fallbackResult = new VoiceMatchResult
                 {
-                    matchedCommand = parsedCommand.ToDisplayText();
-                    score = parsedCommand.ConfidenceScore;
-                }
-
-                var result = new VoiceMatchResult
-                {
-                    RecognizedText = recognizedText,
-                    ParsedCommand = parsedCommand,
-                    MatchedCommand = (matchedCommand != null && score >= _threshold) ? matchedCommand : null,
+                    RecognizedText  = recognizedText,
+                    ParsedCommand   = null,
+                    MatchedCommand  = (matchedCommand != null && score >= _threshold) ? matchedCommand : null,
                     ConfidenceScore = score
                 };
 
-                if (result.IsSuccess)
-                {
-                    Log($"Khop lenh: \"{result.MatchedCommand}\" (Score: {score:P0})");
-                    SpeakAsync($"Da nhan lenh {result.MatchedCommand}");
-                }
+                if (fallbackResult.IsSuccess)
+                    Log($"[Voice OK] \"{fallbackResult.MatchedCommand}\" ({score:P0})");
                 else
-                {
-                    string info = matchedCommand != null
-                        ? $"Gan nhat: \"{matchedCommand}\" ({score:P0}) - duoi nguong {_threshold:P0}"
-                        : "Khong tim thay lenh phu hop";
-                    Log(info);
-                    SpeakAsync("Khong nhan ra lenh.");
-                }
+                    Log($"[Voice NG] Không nhận ra: \"{cleanedText}\" (gần nhất: \"{matchedCommand}\" {score:P0})");
 
-                CommandRecognized?.Invoke(this, result);
+                CommandRecognized?.Invoke(this, fallbackResult);
+
             }
             catch (Exception ex)
             {
-                Log($"Loi nhan dang: {ex.Message}");
-                ChangeState(VoiceEngineState.Error);
+                SetError("Loi nhan dang", ex);
             }
             finally
             {
@@ -437,6 +525,39 @@ namespace NETTMC.VoiceRecognition
             }
         }
 
+        private void InitializeVad()
+        {
+            try
+            {
+                _vad = new WebRtcVad
+                {
+                    // VeryAggressive: ít false positive nhất trong môi trường ồn
+                    OperatingMode = OperatingMode.VeryAggressive
+                };
+            }
+            catch
+            {
+                _vad = null;
+                Log("WebRTC VAD khởi tạo thất bại, fallback về RMS.");
+            }
+        }
+
+        private static string StripEndKeyword(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return text;
+
+            string normalized = text.Trim();
+            foreach (string kw in EndKeywords)
+            {
+                if (normalized.EndsWith(kw, StringComparison.OrdinalIgnoreCase))
+                {
+                    return normalized.Substring(0, normalized.Length - kw.Length).Trim();
+                }
+            }
+
+            return normalized;
+        }
+
         private void SpeakAsync(string text)
         {
             if (_tts == null)
@@ -458,12 +579,37 @@ namespace NETTMC.VoiceRecognition
 
         private void ChangeState(VoiceEngineState newState)
         {
+            if (newState != VoiceEngineState.Error)
+            {
+                _lastErrorMessage = null;
+            }
+
             StateChanged?.Invoke(this, newState);
         }
 
         private void Log(string message)
         {
             LogMessage?.Invoke(this, message);
+        }
+
+        private void SetError(string context, Exception ex)
+        {
+            _lastErrorMessage = $"{context}: {ex.GetType().Name}: {ex.Message}";
+            Log($"[Voice Error] ExceptionType: {ex.GetType().FullName}");
+            Log($"[Voice Error] {context}: {ex.Message}");
+            ChangeState(VoiceEngineState.Error);
+        }
+
+        private void CleanupRecordingResources()
+        {
+            try { _waveIn?.StopRecording(); } catch { }
+            try { _waveIn?.Dispose(); } catch { }
+            try { _waveWriter?.Dispose(); } catch { }
+            try { _audioBuffer?.Dispose(); } catch { }
+
+            _waveIn = null;
+            _waveWriter = null;
+            _audioBuffer = null;
         }
 
         public void Dispose()
@@ -480,6 +626,7 @@ namespace NETTMC.VoiceRecognition
             try { _waveWriter?.Dispose(); _audioBuffer?.Dispose(); } catch { }
             try { _whisperProcessor?.Dispose(); _whisperFactory?.Dispose(); } catch { }
             try { _tts?.Dispose(); } catch { }
+            try { _vad?.Dispose(); } catch { }
         }
     }
 }
