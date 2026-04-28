@@ -186,14 +186,15 @@ namespace NETTMC.VoiceRecognition
 
             var parts   = defs.Where(d => d.Kind == VoiceCommandKind.Part).ToList();
             var errors  = defs.Where(d => d.Kind == VoiceCommandKind.Error).ToList();
+            var actions = defs.Where(d => d.Kind == VoiceCommandKind.Action).ToList();
 
             string normalizedFull = VoiceTextNormalizer.Normalize(input);
             string[] tokens = SplitNormalizedTokens(normalizedFull);
 
             var usedIdx = new HashSet<int>();
 
-            // Bước 1: Tìm part từ từng token riêng lẻ (ưu tiên token khớp nhất)
-            int bestPartIdx   = -1;
+            // Bước 1: Tìm part (1 token) ưu tiên khớp nhất
+            int bestPartIdx = -1;
             double bestPartSc = 0;
             VoiceCommandMatch bestPartMatch = null;
 
@@ -202,8 +203,8 @@ namespace NETTMC.VoiceRecognition
                 var (def, phrase, score) = FindBestFromToken(tokens[i], parts);
                 if (def != null && score >= threshold && score > bestPartSc)
                 {
-                    bestPartSc    = score;
-                    bestPartIdx   = i;
+                    bestPartSc = score;
+                    bestPartIdx = i;
                     bestPartMatch = new VoiceCommandMatch
                     {
                         RecognizedText = input,
@@ -217,7 +218,47 @@ namespace NETTMC.VoiceRecognition
 
             if (bestPartMatch != null) { results.Add(bestPartMatch); usedIdx.Add(bestPartIdx); }
 
-            // Match multi-token error aliases before single-token codes.
+            // Bước 2: Tìm action (nhiều token)
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                if (usedIdx.Contains(i)) continue;
+                var (windowDef, windowPhrase, windowScore, windowLength) = FindBestFromTokenWindow(tokens, i, actions, usedIdx);
+                if (windowDef != null && windowScore >= threshold)
+                {
+                    results.Add(new VoiceCommandMatch
+                    {
+                        RecognizedText  = input,
+                        Kind            = VoiceCommandKind.Action,
+                        ActionType      = windowDef.ActionType,
+                        MatchedCommand  = windowPhrase,
+                        ConfidenceScore = windowScore
+                    });
+
+                    for (int j = i; j < i + windowLength; j++) usedIdx.Add(j);
+                    i += windowLength - 1;
+                }
+            }
+
+            // Bước 3: Tìm action (1 token)
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                if (usedIdx.Contains(i)) continue;
+                var (def, phrase, score) = FindBestFromToken(tokens[i], actions);
+                if (def != null && score >= threshold)
+                {
+                    results.Add(new VoiceCommandMatch
+                    {
+                        RecognizedText  = input,
+                        Kind            = VoiceCommandKind.Action,
+                        ActionType      = def.ActionType,
+                        MatchedCommand  = phrase,
+                        ConfidenceScore = score
+                    });
+                    usedIdx.Add(i);
+                }
+            }
+
+            // Bước 4: Tìm error (nhiều token)
             for (int i = 0; i < tokens.Length; i++)
             {
                 if (usedIdx.Contains(i)) continue;
@@ -233,16 +274,12 @@ namespace NETTMC.VoiceRecognition
                         ConfidenceScore = windowScore
                     });
 
-                    for (int j = i; j < i + windowLength; j++)
-                    {
-                        usedIdx.Add(j);
-                    }
-
+                    for (int j = i; j < i + windowLength; j++) usedIdx.Add(j);
                     i += windowLength - 1;
                 }
             }
 
-            // Bước 2: Tìm tất cả error từ các token còn lại
+            // Bước 5: Tìm error (1 token)
             for (int i = 0; i < tokens.Length; i++)
             {
                 if (usedIdx.Contains(i)) continue;
@@ -261,14 +298,43 @@ namespace NETTMC.VoiceRecognition
                 }
             }
 
-            // Bước 3: Không có kết quả → fallback Parse() đơn (action, composite từ cụm từ)
-            if (results.Count == 0)
+            // Bước 6: Deduplicate (lọc trùng mã lỗi và hành động)
+            var distinctResults = new List<VoiceCommandMatch>();
+            var seenErrors = new HashSet<string>();
+            var seenActions = new HashSet<string>();
+
+            foreach (var match in results)
             {
-                var single = Parse(input, defs, threshold);
-                if (single.IsSuccess) results.Add(single);
+                if (match.Kind == VoiceCommandKind.Part)
+                {
+                    distinctResults.Add(match);
+                }
+                else if (match.Kind == VoiceCommandKind.Error)
+                {
+                    if (!seenErrors.Contains(match.ErrorCode))
+                    {
+                        seenErrors.Add(match.ErrorCode);
+                        distinctResults.Add(match);
+                    }
+                }
+                else if (match.Kind == VoiceCommandKind.Action)
+                {
+                    if (!seenActions.Contains(match.ActionType))
+                    {
+                        seenActions.Add(match.ActionType);
+                        distinctResults.Add(match);
+                    }
+                }
             }
 
-            return results;
+            // Bước 7: Nếu không tìm thấy gì, fallback về Parse() đơn
+            if (distinctResults.Count == 0)
+            {
+                var single = Parse(input, defs, threshold);
+                if (single.IsSuccess) distinctResults.Add(single);
+            }
+
+            return distinctResults;
         }
 
         private static string[] SplitNormalizedTokens(string normalizedText)
@@ -465,7 +531,48 @@ namespace NETTMC.VoiceRecognition
                 return string.Empty;
             }
 
-            string text = RemoveDiacritics(value).ToLowerInvariant();
+            string text = value.ToLowerInvariant();
+
+            // 1. Thay thế trươc khi bỏ dấu (để phân biệt các từ có dấu giống nhau khi bỏ dấu, ví dụ "bảy" và "bây")
+            var preDiacriticReplacements = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("bây", "bê"),
+                new KeyValuePair<string, string>("không đẹp", "không đạt"),
+                new KeyValuePair<string, string>("không lạc", "không đạt"),
+                new KeyValuePair<string, string>("đáng", "đạt"),
+                new KeyValuePair<string, string>("đẹp lại", "đạt lại"),
+                new KeyValuePair<string, string>("lỗi lời", "lỗi lại"),
+                new KeyValuePair<string, string>("một một", "11"),
+                new KeyValuePair<string, string>("một tám", "18"),
+                new KeyValuePair<string, string>("hai mô", "21"),
+                new KeyValuePair<string, string>("hai mốt", "21"),
+                new KeyValuePair<string, string>("hai lâm", "25"),
+                new KeyValuePair<string, string>("hai lăm", "25"),
+                new KeyValuePair<string, string>("hai tám", "28"),
+                new KeyValuePair<string, string>("bàn làm", "35"),
+                new KeyValuePair<string, string>("ba lăm", "35"),
+                new KeyValuePair<string, string>("bóng mó", "41"),
+                new KeyValuePair<string, string>("bốn mốt", "41"),
+                new KeyValuePair<string, string>("bốn hai", "42"),
+                new KeyValuePair<string, string>("tám hai", "82"),
+                new KeyValuePair<string, string>("ạ", "a"),
+                new KeyValuePair<string, string>("xe", "xê"),
+                new KeyValuePair<string, string>("hớ kêu", "hở keo"),
+                new KeyValuePair<string, string>("thở kêu", "hở keo"),
+                new KeyValuePair<string, string>("lêm kêu", "lem keo"),
+                new KeyValuePair<string, string>("nhâng lỗi", "nhăn lót"),
+                new KeyValuePair<string, string>("bởi sinh nhă", "vệ sinh dơ"),
+                new KeyValuePair<string, string>("khách màu", "khác màu"),
+                new KeyValuePair<string, string>("chỉ thừ", "chỉ thừa"),
+                new KeyValuePair<string, string>("kiếm lỗi", "")
+            };
+
+            foreach (var rep in preDiacriticReplacements)
+            {
+                text = text.Replace(rep.Key, rep.Value);
+            }
+
+            text = RemoveDiacritics(text);
             var builder = new StringBuilder(text.Length);
             foreach (char ch in text)
             {
@@ -474,6 +581,7 @@ namespace NETTMC.VoiceRecognition
 
             text = " " + string.Join(" ", builder.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)) + " ";
 
+            // 2. Thay thế sau khi bỏ dấu
             var replacements = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>(" loi lai ", " re fail "),
@@ -483,6 +591,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>(" qua ", " pass "),
                 new KeyValuePair<string, string>(" hong ", " fail "),
                 new KeyValuePair<string, string>(" hu ", " fail "),
+                new KeyValuePair<string, string>(" khong dat ", " fail "),
                 new KeyValuePair<string, string>(" xoa ", " clear "),
                 new KeyValuePair<string, string>(" huy ", " clear "),
                 new KeyValuePair<string, string>(" mot ", " 1 "),
@@ -494,10 +603,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>(" bay ", " 7 "),
                 new KeyValuePair<string, string>(" tam ", " 8 "),
                 new KeyValuePair<string, string>(" chin ", " 9 "),
-                // "mươi" đầy đủ
-                // "mùi" — Whisper hay nhầm "mười" thành "mùi" trong môi trường ồn
                 new KeyValuePair<string, string>(" mui ", " 10 "),
-                // "muời", "mưoi" — các biến thể unicode khác
                 new KeyValuePair<string, string>(" muoi ", " 10 "),
             };
 
