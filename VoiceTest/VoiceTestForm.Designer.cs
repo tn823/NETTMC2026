@@ -1,101 +1,127 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace VoiceTest
 {
     partial class VoiceTestForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
-            textBoxVoiceTest = new TextBox();
-            buttonVoiceTest = new Button();
-            tableLayoutPanel1.SuspendLayout();
+            tableLayoutMain   = new TableLayoutPanel();
+            textBoxVoiceTest  = new TextBox();
+            panelButtons      = new Panel();
+            buttonVoiceTest   = new Button();
+            buttonAutoLoop    = new Button();
+            buttonRunAutoTest = new Button();
+
+            tableLayoutMain.SuspendLayout();
+            panelButtons.SuspendLayout();
             SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel1.Controls.Add(textBoxVoiceTest, 0, 0);
-            tableLayoutPanel1.Controls.Add(buttonVoiceTest, 1, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(800, 450);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // textBoxVoiceTest
-            // 
-            textBoxVoiceTest.Dock = DockStyle.Fill;
-            textBoxVoiceTest.Location = new Point(3, 4);
-            textBoxVoiceTest.Margin = new Padding(3, 4, 3, 4);
-            textBoxVoiceTest.Multiline = true;
-            textBoxVoiceTest.Name = "textBoxVoiceTest";
+
+            // ── tableLayoutMain ──────────────────────────────────────────
+            tableLayoutMain.ColumnCount = 2;
+            tableLayoutMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 82F));
+            tableLayoutMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18F));
+            tableLayoutMain.Controls.Add(textBoxVoiceTest, 0, 0);
+            tableLayoutMain.Controls.Add(panelButtons, 1, 0);
+            tableLayoutMain.Dock      = DockStyle.Fill;
+            tableLayoutMain.Location  = new Point(0, 0);
+            tableLayoutMain.Name      = "tableLayoutMain";
+            tableLayoutMain.RowCount  = 1;
+            tableLayoutMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutMain.Size      = new Size(900, 550);
+            tableLayoutMain.TabIndex  = 0;
+
+            // ── textBoxVoiceTest ─────────────────────────────────────────
+            textBoxVoiceTest.Dock       = DockStyle.Fill;
+            textBoxVoiceTest.Location   = new Point(3, 4);
+            textBoxVoiceTest.Margin     = new Padding(3, 4, 3, 4);
+            textBoxVoiceTest.Multiline  = true;
+            textBoxVoiceTest.Name       = "textBoxVoiceTest";
             textBoxVoiceTest.ScrollBars = ScrollBars.Vertical;
-            textBoxVoiceTest.Size = new Size(674, 442);
-            textBoxVoiceTest.TabIndex = 0;
-            // 
-            // buttonVoiceTest
-            // 
-            buttonVoiceTest.BackColor = Color.White;
-            buttonVoiceTest.Dock = DockStyle.Right;
-            buttonVoiceTest.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            buttonVoiceTest.FlatStyle = FlatStyle.Flat;
-            buttonVoiceTest.Font = new Font("Arial", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            buttonVoiceTest.Image = Properties.Resources.voice_whisper;
-            buttonVoiceTest.Location = new Point(683, 4);
-            buttonVoiceTest.Margin = new Padding(3, 4, 3, 4);
-            buttonVoiceTest.Name = "buttonVoiceTest";
-            buttonVoiceTest.Size = new Size(114, 442);
-            buttonVoiceTest.TabIndex = 7;
-            buttonVoiceTest.TextImageRelation = TextImageRelation.ImageAboveText;
+            textBoxVoiceTest.Font       = new Font("Consolas", 9F);
+            textBoxVoiceTest.Size       = new Size(731, 542);
+            textBoxVoiceTest.TabIndex   = 0;
+
+            // ── panelButtons ─────────────────────────────────────────────
+            panelButtons.Dock     = DockStyle.Fill;
+            panelButtons.Padding  = new Padding(4);
+            panelButtons.Name     = "panelButtons";
+            panelButtons.Controls.Add(buttonRunAutoTest);
+            panelButtons.Controls.Add(buttonAutoLoop);
+            panelButtons.Controls.Add(buttonVoiceTest);
+
+            // ── buttonVoiceTest (Push-to-Talk thủ công) ──────────────────
+            buttonVoiceTest.Text          = "🎤";
+            buttonVoiceTest.BackColor     = Color.White;
+            buttonVoiceTest.Dock          = DockStyle.Top;
+            buttonVoiceTest.FlatStyle     = FlatStyle.Flat;
+            buttonVoiceTest.FlatAppearance.BorderColor = Color.FromArgb(0, 120, 215);
+            buttonVoiceTest.Font          = new Font("Segoe UI Emoji", 26F, FontStyle.Bold);
+            buttonVoiceTest.Name          = "buttonVoiceTest";
+            buttonVoiceTest.Size          = new Size(155, 170);
+            buttonVoiceTest.TabIndex      = 1;
+            buttonVoiceTest.Enabled       = false;
             buttonVoiceTest.UseVisualStyleBackColor = false;
-            // 
-            // VoiceTestForm
-            // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(tableLayoutPanel1);
+
+            // ── buttonAutoLoop (Thu âm 5s / Nghỉ 5s) ────────────────────
+            buttonAutoLoop.Text          = "▶ AUTO LOOP";
+            buttonAutoLoop.BackColor     = Color.LightGreen;
+            buttonAutoLoop.Dock          = DockStyle.Top;
+            buttonAutoLoop.FlatStyle     = FlatStyle.Flat;
+            buttonAutoLoop.FlatAppearance.BorderColor = Color.Green;
+            buttonAutoLoop.Font          = new Font("Segoe UI", 11F, FontStyle.Bold);
+            buttonAutoLoop.Name          = "buttonAutoLoop";
+            buttonAutoLoop.Size          = new Size(155, 60);
+            buttonAutoLoop.Margin        = new Padding(0, 6, 0, 0);
+            buttonAutoLoop.TabIndex      = 2;
+            buttonAutoLoop.Enabled       = false;
+            buttonAutoLoop.UseVisualStyleBackColor = false;
+
+            // ── buttonRunAutoTest (TTS → Whisper → Report) ───────────────
+            buttonRunAutoTest.Text          = "🧪 AUTO TEST";
+            buttonRunAutoTest.BackColor     = Color.FromArgb(0, 120, 215);
+            buttonRunAutoTest.ForeColor     = Color.White;
+            buttonRunAutoTest.Dock          = DockStyle.Top;
+            buttonRunAutoTest.FlatStyle     = FlatStyle.Flat;
+            buttonRunAutoTest.FlatAppearance.BorderColor = Color.DarkBlue;
+            buttonRunAutoTest.Font          = new Font("Segoe UI", 11F, FontStyle.Bold);
+            buttonRunAutoTest.Name          = "buttonRunAutoTest";
+            buttonRunAutoTest.Size          = new Size(155, 60);
+            buttonRunAutoTest.Margin        = new Padding(0, 6, 0, 0);
+            buttonRunAutoTest.TabIndex      = 3;
+            buttonRunAutoTest.Enabled       = false;
+            buttonRunAutoTest.UseVisualStyleBackColor = false;
+
+            // ── VoiceTestForm ─────────────────────────────────────────────
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode       = AutoScaleMode.Font;
+            ClientSize          = new Size(900, 550);
+            Controls.Add(tableLayoutMain);
             Name = "VoiceTestForm";
-            Text = "VoiceTestForm";
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
+            Text = "Voice Auto Test — NETTMC2026";
+
+            panelButtons.ResumeLayout(false);
+            tableLayoutMain.ResumeLayout(false);
             ResumeLayout(false);
         }
-
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox textBoxVoiceTest;
-        private System.Windows.Forms.Button buttonVoiceTest;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutMain;
+        private System.Windows.Forms.TextBox          textBoxVoiceTest;
+        private System.Windows.Forms.Panel            panelButtons;
+        private System.Windows.Forms.Button           buttonVoiceTest;
+        private System.Windows.Forms.Button           buttonAutoLoop;
+        private System.Windows.Forms.Button           buttonRunAutoTest;
     }
 }

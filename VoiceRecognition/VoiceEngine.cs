@@ -19,6 +19,7 @@ namespace NETTMC.VoiceRecognition
         public string MatchedCommand { get; set; }
         public double ConfidenceScore { get; set; }
         public VoiceCommandMatch ParsedCommand { get; set; }
+        public double ProcessingTimeSec { get; set; }
         public bool IsSuccess => ParsedCommand?.IsSuccess == true || MatchedCommand != null;
     }
 
@@ -41,7 +42,7 @@ namespace NETTMC.VoiceRecognition
         // 20ms frame = 16000Hz * 0.02s * 2 bytes (16-bit) = 640 bytes
         private const int VadFrameBytes = 640;
         private const int MinimumVoiceMs = 250;
-        private const int SilenceAfterVoiceMs = 400;
+        private const int SilenceAfterVoiceMs = 300;  // Giảm 400→300: cắt sớm hơn khi người dùng ngừng nói
 
         // Từ khoá kết thúc câu — được strip trước khi match.
         // Không dùng "ok"/"ô kê" vì có xung đột với action "pass".
@@ -79,6 +80,13 @@ namespace NETTMC.VoiceRecognition
             InitializeVad();
         }
 
+        /// <summary>
+        /// Khi bật Auto-Loop, engine áp dụng bộ lọc ketat hơn:
+        /// chỉ fire CommandRecognized khi kết quả chứa Action nghiệp vụ
+        /// (pass/fail/re-pass/re-fail/clear) để tránh nhiễu môi trường.
+        /// </summary>
+        public bool IsAutoLoopMode { get; set; } = false;
+
         public bool IsRecording => _isRecording;
         public string LastErrorMessage => _lastErrorMessage;
 
@@ -96,7 +104,11 @@ namespace NETTMC.VoiceRecognition
             _commandDefinitions.Clear();
             if (commands != null)
             {
-                _commandDefinitions.AddRange(commands.Where(c => c != null));
+                foreach (var cmd in commands.Where(c => c != null))
+                {
+                    cmd.BuildNormalizedCache();   // Tính sẵn normalized phrases 1 lần
+                    _commandDefinitions.Add(cmd);
+                }
             }
 
             SetCommandList(_commandDefinitions.SelectMany(c => c.AllPhrases()).Distinct(StringComparer.OrdinalIgnoreCase));
@@ -318,8 +330,8 @@ namespace NETTMC.VoiceRecognition
                 offset += VadFrameBytes;
             }
 
-            // Có giọng nói nếu >=30% frame bị phân loại là speech
-            return totalFrames > 0 && (double)voiceFrames / totalFrames >= 0.30;
+            // Có giọng nói nếu >=40% frame bị phân loại là speech (tăng từ 30% để chịu nhiễu hơn)
+            return totalFrames > 0 && (double)voiceFrames / totalFrames >= 0.40;
         }
 
         private void OnRecordingStopped(object sender, StoppedEventArgs e)
@@ -356,11 +368,14 @@ namespace NETTMC.VoiceRecognition
 
         private async Task RecognizeAudioAsync()
         {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 if (_audioBuffer == null || _audioBuffer.Length < 1000)
                 {
-                    Log("Audio qua ngan.");
+                    sw.Stop();
+                    Log($"Audio qua ngan. - {sw.Elapsed.TotalSeconds:F2}s");
+                    Log("==============================================");
                     ChangeState(VoiceEngineState.Ready);
                     return;
                 }
@@ -389,29 +404,66 @@ namespace NETTMC.VoiceRecognition
 
                 if (string.IsNullOrWhiteSpace(cleanedText))
                 {
-                    Log("Chỉ nghe được từ kết thúc, bỏ qua.");
+                    sw.Stop();
+                    Log($"Chỉ nghe được từ kết thúc, bỏ qua. - {sw.Elapsed.TotalSeconds:F2}s");
+                    Log("=============================================="); 
+
                     ChangeState(VoiceEngineState.Ready);
                     return;
                 }
 
+                // Tầng 1: Probability filter đã tắt — Whisper.net trả về Probability = 0 luôn
+                // (model không tính token probability theo mặc định, không thể dùng làm filter)
+                // Log để tham khảo nhưng không block:
                 Log($"Nghe được: \"{recognizedText}\" → xử lý: \"{cleanedText}\" (Prob: {avgProb:P0})");
+
+                // ── TẦNG 2: Kiểm tra từ khóa nghiệp vụ ──────────────────────────
+                // Auto-loop phải chứa ít nhất 1 từ liên quan đến nghiệp vụ (số, từ hành động VN)
+                if (IsAutoLoopMode && !ContainsBusinessKeyword(cleanedText))
+                {
+                    sw.Stop();
+                    Log($"[Bỏ qua] Không chứa từ khoá nghiệp vụ: \"{cleanedText}\" - {sw.Elapsed.TotalSeconds:F2}s");
+                    Log("==============================================");
+                    CommandRecognized?.Invoke(this, new VoiceMatchResult { RecognizedText = recognizedText, MatchedCommand = "[Bỏ qua] Không nghiệp vụ", ConfidenceScore = avgProb, ProcessingTimeSec = sw.Elapsed.TotalSeconds });
+                    ChangeState(VoiceEngineState.Ready);
+                    return;
+                }
 
                 if (_commandDefinitions.Count > 0)
                 {
-                    // ParseAll: nhận NHIỀU lệnh trong một câu (A 11 21 82 → part A + errors 11,21,82)
                     var allMatches = VoiceCommandParser.ParseAll(cleanedText, _commandDefinitions, _threshold);
 
                     if (allMatches.Count > 0)
                     {
+                        // ── TẦNG 3: Auto-loop chỉ fire khi có Action nghiệp vụ ────
+                        // Lý do: "Cô chí nha" → match Part:C + Error:12 nhưng không có Action
+                        //        → không đủ để ghi nhận lỗi → bỏ qua, chờ câu hoàn chỉnh
+                        bool hasAction = allMatches.Any(m =>
+                            m.Kind == VoiceCommandKind.Action ||
+                            (m.Kind == VoiceCommandKind.Composite && m.ActionType != null));
+
+                        if (IsAutoLoopMode && !hasAction)
+                        {
+                            sw.Stop();
+                            Log($"[Bỏ qua] Auto-loop: nhận ra Part/Error nhưng thiếu Action — chờ câu hoàn chỉnh. - {sw.Elapsed.TotalSeconds:F2}s");
+                            Log("==============================================");
+                            CommandRecognized?.Invoke(this, new VoiceMatchResult { RecognizedText = recognizedText, MatchedCommand = "[Bỏ qua] Thiếu Action", ConfidenceScore = avgProb, ProcessingTimeSec = sw.Elapsed.TotalSeconds });
+                            ChangeState(VoiceEngineState.Ready);
+                            return;
+                        }
+
                         foreach (var parsedCommand in allMatches)
                         {
-                            Log($"[Voice OK] {parsedCommand.ToDisplayText()} ({parsedCommand.ConfidenceScore:P0})");
+                            sw.Stop();
+                            Log($"[Voice OK] {parsedCommand.ToDisplayText()} ({parsedCommand.ConfidenceScore:P0}) - {sw.Elapsed.TotalSeconds:F2}s");
+                            Log("==============================================");
                             var result = new VoiceMatchResult
                             {
                                 RecognizedText  = recognizedText,
                                 ParsedCommand   = parsedCommand,
                                 MatchedCommand  = parsedCommand.ToDisplayText(),
-                                ConfidenceScore = parsedCommand.ConfidenceScore
+                                ConfidenceScore = parsedCommand.ConfidenceScore,
+                                ProcessingTimeSec = sw.Elapsed.TotalSeconds
                             };
                             CommandRecognized?.Invoke(this, result);
                         }
@@ -428,13 +480,16 @@ namespace NETTMC.VoiceRecognition
                     RecognizedText  = recognizedText,
                     ParsedCommand   = null,
                     MatchedCommand  = (matchedCommand != null && score >= _threshold) ? matchedCommand : null,
-                    ConfidenceScore = score
+                    ConfidenceScore = score,
+                    ProcessingTimeSec = sw.Elapsed.TotalSeconds
                 };
 
+                sw.Stop();
                 if (fallbackResult.IsSuccess)
-                    Log($"[Voice OK] \"{fallbackResult.MatchedCommand}\" ({score:P0})");
+                    Log($"[Voice OK] \"{fallbackResult.MatchedCommand}\" ({score:P0}) - {sw.Elapsed.TotalSeconds:F2}s");
                 else
-                    Log($"[Voice NG] Không nhận ra: \"{cleanedText}\" (gần nhất: \"{matchedCommand}\" {score:P0})");
+                    Log($"[Voice NG] Không nhận ra: \"{cleanedText}\" (gần nhất: \"{matchedCommand}\" {score:P0}) - {sw.Elapsed.TotalSeconds:F2}s");
+                Log("==============================================");
 
                 CommandRecognized?.Invoke(this, fallbackResult);
 
@@ -457,6 +512,45 @@ namespace NETTMC.VoiceRecognition
             }
 
             return string.Join(", ", _commandList.Take(80));
+        }
+
+        /// <summary>
+        /// Tầng 2 filter: kiểm tra text có chứa từ khoá nghiệp vụ không.
+        /// Chỉ cho qua nếu chứa: số (0-9), từ hành động tiếng Việt, chữ Part, hoặc từ số tiếng Việt.
+        /// Lọc ra: "Cám ơn", "MING PAO", tiếng nước ngoài, tạp âm...
+        /// </summary>
+        private static bool ContainsBusinessKeyword(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return false;
+
+            string lower = text.ToLowerInvariant();
+
+            // Chứa chữ số → có thể là mã lỗi
+            if (lower.Any(char.IsDigit)) return true;
+
+            // Từ hành động / kết quả
+            string[] actionWords = {
+                "đạt", "lỗi", "fail", "pass", "xóa", "hủy", "bỏ", "clear",
+                "không đạt", "không đặt", "hông đạt", "đặt lại", "đạt lại",
+                "lỗi lại", "đứt lãi"
+            };
+            foreach (var w in actionWords)
+                if (lower.Contains(w)) return true;
+
+            // Từ số tiếng Việt (mười, mươi, một, hai, ba, bốn, năm, sáu, bảy, tám, chín, mùi)
+            string[] numberWords = {
+                "mười", "mươi", "mùi", "một", "hai", "ba", "bốn", "năm",
+                "sáu", "bảy", "tám", "chín", "mốt", "lăm", "mướng"
+            };
+            foreach (var w in numberWords)
+                if (lower.Contains(w)) return true;
+
+            // Chữ Part đứng đầu (a, bê, xê, b, c + khoảng trắng)
+            string[] partPrefixes = { "bê ", "xê ", "bê\t", "xê\t" };
+            foreach (var p in partPrefixes)
+                if (lower.StartsWith(p) || lower.Contains(" " + p.Trim() + " ")) return true;
+
+            return false;
         }
 
         private (string best, double score) FindBestMatch(string input)
