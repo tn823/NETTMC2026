@@ -15,7 +15,7 @@ namespace SystemControl
     public partial class CheckStock : UserControl
     {
 
-        private DataTable dtStockScan;
+        private DataTable dtStockScan; 
         private DataTable dtWrongdate;
         private DataTable dtStockScanGroup;
 
