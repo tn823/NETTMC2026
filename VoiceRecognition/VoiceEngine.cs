@@ -508,9 +508,12 @@ namespace NETTMC.VoiceRecognition
         {
             if (_commandList.Count == 0)
             {
-                return "dat, loi, xoa, huy, A mot, B hai, C ba";
+                return "đạt, lỗi, xóa, mười bảy, mười tám, hai mươi mốt";
             }
 
+            // Lấy tối đa 80 từ khóa.
+            // Vì _commandList đã được nạp theo thứ tự ưu tiên (17, 18, 21 đứng đầu),
+            // prompt tự nhiên sẽ ưu tiên đúng những từ khóa quan trọng nhất.
             return string.Join(", ", _commandList.Take(80));
         }
 
@@ -539,8 +542,8 @@ namespace NETTMC.VoiceRecognition
             foreach (var w in numberWords)
                 if (lower.Contains(w)) return true;
 
-            // Chữ Part đứng đầu hoặc đứng đơn (A, bê, xê...)
-            string[] partPrefixes = { "bê ", "xê ", "bê,", "xê,", "bê\t", "xê\t" };
+            // Chữ Part đứng đầu hoặc đứng đơn (A, bê, xê, sê...)
+            string[] partPrefixes = { "bê ", "xê ", "sê ", "bê,", "xê,", "sê,", "bê\t", "xê\t", "sê\t" };
             foreach (var p in partPrefixes)
                 if (lower.StartsWith(p) || lower.Contains(" " + p.Trim())) return true;
             // Chữ đơn A/B/C/D/E/F đứng một mình đầu câu

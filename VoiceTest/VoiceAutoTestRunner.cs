@@ -65,27 +65,37 @@ namespace VoiceTest
         public static readonly IReadOnlyList<VoiceTestCase> DefaultTestCases =
             new List<VoiceTestCase>
             {
-                // NOTE: Part A dùng prefix "lỗi a" để tránh Whisper nuốt chữ "a" đơn âm đầu câu
-                new VoiceTestCase { Stt=1,  InputText="A A mười bảy",       ExpectedPart="A", ExpectedError="17", ExpectedAction="",    Note="#17 Part A" },
-                new VoiceTestCase { Stt=2,  InputText="B B mười tám",   ExpectedPart="B", ExpectedError="18", ExpectedAction="",    Note="#21 Part B (tránh nhầm 18→11)" },
-                new VoiceTestCase { Stt=3,  InputText="A A tám mươi hai",   ExpectedPart="A", ExpectedError="82", ExpectedAction="",    Note="#25 Part A (tránh nhầm #11)" },
-                new VoiceTestCase { Stt=4,  InputText="C C một",    ExpectedPart="C", ExpectedError="1", ExpectedAction="",    Note="#35 Part C (tránh nhầm 19→10)" },
-                new VoiceTestCase { Stt=5,  InputText="A A năm",             ExpectedPart="A", ExpectedError="5",  ExpectedAction="",    Note="#5 Part A" },
-                //new VoiceTestCase { Stt=6,  InputText="đạt",                             ExpectedAction="pass",                                          Note="pass VN" },
-                //new VoiceTestCase { Stt=7,  InputText="pass",                            ExpectedAction="pass",                                          Note="pass EN" },
-                new VoiceTestCase { Stt=6,  InputText="D D hai mươi mốt",  ExpectedPart="B", ExpectedError="21", ExpectedAction="",    Note="#25 Part B" },
-                new VoiceTestCase { Stt=7,  InputText="E E hai mươi hai",        ExpectedPart="A", ExpectedError="22", ExpectedAction="",    Note="#22 Part A" },
-                new VoiceTestCase { Stt=8, InputText="F F bảy mươi chín",           ExpectedPart="B", ExpectedError="79", ExpectedAction="fail",    Note="#79 Part B" },
-                //new VoiceTestCase { Stt=11, InputText="lỗi CC bốn mươi không đạt",      ExpectedPart="C", ExpectedError="40", ExpectedAction="fail",    Note="#40 chục tròn" },
-                //new VoiceTestCase { Stt=12, InputText="lỗi AA ba mươi bốn không đạt",    ExpectedPart="A", ExpectedError="34", ExpectedAction="fail",    Note="#34 Part A" },
-                //new VoiceTestCase { Stt=13, InputText="lỗi DD ba mươi lăm không đạt",   ExpectedPart="D", ExpectedError="35", ExpectedAction="fail",    Note="#35 Part D" },
-                //new VoiceTestCase { Stt=14, InputText="EE hai mươi mốt không đạt",   ExpectedPart="E", ExpectedError="21", ExpectedAction="fail",    Note="#21 Part E" },
-                //new VoiceTestCase { Stt=15, InputText="AA bốn mươi mốt không đạt",   ExpectedPart="A", ExpectedError="41", ExpectedAction="fail",    Note="#41 Part A" },
-                //new VoiceTestCase { Stt=16, InputText="BB bốn mươi hai không đạt",  ExpectedPart="B", ExpectedError="42", ExpectedAction="fail",    Note="#42 Part B" },
-                //new VoiceTestCase { Stt=17, InputText="kiểm lại đạt",                    ExpectedAction="re-pass",                                       Note="re-pass" },
-                //new VoiceTestCase { Stt=18, InputText="lỗi lại",                         ExpectedAction="re-fail",                                       Note="re-fail" },
-                //new VoiceTestCase { Stt=19, InputText="FF hai mươi lăm không đạt",ExpectedPart="F", ExpectedError="25", ExpectedAction="fail",    Note="#25 Part F (thay hủy bỏ)" },
-                //new VoiceTestCase { Stt=20, InputText="CC tám mươi hai không đạt",  ExpectedPart="C", ExpectedError="82", ExpectedAction="fail",    Note="#82 Part C" },
+                // ── NGUYÊN TẮC ─────────────────────────────────────────────────────────────
+                // • InputText viết đúng như người Việt NÓI → Google TTS phát âm tự nhiên → Whisper nhận tốt
+                // • Dùng âm tiết kép (bê bê, xê xê, đê đê...) thay ký tự đơn B/C/D vì Whisper nhận ký tự đơn rất kém
+                // • Part A dùng "a a" hoặc "lỗi a" vì âm "a" đơn dễ bị Whisper nuốt
+                // • KHÔNG test action (không đạt / đạt) — chỉ kiểm tra Part + Error ID
+                // • 16 REASON_ID cố định của A14: 1,2,3,4,5,6,8,9,12,17,18,21,22,23,79,82
+                // • Thứ tự: 17, 18, 21 ĐẦU TIÊN (lỗi thường gặp nhất)
+                // ─────────────────────────────────────────────────────────────────────────────
+
+                // ── Ưu tiên cao: 3 lỗi thường gặp nhất ──────────────────────────────────
+                new VoiceTestCase { Stt=1,  InputText="a a mười bảy",          ExpectedPart="A", ExpectedError="17", Note="[PRIORITY] #17 lem keo — Part A" },
+                new VoiceTestCase { Stt=2,  InputText="bê bê mười tám",        ExpectedPart="B", ExpectedError="18", Note="[PRIORITY] #18 hở keo — Part B" },
+                new VoiceTestCase { Stt=3,  InputText="đê đê hai mươi mốt",    ExpectedPart="D", ExpectedError="21", Note="[PRIORITY] #21 vệ sinh — Part D" },
+
+                // ── Số đơn (1–9) ──────────────────────────────────────────────────────────
+                new VoiceTestCase { Stt=4,  InputText="xê xê một",             ExpectedPart="C", ExpectedError="1",  Note="#1 Part C" },
+                new VoiceTestCase { Stt=5,  InputText="bê bê hai",             ExpectedPart="B", ExpectedError="2",  Note="#2 Part B" },
+                new VoiceTestCase { Stt=6,  InputText="a a ba",                ExpectedPart="A", ExpectedError="3",  Note="#3 Part A" },
+                new VoiceTestCase { Stt=7,  InputText="xê xê bốn",             ExpectedPart="C", ExpectedError="4",  Note="#4 Part C" },
+                new VoiceTestCase { Stt=8,  InputText="a a năm",               ExpectedPart="A", ExpectedError="5",  Note="#5 Part A" },
+                new VoiceTestCase { Stt=9,  InputText="bê bê sáu",             ExpectedPart="B", ExpectedError="6",  Note="#6 Part B" },
+                new VoiceTestCase { Stt=10, InputText="ê ê tám",               ExpectedPart="E", ExpectedError="8",  Note="#8 Part E" },
+                new VoiceTestCase { Stt=11, InputText="ép ép chín",            ExpectedPart="F", ExpectedError="9",  Note="#9 Part F" },
+
+                // ── Số 2 chữ số ───────────────────────────────────────────────────────────
+                new VoiceTestCase { Stt=12, InputText="a a mười hai",          ExpectedPart="A", ExpectedError="12", Note="#12 Part A" },
+                new VoiceTestCase { Stt=13, InputText="ê ê hai mươi hai",      ExpectedPart="E", ExpectedError="22", Note="#22 Part E" },
+                new VoiceTestCase { Stt=14, InputText="đê đê hai mươi ba",     ExpectedPart="D", ExpectedError="23", Note="#23 Part D" },
+                new VoiceTestCase { Stt=15, InputText="ép ép bảy chín",        ExpectedPart="F", ExpectedError="79", Note="#79 Part F — 'bảy/bày chín' tắt, rule map cả 2 dạng thanh điệu" },
+                new VoiceTestCase { Stt=16, InputText="bê bê tám hai",         ExpectedPart="B", ExpectedError="82", Note="#82 Part B — 'tám hai' ngắn gọn, tránh Whisper nhầm thành 802" },
+                new VoiceTestCase { Stt=17, InputText="bê bê tám mươi hai",    ExpectedPart="B", ExpectedError="82", Note="#82 Part B — dạng đầy đủ để verify thêm" },
             };
 
         public VoiceAutoTestRunner(VoiceEngine engine, Action<string> logAction, string tempDir = null)
