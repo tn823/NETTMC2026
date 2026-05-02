@@ -31,6 +31,7 @@
     <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
     <ProjectReference Include="..\MQTT\MQTT.csproj" />
     <ProjectReference Include="..\VoiceRecognition\VoiceRecognition.csproj" />
+    <ProjectReference Include="..\VoiceTest\VoiceTest.csproj" />
   </ItemGroup>
 
   <ItemGroup>

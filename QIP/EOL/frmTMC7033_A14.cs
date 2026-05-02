@@ -15,6 +15,7 @@ using static GlobalFunction.PublicFunction;
 using System.Diagnostics;
 using GlobalFunction;
 using NETTMC.VoiceRecognition;
+using VoiceTest;
 
 namespace QIP.EOL
 {
@@ -22,6 +23,16 @@ namespace QIP.EOL
     {
         private VoiceEngine _voiceEngine;
         private bool _isRecordingVoice = false;
+        private CancellationTokenSource _autoLoopCts;
+
+        // ── Voice log (A14) ───────────────────────────────────
+        private static readonly string VoiceLogDir =
+            @"d:\NETTMC_\NETTMC2026\NETTMC\VoiceRecognition\test\log";
+        private System.IO.StreamWriter _vlog;
+        private string   _vlogPath;
+        private int      _vlogSeq;
+        private readonly object _vlogLock = new object();
+        // ───────────────────────────────────────────────────
 
         public VoiceActionSupport SupportedActions => VoiceActionSupport.FullEOL;
 
@@ -95,7 +106,7 @@ namespace QIP.EOL
             crud = new CRUDOracle("VSMES");
             InitializeActionButtons();
             pictureShoes.SizeChanged += pictureShoes_SizeChanged;
-            Disposed += (s, e) => _voiceEngine?.Dispose();
+            Disposed += (s, e) => { _autoLoopCts?.Cancel(); VlogFinalize(); _voiceEngine?.Dispose(); };
         }
         private const float MessageFontSize = 14f;
         private const string MessageFontName = "Segoe UI";
@@ -3402,6 +3413,27 @@ namespace QIP.EOL
         }
 
 
+        private async void btnVoiceAutoTest_Click(object sender, EventArgs e)
+        {
+            btnVoiceAutoTest.Enabled = false;
+            btnVoiceAutoTest.Text    = "⏳ Testing...";
+            btnVoiceWhisper.Enabled  = false; // tránh conflict với mic loop
+
+            try
+            {
+                var progress = new Progress<(int cur, int total)>(p =>
+                    ThreadSafe(() => ShowMessage($"🧪 [{p.cur}/{p.total}] Đang test...", Color.Blue)));
+
+                await RunVoiceAutoTestAsync(progress: progress);
+            }
+            finally
+            {
+                btnVoiceAutoTest.Enabled = true;
+                btnVoiceAutoTest.Text    = "🧪 AUTO\nTEST";
+                btnVoiceWhisper.Enabled  = true;
+            }
+        }
+
         private async void btnVoiceWhisper_Click(object sender, EventArgs e)
         {
             if (_voiceEngine == null)
@@ -3410,35 +3442,94 @@ namespace QIP.EOL
                 return;
             }
 
-            if (_isRecordingVoice) return; // Chặn bấm khi đang ghi
-            RefreshVoiceCommandDefinitions();
+            // Toggle: nếu đang chạy thì dừng
+            if (_autoLoopCts != null)
+            {
+                _autoLoopCts.Cancel();
+                _autoLoopCts = null;
+                _voiceEngine.IsAutoLoopMode = false;
+                //btnVoiceWhisper.Text      = "🎤";
+                btnVoiceWhisper.BackColor = SystemColors.Control;
+                ShowMessage("[🛑 Auto Voice] Đã dừng. Đợi kết quả cuối...", Color.Gray);
+                _ = Task.Delay(3000).ContinueWith(_ => VlogFinalize());
+                return;
+            }
 
+            // Bắt đầu vòng lặp auto
+            RefreshVoiceCommandDefinitions();
+            _voiceEngine.IsAutoLoopMode = true;
+            _autoLoopCts = new CancellationTokenSource();
+            //btnVoiceWhisper.Text      = "⏹ DỮNG VOICE";
+            btnVoiceWhisper.BackColor = Color.OrangeRed;
+
+            // Mở log file — append vào file theo ngày, không tạo file mới mỗi lần chạy
             try
             {
-                _isRecordingVoice = true;
-                btnVoiceWhisper.Enabled = false; // Disable nút trong suốt quá trình
+                System.IO.Directory.CreateDirectory(VoiceLogDir);
+                _vlogPath = System.IO.Path.Combine(VoiceLogDir, $"A14_voiceLog.log");
+                _vlogSeq  = 0;
+                _vlog = new System.IO.StreamWriter(_vlogPath, append: true, System.Text.Encoding.UTF8);
+                _vlog.WriteLine(new string('=', 80));
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] INFO : ===== Session bắt đầu =====");
+                _vlog.Flush();
+            }
+            catch { }
 
-                ShowMessage("Đang nghe voice... nói lệnh trong tối đa 8 giây", Color.Red);
-                await _voiceEngine.StartSmartPushToTalkAsync(8000);
-                
+            ShowMessage("[▶ Auto Voice] Bắt đầu thu âm tự động...", Color.Green);
 
-                // Đếm ngược 5 giây hiển thị lên UI
-                for (int i = 0; i > 0; i--)
+            var token = _autoLoopCts.Token;
+            _ = RunVoiceAutoLoopAsync(token);
+        }
+
+        private async Task RunVoiceAutoLoopAsync(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
                 {
-                    ShowMessage($"Đang ghi âm... còn {i} giây", Color.Red);
-                    await Task.Delay(1000);
-                }
+                    // ── Thu âm 5 giây ──
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed)));
+                    else
+                        ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed);
 
-                if (_voiceEngine.IsRecording) ShowMessage("Đang xử lý giọng nói...", Color.Blue);
+                    await _voiceEngine.StartSmartPushToTalkAsync(5000);
+
+                    if (token.IsCancellationRequested) break;
+
+                    // ── Đợi xử lý xong (engine chuyển về Ready) rồi nghỉ 5 giây ──
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("⏸ Xử lý... sau đó nghỉ 5 giây", Color.Blue)));
+                    else
+                        ShowMessage("⏸ Xử lý... sau đó nghỉ 5 giây", Color.Blue);
+
+                    await Task.Delay(5000, token);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("Voice lỗi: " + ex.Message, Color.Red)));
+                    else
+                        ShowMessage("Voice lỗi: " + ex.Message, Color.Red);
+                    await Task.Delay(2000); // nếu lỗi thì đợi 2s rồi thử lại
+                }
             }
-            catch (Exception ex)
+
+            // Cleanup sau khi dừng
+            _voiceEngine.IsAutoLoopMode = false;
+            if (this.InvokeRequired)
+                this.Invoke(new Action(() => {
+                    //btnVoiceWhisper.Text      = "🎤";
+                    btnVoiceWhisper.BackColor = SystemColors.Control;
+                }));
+            else
             {
-                ShowMessage("Lỗi voice: " + ex.Message, Color.Red);
-            }
-            finally
-            {
-                _isRecordingVoice = false;
-                btnVoiceWhisper.Enabled = true; // Bật lại nút sau khi xong
+                //btnVoiceWhisper.Text      = "🎤";
+                btnVoiceWhisper.BackColor = SystemColors.Control;
             }
         }
 
@@ -3446,17 +3537,14 @@ namespace QIP.EOL
         {
             _voiceEngine = new VoiceEngine();
             _voiceEngine.CommandRecognized += _voiceEngine_CommandRecognized;
-            _voiceEngine.StateChanged += _voiceEngine_StateChanged;
-            _voiceEngine.LogMessage += _voiceEngine_LogMessage;
+            _voiceEngine.StateChanged      += _voiceEngine_StateChanged;
+            _voiceEngine.LogMessage        += _voiceEngine_LogMessage;
             RefreshVoiceCommandDefinitions();
-            
-            // Lệnh tạm thời để test
-            _voiceEngine.SetCommandList(new List<string> { "A", "1", "hở keo", "dơ", "pass", "fail", "xóa" });
-            RefreshVoiceCommandDefinitions();
-            
+
             try
             {
-                await _voiceEngine.InitializeAsync("whisper-model.bin", Whisper.net.Ggml.GgmlType.Base);
+                await _voiceEngine.InitializeAsync();
+                ShowMessage("✓ Voice đã sẵn sàng.", Color.Green);
             }
             catch (Exception ex)
             {
@@ -3466,13 +3554,19 @@ namespace QIP.EOL
 
         private void _voiceEngine_LogMessage(object sender, string e)
         {
-            if (this.InvokeRequired)
+            // Chỉ log các thông báo quan trọng từ engine (bỏ qua noise/separator)
+            if (string.IsNullOrWhiteSpace(e)) return;
+            // Bỏ qua dòng phân cách và trạng thái routine (có dấu lẫn không dấu)
+            if (e.StartsWith("===") || e.StartsWith("---")) return;
+            if (e.StartsWith("Bat dau") || e.StartsWith("Dang xu ly") || e.StartsWith("Dang doc")) return;
+            if (e.Contains("Bắt đầu ghi âm") || e.Contains("Đang xử lý")) return;
+            lock (_vlogLock)
             {
-                this.Invoke(new Action(() => ShowMessage("Voice Log: " + e, Color.Blue)));
-            }
-            else
-            {
-                ShowMessage("Voice Log: " + e, Color.Blue);
+                if (_vlog != null)
+                {
+                    _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ENGINE : {e}");
+                    _vlog.Flush();
+                }
             }
         }
 
@@ -3521,35 +3615,92 @@ namespace QIP.EOL
 
         private void ProcessVoiceCommand(VoiceMatchResult result)
         {
+            // Bỏ qua các sự kiện “Bỏ qua” từ Engine (noise filter / thiếu action...)
+            if (result?.MatchedCommand?.StartsWith("[Bỏ qua]") == true)
+            {
+                ShowMessage($"[Voice] Bỏ qua — '{result.RecognizedText}'", Color.Gray);
+                VlogEntry(result, "[Bỏ qua]");
+                return;
+            }
+
             if (result?.ParsedCommand?.IsSuccess == true)
             {
                 VoiceCommandMatch command = result.ParsedCommand;
 
                 if (!string.IsNullOrWhiteSpace(command.PartCode))
-                {
                     SelectPart(command.PartCode);
-                }
 
                 if (!string.IsNullOrWhiteSpace(command.ErrorCode))
-                {
                     SelectError(command.ErrorCode);
-                }
 
                 if (!string.IsNullOrWhiteSpace(command.ActionType))
-                {
                     ConfirmAction(command.ActionType);
-                }
 
                 ShowMessage($"[Voice OK] {command.ToDisplayText()} ({command.ConfidenceScore:P0})", Color.Green);
+                VlogEntry(result, "OK");
                 return;
             }
+
             if (result.IsSuccess)
             {
                 ShowMessage($"[Voice Match] Lệnh: {result.MatchedCommand} (Độ tin cậy: {result.ConfidenceScore:P0})", Color.Green);
+                VlogEntry(result, "Match");
             }
             else
             {
-                ShowMessage($"[Voice Fail] Không nhận diện được lệnh. Nghe được: '{result.RecognizedText}'", Color.Red);
+                ShowMessage($"[Voice Fail] Không nhận diện được. Nghe được: '{result.RecognizedText}'", Color.Red);
+                VlogEntry(result, "Fail");
+            }
+        }
+
+        private void VlogEntry(VoiceMatchResult r, string status)
+        {
+            lock (_vlogLock)
+            {
+                if (_vlog == null) return;
+                _vlogSeq++;
+
+                string heard   = r.RecognizedText ?? "";
+                string matched = r.MatchedCommand ?? "";
+                string detail  = "";
+
+                if (r.ParsedCommand != null)
+                {
+                    var c = r.ParsedCommand;
+                    matched = c.ToDisplayText();
+                    var parts = new List<string>();
+                    if (!string.IsNullOrEmpty(c.PartCode))  parts.Add("Part=" + c.PartCode);
+                    if (!string.IsNullOrEmpty(c.ErrorCode)) parts.Add("Err=" + c.ErrorCode);
+                    if (!string.IsNullOrEmpty(c.ActionType)) parts.Add("Act=" + c.ActionType);
+                    detail = string.Join(" ", parts);
+                }
+
+                // Format kiểu Laravel: [datetime] LEVEL: message  {context}
+                string level = status == "OK" ? "INFO " : (status == "Fail" ? "WARN " : "DEBUG");
+                _vlog.WriteLine(
+                    $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {level}: [{status}] \"{heard}\" → {matched}" +
+                    (string.IsNullOrEmpty(detail) ? "" : $"  {{{detail}}}") +
+                    $"  ({r.ConfidenceScore:P0}, {r.ProcessingTimeSec:F1}s)");
+                _vlog.Flush();
+            }
+        }
+
+        private void VlogFinalize()
+        {
+            lock (_vlogLock)
+            {
+                if (_vlog == null) return;
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] INFO : Session kết thúc — {_vlogSeq} lượt nhận diện.");
+                _vlog.WriteLine(new string('-', 80));
+                _vlog.Flush();
+                _vlog.Close();
+                _vlog = null;
+            }
+            string path = _vlogPath;
+            if (path != null)
+            {
+                void ShowLog() => ShowMessage($"[Log] {System.IO.Path.GetFileName(path)}", Color.DimGray);
+                if (this.InvokeRequired) this.Invoke(new Action(ShowLog)); else ShowLog();
             }
         }
 
@@ -3679,6 +3830,64 @@ namespace QIP.EOL
             yield return (lblPart4, "D", "Part D", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("D"));
             yield return (lblPart5, "E", "Part E", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("E"));
             yield return (lblPart6, "F", "Part F", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("F"));
+        }
+
+        // ── VOICE AUTO TEST ──────────────────────────────────────────────────
+        // Gọi từ button btnVoiceAutoTest (thêm button vào Designer hoặc dùng context menu)
+        // Dùng chính _voiceEngine của A14 — KHÔNG tạo engine mới
+        // ─────────────────────────────────────────────────────────────────────
+        public async Task RunVoiceAutoTestAsync(
+            IReadOnlyList<VoiceTestCase> cases = null,
+            IProgress<(int cur, int total)> progress = null)
+        {
+            if (_voiceEngine == null)
+            {
+                ShowMessage("VoiceEngine chưa sẵn sàng.", Color.Red);
+                return;
+            }
+
+            // Dừng auto loop nếu đang chạy
+            if (_autoLoopCts != null)
+            {
+                _autoLoopCts.Cancel();
+                _autoLoopCts = null;
+                _voiceEngine.IsAutoLoopMode = false;
+                await Task.Delay(500); // chờ engine về trạng thái Ready
+            }
+
+            ShowMessage("🧪 Đang chạy Voice Auto Test...", Color.Blue);
+
+            string tempDir   = System.IO.Path.Combine(Application.StartupPath, "VoiceTestTemp");
+            string reportDir = System.IO.Path.Combine(Application.StartupPath, "test", "log");
+
+            var runner = new VoiceAutoTestRunner(
+                engine    : _voiceEngine,
+                logAction : msg => ThreadSafe(() => ShowMessage(msg, Color.DarkSlateGray)),
+                tempDir   : tempDir
+            );
+
+            try
+            {
+                var results = await runner.RunAllAsync(cases, progress);
+
+                int pass = results.Count(r => r.IsPass);
+                Color statusColor = (pass == results.Count) ? Color.Green : Color.OrangeRed;
+
+                // Lưu báo cáo markdown
+                System.IO.Directory.CreateDirectory(reportDir);
+                string reportPath = System.IO.Path.Combine(
+                    reportDir,
+                    $"A14_autotest_{DateTime.Now:yyyyMMdd_HHmmss}.md");
+                runner.SaveReport(results, reportPath);
+
+                ShowMessage(
+                    $"✅ Auto Test: {pass}/{results.Count} PASS  |  Báo cáo: {System.IO.Path.GetFileName(reportPath)}",
+                    statusColor);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Auto Test lỗi: " + ex.Message, Color.Red);
+            }
         }
     }
 }

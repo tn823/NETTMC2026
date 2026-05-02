@@ -656,6 +656,8 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("mười lăm",    "15"),
                 new KeyValuePair<string, string>("mười sáu",    "16"),
                 new KeyValuePair<string, string>("mười bảy",    "17"),
+                new KeyValuePair<string, string>("mời bày!",    "17"),
+                new KeyValuePair<string, string>("mời bày",    "17"),
                 new KeyValuePair<string, string>("mười tám",    "18"),
                 new KeyValuePair<string, string>("mười chín",   "19"),
                 // Fix #04: Whisper nghe "mười" thành "mùi" (dấu huyền thay hỏi)
@@ -669,6 +671,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("mùi tám",    "18"),
                 new KeyValuePair<string, string>("mùi chín",   "19"),
                 new KeyValuePair<string, string>("hai mươi mốt","21"),
+                new KeyValuePair<string, string>("hai mùi mốt","22"),
                 new KeyValuePair<string, string>("hai mươi lăm","25"),
                 new KeyValuePair<string, string>("hai mươi tám","28"),
                 new KeyValuePair<string, string>("ba mươi bốn", "34"),
@@ -678,6 +681,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("bốn mươi mốt","41"),
                 new KeyValuePair<string, string>("bốn mươi hai","42"),
                 new KeyValuePair<string, string>("tám mươi hai","82"),
+                new KeyValuePair<string, string>("tám mùi hai","82"),
 
                 new KeyValuePair<string, string>("một một", "11"),
                 new KeyValuePair<string, string>("một hai", "12"),
@@ -941,8 +945,8 @@ namespace NETTMC.VoiceRecognition
             new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
             {
                 // P4: Thêm alias dấu thanh cho chữ A (Whisper-VI hay nhận âm ngắn thành à/ạ/á)
-                { "A", new[] { "a", "à", "ạ", "á", "ã", "â", "ay", "ei" } },
-                { "B", new[] { "bê", "bờ", "bi" } },
+                { "A", new[] { "a", "à", "ạ", "á", "ã", "â", "ay", "ei", "Ah", "ah" } },
+                { "B", new[] { "bê", "bờ", "bi", "bb" } },
                 { "C", new[] { "xê", "cờ", "xi", "xê" } },
                 { "D", new[] { "dê", "dờ", "đi", "đê", "đờ" } },
                 { "E", new[] { "ê", "e" } },
@@ -1059,7 +1063,7 @@ namespace NETTMC.VoiceRecognition
                     DisplayText = "đạt",
                     // P3: Thêm biến thể Whisper-VI của "pass" (nghe thành "pát","bát","đét"...)
                     Aliases = new[] { "pass", "đạt", "qua", "ok", "ô kê", "okay",
-                                      "pát", "bát", "đét", "bắt", "pat" }
+                                      "pát", "bát", "đét", "bắt", "pat", "Bás!" }
                 };
             }
 

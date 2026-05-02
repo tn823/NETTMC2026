@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace QIP.EOL
 {
@@ -166,8 +166,9 @@ namespace QIP.EOL
             simpleButton10 = new Button();
             panelControl5 = new Panel();
             tableLayoutPanel5 = new TableLayoutPanel();
-            btnVoiceWhisper = new Button();
             memoEditMessage = new TextBox();
+            btnVoiceWhisper = new Button();
+            btnVoiceAutoTest = new Button();
             panelControl6 = new Panel();
             tableLayoutPanel4 = new TableLayoutPanel();
             simpleButton14 = new Button();
@@ -2159,11 +2160,13 @@ namespace QIP.EOL
             // 
             // tableLayoutPanel5
             // 
-            tableLayoutPanel5.ColumnCount = 2;
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 89F));
+            tableLayoutPanel5.ColumnCount = 3;
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 78F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11F));
-            tableLayoutPanel5.Controls.Add(btnVoiceWhisper, 1, 0);
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11F));
             tableLayoutPanel5.Controls.Add(memoEditMessage, 0, 0);
+            tableLayoutPanel5.Controls.Add(btnVoiceWhisper, 1, 0);
+            tableLayoutPanel5.Controls.Add(btnVoiceAutoTest, 2, 0);
             tableLayoutPanel5.Dock = DockStyle.Fill;
             tableLayoutPanel5.Location = new Point(0, 0);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
@@ -2171,23 +2174,6 @@ namespace QIP.EOL
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel5.Size = new Size(1086, 131);
             tableLayoutPanel5.TabIndex = 7;
-            // 
-            // btnVoiceWhisper
-            // 
-            btnVoiceWhisper.BackColor = Color.White;
-            btnVoiceWhisper.Dock = DockStyle.Right;
-            btnVoiceWhisper.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            btnVoiceWhisper.FlatStyle = FlatStyle.Flat;
-            btnVoiceWhisper.Font = new Font("Arial", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnVoiceWhisper.Image = Properties.Resources.voice_whisper;
-            btnVoiceWhisper.Location = new Point(969, 4);
-            btnVoiceWhisper.Margin = new Padding(3, 4, 3, 4);
-            btnVoiceWhisper.Name = "btnVoiceWhisper";
-            btnVoiceWhisper.Size = new Size(114, 123);
-            btnVoiceWhisper.TabIndex = 7;
-            btnVoiceWhisper.TextImageRelation = TextImageRelation.ImageAboveText;
-            btnVoiceWhisper.UseVisualStyleBackColor = false;
-            btnVoiceWhisper.Click += btnVoiceWhisper_Click;
             // 
             // memoEditMessage
             // 
@@ -2197,8 +2183,42 @@ namespace QIP.EOL
             memoEditMessage.Multiline = true;
             memoEditMessage.Name = "memoEditMessage";
             memoEditMessage.ScrollBars = ScrollBars.Vertical;
-            memoEditMessage.Size = new Size(960, 123);
+            memoEditMessage.Size = new Size(841, 123);
             memoEditMessage.TabIndex = 0;
+            // 
+            // btnVoiceWhisper
+            // 
+            btnVoiceWhisper.BackColor = Color.White;
+            btnVoiceWhisper.Dock = DockStyle.Right;
+            btnVoiceWhisper.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            btnVoiceWhisper.FlatStyle = FlatStyle.Flat;
+            btnVoiceWhisper.Font = new Font("Arial", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVoiceWhisper.Image = Properties.Resources.voice_whisper;
+            btnVoiceWhisper.Location = new Point(850, 4);
+            btnVoiceWhisper.Margin = new Padding(3, 4, 3, 4);
+            btnVoiceWhisper.Name = "btnVoiceWhisper";
+            btnVoiceWhisper.Size = new Size(113, 123);
+            btnVoiceWhisper.TabIndex = 7;
+            btnVoiceWhisper.TextImageRelation = TextImageRelation.ImageAboveText;
+            btnVoiceWhisper.UseVisualStyleBackColor = false;
+            btnVoiceWhisper.Click += btnVoiceWhisper_Click;
+            // 
+            // btnVoiceAutoTest
+            // 
+            btnVoiceAutoTest.BackColor = Color.FromArgb(39, 174, 96);
+            btnVoiceAutoTest.Dock = DockStyle.Fill;
+            btnVoiceAutoTest.FlatAppearance.BorderColor = Color.FromArgb(0, 100, 0);
+            btnVoiceAutoTest.FlatStyle = FlatStyle.Flat;
+            btnVoiceAutoTest.Font = new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVoiceAutoTest.ForeColor = Color.White;
+            btnVoiceAutoTest.Location = new Point(969, 4);
+            btnVoiceAutoTest.Margin = new Padding(3, 4, 3, 4);
+            btnVoiceAutoTest.Name = "btnVoiceAutoTest";
+            btnVoiceAutoTest.Size = new Size(114, 123);
+            btnVoiceAutoTest.TabIndex = 8;
+            btnVoiceAutoTest.Text = "\U0001f9ea AUTO\nTEST";
+            btnVoiceAutoTest.UseVisualStyleBackColor = false;
+            btnVoiceAutoTest.Click += btnVoiceAutoTest_Click;
             // 
             // panelControl6
             // 
@@ -2783,6 +2803,7 @@ namespace QIP.EOL
         private System.Windows.Forms.Timer timer_BlinkButtonGreen;
         private TableLayoutPanel tableLayoutPanel5;
         private Button btnVoiceWhisper;
+        private Button btnVoiceAutoTest;
         private Label label4;
         private Label label2;
         private Label label3;

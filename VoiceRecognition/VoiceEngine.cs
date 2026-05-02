@@ -73,7 +73,7 @@ namespace NETTMC.VoiceRecognition
         private bool _isDisposed;
         private string _lastErrorMessage;
 
-        public VoiceEngine(double threshold = 0.80)
+        public VoiceEngine(double threshold = 0.85)
         {
             _threshold = threshold;
             InitializeTTS();
@@ -515,41 +515,51 @@ namespace NETTMC.VoiceRecognition
         }
 
         /// <summary>
-        /// Tầng 2 filter: kiểm tra text có chứa từ khoá nghiệp vụ không.
-        /// Chỉ cho qua nếu chứa: số (0-9), từ hành động tiếng Việt, chữ Part, hoặc từ số tiếng Việt.
-        /// Lọc ra: "Cám ơn", "MING PAO", tiếng nước ngoài, tạp âm...
+        /// Tầng 2 filter: kiểm tra text có chứa từ khoá nghiệp vụ hợp lệ không.
+        /// Nguyên tắc: phải có SỐ hoặc PART PREFIX rõ ràng, hoặc ACTION từ ghép.
+        /// "lỗi" đơn thuần KHÔNG đủ — phải kèm số hoặc part.
+        /// Câu quá dài (>8 từ) không có số/part prefix cũng bị reject.
         /// </summary>
         private static bool ContainsBusinessKeyword(string text)
         {
             if (string.IsNullOrWhiteSpace(text)) return false;
 
             string lower = text.ToLowerInvariant();
+            int wordCount = lower.Split(new[] { ' ', ',', '.', '!', '?', ';' },
+                StringSplitOptions.RemoveEmptyEntries).Length;
 
-            // Chứa chữ số → có thể là mã lỗi
+            // Chứa chữ số → có thể là mã lỗi (số + gì đó là OK)
             if (lower.Any(char.IsDigit)) return true;
 
-            // Từ hành động / kết quả
-            string[] actionWords = {
-                "đạt", "lỗi", "fail", "pass", "xóa", "hủy", "bỏ", "clear",
-                "không đạt", "không đặt", "hông đạt", "đặt lại", "đạt lại",
-                "lỗi lại", "đứt lãi"
-            };
-            foreach (var w in actionWords)
-                if (lower.Contains(w)) return true;
-
-            // Từ số tiếng Việt (mười, mươi, một, hai, ba, bốn, năm, sáu, bảy, tám, chín, mùi)
+            // Từ số tiếng Việt (phát âm rõ, không lẫn với hội thoại thông thường)
             string[] numberWords = {
-                "mười", "mươi", "mùi", "một", "hai", "ba", "bốn", "năm",
+                "mười", "mươi", "mùi", "một", "hai", "bốn", "năm",
                 "sáu", "bảy", "tám", "chín", "mốt", "lăm", "mướng"
             };
             foreach (var w in numberWords)
                 if (lower.Contains(w)) return true;
 
-            // Chữ Part đứng đầu (a, bê, xê, b, c + khoảng trắng)
-            string[] partPrefixes = { "bê ", "xê ", "bê\t", "xê\t" };
+            // Chữ Part đứng đầu hoặc đứng đơn (A, bê, xê...)
+            string[] partPrefixes = { "bê ", "xê ", "bê,", "xê,", "bê\t", "xê\t" };
             foreach (var p in partPrefixes)
-                if (lower.StartsWith(p) || lower.Contains(" " + p.Trim() + " ")) return true;
+                if (lower.StartsWith(p) || lower.Contains(" " + p.Trim())) return true;
+            // Chữ đơn A/B/C/D/E/F đứng một mình đầu câu
+            if (System.Text.RegularExpressions.Regex.IsMatch(lower, @"^[a-f][\s,\.]")
+                || lower == "a" || lower == "b" || lower == "c"
+                || lower == "d" || lower == "e" || lower == "f") return true;
 
+            // Action rõ ràng (phrase đầy đủ, không phải từ đơn)
+            string[] actionPhrases = {
+                "không đạt", "không đặt", "hông đạt",
+                "đặt lại", "đạt lại", "lỗi lại"
+            };
+            foreach (var w in actionPhrases)
+                if (lower.Contains(w)) return true;
+
+            // "đạt" đơn hoặc "pass" đơn OK (câu ngắn ≤3 từ)
+            if (wordCount <= 3 && (lower.Contains("đạt") || lower.Contains("pass"))) return true;
+
+            // Câu dài mà không có gì đặc trưng → reject
             return false;
         }
 

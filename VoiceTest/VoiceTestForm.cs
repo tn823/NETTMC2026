@@ -127,8 +127,8 @@ namespace VoiceTest
             Log($" - Độ tự tin: {match.ConfidenceScore * 100:F0}%");
             Log($"==========================================\n");
 
-            // Ghi vào file log auto-loop nếu đang bật
-            if (_isAutoMode)
+            // Ghi vào file log auto-loop nếu writer còn mở
+            if (_autoLoopLogWriter != null)
                 WriteAutoLoopEntry(match);
         }
 
@@ -178,11 +178,17 @@ namespace VoiceTest
             }
             else
             {
+                _isAutoMode = false;
                 _voiceEngine.IsAutoLoopMode = false;
                 buttonAutoLoop.Text      = "▶ AUTO LOOP";
                 buttonAutoLoop.BackColor = Color.LightGreen;
-                FinalizeAutoLoopLog();
-                Log("[AUTO-LOOP] Đã dừng.");
+                Log("[AUTO-LOOP] Đã dừng. Đợi kết quả cuối...");
+                // Delay 3s để cho phép in-flight RecognizeAudioAsync hoàn tất và fire CommandRecognized
+                _ = Task.Delay(3000).ContinueWith(_ => {
+                    FinalizeAutoLoopLog();
+                    if (InvokeRequired) Invoke(new Action(() => Log("[AUTO-LOOP] Đã lưu log xong.")));
+                    else Log("[AUTO-LOOP] Đã lưu log xong.");
+                });
             }
         }
 
