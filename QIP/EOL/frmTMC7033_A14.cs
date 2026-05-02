@@ -3713,48 +3713,49 @@ namespace QIP.EOL
         {
             var commands = new List<VoiceCommandDefinition>();
 
+            // ── Part labels (A-F) ────────────────────────────────────────────
             foreach (var (label, code, display, extra) in GetPartLabels())
             {
-                var aliases = new List<string>
-                {
-                    code,
-                    "điểm " + code,
-                    "vị trí " + code,
-                    "part " + code,
-                };
+                var aliases = new List<string> { code, "điểm " + code, "vị trí " + code, "part " + code };
                 if (extra != null) aliases.AddRange(extra);
-
                 commands.Add(new VoiceCommandDefinition
                 {
-                    Kind = VoiceCommandKind.Part,
-                    Code = code,
+                    Kind        = VoiceCommandKind.Part,
+                    Code        = code,
                     DisplayText = display,
-                    Aliases = aliases
+                    Aliases     = aliases
                 });
             }
 
-            foreach (Button button in GetReasonButtons())
-            {
-                if (string.IsNullOrWhiteSpace(button.AccessibleName))
-                {
-                    continue;
-                }
+            // ── REASON_ID cố định cho A14 ────────────────────────────────────
+            // Chỉ nhận 16 mã lỗi thực tế dùng tại A14.
+            // THỨ TỰ QUAN TRỌNG: 17, 18, 21 đứng ĐẦU → vào Whisper Prompt trước
+            // → Whisper sẽ ưu tiên nhận diện 3 mã lỗi thường xuyên nhất này.
+            var a14ReasonIds = new[] { "17", "18", "21", "1", "2", "3", "4", "5", "6", "8", "9", "12", "22", "23", "79", "82" };
 
-                string text = string.IsNullOrWhiteSpace(button.Text)
-                    ? button.AccessibleName
-                    : button.Text.Replace(Environment.NewLine, " ");
+            // Lấy button text từ form để giữ đúng tên lỗi thực tế
+            var buttonMap = GetReasonButtons()
+                .Where(b => !string.IsNullOrWhiteSpace(b.AccessibleName))
+                .ToDictionary(b => b.AccessibleName, b =>
+                    string.IsNullOrWhiteSpace(b.Text) ? b.AccessibleName
+                    : b.Text.Replace(Environment.NewLine, " "));
+
+            foreach (string reasonId in a14ReasonIds)
+            {
+                // Lấy display text từ button nếu có, fallback về reasonId
+                buttonMap.TryGetValue(reasonId, out string displayText);
+                displayText ??= reasonId;
 
                 commands.Add(new VoiceCommandDefinition
                 {
-                    Kind = VoiceCommandKind.Error,
-                    Code = button.AccessibleName,
-                    DisplayText = text,
-                    Aliases = VoiceAliasHelper.BuildReasonAliases(button.AccessibleName, text)
+                    Kind        = VoiceCommandKind.Error,
+                    Code        = reasonId,
+                    DisplayText = displayText,
+                    Aliases     = VoiceAliasHelper.BuildReasonAliases(reasonId, displayText)
                 });
             }
 
             commands.AddRange(VoiceAliasHelper.BuildActionCommands(SupportedActions));
-
             return commands;
         }
 
@@ -3818,18 +3819,18 @@ namespace QIP.EOL
             }
         }
 
-        // ── Thiết lập tên voice cho từng part tại đây ──
-        // Mỗi dòng: (Label trên form, code voice, tên hiển thị, alias thêm)
-        // Alias mặc định đã có: "Code", "điểm Code", "vị trí Code", "part Code"
-        // ExtraAliases: thêm cách phát âm chữ cái theo tiếng Việt (bê/bờ/bi cho B, xê/cờ cho C...)
+        // ── Part labels cho A14 ─────────────────────────────────────────────
+        // Alias: ưu tiên cách đọc ĐÔI (bê bê, xê xê...) để Whisper nhận Part rõ hơn.
+        // Kỹ thuật "đọc đôi" (AA, BB...): Whisper nhận ký tự đơn rất kém,
+        // nhưng lặp 2 lần cụm âm tiết rõ (bê bê, xê xê) tăng accuracy lên đáng kể.
         private IEnumerable<(Label Label, string Code, string Display, string[] ExtraAliases)> GetPartLabels()
         {
-            yield return (lblPart1, "A", "Part A", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("A"));
-            yield return (lblPart2, "B", "Part B", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("B"));
-            yield return (lblPart3, "C", "Part C", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("C"));
-            yield return (lblPart4, "D", "Part D", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("D"));
-            yield return (lblPart5, "E", "Part E", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("E"));
-            yield return (lblPart6, "F", "Part F", VoiceAliasHelper.LetterViAliases.GetValueOrDefault("F"));
+            yield return (lblPart1, "A", "Part A", new[] { "a", "à", "ạ", "á", "Ah", "ah", "a a", "lỗi a" });
+            yield return (lblPart2, "B", "Part B", new[] { "bê", "bờ", "bê bê", "bờ bờ", "b b", "bb" });
+            yield return (lblPart3, "C", "Part C", new[] { "xê", "sê", "se", "xê xê", "sê sê", "c c" });
+            yield return (lblPart4, "D", "Part D", new[] { "đê", "đề", "đê đê", "đề đề", "d d" });
+            yield return (lblPart5, "E", "Part E", new[] { "ê", "e", "ê ê", "e e" });
+            yield return (lblPart6, "F", "Part F", new[] { "ép", "ep", "ép ép", "ep ep", "f f" });
         }
 
         // ── VOICE AUTO TEST ──────────────────────────────────────────────────

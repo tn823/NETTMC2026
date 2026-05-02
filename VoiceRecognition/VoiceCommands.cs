@@ -620,13 +620,31 @@ namespace NETTMC.VoiceRecognition
             text = Regex.Replace(text, @"([a-z])(\d)", "$1 $2");
             text = Regex.Replace(text, @"(\d)([a-z])", "$1 $2");
 
+            // 0c. Canonicalize số 3 chữ số dạng X0Y → XY (Whisper TTS đôi khi đọc "82" thành "802",
+            //     hoặc "79" thành "709"...)
+            //     Pattern: \b[1-9]0[1-9]\b → bỏ số 0 ở giữa → VD: 802→82, 709→79, 402→42
+            text = Regex.Replace(text, @"\b([1-9])0([1-9])\b", "$1$2");
+            // Trường hợp 3 chữ số bắt đầu bằng chục (e.g. 117→17, 118→18): loại bỏ chữ số đầu
+            text = Regex.Replace(text, @"\b1([1-9][0-9])\b", "$1");
+
             // 1. Thay thế trươc khi bỏ dấu (để phân biệt các từ có dấu giống nhau khi bỏ dấu, ví dụ "bảy" và "bây")
             var preDiacriticReplacements = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("bây", "bê"),
                 new KeyValuePair<string, string>("ạ", "a"),
                 new KeyValuePair<string, string>("xe ", "xê "),
+                new KeyValuePair<string, string>("se ", "sê "),   // Whisper đọc C thành "se"
                 new KeyValuePair<string, string>("b ", "bê "),
+
+                // Whisper hay nhầm cuối "áu" thành "ao" (sáu → sao, cháu → chao...)
+                new KeyValuePair<string, string>("sáo", "sáu"),   // "sáo" không phải từ thông dụng trong văn cảnh số
+                new KeyValuePair<string, string>("sao",  "sáu"),  // Whisper hay viết "sáu" thành "sao" (bỏ dấu sắc + đổi u→o)
+
+                    // Whisper đôi khi đọc Part D/E thành các từ thông thường → map về ký tự Part
+                new KeyValuePair<string, string>("đê đê ", "đê "),  // "D D ..." → "đê đê ..."
+                new KeyValuePair<string, string>("đề đề ", "đê "),
+                new KeyValuePair<string, string>("ê ê ",   "ê "),   // "E E ..." → "ê ê ..."
+                new KeyValuePair<string, string>("ep ep ", "ep "),  // "F F ..." → "ep ep ..."
 
                 new KeyValuePair<string, string>("lỗi à ", "lỗi a "),
                 new KeyValuePair<string, string>("lỗi ạ ", "lỗi a "),
@@ -649,6 +667,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("đát lại",   "đạt lại"),
                 new KeyValuePair<string, string>("đạt lội",   "đạt lại"),
 
+                new KeyValuePair<string, string>("tín",   "9"),
                 new KeyValuePair<string, string>("mười một",    "11"),
                 new KeyValuePair<string, string>("mười hai",    "12"),
                 new KeyValuePair<string, string>("mười ba",     "13"),
@@ -660,7 +679,33 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("mời bày",    "17"),
                 new KeyValuePair<string, string>("mười tám",    "18"),
                 new KeyValuePair<string, string>("mười chín",   "19"),
-                // Fix #04: Whisper nghe "mười" thành "mùi" (dấu huyền thay hỏi)
+                
+                new KeyValuePair<string, string>("mùi bài",    "17"),  
+                new KeyValuePair<string, string>("mùi bày",    "17"),
+                new KeyValuePair<string, string>("mùi tâm",    "18"),  
+
+                // ── QUY TẮC QUAN TRỌNG: cụm DÀI phải đứng TRƯỚC cụm NGẮN ──
+                // "hai mươi hai"/"hai mùi hai" PHẢI nằm trước "mùi hai"
+                // vì nếu "mùi hai"→12 chạy trước, "hai mùi hai" → "hai 12" → parse sai
+                new KeyValuePair<string, string>("hai mươi hai",  "22"),
+                new KeyValuePair<string, string>("hai mùi hai",   "22"),  // E E hai mùi hai → 22
+                new KeyValuePair<string, string>("hai mươi mốt",  "21"),
+                new KeyValuePair<string, string>("hai mùi mốt",   "21"),
+                new KeyValuePair<string, string>("hai mươi lăm",  "25"),
+                new KeyValuePair<string, string>("hai mươi tám",  "28"),
+                new KeyValuePair<string, string>("ba mươi bốn",   "34"),
+                new KeyValuePair<string, string>("ba mươi lăm",   "35"),
+                new KeyValuePair<string, string>("ba mươi tám",   "38"),
+                new KeyValuePair<string, string>("bốn mươi",      "40"),
+                new KeyValuePair<string, string>("bốn mươi mốt",  "41"),
+                new KeyValuePair<string, string>("bốn mươi hai",  "42"),
+                new KeyValuePair<string, string>("bảy mươi chín", "79"),  // đầy đủ — phải đứng trước "bảy chín"
+                new KeyValuePair<string, string>("bày mươi chín", "79"),  // Whisper đọc "bảy" → "bày" (huyền thay sắc)
+                new KeyValuePair<string, string>("bảy chín",      "79"),  // dạng tắt
+                new KeyValuePair<string, string>("bày chín",      "79"),  // dạng tắt — Whisper hay viết "bảy" thành "bày"
+                new KeyValuePair<string, string>("tám mươi hai",  "82"),
+                new KeyValuePair<string, string>("tám mùi hai",   "82"),
+                // ── Sau đó mới đến cụm ngắn hơn (mùi X) ────────────────────
                 new KeyValuePair<string, string>("mùi một",    "11"),
                 new KeyValuePair<string, string>("mùi hai",    "12"),
                 new KeyValuePair<string, string>("mùi ba",     "13"),
@@ -670,18 +715,6 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("mùi bảy",    "17"),
                 new KeyValuePair<string, string>("mùi tám",    "18"),
                 new KeyValuePair<string, string>("mùi chín",   "19"),
-                new KeyValuePair<string, string>("hai mươi mốt","21"),
-                new KeyValuePair<string, string>("hai mùi mốt","22"),
-                new KeyValuePair<string, string>("hai mươi lăm","25"),
-                new KeyValuePair<string, string>("hai mươi tám","28"),
-                new KeyValuePair<string, string>("ba mươi bốn", "34"),
-                new KeyValuePair<string, string>("ba mươi lăm", "35"),
-                new KeyValuePair<string, string>("ba mươi tám", "38"),
-                new KeyValuePair<string, string>("bốn mươi",    "40"),
-                new KeyValuePair<string, string>("bốn mươi mốt","41"),
-                new KeyValuePair<string, string>("bốn mươi hai","42"),
-                new KeyValuePair<string, string>("tám mươi hai","82"),
-                new KeyValuePair<string, string>("tám mùi hai","82"),
 
                 new KeyValuePair<string, string>("một một", "11"),
                 new KeyValuePair<string, string>("một hai", "12"),
@@ -946,11 +979,12 @@ namespace NETTMC.VoiceRecognition
             {
                 // P4: Thêm alias dấu thanh cho chữ A (Whisper-VI hay nhận âm ngắn thành à/ạ/á)
                 { "A", new[] { "a", "à", "ạ", "á", "ã", "â", "ay", "ei", "Ah", "ah" } },
-                { "B", new[] { "bê", "bờ", "bi", "bb" } },
-                { "C", new[] { "xê", "cờ", "xi", "xê" } },
-                { "D", new[] { "dê", "dờ", "đi", "đê", "đờ" } },
-                { "E", new[] { "ê", "e" } },
-                { "F", new[] { "ép phờ", "ép", "ep" } },
+                { "B", new[] { "bê", "bờ", "bi", "bb", "bê bê" } },
+                // "Sê/sê" = cách Whisper-VI hay đọc chữ C (thay vì "xê")
+                { "C", new[] { "xê", "cờ", "xi", "sê", "se", "ce", "xê xê" } },
+                { "D", new[] { "dê", "dờ", "đi", "đê", "đờ", "đê đê", "đề đề" } },
+                { "E", new[] { "ê", "e", "ê ê", "e e" } },
+                { "F", new[] { "ép phờ", "ép", "ep", "ép ép", "ep ep" } },
                 { "G", new[] { "giê", "gờ" } },
                 { "H", new[] { "hắt", "hờ" } },
                 { "I", new[] { "i", "i ngắn" } },

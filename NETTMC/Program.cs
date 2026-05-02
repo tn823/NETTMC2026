@@ -15,7 +15,7 @@ namespace NETTMC
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             //Application.Run(new MainForm());
-             Application.Run(new Authentication.Login());
+            Application.Run(new Authentication.Login());
             //Application.Run(new VoiceTest.VoiceTestForm());
         }
     }
