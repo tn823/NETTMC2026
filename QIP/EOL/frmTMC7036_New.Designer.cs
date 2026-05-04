@@ -18,6 +18,14 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+
+            if (disposing)
+            {
+                _voice.RecognitionCompleted -= OnRecognitionCompleted;
+                _voice.ModelStatusChanged -= OnModelStatus;
+                _voice.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         #region Component Designer generated code
@@ -50,6 +58,7 @@
             lblError2 = new Label();
             lblError1 = new Label();
             panel1 = new Panel();
+            picShoeImage = new PictureBox();
             lblPartCount4 = new Label();
             lblPartCount3 = new Label();
             lblPartCount2 = new Label();
@@ -58,7 +67,6 @@
             lblPart3 = new Label();
             lblPart2 = new Label();
             lblPart1 = new Label();
-            picShoeImage = new PictureBox();
             tableLayoutPanel8 = new TableLayoutPanel();
             btnReFail = new Button();
             btnRePass = new Button();
@@ -145,6 +153,7 @@
             button18 = new Button();
             button17 = new Button();
             panel8 = new Panel();
+            btnVoiceWhisper = new Button();
             button1 = new Button();
             btnClear = new Button();
             panelStatus = new FlowLayoutPanel();
@@ -514,6 +523,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(picShoeImage);
             panel1.Controls.Add(lblPartCount4);
             panel1.Controls.Add(lblPartCount3);
             panel1.Controls.Add(lblPartCount2);
@@ -522,12 +532,23 @@
             panel1.Controls.Add(lblPart3);
             panel1.Controls.Add(lblPart2);
             panel1.Controls.Add(lblPart1);
-            panel1.Controls.Add(picShoeImage);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(4, 146);
             panel1.Name = "panel1";
             panel1.Size = new Size(887, 321);
             panel1.TabIndex = 4;
+            // 
+            // picShoeImage
+            // 
+            picShoeImage.Dock = DockStyle.Fill;
+            picShoeImage.Image = Properties.Resources.sASS_3;
+            picShoeImage.Location = new Point(0, 0);
+            picShoeImage.Name = "picShoeImage";
+            picShoeImage.Size = new Size(887, 321);
+            picShoeImage.SizeMode = PictureBoxSizeMode.StretchImage;
+            picShoeImage.TabIndex = 2;
+            picShoeImage.TabStop = false;
+            picShoeImage.Click += pictureBox2_Click;
             // 
             // lblPartCount4
             // 
@@ -628,18 +649,6 @@
             lblPart1.TextAlign = ContentAlignment.MiddleCenter;
             lblPart1.UseCompatibleTextRendering = true;
             lblPart1.Click += lblPart3_Click;
-            // 
-            // picShoeImage
-            // 
-            picShoeImage.Dock = DockStyle.Fill;
-            picShoeImage.Image = Properties.Resources.sASS_3;
-            picShoeImage.Location = new Point(0, 0);
-            picShoeImage.Name = "picShoeImage";
-            picShoeImage.Size = new Size(887, 321);
-            picShoeImage.SizeMode = PictureBoxSizeMode.StretchImage;
-            picShoeImage.TabIndex = 2;
-            picShoeImage.TabStop = false;
-            picShoeImage.Click += pictureBox2_Click;
             // 
             // tableLayoutPanel8
             // 
@@ -1374,7 +1383,7 @@
             button16.AccessibleName = "43";
             button16.BackColor = Color.PaleTurquoise;
             button16.Dock = DockStyle.Fill;
-            button16.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button16.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button16.Location = new Point(610, 379);
             button16.Name = "button16";
             button16.Size = new Size(301, 93);
@@ -1388,7 +1397,7 @@
             button15.AccessibleName = "42";
             button15.BackColor = Color.PaleTurquoise;
             button15.Dock = DockStyle.Fill;
-            button15.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button15.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button15.Location = new Point(305, 379);
             button15.Name = "button15";
             button15.Size = new Size(298, 93);
@@ -1402,7 +1411,7 @@
             button14.AccessibleName = "41";
             button14.BackColor = Color.PaleTurquoise;
             button14.Dock = DockStyle.Fill;
-            button14.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button14.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button14.Location = new Point(4, 379);
             button14.Name = "button14";
             button14.Size = new Size(294, 93);
@@ -1416,7 +1425,7 @@
             button13.AccessibleName = "55";
             button13.BackColor = Color.PaleTurquoise;
             button13.Dock = DockStyle.Fill;
-            button13.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button13.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button13.Location = new Point(4, 279);
             button13.Name = "button13";
             button13.Size = new Size(294, 93);
@@ -1430,7 +1439,7 @@
             button12.AccessibleName = "40";
             button12.BackColor = Color.PaleTurquoise;
             button12.Dock = DockStyle.Fill;
-            button12.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button12.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button12.Location = new Point(4, 185);
             button12.Name = "button12";
             button12.Size = new Size(294, 87);
@@ -1444,7 +1453,7 @@
             button5.AccessibleName = "44";
             button5.BackColor = Color.PaleTurquoise;
             button5.Dock = DockStyle.Fill;
-            button5.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button5.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button5.Location = new Point(4, 98);
             button5.Name = "button5";
             button5.Size = new Size(294, 80);
@@ -1699,7 +1708,7 @@
             button4.AccessibleName = "39";
             button4.BackColor = Color.PaleTurquoise;
             button4.Dock = DockStyle.Fill;
-            button4.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button4.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button4.Location = new Point(4, 4);
             button4.Name = "button4";
             button4.Size = new Size(294, 87);
@@ -1755,7 +1764,7 @@
             button25.AccessibleName = "54";
             button25.BackColor = Color.PaleTurquoise;
             button25.Dock = DockStyle.Fill;
-            button25.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button25.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button25.Location = new Point(1096, 100);
             button25.Name = "button25";
             button25.Size = new Size(357, 90);
@@ -1769,7 +1778,7 @@
             button24.AccessibleName = "53";
             button24.BackColor = Color.PaleTurquoise;
             button24.Dock = DockStyle.Fill;
-            button24.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button24.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button24.Location = new Point(732, 100);
             button24.Name = "button24";
             button24.Size = new Size(357, 90);
@@ -1783,7 +1792,7 @@
             button23.AccessibleName = "51";
             button23.BackColor = Color.PaleTurquoise;
             button23.Dock = DockStyle.Fill;
-            button23.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button23.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button23.Location = new Point(368, 100);
             button23.Name = "button23";
             button23.Size = new Size(357, 90);
@@ -1797,7 +1806,7 @@
             button22.AccessibleName = "50";
             button22.BackColor = Color.PaleTurquoise;
             button22.Dock = DockStyle.Fill;
-            button22.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button22.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button22.Location = new Point(4, 100);
             button22.Name = "button22";
             button22.Size = new Size(357, 90);
@@ -1811,7 +1820,7 @@
             button21.AccessibleName = "55";
             button21.BackColor = Color.PaleTurquoise;
             button21.Dock = DockStyle.Fill;
-            button21.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button21.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button21.Location = new Point(1460, 4);
             button21.Name = "button21";
             button21.Size = new Size(358, 89);
@@ -1825,7 +1834,7 @@
             button20.AccessibleName = "46";
             button20.BackColor = Color.PaleTurquoise;
             button20.Dock = DockStyle.Fill;
-            button20.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button20.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button20.Location = new Point(1096, 4);
             button20.Name = "button20";
             button20.Size = new Size(357, 89);
@@ -1839,7 +1848,7 @@
             button19.AccessibleName = "47";
             button19.BackColor = Color.PaleTurquoise;
             button19.Dock = DockStyle.Fill;
-            button19.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button19.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button19.Location = new Point(732, 4);
             button19.Name = "button19";
             button19.Size = new Size(357, 89);
@@ -1853,7 +1862,7 @@
             button18.AccessibleName = "48";
             button18.BackColor = Color.PaleTurquoise;
             button18.Dock = DockStyle.Fill;
-            button18.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button18.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button18.Location = new Point(368, 4);
             button18.Name = "button18";
             button18.Size = new Size(357, 89);
@@ -1867,7 +1876,7 @@
             button17.AccessibleName = "45";
             button17.BackColor = Color.PaleTurquoise;
             button17.Dock = DockStyle.Fill;
-            button17.Font = new Font("Microsoft Sans Serif", 21.75F);
+            button17.Font = new Font("VNI-Times", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button17.Location = new Point(4, 4);
             button17.Name = "button17";
             button17.Size = new Size(357, 89);
@@ -1878,6 +1887,7 @@
             // 
             // panel8
             // 
+            panel8.Controls.Add(btnVoiceWhisper);
             panel8.Controls.Add(button1);
             panel8.Controls.Add(btnClear);
             panel8.Controls.Add(panelStatus);
@@ -1895,6 +1905,23 @@
             panel8.Name = "panel8";
             panel8.Size = new Size(1822, 42);
             panel8.TabIndex = 1;
+            // 
+            // btnVoiceWhisper
+            // 
+            btnVoiceWhisper.BackColor = Color.White;
+            btnVoiceWhisper.Dock = DockStyle.Right;
+            btnVoiceWhisper.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            btnVoiceWhisper.FlatStyle = FlatStyle.Flat;
+            btnVoiceWhisper.Font = new Font("Arial", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVoiceWhisper.Image = Properties.Resources.voice_whisper;
+            btnVoiceWhisper.Location = new Point(668, 0);
+            btnVoiceWhisper.Margin = new Padding(3, 4, 3, 4);
+            btnVoiceWhisper.Name = "btnVoiceWhisper";
+            btnVoiceWhisper.Size = new Size(113, 42);
+            btnVoiceWhisper.TabIndex = 15;
+            btnVoiceWhisper.TextImageRelation = TextImageRelation.ImageAboveText;
+            btnVoiceWhisper.UseVisualStyleBackColor = false;
+            btnVoiceWhisper.Click += MicButton_Click;
             // 
             // button1
             // 
@@ -2323,5 +2350,6 @@
         private Label label20;
         private System.Windows.Forms.Timer timer_BlinkButtonRed;
         private Button button1;
+        private Button btnVoiceWhisper;
     }
 }

@@ -463,7 +463,7 @@ namespace GlobalFunction
                         //return "192.168.0.236";
                         //return "192.168.3.174";
                         //return "192.168.0.105";
-                        return "192.168.0.163";
+                        return "192.168.31.62";
                     }
                     else
                     {

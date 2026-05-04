@@ -30,6 +30,7 @@
     <ProjectReference Include="..\ConnectionClass\ConnectionClass.csproj" />
     <ProjectReference Include="..\GlobalFunction\GlobalFunction.csproj" />
     <ProjectReference Include="..\MQTT\MQTT.csproj" />
+    <ProjectReference Include="..\Voiceeee\VoiceWhisperApp2.csproj" />
     <ProjectReference Include="..\VoiceRecognition\VoiceRecognition.csproj" />
     <ProjectReference Include="..\VoiceTest\VoiceTest.csproj" />
   </ItemGroup>

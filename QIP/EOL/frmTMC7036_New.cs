@@ -1,4 +1,5 @@
 ﻿using ConnectionClass.Oracle;
+using NETTMC.VoiceRecognition;
 using QIP.EOL.Popup;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VoiceWhisperApp2;
 using static DEV.RFID.RFID_Alarm;
 using static GlobalFunction.PublicFunction;
+
 
 
 namespace QIP.EOL
@@ -41,10 +44,23 @@ namespace QIP.EOL
 
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
         Dictionary<string, string> Reason = new Dictionary<string, string>();
+
+
+        private VoiceRecognitionService _voice;
+
+
+        private Button _micButton = null!;
+        private Label _resultLabel = null!;
+        //private VoiceRecognitionService _voice;
+        //private VoiceCommandParser _parser;
         public frmTMC7036_New()
         {
             InitializeComponent();
             InitializeActionButtons();
+
+            BuildMicButton();           // Tạo nút mic trong form này
+
+           
         }
 
         private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
@@ -127,6 +143,7 @@ namespace QIP.EOL
             ReadLocation();
 
         }
+        
         SerialPort serialPort1;
         private void frmTMC7036_New_Load(object sender, EventArgs e)
         {
@@ -184,7 +201,93 @@ namespace QIP.EOL
             SetTouchCount();
             BindTouchCount(TouchCount);
             setDataProduction();
+            // ── Voice ──────────────────────────────────────────────
+            _voice = new VoiceRecognitionService(
+    new[] { "pass", "repass", "fail", "refail" },
+    enableTts: false
+);
 
+            _voice.MessageLogged += (_, e) =>
+            {
+                if (InvokeRequired) Invoke(() => ShowMessage(e.Message, e.Color));
+                else ShowMessage(e.Message, e.Color);
+            };
+
+            _voice.RecognitionCompleted += (_, e) =>
+            {
+                if (InvokeRequired) Invoke(() => HandleVoiceCommand(e.RawText));
+                else HandleVoiceCommand(e.RawText);
+            };
+
+            _ = _voice.InitializeAsync();
+        }
+        private void HandleVoiceCommand(string rawText)
+        {
+            string s = rawText.ToLowerInvariant().Trim();
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(s, @"\b(re\s*pass)\b"))
+            {
+                btnRePass.PerformClick();
+                ShowMessage("✔ REPASS", Color.LimeGreen);
+                return;
+            }
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(s, @"\bpass\b"))
+            {
+                btnPass.PerformClick();
+                ShowMessage("✔ PASS", Color.LimeGreen);
+                return;
+            }
+
+            bool isRefail = System.Text.RegularExpressions.Regex.IsMatch(s, @"\b(re\s*fail)\b");
+            bool isFail = !isRefail && System.Text.RegularExpressions.Regex.IsMatch(s, @"\bfail\b");
+
+            if (isFail || isRefail)
+            {
+                // Bước 1 - click lblPart
+                var partMatch = System.Text.RegularExpressions.Regex.Match(s, @"\b([abcd])\b");
+                if (partMatch.Success)
+                {
+                    Label targetLbl = partMatch.Value.ToUpper() switch
+                    {
+                        "A" => lblPart1,
+                        "B" => lblPart2,
+                        "C" => lblPart3,
+                        "D" => lblPart4,
+                        _ => null
+                    };
+                    if (targetLbl != null)
+                        lblPart3_Click(targetLbl, EventArgs.Empty);
+                }
+
+                // Bước 2 - đợi lblPart xử lý xong rồi mới click lỗi và fail
+                var numMatch = System.Text.RegularExpressions.Regex.Match(s, @"\b(\d{2,3})\b");
+                Task.Delay(200).ContinueWith(_ =>
+                {
+                    SafeInvoke(() =>
+                    {
+                        if (numMatch.Success)
+                        {
+                            var errBtn = GetReasonButtons()
+                                             .FirstOrDefault(b => b.AccessibleName == numMatch.Value);
+                            if (errBtn != null)
+                                btnError_Click(errBtn, EventArgs.Empty);
+                        }
+
+                        // Bước 3 - click Fail/Refail
+                        Task.Delay(100).ContinueWith(__ =>
+                        {
+                            SafeInvoke(() =>
+                            {
+                                if (isRefail) button4_Click(button4, EventArgs.Empty);
+                                else btnFail_Click(btnFail, EventArgs.Empty);
+                                ShowMessage($"✔ {(isRefail ? "REFAIL" : "FAIL")}", Color.OrangeRed);
+                            });
+                        });
+                    });
+                });
+                return;
+            }
         }
         private DataTable GetDataTable(DataGridView view)
         {
@@ -1472,7 +1575,7 @@ namespace QIP.EOL
             txtMessage.Text = message;
             txtMessage.ForeColor = color;
 
-            timerStopMessage.Interval = 3000; // 3 giây
+            //timerStopMessage.Interval = 3000; // 3 giây
             timerStopMessage.Start();
         }
         private string FormatGroupForFTP(string group)
@@ -1505,7 +1608,7 @@ namespace QIP.EOL
 
         private void timerStopMessage_Tick(object sender, EventArgs e)
         {
-            txtMessage.Text = "THÔNG BÁO";
+            //txtMessage.Text = "THÔNG BÁO";
             txtMessage.ForeColor = Color.Red;
             timerStopMessage.Enabled = false;
             timerSuccess.Enabled = false;
@@ -1883,8 +1986,7 @@ namespace QIP.EOL
                     {
                         if (chkVN.Checked)
                         {
-                            btnID.Text = dr["REASON_VN"].ToString();
-                            if (Reason.ContainsKey(btnID.AccessibleName))
+                            btnID.Text = dr["REASON_VN"].ToString() + " (" + btnID.AccessibleName + ")"; if (Reason.ContainsKey(btnID.AccessibleName))
                             {
                                 Reason[btnID.AccessibleName] = btnID.Text;
                                 Console.WriteLine("BTN: " + btnID.Name + " | AccessibleName: " + btnID.AccessibleName);
@@ -1897,8 +1999,7 @@ namespace QIP.EOL
                         }
                         else
                         {
-                            btnID.Text = dr["REASON_EN"].ToString();
-                            if (Reason.ContainsKey(btnID.AccessibleName))
+                            btnID.Text = dr["REASON_EN"].ToString() + " (" + btnID.AccessibleName + ")"; if (Reason.ContainsKey(btnID.AccessibleName))
                             {
                                 Reason[btnID.AccessibleName] = btnID.Text;
 
@@ -1960,8 +2061,8 @@ namespace QIP.EOL
                         if (btnDirect.AccessibleName.Trim() == dr["REASON_ID"].ToString().Trim())
                         {
                             btnDirect.Text = chkVN.Checked
-                                ? dr["REASON_VN"].ToString()
-                                : dr["REASON_EN"].ToString();
+     ? dr["REASON_VN"].ToString() + " (" + btnDirect.AccessibleName + ")"
+     : dr["REASON_EN"].ToString() + " (" + btnDirect.AccessibleName + ")";
 
                             if (Reason.ContainsKey(btnDirect.AccessibleName))
                                 Reason[btnDirect.AccessibleName] = btnDirect.Text;
@@ -1984,8 +2085,8 @@ namespace QIP.EOL
                             if (btnID.AccessibleName.Trim() == dr["REASON_ID"].ToString().Trim())
                             {
                                 btnID.Text = chkVN.Checked
-                                    ? dr["REASON_VN"].ToString()
-                                    : dr["REASON_EN"].ToString();
+     ? dr["REASON_VN"].ToString() + " (" + btnID.AccessibleName + ")"
+     : dr["REASON_EN"].ToString() + " (" + btnID.AccessibleName + ")";
 
                                 if (Reason.ContainsKey(btnID.AccessibleName))
                                     Reason[btnID.AccessibleName] = btnID.Text;
@@ -2267,19 +2368,19 @@ namespace QIP.EOL
         {
             if (e.ProgressPercentage == 10)
             {
-                txtMessage.Text = "Sync data to server...";
+                //txtMessage.Text = "Sync data to server...";
             }
             else if (e.ProgressPercentage == 100)
             {
-                ShowMessage("Sync data to server successfully", Color.Blue);
+                //ShowMessage("Sync data to server successfully", Color.Blue);
             }
             if (!CheckNetworkConnection())
             {
-                ShowMessage("Rớt mạng rồi", Color.Red);
+                //ShowMessage("Rớt mạng rồi", Color.Red);
             }
             else
             {
-                ShowMessage("THÔNG BÁO", Color.Blue);
+                //ShowMessage("THÔNG BÁO", Color.Blue);
             }
         }
         private bool CheckNetworkConnection()
@@ -3078,11 +3179,11 @@ namespace QIP.EOL
         {
             if (e.ProgressPercentage == 10)
             {
-                ShowMessage("Background worker oracle running....", Color.Blue);
+                //ShowMessage("Background worker oracle running....", Color.Blue);
             }
             else if (e.ProgressPercentage == 100)
             {
-                ShowMessage("Background worker oracle finish", Color.Blue);
+                //ShowMessage("Background worker oracle finish", Color.Blue);
             }
         }
 
@@ -3316,7 +3417,7 @@ namespace QIP.EOL
             {
                 if (ex.Message.ToString().Contains("DBNull"))
                 {
-                    ShowMessage("No Data DPPM now.", Color.Red);
+                   // ShowMessage("No Data DPPM now.", Color.Red);
                 }
             }
         }
@@ -3877,5 +3978,268 @@ namespace QIP.EOL
                 MessageBox.Show("Không thể tải file PDF. Rớt mạng!!!\n" + ex.Message, "Rớt mạng", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
+
+        private async Task InitVoiceAsync()
+        {
+            _micButton.Enabled = false;
+            _micButton.Text = "⏳ Đang load…";
+            try
+            {
+                await _voice.InitializeAsync();
+                SafeInvoke(() =>
+                {
+                    _micButton.Enabled = true;
+                    _micButton.Text = "🎙 Giọng nói";
+                });
+            }
+            catch
+            {
+                SafeInvoke(() => _micButton.Text = "✘ Lỗi model");
+            }
+        }
+
+        // ── Nút mic ───────────────────────────────────────────────────────
+
+        private void MicButton_Click(object? sender, EventArgs e)
+        {
+            if (!_voice.IsModelReady) return;
+
+            if (!_voice.IsRecording)
+            {
+                // Bắt đầu ghi
+                _voice.StartRecording();
+                _micButton.Text = "⏹ Dừng";
+                _micButton.BackColor = Color.FromArgb(57, 211, 140);
+                _resultLabel.Text = "Đang nghe…";
+            }
+            else
+            {
+                // Dừng & nhận dạng (async, kết quả trả về qua event)
+                _micButton.Enabled = false;
+                _micButton.Text = "⚙ Đang xử lý…";
+                _ = _voice.StopAndRecognizeAsync();
+            }
+        }
+
+        // ── Xử lý kết quả ─────────────────────────────────────────────────
+
+        private void OnRecognitionCompleted(object? sender, RecognitionResultEventArgs e)
+        {
+            //SafeInvoke(() =>
+            //{
+            //    _micButton.Enabled = true;
+            //    _micButton.Text = "🎙 Giọng nói";
+            //    _micButton.BackColor = SystemColors.Control;
+
+            //    if (e.IsMatched)
+            //    {
+            //        _resultLabel.Text = $"✔ {e.MatchedCommand}  ({e.MatchScore:P0})";
+            //        _resultLabel.ForeColor = Color.Green;
+
+            //        // Xử lý lệnh theo nghiệp vụ của form này
+            //        HandleCommand(e.MatchedCommand!);
+            //    }
+            //    else
+            //    {
+            //        string info = e.MatchedCommand is not null
+            //            ? $"Gần nhất: \"{e.MatchedCommand}\" ({e.MatchScore:P0}) – dưới ngưỡng"
+            //            : "Không khớp lệnh nào";
+            //        _resultLabel.Text = $"⚠ {info}";
+            //        _resultLabel.ForeColor = Color.OrangeRed;
+            //    }
+            //});
+
+            SafeInvoke(() =>
+            {
+                _micButton.Enabled = true;
+                _micButton.Text = "🎙 Giọng nói";
+                _micButton.BackColor = SystemColors.Control;
+
+                if (!string.IsNullOrWhiteSpace(e.RawText))
+                {
+                    string normalized = NormalizeVoice(e.RawText);
+                    ProcessVoiceCommand(normalized);
+                }
+            });
+        }
+        private void ProcessVoiceCommand(string s)
+        {
+            // ── Repass trước (phải check trước pass) ────────────────────
+            if (System.Text.RegularExpressions.Regex.IsMatch(s, @"\b(re\s*pass)\b"))
+            {
+                btnRePass_Click(btnRePass, EventArgs.Empty);
+                ShowMessage("✔ REPASS", Color.LimeGreen);
+                return;
+            }
+
+            // ── Pass ─────────────────────────────────────────────────────
+            if (System.Text.RegularExpressions.Regex.IsMatch(s, @"\bpass\b"))
+            {
+                btnPass_Click(btnPass, EventArgs.Empty);
+                ShowMessage("✔ PASS", Color.LimeGreen);
+                return;
+            }
+
+            // ── Refail / Fail ─────────────────────────────────────────────
+            bool isRefail = System.Text.RegularExpressions.Regex.IsMatch(s, @"\b(re\s*fail)\b");
+            bool isFail = !isRefail && System.Text.RegularExpressions.Regex.IsMatch(s, @"\bfail\b");
+
+            if (isFail || isRefail)
+            {
+                // Vị trí
+                var partMatch = System.Text.RegularExpressions.Regex.Match(s, @"\b([abcd])\b");
+                if (partMatch.Success)
+                {
+                    Label targetLbl = partMatch.Value.ToUpper() switch
+                    {
+                        "A" => lblPart1,
+                        "B" => lblPart2,
+                        "C" => lblPart3,
+                        "D" => lblPart4,
+                        _ => null
+                    };
+                    if (targetLbl != null)
+                        lblPart3_Click(targetLbl, EventArgs.Empty);
+                }
+
+                // Số lỗi + Fail — delay để lblPart xử lý xong
+                var numMatch = System.Text.RegularExpressions.Regex.Match(s, @"\b(\d{2,3})\b");
+                Task.Delay(200).ContinueWith(_ =>
+                {
+                    SafeInvoke(() =>
+                    {
+                        if (numMatch.Success)
+                        {
+                            var errBtn = GetReasonButtons()
+                                             .FirstOrDefault(b => b.AccessibleName == numMatch.Value);
+                            if (errBtn != null)
+                                btnError_Click(errBtn, EventArgs.Empty);
+                        }
+
+                        Task.Delay(100).ContinueWith(__ =>
+                        {
+                            SafeInvoke(() =>
+                            {
+                                if (isRefail) button4_Click(button4, EventArgs.Empty);
+                                else btnFail_Click(btnFail, EventArgs.Empty);
+                                ShowMessage($"✔ {(isRefail ? "REFAIL" : "FAIL")}", Color.OrangeRed);
+                            });
+                        });
+                    });
+                });
+                return;
+            }
+
+            ShowMessage($"❓ Không nhận ra: \"{s}\"", Color.Orange);
+        }
+        private string NormalizeVoice(string s)
+        {
+            s = s.ToLowerInvariant().Trim();
+
+            // ── Vị trí ──────────────────────────────────────────────────
+            s = s.Replace("a a", "a");
+            s = s.Replace("bê bê", "b"); s = s.Replace("bê", "b");
+            s = s.Replace("xê xê", "c"); s = s.Replace("xê", "c");
+            s = s.Replace("cê cê", "c"); s = s.Replace("cê", "c");
+            s = s.Replace("đê đê", "d"); s = s.Replace("đê", "d");
+
+            // ── Pass / Repass ────────────────────────────────────────────
+            s = s.Replace("tái đạt", "repass");
+            s = s.Replace("re đạt", "repass");
+            s = s.Replace("đạt", "pass");
+            s = s.Replace("pát", "pass");
+            s = s.Replace("pas", "pass");
+
+            // ── Fail / Refail ────────────────────────────────────────────
+            s = s.Replace("tái rớt", "refail");
+            s = s.Replace("re rớt", "refail");
+            s = s.Replace("tái lỗi", "refail");
+            s = s.Replace("re lỗi", "refail");
+            s = s.Replace("rớt", "fail");
+            s = s.Replace("feel", "fail");
+            s = s.Replace("fell", "fail");
+            s = s.Replace("phil", "fail");
+            s = s.Replace("fai", "fail");
+
+            // ── Số ──────────────────────────────────────────────────────
+            s = s.Replace("ba mươi chín", "39");
+
+            s = s.Replace("bốn mươi mốt", "41");
+            s = s.Replace("bốn mươi hai", "42");
+            s = s.Replace("bốn mươi ba", "43");
+            s = s.Replace("bốn mươi bốn", "44");
+            s = s.Replace("bốn mươi lăm", "45");
+            s = s.Replace("bốn mươi sáu", "46");
+            s = s.Replace("bốn mươi bảy", "47");
+            s = s.Replace("bốn mươi tám", "48");
+            s = s.Replace("bốn mươi chín", "49");
+            s = s.Replace("bốn mươi", "40");
+
+            s = s.Replace("năm mươi mốt", "51");
+            s = s.Replace("năm mươi hai", "52");
+            s = s.Replace("năm mươi ba", "53");
+            s = s.Replace("năm mươi bốn", "54");
+            s = s.Replace("năm mươi lăm", "55");
+            s = s.Replace("năm mươi", "50");
+
+            return s;
+        }
+
+
+        private void OnModelStatus(object? sender, ModelStatusEventArgs e)
+        {
+            // Tuỳ ý – ghi log, hiện tooltip, cập nhật status bar…
+            SafeInvoke(() => Text = $"Form – {e.Message}");
+        }
+
+        // ── Nghiệp vụ riêng của form ───────────────────────────────────────
+
+        private void HandleCommand(string command)
+        {
+            // TODO: tuỳ từng form làm gì với lệnh nhận được
+            switch (command)
+            {
+                case "Lỗi 1": /* ... */ break;
+                case "Lỗi 2": /* ... */ break;
+                case "Hở keo": /* ... */ break;
+            }
+        }
+
+        // ── UI helpers ─────────────────────────────────────────────────────
+
+        private void BuildMicButton()
+        {
+            _micButton = new Button
+            {
+                Text = "🎙 Giọng nói",
+                Size = new Size(130, 40),
+                Location = new Point(16, 16)
+            };
+            _micButton.Click += MicButton_Click;
+
+            _resultLabel = new Label
+            {
+                Location = new Point(16, 64),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10f),
+                ForeColor = SystemColors.ControlText
+            };
+
+            Controls.Add(_micButton);
+            Controls.Add(_resultLabel);
+        }
+
+        private void SafeInvoke(Action a)
+        {
+            if (IsDisposed) return;
+            if (InvokeRequired) Invoke(a); else a();
+        }
+
+        // ── Cleanup ────────────────────────────────────────────────────────
+
+       
     }
 }
