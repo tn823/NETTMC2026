@@ -1263,9 +1263,9 @@ namespace QIP.EOL
             StringBuilder query = new StringBuilder();
             query.AppendLine("");
             query.AppendLine("            SELECT X.C_LINE, NVL(X.PROD_QTY,0) PROD_QTY, REASON_ID, A.DEFECT_SUM, B.REASON_CNT,                                                ");
-            query.AppendLine("     ROUND((A.DEFECT_SUM/X.PROD_QTY)*100,2) PER_DEFECT, ROUND((B.REASON_CNT/X.PROD_QTY)*100,2) PER_REASON,                                     ");
-            query.AppendLine("      CASE WHEN ROUND((A.DEFECT_SUM/X.PROD_QTY)*100,2) >= 10 THEN 'Y' ELSE 'N' END PROD_MARK,                                                  ");
-            query.AppendLine("      CASE WHEN ROUND((B.REASON_CNT/X.PROD_QTY)*100,2) >= 5 THEN 'Y' ELSE 'N' END DEFECT_MARK                                                  ");
+            query.AppendLine("     ROUND((A.DEFECT_SUM/NULLIF(X.PROD_QTY,0))*100,2) PER_DEFECT, ROUND((B.REASON_CNT/NULLIF(X.PROD_QTY,0))*100,2) PER_REASON,                 ");
+            query.AppendLine("      CASE WHEN ROUND((A.DEFECT_SUM/NULLIF(X.PROD_QTY,0))*100,2) >= 10 THEN 'Y' ELSE 'N' END PROD_MARK,                                        ");
+            query.AppendLine("      CASE WHEN ROUND((B.REASON_CNT/NULLIF(X.PROD_QTY,0))*100,2) >= 5 THEN 'Y' ELSE 'N' END DEFECT_MARK                                        ");
             query.AppendLine(" FROM (SELECT C_LINE, 'ASS' C_LOCATION, CASE WHEN NVL(SUM(Q_PROD),0) > 0 THEN NVL(SUM(Q_PROD),0) ELSE NVL(SUM(CNT),0) END PROD_QTY             ");
             query.AppendLine("         FROM (                                                                                                                                ");
             query.AppendLine("                                                                                                                                               ");
@@ -1341,9 +1341,9 @@ namespace QIP.EOL
             query.AppendLine("       RE_INS_PASS,                                                                                                           ");
             query.AppendLine("       FIRST_INS_PASS,                                                                                                        ");
             query.AppendLine("       TTL_DEFECT,                                                                                                            ");
-            query.AppendLine("       ROUND(100 - (Q_FAIL_1 / (Q_FAIL_1 + FIRST_INS_PASS) * 100), 2) RFT,                                                    ");
-            query.AppendLine("       ROUND((Q_FAIL_2 / Q_FAIL_1) * 1000000,2) RE_INSP_DDPM,                                                                 ");
-            query.AppendLine("       ROUND(TTL_DEFECT / ((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)) * 1000000) EOL_DPPM                        ");
+            query.AppendLine("       ROUND(100 - (Q_FAIL_1 / NULLIF(Q_FAIL_1 + FIRST_INS_PASS, 0) * 100), 2) RFT,                                           ");
+            query.AppendLine("       ROUND((Q_FAIL_2 / NULLIF(Q_FAIL_1, 0)) * 1000000,2) RE_INSP_DDPM,                                                      ");
+            query.AppendLine("       ROUND(TTL_DEFECT / NULLIF(((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)), 0) * 1000000) EOL_DPPM              ");
             query.AppendLine("  FROM(SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')                                                                            ");
             query.AppendLine("                     D_GATHER,                                                                                                ");
             query.AppendLine("                 'ASS'                                                                                                        ");
@@ -1390,9 +1390,9 @@ namespace QIP.EOL
             query.AppendLine("RE_INS_PASS,                                                                                                                   ");
             query.AppendLine("FIRST_INS_PASS,                                                                                                                ");
             query.AppendLine("TTL_DEFECT,                                                                                                                    ");
-            query.AppendLine("ROUND(100 - (Q_FAIL_1 / (Q_FAIL_1 + FIRST_INS_PASS) * 100), 2) RFT,                                                            ");
-            query.AppendLine("       ROUND((Q_FAIL_2 / Q_FAIL_1) * 1000000, 2) RE_INSP_DDPM,                                                                 ");
-            query.AppendLine("       ROUND(TTL_DEFECT / ((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)) * 1000000) EOL_DPPM                         ");
+            query.AppendLine("ROUND(100 - (Q_FAIL_1 / NULLIF(Q_FAIL_1 + FIRST_INS_PASS, 0) * 100), 2) RFT,                                                   ");
+            query.AppendLine("       ROUND((Q_FAIL_2 / NULLIF(Q_FAIL_1, 0)) * 1000000, 2) RE_INSP_DDPM,                                                      ");
+            query.AppendLine("       ROUND(TTL_DEFECT / NULLIF(((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)), 0) * 1000000) EOL_DPPM              ");
             query.AppendLine("  FROM(SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')                                                                             ");
             query.AppendLine("                     D_GATHER,                                                                                                 ");
             query.AppendLine("                 'ASS'                                                                                                         ");
@@ -1426,8 +1426,8 @@ namespace QIP.EOL
             StringBuilder query = new StringBuilder();
             query.AppendLine("");
             query.AppendLine("            SELECT TTL_DEFECT, TTL_DEFECT_SEQ1, TTL_DEFECT_SEQ2,                                                                ");
-            query.AppendLine("ROUND(TTL_DEFECT / (TTL_CHECK_SEQ1 + TTL_CHECK_SEQ2) * 1000000)DPPM,                                                           ");
-            query.AppendLine("round(PASS_1ST / (PASS_1ST + FAIL_1ST) * 100, 2) RFT FROM(                                                                      ");
+            query.AppendLine("ROUND(TTL_DEFECT / NULLIF((TTL_CHECK_SEQ1 + TTL_CHECK_SEQ2), 0) * 1000000)DPPM,                                                ");
+            query.AppendLine("round(PASS_1ST / NULLIF((PASS_1ST + FAIL_1ST), 0) * 100, 2) RFT FROM(                                                          ");
             query.AppendLine(" SELECT sum(q_fail) TTL_DEFECT                                                                                                  ");
             query.AppendLine(" , sum(case when seq = 1 then q_fail else 0 end )TTL_DEFECT_SEQ1                                                                ");
             query.AppendLine(",sum(case when seq = 2 then q_fail else 0 end )TTL_DEFECT_SEQ2                                                                  ");
@@ -1456,7 +1456,7 @@ namespace QIP.EOL
 
             query.AppendLine("            SELECT* FROM(                                                                                               ");
             query.AppendLine("SELECT B.C_LINE, REASON_ID, ROUND(SUM(TTL_DEFECT)/                                                                      ");
-            query.AppendLine("  (MAX(TTL_CHECK_SEQ1) + MAX(TTL_CHECK_SEQ2)) * 1000000)DPPM FROM(                                                     ");
+            query.AppendLine("  NULLIF((MAX(TTL_CHECK_SEQ1) + MAX(TTL_CHECK_SEQ2)), 0) * 1000000)DPPM FROM(                                          ");
             query.AppendLine("  SELECT C_LINE,                                                                                                        ");
             query.AppendLine("  sum(case when seq = 1 then q_fail+q_pass else 0 end )TTL_CHECK_SEQ1                                                   ");
             query.AppendLine(",sum(case when seq = 2 then q_fail + q_pass else 0 end )TTL_CHECK_SEQ2                                                  ");
