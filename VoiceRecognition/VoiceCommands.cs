@@ -691,6 +691,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("hai mùi hai",   "22"),  // E E hai mùi hai → 22
                 new KeyValuePair<string, string>("hai mươi mốt",  "21"),
                 new KeyValuePair<string, string>("hai mùi mốt",   "21"),
+                new KeyValuePair<string, string>("hi mùi mốt",   "21"),
                 new KeyValuePair<string, string>("hai mươi lăm",  "25"),
                 new KeyValuePair<string, string>("hai mươi tám",  "28"),
                 new KeyValuePair<string, string>("ba mươi bốn",   "34"),
@@ -713,6 +714,7 @@ namespace NETTMC.VoiceRecognition
                 new KeyValuePair<string, string>("mùi lăm",    "15"),
                 new KeyValuePair<string, string>("mùi sáu",    "16"),
                 new KeyValuePair<string, string>("mùi bảy",    "17"),
+                new KeyValuePair<string, string>("mởi bảy",    "17"),
                 new KeyValuePair<string, string>("mùi tám",    "18"),
                 new KeyValuePair<string, string>("mùi chín",   "19"),
 
@@ -981,7 +983,7 @@ namespace NETTMC.VoiceRecognition
                 { "A", new[] { "a", "à", "ạ", "á", "ã", "â", "ay", "ei", "Ah", "ah" } },
                 { "B", new[] { "bê", "bờ", "bi", "bb", "bê bê" } },
                 // "Sê/sê" = cách Whisper-VI hay đọc chữ C (thay vì "xê")
-                { "C", new[] { "xê", "cờ", "xi", "sê", "se", "ce", "xê xê" } },
+                { "C", new[] { "xê", "cờ", "xi", "sê", "se", "ce", "xê xê", "say", "Say Say", "say say" } },
                 { "D", new[] { "dê", "dờ", "đi", "đê", "đờ", "đê đê", "đề đề" } },
                 { "E", new[] { "ê", "e", "ê ê", "e e" } },
                 { "F", new[] { "ép phờ", "ép", "ep", "ép ép", "ep ep" } },

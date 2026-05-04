@@ -98,6 +98,20 @@ namespace VoiceTest
                 new VoiceTestCase { Stt=17, InputText="bê bê tám mươi hai",    ExpectedPart="B", ExpectedError="82", Note="#82 Part B — dạng đầy đủ để verify thêm" },
             };
 
+        // ── Test cases cho A7 ──────────────────────────────────────────────────
+        // A7 chỉ nhận các Part A-F và lỗi 17, 18, 21
+        public static readonly IReadOnlyList<VoiceTestCase> A7TestCases =
+            new List<VoiceTestCase>
+            {
+                new VoiceTestCase { Stt=1,  InputText="a a mười bảy",          ExpectedPart="A", ExpectedError="17", Note="[PRIORITY] #17 lem keo — Part A" },
+                new VoiceTestCase { Stt=2,  InputText="bê bê mười tám",        ExpectedPart="B", ExpectedError="18", Note="[PRIORITY] #18 hở keo — Part B" },
+                new VoiceTestCase { Stt=3,  InputText="xê xê hai mươi mốt",    ExpectedPart="C", ExpectedError="21", Note="[PRIORITY] #21 vệ sinh — Part C" },
+                new VoiceTestCase { Stt=4,  InputText="đê đê mười bảy",        ExpectedPart="D", ExpectedError="17", Note="[PRIORITY] #17 lem keo — Part D" },
+                new VoiceTestCase { Stt=5,  InputText="ê ê mười tám",          ExpectedPart="E", ExpectedError="18", Note="[PRIORITY] #18 hở keo — Part E" },
+                new VoiceTestCase { Stt=6,  InputText="ép ép hai mươi mốt",    ExpectedPart="F", ExpectedError="21", Note="[PRIORITY] #21 vệ sinh — Part F" },
+            };
+
+
         public VoiceAutoTestRunner(VoiceEngine engine, Action<string> logAction, string tempDir = null)
         {
             _engine  = engine;

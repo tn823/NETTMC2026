@@ -1396,7 +1396,7 @@ namespace QIP.EOL
             query.AppendLine("  FROM(SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')                                                                             ");
             query.AppendLine("                     D_GATHER,                                                                                                 ");
             query.AppendLine("                 'ASS'                                                                                                         ");
-            query.AppendLine("                     DEPT,                                                                                                     ");
+            query.AppendLine("                     DEPT,                                                                                                        ");
             query.AppendLine("                 C_LINE,                                                                                                       ");
             query.AppendLine("                 IP_ADDRESS,                                                                                                   ");
             query.AppendLine("                 SUM(CASE WHEN SEQ = 1 THEN Q_FAIL ELSE 0 END)                                                                 ");

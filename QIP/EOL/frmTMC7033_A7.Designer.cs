@@ -1047,6 +1047,7 @@ namespace QIP.EOL
             btnVoiceWhisper.Size = new Size(109, 169);
             btnVoiceWhisper.TabIndex = 1;
             btnVoiceWhisper.UseVisualStyleBackColor = true;
+            btnVoiceWhisper.Click += btnVoiceWhisper_Click;
             // 
             // btnVoiceAutoTest
             // 
@@ -1060,6 +1061,7 @@ namespace QIP.EOL
             btnVoiceAutoTest.TabIndex = 2;
             btnVoiceAutoTest.Text = "Auto";
             btnVoiceAutoTest.UseVisualStyleBackColor = false;
+            btnVoiceAutoTest.Click += btnVoiceAutoTest_Click;
             // 
             // panelControl6
             // 
