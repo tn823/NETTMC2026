@@ -228,25 +228,9 @@ namespace VoiceWhisperApp2
                 FireResult(new RecognitionResultEventArgs
                 {
                     RawText = raw,
-                    MatchedCommand = matched,
-                    MatchScore = score,
                     Confidence = confidence,
-                    IsMatched = isMatch
+                    IsMatched = true // luôn true, để form tự xử lý
                 });
-
-                if (isMatch)
-                {
-                    FireMessage($"✔ Lệnh: {matched}  ({score:P0})", Color.LimeGreen);
-                    SpeakAsync($"Đã nhận lệnh {matched}");
-                }
-                else
-                {
-                    string hint = matched != null
-                        ? $"Gần nhất: \"{matched}\" ({score:P0}) — dưới ngưỡng"
-                        : "Không khớp lệnh nào";
-                    FireMessage($"⚠ {hint}", Color.OrangeRed);
-                    SpeakAsync($"Không nhận ra lệnh. Các lệnh hợp lệ: {string.Join(", ", _commands)}");
-                }
             }
             catch (Exception ex)
             {
