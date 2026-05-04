@@ -1,4 +1,4 @@
-﻿namespace QIP.EOL
+namespace QIP.EOL
 {
     partial class frmTMC7033_A7
     {
@@ -86,14 +86,11 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             btnReFail = new Button();
             btnFail = new Button();
-            panelControl7 = new Panel();
-            lblCount17 = new Label();
-            simpleButton18 = new Button();
-            panelControl8 = new Panel();
-            lblCount18 = new Label();
-            simpleButton23 = new Button();
             panelControl5 = new Panel();
+            tableLayoutPanel5 = new TableLayoutPanel();
             memoEditMessage = new TextBox();
+            btnVoiceWhisper = new Button();
+            btnVoiceAutoTest = new Button();
             panelControl6 = new Panel();
             tableLayoutPanel4 = new TableLayoutPanel();
             simpleButton14 = new Button();
@@ -101,10 +98,20 @@
             btn_reasonCode2 = new Button();
             btn_reasonCode3 = new Button();
             btnClear = new Button();
+            panelControl7 = new Panel();
+            label1 = new Label();
+            lblCount17 = new Label();
+            simpleButton18 = new Button();
+            panelControl8 = new Panel();
+            label2 = new Label();
+            lblCount18 = new Label();
+            simpleButton23 = new Button();
             panelControl9 = new Panel();
+            label3 = new Label();
             lblCount21 = new Label();
             simpleButton4 = new Button();
             panelControl10 = new Panel();
+            label4 = new Label();
             lblCount0 = new Label();
             simpleButton5 = new Button();
             panel11 = new Panel();
@@ -155,11 +162,12 @@
             panel10.SuspendLayout();
             panelControl4.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
-            panelControl7.SuspendLayout();
-            panelControl8.SuspendLayout();
             panelControl5.SuspendLayout();
+            tableLayoutPanel5.SuspendLayout();
             panelControl6.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
+            panelControl7.SuspendLayout();
+            panelControl8.SuspendLayout();
             panelControl9.SuspendLayout();
             panelControl10.SuspendLayout();
             panel11.SuspendLayout();
@@ -991,90 +999,10 @@
             btnFail.UseVisualStyleBackColor = false;
             btnFail.Click += btnFail_Click;
             // 
-            // panelControl7
-            // 
-            panelControl7.Controls.Add(lblCount17);
-            panelControl7.Controls.Add(simpleButton18);
-            panelControl7.Dock = DockStyle.Fill;
-            panelControl7.Location = new Point(3, 5);
-            panelControl7.Margin = new Padding(3, 5, 3, 5);
-            panelControl7.Name = "panelControl7";
-            panelControl7.Size = new Size(520, 106);
-            panelControl7.TabIndex = 14;
-            // 
-            // lblCount17
-            // 
-            lblCount17.AccessibleName = "C17";
-            lblCount17.AutoSize = true;
-            lblCount17.BackColor = Color.AliceBlue;
-            lblCount17.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCount17.ForeColor = Color.Red;
-            lblCount17.Location = new Point(2, 0);
-            lblCount17.Margin = new Padding(3, 5, 3, 5);
-            lblCount17.Name = "lblCount17";
-            lblCount17.Size = new Size(37, 41);
-            lblCount17.TabIndex = 5;
-            lblCount17.Text = "0";
-            // 
-            // simpleButton18
-            // 
-            simpleButton18.AccessibleName = "17";
-            simpleButton18.BackColor = Color.AliceBlue;
-            simpleButton18.Dock = DockStyle.Fill;
-            simpleButton18.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            simpleButton18.Location = new Point(0, 0);
-            simpleButton18.Margin = new Padding(3, 5, 3, 5);
-            simpleButton18.Name = "simpleButton18";
-            simpleButton18.Size = new Size(520, 106);
-            simpleButton18.TabIndex = 4;
-            simpleButton18.Text = "Lieu da that/ da gia bi hu";
-            simpleButton18.UseVisualStyleBackColor = false;
-            this.simpleButton18.Click += new System.EventHandler(this.simpleButton23_Click);
-            // 
-            // panelControl8
-            // 
-            panelControl8.Controls.Add(lblCount18);
-            panelControl8.Controls.Add(simpleButton23);
-            panelControl8.Dock = DockStyle.Fill;
-            panelControl8.Location = new Point(529, 5);
-            panelControl8.Margin = new Padding(3, 5, 3, 5);
-            panelControl8.Name = "panelControl8";
-            panelControl8.Size = new Size(520, 106);
-            panelControl8.TabIndex = 13;
-            // 
-            // lblCount18
-            // 
-            lblCount18.AccessibleName = "C18";
-            lblCount18.AutoSize = true;
-            lblCount18.BackColor = Color.AliceBlue;
-            lblCount18.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCount18.ForeColor = Color.Red;
-            lblCount18.Location = new Point(2, 0);
-            lblCount18.Margin = new Padding(3, 5, 3, 5);
-            lblCount18.Name = "lblCount18";
-            lblCount18.Size = new Size(37, 41);
-            lblCount18.TabIndex = 5;
-            lblCount18.Text = "0";
-            // 
-            // simpleButton23
-            // 
-            simpleButton23.AccessibleName = "18";
-            simpleButton23.BackColor = Color.AliceBlue;
-            simpleButton23.Dock = DockStyle.Fill;
-            simpleButton23.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            simpleButton23.Location = new Point(0, 0);
-            simpleButton23.Margin = new Padding(3, 5, 3, 5);
-            simpleButton23.Name = "simpleButton23";
-            simpleButton23.Size = new Size(520, 106);
-            simpleButton23.TabIndex = 4;
-            simpleButton23.Text = "Lieu da that/ da gia bi hu";
-            simpleButton23.UseVisualStyleBackColor = false;
-            this.simpleButton23.Click += new System.EventHandler(this.simpleButton23_Click);
-            // 
             // panelControl5
             // 
             tableLayoutPanel2.SetColumnSpan(panelControl5, 2);
-            panelControl5.Controls.Add(memoEditMessage);
+            panelControl5.Controls.Add(tableLayoutPanel5);
             panelControl5.Dock = DockStyle.Fill;
             panelControl5.Location = new Point(3, 237);
             panelControl5.Margin = new Padding(3, 5, 3, 5);
@@ -1082,16 +1010,56 @@
             panelControl5.Size = new Size(1046, 175);
             panelControl5.TabIndex = 6;
             // 
+            // tableLayoutPanel5
+            // 
+            tableLayoutPanel5.ColumnCount = 3;
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 78F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11F));
+            tableLayoutPanel5.Controls.Add(memoEditMessage, 0, 0);
+            tableLayoutPanel5.Controls.Add(btnVoiceWhisper, 1, 0);
+            tableLayoutPanel5.Controls.Add(btnVoiceAutoTest, 2, 0);
+            tableLayoutPanel5.Dock = DockStyle.Fill;
+            tableLayoutPanel5.Location = new Point(0, 0);
+            tableLayoutPanel5.Name = "tableLayoutPanel5";
+            tableLayoutPanel5.RowCount = 1;
+            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel5.Size = new Size(1046, 175);
+            tableLayoutPanel5.TabIndex = 1;
+            // 
             // memoEditMessage
             // 
             memoEditMessage.Dock = DockStyle.Fill;
-            memoEditMessage.Location = new Point(0, 0);
+            memoEditMessage.Location = new Point(3, 5);
             memoEditMessage.Margin = new Padding(3, 5, 3, 5);
             memoEditMessage.Multiline = true;
             memoEditMessage.Name = "memoEditMessage";
             memoEditMessage.ScrollBars = ScrollBars.Vertical;
-            memoEditMessage.Size = new Size(1046, 175);
+            memoEditMessage.Size = new Size(809, 165);
             memoEditMessage.TabIndex = 0;
+            // 
+            // btnVoiceWhisper
+            // 
+            btnVoiceWhisper.Dock = DockStyle.Fill;
+            btnVoiceWhisper.Image = Properties.Resources.voice_whisper;
+            btnVoiceWhisper.Location = new Point(818, 3);
+            btnVoiceWhisper.Name = "btnVoiceWhisper";
+            btnVoiceWhisper.Size = new Size(109, 169);
+            btnVoiceWhisper.TabIndex = 1;
+            btnVoiceWhisper.UseVisualStyleBackColor = true;
+            // 
+            // btnVoiceAutoTest
+            // 
+            btnVoiceAutoTest.BackColor = Color.FromArgb(39, 174, 96);
+            btnVoiceAutoTest.Dock = DockStyle.Fill;
+            btnVoiceAutoTest.Font = new Font("Arial", 10F, FontStyle.Bold);
+            btnVoiceAutoTest.ForeColor = Color.White;
+            btnVoiceAutoTest.Location = new Point(933, 3);
+            btnVoiceAutoTest.Name = "btnVoiceAutoTest";
+            btnVoiceAutoTest.Size = new Size(110, 169);
+            btnVoiceAutoTest.TabIndex = 2;
+            btnVoiceAutoTest.Text = "Auto";
+            btnVoiceAutoTest.UseVisualStyleBackColor = false;
             // 
             // panelControl6
             // 
@@ -1199,8 +1167,121 @@
             btnClear.UseVisualStyleBackColor = false;
             btnClear.Click += btnClear_Click;
             // 
+            // panelControl7
+            // 
+            panelControl7.Controls.Add(label1);
+            panelControl7.Controls.Add(lblCount17);
+            panelControl7.Controls.Add(simpleButton18);
+            panelControl7.Dock = DockStyle.Fill;
+            panelControl7.Location = new Point(3, 5);
+            panelControl7.Margin = new Padding(3, 5, 3, 5);
+            panelControl7.Name = "panelControl7";
+            panelControl7.Size = new Size(520, 106);
+            panelControl7.TabIndex = 14;
+            // 
+            // label1
+            // 
+            label1.AccessibleName = "";
+            label1.AutoSize = true;
+            label1.BackColor = Color.Black;
+            label1.Dock = DockStyle.Right;
+            label1.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(464, 0);
+            label1.Margin = new Padding(3, 5, 3, 5);
+            label1.Name = "label1";
+            label1.Size = new Size(56, 41);
+            label1.TabIndex = 6;
+            label1.Text = "17";
+            // 
+            // lblCount17
+            // 
+            lblCount17.AccessibleName = "C17";
+            lblCount17.AutoSize = true;
+            lblCount17.BackColor = Color.AliceBlue;
+            lblCount17.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCount17.ForeColor = Color.Red;
+            lblCount17.Location = new Point(2, 0);
+            lblCount17.Margin = new Padding(3, 5, 3, 5);
+            lblCount17.Name = "lblCount17";
+            lblCount17.Size = new Size(37, 41);
+            lblCount17.TabIndex = 5;
+            lblCount17.Text = "0";
+            // 
+            // simpleButton18
+            // 
+            simpleButton18.AccessibleName = "17";
+            simpleButton18.BackColor = Color.AliceBlue;
+            simpleButton18.Dock = DockStyle.Fill;
+            simpleButton18.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton18.Location = new Point(0, 0);
+            simpleButton18.Margin = new Padding(3, 5, 3, 5);
+            simpleButton18.Name = "simpleButton18";
+            simpleButton18.Size = new Size(520, 106);
+            simpleButton18.TabIndex = 4;
+            simpleButton18.Text = "Lieu da that/ da gia bi hu";
+            simpleButton18.UseVisualStyleBackColor = false;
+            simpleButton18.Click += simpleButton23_Click;
+            // 
+            // panelControl8
+            // 
+            panelControl8.Controls.Add(label2);
+            panelControl8.Controls.Add(lblCount18);
+            panelControl8.Controls.Add(simpleButton23);
+            panelControl8.Dock = DockStyle.Fill;
+            panelControl8.Location = new Point(529, 5);
+            panelControl8.Margin = new Padding(3, 5, 3, 5);
+            panelControl8.Name = "panelControl8";
+            panelControl8.Size = new Size(520, 106);
+            panelControl8.TabIndex = 13;
+            // 
+            // label2
+            // 
+            label2.AccessibleName = "";
+            label2.AutoSize = true;
+            label2.BackColor = Color.Black;
+            label2.Dock = DockStyle.Right;
+            label2.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(464, 0);
+            label2.Margin = new Padding(3, 5, 3, 5);
+            label2.Name = "label2";
+            label2.Size = new Size(56, 41);
+            label2.TabIndex = 6;
+            label2.Text = "18";
+            // 
+            // lblCount18
+            // 
+            lblCount18.AccessibleName = "C18";
+            lblCount18.AutoSize = true;
+            lblCount18.BackColor = Color.AliceBlue;
+            lblCount18.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCount18.ForeColor = Color.Red;
+            lblCount18.Location = new Point(2, 0);
+            lblCount18.Margin = new Padding(3, 5, 3, 5);
+            lblCount18.Name = "lblCount18";
+            lblCount18.Size = new Size(37, 41);
+            lblCount18.TabIndex = 5;
+            lblCount18.Text = "0";
+            // 
+            // simpleButton23
+            // 
+            simpleButton23.AccessibleName = "18";
+            simpleButton23.BackColor = Color.AliceBlue;
+            simpleButton23.Dock = DockStyle.Fill;
+            simpleButton23.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            simpleButton23.Location = new Point(0, 0);
+            simpleButton23.Margin = new Padding(3, 5, 3, 5);
+            simpleButton23.Name = "simpleButton23";
+            simpleButton23.Size = new Size(520, 106);
+            simpleButton23.TabIndex = 4;
+            simpleButton23.Text = "Lieu da that/ da gia bi hu";
+            simpleButton23.UseVisualStyleBackColor = false;
+            simpleButton23.Click += simpleButton23_Click;
+            // 
             // panelControl9
             // 
+            panelControl9.Controls.Add(label3);
             panelControl9.Controls.Add(lblCount21);
             panelControl9.Controls.Add(simpleButton4);
             panelControl9.Dock = DockStyle.Fill;
@@ -1209,6 +1290,21 @@
             panelControl9.Name = "panelControl9";
             panelControl9.Size = new Size(520, 106);
             panelControl9.TabIndex = 11;
+            // 
+            // label3
+            // 
+            label3.AccessibleName = "";
+            label3.AutoSize = true;
+            label3.BackColor = Color.Black;
+            label3.Dock = DockStyle.Right;
+            label3.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.ForeColor = Color.White;
+            label3.Location = new Point(464, 0);
+            label3.Margin = new Padding(3, 5, 3, 5);
+            label3.Name = "label3";
+            label3.Size = new Size(56, 41);
+            label3.TabIndex = 6;
+            label3.Text = "21";
             // 
             // lblCount21
             // 
@@ -1237,11 +1333,12 @@
             simpleButton4.TabIndex = 4;
             simpleButton4.Text = "Lieu da that/ da gia bi hu";
             simpleButton4.UseVisualStyleBackColor = false;
-            this.simpleButton4.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton4.Click += simpleButton23_Click;
             // 
             // panelControl10
             // 
             tableLayoutPanel2.SetColumnSpan(panelControl10, 2);
+            panelControl10.Controls.Add(label4);
             panelControl10.Controls.Add(lblCount0);
             panelControl10.Controls.Add(simpleButton5);
             panelControl10.Dock = DockStyle.Fill;
@@ -1250,6 +1347,21 @@
             panelControl10.Name = "panelControl10";
             panelControl10.Size = new Size(1046, 106);
             panelControl10.TabIndex = 12;
+            // 
+            // label4
+            // 
+            label4.AccessibleName = "";
+            label4.AutoSize = true;
+            label4.BackColor = Color.Black;
+            label4.Dock = DockStyle.Right;
+            label4.Font = new Font("Tahoma", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.White;
+            label4.Location = new Point(990, 0);
+            label4.Margin = new Padding(3, 5, 3, 5);
+            label4.Name = "label4";
+            label4.Size = new Size(56, 41);
+            label4.TabIndex = 7;
+            label4.Text = "24";
             // 
             // lblCount0
             // 
@@ -1278,7 +1390,7 @@
             simpleButton5.TabIndex = 5;
             simpleButton5.Text = "Lỗi khác";
             simpleButton5.UseVisualStyleBackColor = false;
-            this.simpleButton5.Click += new System.EventHandler(this.simpleButton23_Click);
+            simpleButton5.Click += simpleButton23_Click;
             // 
             // panel11
             // 
@@ -1434,7 +1546,7 @@
             lblPart6.Size = new Size(100, 89);
             lblPart6.TabIndex = 30;
             lblPart6.Text = "O";
-            this.lblPart6.Click += new System.EventHandler(this.lblPart_Click);
+            lblPart6.Click += lblPart_Click;
             // 
             // lblPart5
             // 
@@ -1449,7 +1561,7 @@
             lblPart5.Size = new Size(100, 89);
             lblPart5.TabIndex = 29;
             lblPart5.Text = "O";
-            this.lblPart5.Click += new System.EventHandler(this.lblPart_Click);
+            lblPart5.Click += lblPart_Click;
             // 
             // lblPart4
             // 
@@ -1464,7 +1576,7 @@
             lblPart4.Size = new Size(100, 89);
             lblPart4.TabIndex = 28;
             lblPart4.Text = "O";
-            this.lblPart4.Click += new System.EventHandler(this.lblPart_Click);
+            lblPart4.Click += lblPart_Click;
             // 
             // lblPart3
             // 
@@ -1479,7 +1591,7 @@
             lblPart3.Size = new Size(100, 89);
             lblPart3.TabIndex = 27;
             lblPart3.Text = "O";
-            this.lblPart3.Click += new System.EventHandler(this.lblPart_Click);
+            lblPart3.Click += lblPart_Click;
             // 
             // lblPart2
             // 
@@ -1494,7 +1606,7 @@
             lblPart2.Size = new Size(100, 89);
             lblPart2.TabIndex = 26;
             lblPart2.Text = "O";
-            this.lblPart2.Click += new System.EventHandler(this.lblPart_Click);
+            lblPart2.Click += lblPart_Click;
             // 
             // lblPart1
             // 
@@ -1508,7 +1620,7 @@
             lblPart1.Size = new Size(100, 89);
             lblPart1.TabIndex = 25;
             lblPart1.Text = "O";
-            this.lblPart1.Click += new System.EventHandler(this.lblPart_Click);
+            lblPart1.Click += lblPart_Click;
             // 
             // txtMessage
             // 
@@ -1556,71 +1668,68 @@
             // 
             backgroundWorkerCheckAndon.WorkerReportsProgress = true;
             backgroundWorkerCheckAndon.WorkerSupportsCancellation = true;
-            this.backgroundWorkerCheckAndon.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerCheckAndon_DoWork);
-            this.backgroundWorkerCheckAndon.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerCheckAndon_RunWorkerCompleted);
+            backgroundWorkerCheckAndon.DoWork += backgroundWorkerCheckAndon_DoWork;
+            backgroundWorkerCheckAndon.RunWorkerCompleted += backgroundWorkerCheckAndon_RunWorkerCompleted;
             // 
             // timerCheckAndon
             // 
             timerCheckAndon.Enabled = true;
             timerCheckAndon.Interval = 1000;
-            this.timerCheckAndon.Tick += new System.EventHandler(this.timerCheckAndon_Tick);
+            timerCheckAndon.Tick += timerCheckAndon_Tick;
             // 
             // backgroundOracle
             // 
             backgroundOracle.WorkerReportsProgress = true;
             backgroundOracle.WorkerSupportsCancellation = true;
-            this.backgroundOracle.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundOracle_DoWork);
-            this.backgroundOracle.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundOracle_ProgressChanged);
-            this.backgroundOracle.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundOracle_RunWorkerCompleted);
+            backgroundOracle.DoWork += backgroundOracle_DoWork;
+            backgroundOracle.ProgressChanged += backgroundOracle_ProgressChanged;
+            backgroundOracle.RunWorkerCompleted += backgroundOracle_RunWorkerCompleted;
             // 
             // timerBindProduction
             // 
             timerBindProduction.Enabled = true;
             timerBindProduction.Interval = 20000;
-            this.timerBindProduction.Tick += new System.EventHandler(this.timerBindProduction_Tick);
+            timerBindProduction.Tick += timerBindProduction_Tick;
             // 
             // timer_CheckStopLine
             // 
             timer_CheckStopLine.Enabled = true;
             timer_CheckStopLine.Interval = 3000;
-            this.timer_CheckStopLine.Tick += new System.EventHandler(this.timer_CheckStopLine_Tick);
+            timer_CheckStopLine.Tick += timer_CheckStopLine_Tick;
             // 
             // backgroundWorkerStopLine
             // 
             backgroundWorkerStopLine.WorkerReportsProgress = true;
             backgroundWorkerStopLine.WorkerSupportsCancellation = true;
-            this.backgroundWorkerStopLine.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerStopLine_DoWork);
-            this.backgroundWorkerStopLine.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerStopLine_RunWorkerCompleted);
+            backgroundWorkerStopLine.DoWork += backgroundWorkerStopLine_DoWork;
+            backgroundWorkerStopLine.RunWorkerCompleted += backgroundWorkerStopLine_RunWorkerCompleted;
             // 
             // backgroundSyncData
             // 
             backgroundSyncData.WorkerReportsProgress = true;
             backgroundSyncData.WorkerSupportsCancellation = true;
-            this.backgroundSyncData.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundSyncData_DoWork);
-            this.backgroundSyncData.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundSyncData_ProgressChanged);
+            backgroundSyncData.DoWork += backgroundSyncData_DoWork;
+            backgroundSyncData.ProgressChanged += backgroundSyncData_ProgressChanged;
             // 
             // timer_BlinkButtonRed
             // 
             timer_BlinkButtonRed.Interval = 1000;
-            this.timer_BlinkButtonRed.Tick += new System.EventHandler(this.timer_BlinkButtonRed_Tick);
-
+            timer_BlinkButtonRed.Tick += timer_BlinkButtonRed_Tick;
             // 
             // timer_BlinkButtonYellow
             // 
             timer_BlinkButtonYellow.Interval = 1000;
-            this.timer_BlinkButtonYellow.Tick += new System.EventHandler(this.timer_BlinkButtonYellow_Tick);
-
+            timer_BlinkButtonYellow.Tick += timer_BlinkButtonYellow_Tick;
             // 
             // timer_BlinkButtonGreen
             // 
             timer_BlinkButtonGreen.Interval = 1000;
-            this.timer_BlinkButtonGreen.Tick += new System.EventHandler(this.timer_BlinkButtonGreen_Tick);
-
+            timer_BlinkButtonGreen.Tick += timer_BlinkButtonGreen_Tick;
             // 
             // timer_SyncData
             // 
             timer_SyncData.Interval = 20000;
-            this.timer_SyncData.Tick += new System.EventHandler(this.timer_SyncData_Tick);
+            timer_SyncData.Tick += timer_SyncData_Tick;
             // 
             // frmTMC7033_A7
             // 
@@ -1634,7 +1743,7 @@
             Margin = new Padding(3, 4, 3, 4);
             Name = "frmTMC7033_A7";
             Size = new Size(2630, 1660);
-            this.Load += new System.EventHandler(this.frmTMC7033_A7_Load);
+            Load += frmTMC7033_A7_Load;
             panelControlTop.ResumeLayout(false);
             tableLayoutPanelTop.ResumeLayout(false);
             tableLayoutPanelTop.PerformLayout();
@@ -1655,14 +1764,15 @@
             panel10.ResumeLayout(false);
             panelControl4.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
+            panelControl5.ResumeLayout(false);
+            tableLayoutPanel5.ResumeLayout(false);
+            tableLayoutPanel5.PerformLayout();
+            panelControl6.ResumeLayout(false);
+            tableLayoutPanel4.ResumeLayout(false);
             panelControl7.ResumeLayout(false);
             panelControl7.PerformLayout();
             panelControl8.ResumeLayout(false);
             panelControl8.PerformLayout();
-            panelControl5.ResumeLayout(false);
-            panelControl5.PerformLayout();
-            panelControl6.ResumeLayout(false);
-            tableLayoutPanel4.ResumeLayout(false);
             panelControl9.ResumeLayout(false);
             panelControl9.PerformLayout();
             panelControl10.ResumeLayout(false);
@@ -1788,5 +1898,12 @@
         private System.Windows.Forms.Timer timer_BlinkButtonGreen;
         private System.Windows.Forms.Timer timer_SyncData;
         private Label lblFailTotal;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private TableLayoutPanel tableLayoutPanel5;
+        private Button btnVoiceWhisper;
+        private Button btnVoiceAutoTest;
     }
 }

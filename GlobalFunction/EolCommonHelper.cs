@@ -171,5 +171,34 @@ namespace GlobalFunction
             return result.ToArray();
         }
 
+
+        public static string GetVoiceLogDir()
+        {
+            string relativeLogDir = System.IO.Path.Combine("VoiceRecognition", "test", "log");
+            string[] searchRoots =
+            {
+                AppDomain.CurrentDomain.BaseDirectory,
+                Application.StartupPath,
+                System.IO.Directory.GetCurrentDirectory()
+            };
+
+            foreach (string root in searchRoots.Where(r => !string.IsNullOrWhiteSpace(r)).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                var dir = new System.IO.DirectoryInfo(root);
+                while (dir != null)
+                {
+                    string voiceDir = System.IO.Path.Combine(dir.FullName, "VoiceRecognition");
+                    if (System.IO.Directory.Exists(voiceDir))
+                    {
+                        return System.IO.Path.Combine(dir.FullName, relativeLogDir);
+                    }
+
+                    dir = dir.Parent;
+                }
+            }
+
+            return System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeLogDir);
+        }
+
     }
 }
