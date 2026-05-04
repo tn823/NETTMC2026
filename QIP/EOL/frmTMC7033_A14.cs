@@ -26,8 +26,7 @@ namespace QIP.EOL
         private CancellationTokenSource _autoLoopCts;
 
         // ── Voice log (A14) ───────────────────────────────────
-        private static readonly string VoiceLogDir =
-            @"d:\NETTMC_\NETTMC2026\NETTMC\VoiceRecognition\test\log";
+        private static readonly string VoiceLogDir = EolCommonHelper.GetVoiceLogDir();
         private System.IO.StreamWriter _vlog;
         private string   _vlogPath;
         private int      _vlogSeq;
@@ -77,6 +76,7 @@ namespace QIP.EOL
         Dictionary<string, string> Reason = new Dictionary<string, string>();
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
         SYSTEMTIME st = new SYSTEMTIME();
+
         #region TimeWebClient For Andon
         public class TimedWebClient : WebClient
         {
@@ -3856,7 +3856,7 @@ namespace QIP.EOL
                 await Task.Delay(500); // chờ engine về trạng thái Ready
             }
 
-            ShowMessage("🧪 Đang chạy Voice Auto Test...", Color.Blue);
+            ShowMessage("Đang chạy Voice Auto Test...", Color.Blue);
 
             string tempDir   = System.IO.Path.Combine(Application.StartupPath, "VoiceTestTemp");
             string reportDir = System.IO.Path.Combine(Application.StartupPath, "test", "log");
@@ -3882,7 +3882,7 @@ namespace QIP.EOL
                 runner.SaveReport(results, reportPath);
 
                 ShowMessage(
-                    $"✅ Auto Test: {pass}/{results.Count} PASS  |  Báo cáo: {System.IO.Path.GetFileName(reportPath)}",
+                    $"Auto Test: {pass}/{results.Count} PASS  |  Báo cáo: {System.IO.Path.GetFileName(reportPath)}",
                     statusColor);
             }
             catch (Exception ex)

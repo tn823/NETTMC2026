@@ -2030,7 +2030,7 @@ namespace QIP.EOL
             tableLayoutPanel2.RowCount = 3;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 138F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 139F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
             tableLayoutPanel2.Size = new Size(2730, 385);
             tableLayoutPanel2.TabIndex = 1;

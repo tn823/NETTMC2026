@@ -1166,11 +1166,11 @@ namespace QIP.EOL
         {
             if (e.ProgressPercentage == 10)
             {
-                ShowMessage("Background worker oracle running....", Color.Blue);
+                // ShowMessage("Background worker oracle running....", Color.Blue);
             }
             else if (e.ProgressPercentage == 100)
             {
-                ShowMessage("Background worker oracle finish", Color.Blue);
+                // ShowMessage("Background worker oracle finish", Color.Blue);
             }
         }
         private void backgroundOracle_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
