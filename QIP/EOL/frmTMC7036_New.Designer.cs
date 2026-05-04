@@ -17,17 +17,14 @@
             {
                 components.Dispose();
             }
-            base.Dispose(disposing);
 
-            if (disposing)
+            if (disposing && _voice != null)
             {
-                _voice.RecognitionCompleted -= OnRecognitionCompleted;
-                _voice.ModelStatusChanged -= OnModelStatus;
                 _voice.Dispose();
             }
-            base.Dispose(disposing);
-        }
 
+            base.Dispose(disposing); // chỉ gọi 1 lần
+        }
         #region Component Designer generated code
 
         /// <summary> 

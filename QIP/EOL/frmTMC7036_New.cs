@@ -203,7 +203,7 @@ namespace QIP.EOL
             setDataProduction();
             // ── Voice ──────────────────────────────────────────────
             _voice = new VoiceRecognitionService(
-    new[] { "pass", "repass", "fail", "refail" },
+    new string[] { }, 
     enableTts: false
 );
 
@@ -213,10 +213,15 @@ namespace QIP.EOL
                 else ShowMessage(e.Message, e.Color);
             };
 
+            // Bỏ cái cũ, thêm cái mới
+            _voice.RecognitionCompleted -= OnRecognitionCompleted;
             _voice.RecognitionCompleted += (_, e) =>
             {
-                if (InvokeRequired) Invoke(() => HandleVoiceCommand(e.RawText));
-                else HandleVoiceCommand(e.RawText);
+                if (string.IsNullOrWhiteSpace(e.RawText)) return;
+                if (InvokeRequired)
+                    Invoke(() => ProcessVoiceCommand(NormalizeVoice(e.RawText)));
+                else
+                    ProcessVoiceCommand(NormalizeVoice(e.RawText));
             };
 
             _ = _voice.InitializeAsync();
@@ -4139,16 +4144,42 @@ namespace QIP.EOL
         {
             s = s.ToLowerInvariant().Trim();
 
-            // ── Vị trí ──────────────────────────────────────────────────
+            // ── Vị trí — nói kèm từ cho dễ nhận ────────────────────────
+            // Nói "alpha" / "an" / "một" → A
+            s = s.Replace("alpha", "a");
+            s = s.Replace(" an ", " a ");
             s = s.Replace("a a", "a");
-            s = s.Replace("bê bê", "b"); s = s.Replace("bê", "b");
-            s = s.Replace("xê xê", "c"); s = s.Replace("xê", "c");
-            s = s.Replace("cê cê", "c"); s = s.Replace("cê", "c");
-            s = s.Replace("đê đê", "d"); s = s.Replace("đê", "d");
+            s = s.Replace("vùng 1", "a");
+            s = s.Replace("phần 1", "a");
+            s = s.Replace("một", "a");  // nếu chỉ có 1 chữ số
+
+            // Nói "bravo" / "bê" / "hai" → B  
+            s = s.Replace("bravo", "b");
+            s = s.Replace("bê bê", "b");
+            s = s.Replace("bê", "b");
+            s = s.Replace("vùng 2", "b");
+            s = s.Replace("phần 2", "b");
+
+            // Nói "charlie" / "xê" / "cê" / "ba" → C
+            s = s.Replace("charlie", "c");
+            s = s.Replace("xê xê", "c");
+            s = s.Replace("xê", "c");
+            s = s.Replace("cê cê", "c");
+            s = s.Replace("cê", "c");
+            s = s.Replace("vùng 3", "c");
+            s = s.Replace("phần 3", "c");
+
+            // Nói "delta" / "đê" / "bốn" → D
+            s = s.Replace("delta", "d");
+            s = s.Replace("đê đê", "d");
+            s = s.Replace("đê", "d");
+            s = s.Replace("vùng 4", "d");
+            s = s.Replace("phần 4", "d");
 
             // ── Pass / Repass ────────────────────────────────────────────
             s = s.Replace("tái đạt", "repass");
             s = s.Replace("re đạt", "repass");
+            s = s.Replace("đạt lại", "repass");
             s = s.Replace("đạt", "pass");
             s = s.Replace("pát", "pass");
             s = s.Replace("pas", "pass");
@@ -4156,9 +4187,11 @@ namespace QIP.EOL
             // ── Fail / Refail ────────────────────────────────────────────
             s = s.Replace("tái rớt", "refail");
             s = s.Replace("re rớt", "refail");
+            s = s.Replace("rớt lại", "refail");
             s = s.Replace("tái lỗi", "refail");
             s = s.Replace("re lỗi", "refail");
             s = s.Replace("rớt", "fail");
+            s = s.Replace("lỗi", "fail");
             s = s.Replace("feel", "fail");
             s = s.Replace("fell", "fail");
             s = s.Replace("phil", "fail");
