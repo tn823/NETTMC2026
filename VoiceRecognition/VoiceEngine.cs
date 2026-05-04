@@ -302,7 +302,8 @@ namespace NETTMC.VoiceRecognition
         {
             if (_vad == null || bytesRecorded < VadFrameBytes)
             {
-                return CalculateRms(buffer, bytesRecorded) >= 0.018;
+                // Giảm threshold RMS từ 0.018 xuống 0.005 để bắt giọng nói nhỏ tốt hơn
+                return CalculateRms(buffer, bytesRecorded) >= 0.005;
             }
 
             int offset = 0;
@@ -330,8 +331,8 @@ namespace NETTMC.VoiceRecognition
                 offset += VadFrameBytes;
             }
 
-            // Có giọng nói nếu >=40% frame bị phân loại là speech (tăng từ 30% để chịu nhiễu hơn)
-            return totalFrames > 0 && (double)voiceFrames / totalFrames >= 0.40;
+            // Có giọng nói nếu >=25% frame bị phân loại là speech (giảm từ 40% để dễ nhận diện giọng nhỏ)
+            return totalFrames > 0 && (double)voiceFrames / totalFrames >= 0.25;
         }
 
         private void OnRecordingStopped(object sender, StoppedEventArgs e)
@@ -638,8 +639,8 @@ namespace NETTMC.VoiceRecognition
             {
                 _vad = new WebRtcVad
                 {
-                    // VeryAggressive: ít false positive nhất trong môi trường ồn
-                    OperatingMode = OperatingMode.VeryAggressive
+                    // HighQuality: nhạy hơn, ít lọc âm hơn, phù hợp cho văn phòng yên tĩnh
+                    OperatingMode = OperatingMode.HighQuality
                 };
             }
             catch
