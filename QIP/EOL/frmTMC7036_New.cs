@@ -203,7 +203,7 @@ namespace QIP.EOL
             setDataProduction();
             // ── Voice ──────────────────────────────────────────────
             _voice = new VoiceRecognitionService(
-    new string[] { }, 
+    commands: new[] { "A", "B", "C", "D", "45" },
     enableTts: false
 );
 
@@ -4057,18 +4057,62 @@ namespace QIP.EOL
             //    }
             //});
 
-            SafeInvoke(() =>
-            {
-                _micButton.Enabled = true;
-                _micButton.Text = "🎙 Giọng nói";
-                _micButton.BackColor = SystemColors.Control;
+            //SafeInvoke(() =>
+            //{
+            //    _micButton.Enabled = true;
+            //    _micButton.Text = "🎙 Giọng nói";
+            //    _micButton.BackColor = SystemColors.Control;
 
-                if (!string.IsNullOrWhiteSpace(e.RawText))
+            //    if (!string.IsNullOrWhiteSpace(e.RawText))
+            //    {
+            //        string normalized = NormalizeVoice(e.RawText);
+            //        ProcessVoiceCommand(normalized);
+            //    }
+            //});
+
+            if (e.IsMatched && !string.IsNullOrWhiteSpace(e.MatchedCommand))
+            {
+                var parts = e.MatchedCommand.Split(' ');
+                if (parts.Length == 3)
                 {
-                    string normalized = NormalizeVoice(e.RawText);
-                    ProcessVoiceCommand(normalized);
+                    string position = parts[0]; // Vị trí (A, B, C, D)
+                    string errorCode = parts[1]; // Mã lỗi (AccessibleName của button)
+                    string action = parts[2];    // Hành động (fail, repair)
+
+                    ProcessCommand(position, errorCode, action);
                 }
-            });
+            }
+            else
+            {
+                txtMessage.Text = "Không nhận dạng được lệnh. Vui lòng thử lại.";
+            }
+        }
+        private void ProcessCommand(string position, string errorCode, string action)
+        {
+            Label? targetLabel = position switch
+            {
+                "A" => lblPart1,
+                "B" => lblPart2,
+                "C" => lblPart3,
+                "D" => lblPart4,
+                _ => null
+            };
+
+            if (targetLabel != null)
+            {
+                targetLabel.ForeColor = Color.Red; // Highlight vị trí
+            }
+
+            Button? targetButton = this.Controls
+                .OfType<Button>()
+                .FirstOrDefault(btn => btn.AccessibleName == errorCode);
+
+            if (targetButton != null)
+            {
+                targetButton.PerformClick(); // Nhấn nút tương ứng với mã lỗi
+            }
+
+            txtMessage.Text = $"Vị trí: {position}, Mã lỗi: {errorCode}, Hành động: {action}";
         }
         private void ProcessVoiceCommand(string s)
         {

@@ -47,7 +47,7 @@ namespace VoiceWhisperApp2
         private const GgmlType MODEL_TYPE = GgmlType.Base;
         private const int SAMPLE_RATE = 16000;
 
-        public double Threshold { get; set; } = 0.80;
+        public double Threshold { get; set; } = 0.90;
 
         private readonly List<string> _commands;
         private WhisperFactory? _factory;
