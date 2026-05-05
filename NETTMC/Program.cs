@@ -1,4 +1,5 @@
 using NETTMC.Authentication;
+using VoiceTest;
 
 namespace NETTMC
 {
@@ -15,6 +16,7 @@ namespace NETTMC
             ApplicationConfiguration.Initialize();
             //Application.Run(new MainForm());
             Application.Run(new Authentication.Login());
+            //Application.Run(new VoiceTest.VoiceTestForm());
         }
     }
 }

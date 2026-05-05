@@ -22,6 +22,7 @@
     <ProjectReference Include="..\QIP\QIP.csproj" />
     <ProjectReference Include="..\SystemControl\SystemControl.csproj" />
     <ProjectReference Include="..\VoiceRecognition\VoiceRecognition.csproj" />
+    <ProjectReference Include="..\VoiceTest\VoiceTest.csproj" />
   </ItemGroup>
 
   <ItemGroup>

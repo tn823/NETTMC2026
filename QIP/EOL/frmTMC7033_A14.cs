@@ -15,6 +15,7 @@ using static GlobalFunction.PublicFunction;
 using System.Diagnostics;
 using GlobalFunction;
 using NETTMC.VoiceRecognition;
+using VoiceTest;
 
 namespace QIP.EOL
 {
@@ -22,20 +23,18 @@ namespace QIP.EOL
     {
         private VoiceEngine _voiceEngine;
         private bool _isRecordingVoice = false;
+        private CancellationTokenSource _autoLoopCts;
 
-        // ── Tự thiết lập tên voice cho từng part (thứ tự = lblPart1, lblPart2, ...) ──
-        // Thay đổi mảng này để tùy chỉnh lệnh voice và alias cho từng vị trí.
-        // Mỗi phần tử: (voiceCode, displayName, aliases thêm)
-        private static readonly (string Code, string Display, string[] ExtraAliases)[] _partVoiceCodes =
-        {
-            //  Code   Hiển thị    Alias thêm (ngoài "Code", "điểm Code", "vị trí Code", "part Code")
-            ( "A",  "Part A",  new string[0] ),
-            ( "B",  "Part B",  new string[0] ),
-            ( "C",  "Part C",  new string[0] ),
-            ( "D",  "Part D",  new string[0] ),
-            ( "E",  "Part E",  new string[0] ),
-            ( "F",  "Part F",  new string[0] ),
-        };
+        // ── Voice log (A14) ───────────────────────────────────
+        private static readonly string VoiceLogDir = EolCommonHelper.GetVoiceLogDir();
+        private System.IO.StreamWriter _vlog;
+        private string   _vlogPath;
+        private int      _vlogSeq;
+        private readonly object _vlogLock = new object();
+        // ───────────────────────────────────────────────────
+
+        public VoiceActionSupport SupportedActions => VoiceActionSupport.FullEOL;
+
         private bool isRed = true;
         public static string ipAddress;
         public static string spDeptCode = "ASS";
@@ -77,6 +76,7 @@ namespace QIP.EOL
         Dictionary<string, string> Reason = new Dictionary<string, string>();
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
         SYSTEMTIME st = new SYSTEMTIME();
+
         #region TimeWebClient For Andon
         public class TimedWebClient : WebClient
         {
@@ -106,7 +106,7 @@ namespace QIP.EOL
             crud = new CRUDOracle("VSMES");
             InitializeActionButtons();
             pictureShoes.SizeChanged += pictureShoes_SizeChanged;
-            Disposed += (s, e) => _voiceEngine?.Dispose();
+            Disposed += (s, e) => { _autoLoopCts?.Cancel(); VlogFinalize(); _voiceEngine?.Dispose(); };
         }
         private const float MessageFontSize = 14f;
         private const string MessageFontName = "Segoe UI";
@@ -438,63 +438,6 @@ namespace QIP.EOL
         }
 
 
-
-        //========================================================================================================
-
-
-
-        //private void ConffigErrorButton(bool visible)
-        //{
-        //    foreach (var p in tableLayoutPanel2.Controls)
-        //    {
-        //        if (p.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            PanelControl panel = (PanelControl)p;
-        //            foreach (var a in panel.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                {
-        //                    SimpleButton btn = (SimpleButton)a;
-        //                    btn.Enabled = visible;
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //    foreach (var p in tableLayoutErrorLeft.Controls)
-        //    {
-        //        if (p.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            PanelControl panel = (PanelControl)p;
-        //            foreach (var a in panel.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                {
-        //                    SimpleButton btn = (SimpleButton)a;
-        //                    btn.Enabled = visible;
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //    foreach (var p in tableLayoutErrorRight.Controls)
-        //    {
-        //        if (p.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            PanelControl panel = (PanelControl)p;
-        //            foreach (var a in panel.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                {
-        //                    SimpleButton btn = (SimpleButton)a;
-        //                    btn.Enabled = visible;
-        //                }
-        //            }
-        //        }
-
-        //    }
-
-        //}
         private void ConffigErrorButton(bool visible)
         {
             foreach (Button btn in GetReasonButtons())
@@ -666,172 +609,6 @@ namespace QIP.EOL
                 btn.ForeColor = SystemColors.ControlText;
             }
         }
-
-
-
-        //========================================================================================================
-
-
-
-        //private void SetErrorToButton(string type, DataTable DefectLibary)
-        //{
-        //    try
-        //    {
-        //        if (DefectLibary == null) return;
-        //        foreach (var panel in tableLayoutPanel2.Controls)
-        //        {
-        //            if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //            {
-        //                DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-        //                foreach (var a in pnl.Controls)
-        //                {
-        //                    if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                    {
-        //                        SimpleButton btnID = (SimpleButton)a;
-        //                        btnID.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-        //                        foreach (DataRow dr in DefectLibary.Rows)
-        //                        {
-        //                            if (btnID.AccessibleName == dr["REASON_ID"].ToString())
-        //                            {
-        //                                if (chkVN.Checked)
-        //                                {
-        //                                    btnID.Font = new Font("VNI-Times", 28);
-        //                                    btnID.Text = dr["REASON_VN"].ToString();
-        //                                    if (Reason.ContainsKey(btnID.AccessibleName))
-        //                                    {
-        //                                        Reason[btnID.AccessibleName] = btnID.Text;
-
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Reason.Add(btnID.AccessibleName, btnID.Text);
-        //                                    }
-        //                                }
-        //                                else
-        //                                {
-        //                                    btnID.Text = dr["REASON_EN"].ToString();
-        //                                    if (Reason.ContainsKey(btnID.AccessibleName))
-        //                                    {
-        //                                        Reason[btnID.AccessibleName] = btnID.Text;
-
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Reason.Add(btnID.AccessibleName, btnID.Text);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        foreach (var panel in tableLayoutErrorLeft.Controls)
-        //        {
-        //            if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //            {
-        //                DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-        //                foreach (var a in pnl.Controls)
-        //                {
-        //                    if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                    {
-        //                        SimpleButton btnID = (SimpleButton)a;
-        //                        btnID.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-        //                        foreach (DataRow dr in DefectLibary.Rows)
-        //                        {
-        //                            if (btnID.AccessibleName == dr["REASON_ID"].ToString())
-        //                            {
-        //                                if (chkVN.Checked)
-        //                                {
-        //                                    btnID.Font = new Font("VNI-Times", 28);
-        //                                    btnID.Text = dr["REASON_VN"].ToString();
-        //                                    if (Reason.ContainsKey(btnID.AccessibleName))
-        //                                    {
-        //                                        Reason[btnID.AccessibleName] = btnID.Text;
-
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Reason.Add(btnID.AccessibleName, btnID.Text);
-        //                                    }
-        //                                }
-        //                                else
-        //                                {
-        //                                    btnID.Text = dr["REASON_EN"].ToString();
-        //                                    if (Reason.ContainsKey(btnID.AccessibleName))
-        //                                    {
-        //                                        Reason[btnID.AccessibleName] = btnID.Text;
-
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Reason.Add(btnID.AccessibleName, btnID.Text);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        foreach (var panel in tableLayoutErrorRight.Controls)
-        //        {
-        //            if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //            {
-        //                DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-        //                foreach (var a in pnl.Controls)
-        //                {
-        //                    if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                    {
-        //                        SimpleButton btnID = (SimpleButton)a;
-        //                        btnID.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-        //                        foreach (DataRow dr in DefectLibary.Rows)
-        //                        {
-        //                            if (btnID.AccessibleName == dr["REASON_ID"].ToString())
-        //                            {
-        //                                if (chkVN.Checked)
-        //                                {
-        //                                    btnID.Font = new Font("VNI-Times", 28);
-        //                                    btnID.Text = dr["REASON_VN"].ToString();
-        //                                    if (Reason.ContainsKey(btnID.AccessibleName))
-        //                                    {
-        //                                        Reason[btnID.AccessibleName] = btnID.Text;
-
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Reason.Add(btnID.AccessibleName, btnID.Text);
-        //                                    }
-        //                                }
-        //                                else
-        //                                {
-        //                                    btnID.Text = dr["REASON_EN"].ToString();
-        //                                    if (Reason.ContainsKey(btnID.AccessibleName))
-        //                                    {
-        //                                        Reason[btnID.AccessibleName] = btnID.Text;
-
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Reason.Add(btnID.AccessibleName, btnID.Text);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string a = ex.Message;
-        //    }
-        //}
-
-
-        //========================================================================================================
-
 
 
         private void SetErrorToButton(string type, DataTable DefectLibary)
@@ -1199,24 +976,7 @@ namespace QIP.EOL
         }
 
 
-        // =============================================================================
-
-
-
-        //private DataTable GetDataTable(GridView view)
-        //{
-        //    DataTable dt = new DataTable();
-        //    foreach (GridColumn c in view.Columns)
-        //        dt.Columns.Add(c.FieldName, c.ColumnType);
-        //    for (int r = 0; r < view.RowCount; r++)
-        //    {
-        //        object[] rowValues = new object[dt.Columns.Count];
-        //        for (int c = 0; c < dt.Columns.Count; c++)
-        //            rowValues[c] = view.GetRowCellValue(r, dt.Columns[c].ColumnName);
-        //        dt.Rows.Add(rowValues);
-        //    }
-        //    return dt;
-        //}
+        
         private DataTable GetDataTable(DataGridView view)
         {
             DataTable dt = new DataTable();
@@ -1231,12 +991,6 @@ namespace QIP.EOL
             }
             return dt;
         }
-
-
-        // =============================================================================
-
-
-
 
         private void simpleButton14_Click(object sender, EventArgs e)
         {
@@ -1509,9 +1263,9 @@ namespace QIP.EOL
             StringBuilder query = new StringBuilder();
             query.AppendLine("");
             query.AppendLine("            SELECT X.C_LINE, NVL(X.PROD_QTY,0) PROD_QTY, REASON_ID, A.DEFECT_SUM, B.REASON_CNT,                                                ");
-            query.AppendLine("     ROUND((A.DEFECT_SUM/X.PROD_QTY)*100,2) PER_DEFECT, ROUND((B.REASON_CNT/X.PROD_QTY)*100,2) PER_REASON,                                     ");
-            query.AppendLine("      CASE WHEN ROUND((A.DEFECT_SUM/X.PROD_QTY)*100,2) >= 10 THEN 'Y' ELSE 'N' END PROD_MARK,                                                  ");
-            query.AppendLine("      CASE WHEN ROUND((B.REASON_CNT/X.PROD_QTY)*100,2) >= 5 THEN 'Y' ELSE 'N' END DEFECT_MARK                                                  ");
+            query.AppendLine("     ROUND((A.DEFECT_SUM/NULLIF(X.PROD_QTY,0))*100,2) PER_DEFECT, ROUND((B.REASON_CNT/NULLIF(X.PROD_QTY,0))*100,2) PER_REASON,                 ");
+            query.AppendLine("      CASE WHEN ROUND((A.DEFECT_SUM/NULLIF(X.PROD_QTY,0))*100,2) >= 10 THEN 'Y' ELSE 'N' END PROD_MARK,                                        ");
+            query.AppendLine("      CASE WHEN ROUND((B.REASON_CNT/NULLIF(X.PROD_QTY,0))*100,2) >= 5 THEN 'Y' ELSE 'N' END DEFECT_MARK                                        ");
             query.AppendLine(" FROM (SELECT C_LINE, 'ASS' C_LOCATION, CASE WHEN NVL(SUM(Q_PROD),0) > 0 THEN NVL(SUM(Q_PROD),0) ELSE NVL(SUM(CNT),0) END PROD_QTY             ");
             query.AppendLine("         FROM (                                                                                                                                ");
             query.AppendLine("                                                                                                                                               ");
@@ -1587,9 +1341,9 @@ namespace QIP.EOL
             query.AppendLine("       RE_INS_PASS,                                                                                                           ");
             query.AppendLine("       FIRST_INS_PASS,                                                                                                        ");
             query.AppendLine("       TTL_DEFECT,                                                                                                            ");
-            query.AppendLine("       ROUND(100 - (Q_FAIL_1 / (Q_FAIL_1 + FIRST_INS_PASS) * 100), 2) RFT,                                                    ");
-            query.AppendLine("       ROUND((Q_FAIL_2 / Q_FAIL_1) * 1000000,2) RE_INSP_DDPM,                                                                 ");
-            query.AppendLine("       ROUND(TTL_DEFECT / ((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)) * 1000000) EOL_DPPM                        ");
+            query.AppendLine("       ROUND(100 - (Q_FAIL_1 / NULLIF(Q_FAIL_1 + FIRST_INS_PASS, 0) * 100), 2) RFT,                                           ");
+            query.AppendLine("       ROUND((Q_FAIL_2 / NULLIF(Q_FAIL_1, 0)) * 1000000,2) RE_INSP_DDPM,                                                      ");
+            query.AppendLine("       ROUND(TTL_DEFECT / NULLIF(((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)), 0) * 1000000) EOL_DPPM              ");
             query.AppendLine("  FROM(SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')                                                                            ");
             query.AppendLine("                     D_GATHER,                                                                                                ");
             query.AppendLine("                 'ASS'                                                                                                        ");
@@ -1636,13 +1390,13 @@ namespace QIP.EOL
             query.AppendLine("RE_INS_PASS,                                                                                                                   ");
             query.AppendLine("FIRST_INS_PASS,                                                                                                                ");
             query.AppendLine("TTL_DEFECT,                                                                                                                    ");
-            query.AppendLine("ROUND(100 - (Q_FAIL_1 / (Q_FAIL_1 + FIRST_INS_PASS) * 100), 2) RFT,                                                            ");
-            query.AppendLine("       ROUND((Q_FAIL_2 / Q_FAIL_1) * 1000000, 2) RE_INSP_DDPM,                                                                 ");
-            query.AppendLine("       ROUND(TTL_DEFECT / ((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)) * 1000000) EOL_DPPM                         ");
+            query.AppendLine("ROUND(100 - (Q_FAIL_1 / NULLIF(Q_FAIL_1 + FIRST_INS_PASS, 0) * 100), 2) RFT,                                                   ");
+            query.AppendLine("       ROUND((Q_FAIL_2 / NULLIF(Q_FAIL_1, 0)) * 1000000, 2) RE_INSP_DDPM,                                                      ");
+            query.AppendLine("       ROUND(TTL_DEFECT / NULLIF(((Q_FAIL_1 + FIRST_INS_PASS) + (Q_FAIL_2 + RE_INS_PASS)), 0) * 1000000) EOL_DPPM              ");
             query.AppendLine("  FROM(SELECT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')                                                                             ");
             query.AppendLine("                     D_GATHER,                                                                                                 ");
             query.AppendLine("                 'ASS'                                                                                                         ");
-            query.AppendLine("                     DEPT,                                                                                                     ");
+            query.AppendLine("                     DEPT,                                                                                                        ");
             query.AppendLine("                 C_LINE,                                                                                                       ");
             query.AppendLine("                 IP_ADDRESS,                                                                                                   ");
             query.AppendLine("                 SUM(CASE WHEN SEQ = 1 THEN Q_FAIL ELSE 0 END)                                                                 ");
@@ -1672,8 +1426,8 @@ namespace QIP.EOL
             StringBuilder query = new StringBuilder();
             query.AppendLine("");
             query.AppendLine("            SELECT TTL_DEFECT, TTL_DEFECT_SEQ1, TTL_DEFECT_SEQ2,                                                                ");
-            query.AppendLine("ROUND(TTL_DEFECT / (TTL_CHECK_SEQ1 + TTL_CHECK_SEQ2) * 1000000)DPPM,                                                           ");
-            query.AppendLine("round(PASS_1ST / (PASS_1ST + FAIL_1ST) * 100, 2) RFT FROM(                                                                      ");
+            query.AppendLine("ROUND(TTL_DEFECT / NULLIF((TTL_CHECK_SEQ1 + TTL_CHECK_SEQ2), 0) * 1000000)DPPM,                                                ");
+            query.AppendLine("round(PASS_1ST / NULLIF((PASS_1ST + FAIL_1ST), 0) * 100, 2) RFT FROM(                                                          ");
             query.AppendLine(" SELECT sum(q_fail) TTL_DEFECT                                                                                                  ");
             query.AppendLine(" , sum(case when seq = 1 then q_fail else 0 end )TTL_DEFECT_SEQ1                                                                ");
             query.AppendLine(",sum(case when seq = 2 then q_fail else 0 end )TTL_DEFECT_SEQ2                                                                  ");
@@ -1702,7 +1456,7 @@ namespace QIP.EOL
 
             query.AppendLine("            SELECT* FROM(                                                                                               ");
             query.AppendLine("SELECT B.C_LINE, REASON_ID, ROUND(SUM(TTL_DEFECT)/                                                                      ");
-            query.AppendLine("  (MAX(TTL_CHECK_SEQ1) + MAX(TTL_CHECK_SEQ2)) * 1000000)DPPM FROM(                                                     ");
+            query.AppendLine("  NULLIF((MAX(TTL_CHECK_SEQ1) + MAX(TTL_CHECK_SEQ2)), 0) * 1000000)DPPM FROM(                                          ");
             query.AppendLine("  SELECT C_LINE,                                                                                                        ");
             query.AppendLine("  sum(case when seq = 1 then q_fail+q_pass else 0 end )TTL_CHECK_SEQ1                                                   ");
             query.AppendLine(",sum(case when seq = 2 then q_fail + q_pass else 0 end )TTL_CHECK_SEQ2                                                  ");
@@ -1926,114 +1680,6 @@ namespace QIP.EOL
             }
         }
 
-
-        //===============================================================================
-
-
-
-
-        //private void ConfigCountErrorButton(DataTable dataErrorCnt)
-        //{
-        //    string id;
-        //    int count = 0;
-        //    try
-        //    {
-        //        if (dataErrorCnt == null || dataErrorCnt.Rows.Count == 0)
-        //        {
-        //            foreach (var panel in tableLayoutPanel2.Controls)
-        //            {
-        //                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //                {
-        //                    foreach (PanelControl pnl in tableLayoutPanel2.Controls)
-        //                    {
-        //                        foreach (var a in pnl.Controls)
-        //                        {
-        //                            if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //                            {
-        //                                LabelControl lbl = (LabelControl)a;
-        //                                if (lbl.AccessibleName != null && lbl.AccessibleName.ToString().StartsWith("C"))
-        //                                {
-        //                                    lbl.Text = "0";
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            foreach (var panel in tableLayoutErrorRight.Controls)
-        //            {
-        //                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //                {
-        //                    PanelControl pnl = (PanelControl)panel;
-        //                    foreach (var a in pnl.Controls)
-        //                    {
-        //                        if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //                        {
-        //                            LabelControl lbl = (LabelControl)a;
-        //                            if (lbl.AccessibleName != null && lbl.AccessibleName.ToString().StartsWith("C"))
-        //                            {
-        //                                lbl.Text = "0";
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            foreach (var panel in tableLayoutErrorLeft.Controls)
-        //            {
-        //                if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //                {
-        //                    PanelControl pnl = (PanelControl)panel;
-        //                    foreach (var a in pnl.Controls)
-        //                    {
-        //                        if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //                        {
-        //                            LabelControl lbl = (LabelControl)a;
-        //                            if (lbl.AccessibleName != null && lbl.AccessibleName.ToString().StartsWith("C"))
-        //                            {
-        //                                lbl.Text = "0";
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (dataErrorCnt.Rows.Count > 0)
-        //            {
-        //                for (int i = 0; i < dataErrorCnt.Rows.Count; i++)
-        //                {
-        //                    if (dataErrorCnt.Rows[i]["GR"] != null)
-        //                    {
-        //                        if (dataErrorCnt.Rows[i]["GR"].ToString() == "ERROR")
-        //                        {
-        //                            id = dataErrorCnt.Rows[i]["REASON_ID"].ToString();
-        //                            count = Convert.ToInt32(dataErrorCnt.Rows[i]["CNT"].ToString());
-
-        //                            BindCountToErrorLabel(id, count);
-        //                        }
-        //                        else if (dataErrorCnt.Rows[i]["GR"].ToString() == "PART")
-        //                        {
-        //                            id = dataErrorCnt.Rows[i]["REASON_ID"].ToString();
-        //                            count = Convert.ToInt32(dataErrorCnt.Rows[i]["CNT"].ToString());
-        //                            BindCountToErrorPartLabel(id, count);
-        //                        }
-        //                    }
-        //                }
-
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //}
-
-
-        //===============================================================================
-
-
         private void ConfigCountErrorButton(DataTable dataErrorCnt)
         {
             try
@@ -2087,106 +1733,6 @@ namespace QIP.EOL
                 }
             }
         }
-
-
-        //===============================================================================
-
-
-
-
-        //private void BindCountToErrorLabel(string id, int cnt)
-        //{
-        //    foreach (var panel in tableLayoutPanel2.Controls)
-        //    {
-        //        if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-        //            foreach (var a in pnl.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //                {
-        //                    LabelControl lbl = (LabelControl)a;
-        //                    if (lbl.AccessibleName != null && lbl.AccessibleName == "C" + id)
-        //                    {
-        //                        lbl.Text = "(" + cnt + ")";
-        //                    }
-        //                    else
-        //                    {
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    foreach (var panel in tableLayoutErrorLeft.Controls)
-        //    {
-        //        if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-        //            foreach (var a in pnl.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //                {
-        //                    LabelControl lbl = (LabelControl)a;
-        //                    if (lbl.AccessibleName != null && lbl.AccessibleName == "C" + id)
-        //                    {
-        //                        lbl.Text = "(" + cnt + ")";
-        //                    }
-        //                    else
-        //                    {
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    foreach (var panel in tableLayoutErrorRight.Controls)
-        //    {
-        //        if (panel.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            DevExpress.XtraEditors.PanelControl pnl = (DevExpress.XtraEditors.PanelControl)panel;
-        //            foreach (var a in pnl.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //                {
-        //                    LabelControl lbl = (LabelControl)a;
-        //                    if (lbl.AccessibleName != null && lbl.AccessibleName == "C" + id)
-        //                    {
-        //                        lbl.Text = "(" + cnt + ")";
-        //                    }
-        //                    else
-        //                    {
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        //private void BindCountToErrorPartLabel(string id, int cnt)
-        //{
-        //    foreach (var a in pictureShoes.Controls)
-        //    {
-        //        if (a.ToString() == "DevExpress.XtraEditors.LabelControl")
-        //        {
-        //            LabelControl lbl = (LabelControl)a;
-        //            if (lbl.AccessibleName != null)
-        //            {
-        //                if (lbl.AccessibleName == "CP" + id)
-        //                    lbl.Text = "(" + cnt + ")";
-        //            }
-        //            else
-        //            {
-        //                string sss = "";
-        //                sss = lbl.Name.ToString();
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        //===============================================================================
-
 
 
         private void BindCountToErrorLabel(string id, int cnt)
@@ -2244,91 +1790,7 @@ namespace QIP.EOL
         }
 
 
-        //===============================================================================
-
-
-
-
-        //private void lblPart_Click(object sender, EventArgs e)
-        //{
-        //    if (btnChonModel.Text == "" || btnChonModel.Text == "Chọn MODEL")
-        //    {
-        //        ShowMessage("Chọn Model trước khi chấm lỗi. !! Please choose model", Color.Red);
-        //        return;
-        //    }
-        //    lblPart1.ForeColor = System.Drawing.Color.Green;
-        //    lblPart2.ForeColor = System.Drawing.Color.Green;
-        //    lblPart3.ForeColor = System.Drawing.Color.Green;
-        //    lblPart5.ForeColor = System.Drawing.Color.Green;
-        //    lblPart4.ForeColor = System.Drawing.Color.Green;
-        //    lblPart6.ForeColor = System.Drawing.Color.Green;
-
-        //    Label lbl = (Label)sender;
-        //    lbl.ForeColor = System.Drawing.Color.Red;// b?m l?i v? trí chuy?n sang d?
-
-        //    btnPass.Enabled = false;
-        //    btnFail.Enabled = false;
-        //    btnRePass.Enabled = false;
-        //    btnReFail.Enabled = false;
-        //    ConffigErrorButton(true);
-        //    partID = lbl.AccessibleName;
-
-        //    foreach (var pnl in tableLayoutPanel2.Controls)
-        //    {
-        //        if (pnl.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            DevExpress.XtraEditors.PanelControl panel = (DevExpress.XtraEditors.PanelControl)pnl;
-        //            foreach (var a in panel.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                {
-        //                    SimpleButton btnID = (SimpleButton)a;
-        //                    btnID.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-        //                    btnID.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    foreach (var pnl in tableLayoutErrorLeft.Controls)
-        //    {
-        //        if (pnl.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            DevExpress.XtraEditors.PanelControl panel = (DevExpress.XtraEditors.PanelControl)pnl;
-        //            foreach (var a in panel.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                {
-        //                    SimpleButton btnID = (SimpleButton)a;
-        //                    btnID.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-        //                    btnID.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-        //                }
-        //            }
-        //        }
-        //    }
-
-
-        //    foreach (var pnl in tableLayoutErrorRight.Controls)
-        //    {
-        //        if (pnl.ToString() == "DevExpress.XtraEditors.PanelControl")
-        //        {
-        //            DevExpress.XtraEditors.PanelControl panel = (DevExpress.XtraEditors.PanelControl)pnl;
-        //            foreach (var a in panel.Controls)
-        //            {
-        //                if (a.ToString() == "DevExpress.XtraEditors.SimpleButton")
-        //                {
-        //                    SimpleButton btnID = (SimpleButton)a;
-        //                    btnID.Appearance.BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
-        //                    btnID.Appearance.BackColor2 = System.Drawing.Color.FromArgb(192, 255, 255);
-        //                }
-        //            }
-        //        }
-        //    }
-
-
-        //}
-
-
-        //===============================================================================
+        
 
 
         private void lblPart_Click(object sender, EventArgs e)
@@ -3533,69 +2995,7 @@ namespace QIP.EOL
                 return false;
             }
         }
-        //private void timer_BlinkButtonRed_Tick(object sender, EventArgs e)
-        //{
-        //        if (btn_reasonCode1.Appearance.BackColor2 == System.Drawing.Color.DarkRed)
-        //    {
-        //        this.btn_reasonCode1.Invoke(new Action(() =>
-        //        {
-        //            btn_reasonCode1.Appearance.BackColor = System.Drawing.Color.IndianRed;
-        //            btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.IndianRed;
-        //        }));
-
-        //    }
-        //    else
-        //    {
-        //        this.btn_reasonCode1.Invoke(new Action(() =>
-        //        {
-        //            btn_reasonCode1.Appearance.BackColor = System.Drawing.Color.DarkRed;
-        //            btn_reasonCode1.Appearance.BackColor2 = System.Drawing.Color.DarkRed;
-        //        }));
-
-        //    }
-        //}
-        //private void timer_BlinkButtonYellow_Tick(object sender, EventArgs e)
-        //{
-        //    if (btn_reasonCode2.Appearance.BackColor2 == System.Drawing.Color.Orange)
-        //    {
-        //        this.btn_reasonCode2.Invoke(new Action(() =>
-        //        {
-        //            btn_reasonCode2.Appearance.BackColor = System.Drawing.Color.OrangeRed;
-        //            btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.OrangeRed;
-        //        }));
-
-        //    }
-        //    else
-        //    {
-        //        this.btn_reasonCode2.Invoke(new Action(() =>
-        //        {
-        //            btn_reasonCode2.Appearance.BackColor = System.Drawing.Color.Orange;
-        //            btn_reasonCode2.Appearance.BackColor2 = System.Drawing.Color.Orange;
-        //        }));
-
-        //    }
-        //}
-        //private void timer_BlinkButtonGreen_Tick(object sender, EventArgs e)
-        //{
-        //        if (btn_reasonCode3.Appearance.BackColor2 == System.Drawing.Color.ForestGreen)
-        //    {
-        //        this.btn_reasonCode3.Invoke(new Action(() =>
-        //        {
-        //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.LightGreen;
-        //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.LightGreen;
-        //        }));
-
-        //    }
-        //    else
-        //    {
-        //        this.btn_reasonCode3.Invoke(new Action(() =>
-        //        {
-        //            btn_reasonCode3.Appearance.BackColor = System.Drawing.Color.ForestGreen;
-        //            btn_reasonCode3.Appearance.BackColor2 = System.Drawing.Color.ForestGreen;
-        //        }));
-
-        //    }
-        //}
+    
         private void timer_BlinkButtonRed_Tick(object sender, EventArgs e)
         {
             btn_reasonCode1.UseVisualStyleBackColor = false;
@@ -4013,6 +3413,27 @@ namespace QIP.EOL
         }
 
 
+        private async void btnVoiceAutoTest_Click(object sender, EventArgs e)
+        {
+            btnVoiceAutoTest.Enabled = false;
+            btnVoiceAutoTest.Text    = "⏳ Testing...";
+            btnVoiceWhisper.Enabled  = false; // tránh conflict với mic loop
+
+            try
+            {
+                var progress = new Progress<(int cur, int total)>(p =>
+                    ThreadSafe(() => ShowMessage($"🧪 [{p.cur}/{p.total}] Đang test...", Color.Blue)));
+
+                await RunVoiceAutoTestAsync(progress: progress);
+            }
+            finally
+            {
+                btnVoiceAutoTest.Enabled = true;
+                btnVoiceAutoTest.Text    = "🧪 AUTO\nTEST";
+                btnVoiceWhisper.Enabled  = true;
+            }
+        }
+
         private async void btnVoiceWhisper_Click(object sender, EventArgs e)
         {
             if (_voiceEngine == null)
@@ -4021,54 +3442,116 @@ namespace QIP.EOL
                 return;
             }
 
-            if (_isRecordingVoice) return; // Chặn bấm khi đang ghi
-            RefreshVoiceCommandDefinitions();
+            // Toggle: nếu đang chạy thì dừng
+            if (_autoLoopCts != null)
+            {
+                _autoLoopCts.Cancel();
+                _autoLoopCts = null;
+                _voiceEngine.IsAutoLoopMode = false;
+                //btnVoiceWhisper.Text      = "🎤";
+                btnVoiceWhisper.BackColor = SystemColors.Control;
+                ShowMessage("[🛑 Auto Voice] Đã dừng. Đợi kết quả cuối...", Color.Gray);
+                _ = Task.Delay(3000).ContinueWith(_ => VlogFinalize());
+                return;
+            }
 
+            // Bắt đầu vòng lặp auto
+            RefreshVoiceCommandDefinitions();
+            _voiceEngine.IsAutoLoopMode = true;
+            _autoLoopCts = new CancellationTokenSource();
+            //btnVoiceWhisper.Text      = "⏹ DỮNG VOICE";
+            btnVoiceWhisper.BackColor = Color.OrangeRed;
+
+            // Mở log file — append vào file theo ngày, không tạo file mới mỗi lần chạy
             try
             {
-                _isRecordingVoice = true;
-                btnVoiceWhisper.Enabled = false; // Disable nút trong suốt quá trình
+                System.IO.Directory.CreateDirectory(VoiceLogDir);
+                _vlogPath = System.IO.Path.Combine(VoiceLogDir, $"A14_voiceLog.log");
+                _vlogSeq  = 0;
+                _vlog = new System.IO.StreamWriter(_vlogPath, append: true, System.Text.Encoding.UTF8);
+                _vlog.WriteLine(new string('=', 80));
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ================ Session bắt đầu ================");
+                _vlog.Flush();
+            }
+            catch { }
 
-                ShowMessage("Đang nghe voice... nói lệnh trong tối đa 8 giây", Color.Red);
-                await _voiceEngine.StartSmartPushToTalkAsync(8000);
-                
+            ShowMessage("[▶ Auto Voice] Bắt đầu thu âm tự động...", Color.Green);
 
-                // Đếm ngược 5 giây hiển thị lên UI
-                for (int i = 0; i > 0; i--)
+            var token = _autoLoopCts.Token;
+            _ = RunVoiceAutoLoopAsync(token);
+        }
+
+        private async Task RunVoiceAutoLoopAsync(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
                 {
-                    ShowMessage($"Đang ghi âm... còn {i} giây", Color.Red);
-                    await Task.Delay(1000);
-                }
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed)));
+                    else
+                        ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed);
 
-                if (_voiceEngine.IsRecording) ShowMessage("Đang xử lý giọng nói...", Color.Blue);
-                await _voiceEngine.StopAndRecognizeAsync();
+                    await _voiceEngine.StartSmartPushToTalkAsync(5000);
+
+                    if (token.IsCancellationRequested) break;
+
+                    // ── Đợi xử lý xong (engine chuyển về Ready) rồi nghỉ 5 giây ──
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("⏸ Xử lý... sau đó nghỉ 5 giây", Color.Blue)));
+                    else
+                        ShowMessage("⏸ Xử lý... sau đó nghỉ 5 giây", Color.Blue);
+
+                    await Task.Delay(5000, token);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("Voice lỗi: " + ex.Message, Color.Red)));
+                    else
+                        ShowMessage("Voice lỗi: " + ex.Message, Color.Red);
+                    await Task.Delay(2000); // nếu lỗi thì đợi 2s rồi thử lại
+                }
             }
-            catch (Exception ex)
+
+            // Cleanup sau khi dừng
+            _voiceEngine.IsAutoLoopMode = false;
+            if (this.InvokeRequired)
+                this.Invoke(new Action(() => {
+                    //btnVoiceWhisper.Text      = "🎤";
+                    btnVoiceWhisper.BackColor = SystemColors.Control;
+                }));
+            else
             {
-                ShowMessage("Lỗi voice: " + ex.Message, Color.Red);
-            }
-            finally
-            {
-                _isRecordingVoice = false;
-                btnVoiceWhisper.Enabled = true; // Bật lại nút sau khi xong
+                //btnVoiceWhisper.Text      = "🎤";
+                btnVoiceWhisper.BackColor = SystemColors.Control;
             }
         }
 
         private async void InitializeVoiceEngine()
         {
-            _voiceEngine = new VoiceEngine();
+            _voiceEngine = new VoiceEngine(0.78)
+            {
+                InputGain = 3.5,
+                RmsVoiceThreshold = 0.0025,
+                VadVoiceFrameRatio = 0.15,
+                MinimumVoiceDurationMs = 120,
+                SilenceAfterVoiceDurationMs = 800,
+                EmitBatchCommandResult = true
+            };
             _voiceEngine.CommandRecognized += _voiceEngine_CommandRecognized;
-            _voiceEngine.StateChanged += _voiceEngine_StateChanged;
-            _voiceEngine.LogMessage += _voiceEngine_LogMessage;
+            _voiceEngine.StateChanged      += _voiceEngine_StateChanged;
+            _voiceEngine.LogMessage        += _voiceEngine_LogMessage;
             RefreshVoiceCommandDefinitions();
-            
-            // Lệnh tạm thời để test
-            _voiceEngine.SetCommandList(new List<string> { "A", "1", "hở keo", "dơ", "pass", "fail", "xóa" });
-            RefreshVoiceCommandDefinitions();
-            
+
             try
             {
-                await _voiceEngine.InitializeAsync("whisper-model.bin", Whisper.net.Ggml.GgmlType.Base);
+                await _voiceEngine.InitializeAsync();
+                ShowMessage("✓ Voice đã sẵn sàng.", Color.Green);
             }
             catch (Exception ex)
             {
@@ -4078,13 +3561,17 @@ namespace QIP.EOL
 
         private void _voiceEngine_LogMessage(object sender, string e)
         {
-            if (this.InvokeRequired)
+            // File A14 chỉ giữ log kết quả dạng ngắn gọn; engine log chỉ giữ lỗi nghiêm trọng.
+            if (string.IsNullOrWhiteSpace(e)) return;
+            if (e.StartsWith("===") || e.StartsWith("---")) return;
+            if (!e.StartsWith("[Voice Error]")) return;
+            lock (_vlogLock)
             {
-                this.Invoke(new Action(() => ShowMessage("Voice Log: " + e, Color.Blue)));
-            }
-            else
-            {
-                ShowMessage("Voice Log: " + e, Color.Blue);
+                if (_vlog != null)
+                {
+                    _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ENGINE : {e}");
+                    _vlog.Flush();
+                }
             }
         }
 
@@ -4109,6 +3596,11 @@ namespace QIP.EOL
                     break;
                 case VoiceEngineState.Error:
                     btnVoiceWhisper.Enabled = true;
+                    if (!string.IsNullOrWhiteSpace(_voiceEngine?.LastErrorMessage))
+                    {
+                        ShowMessage("Voice Engine loi: " + _voiceEngine.LastErrorMessage, Color.Red);
+                        break;
+                    }
                     ShowMessage("⚠ Voice Engine lỗi!", Color.Red);
                     break;
             }
@@ -4128,35 +3620,177 @@ namespace QIP.EOL
 
         private void ProcessVoiceCommand(VoiceMatchResult result)
         {
+            // Bỏ qua các sự kiện “Bỏ qua” từ Engine (noise filter / thiếu action...)
+            if (result?.MatchedCommand?.StartsWith("[Bỏ qua]") == true)
+            {
+                ShowMessage($"[Voice] Bỏ qua — '{result.RecognizedText}'", Color.Gray);
+                VlogEntry(result, "[Bỏ qua]");
+                return;
+            }
+
+            if (result?.ParsedCommands?.Any(c => c?.IsSuccess == true) == true)
+            {
+                foreach (var command in result.ParsedCommands.Where(c => c?.IsSuccess == true))
+                {
+                    if (!string.IsNullOrWhiteSpace(command.PartCode))
+                        SelectPart(command.PartCode);
+
+                    if (!string.IsNullOrWhiteSpace(command.ErrorCode))
+                        SelectError(command.ErrorCode);
+
+                    if (!string.IsNullOrWhiteSpace(command.ActionType))
+                        ConfirmAction(command.ActionType);
+                }
+
+                ShowMessage($"[Voice OK] {BuildVoiceResultSummary(result)}", Color.Green);
+                VlogEntry(result, "OK");
+                return;
+            }
+
             if (result?.ParsedCommand?.IsSuccess == true)
             {
                 VoiceCommandMatch command = result.ParsedCommand;
 
                 if (!string.IsNullOrWhiteSpace(command.PartCode))
-                {
                     SelectPart(command.PartCode);
-                }
 
                 if (!string.IsNullOrWhiteSpace(command.ErrorCode))
-                {
                     SelectError(command.ErrorCode);
-                }
 
                 if (!string.IsNullOrWhiteSpace(command.ActionType))
-                {
                     ConfirmAction(command.ActionType);
-                }
 
                 ShowMessage($"[Voice OK] {command.ToDisplayText()} ({command.ConfidenceScore:P0})", Color.Green);
+                VlogEntry(result, "OK");
                 return;
             }
+
             if (result.IsSuccess)
             {
                 ShowMessage($"[Voice Match] Lệnh: {result.MatchedCommand} (Độ tin cậy: {result.ConfidenceScore:P0})", Color.Green);
+                VlogEntry(result, "Match");
             }
             else
             {
-                ShowMessage($"[Voice Fail] Không nhận diện được lệnh. Nghe được: '{result.RecognizedText}'", Color.Red);
+                ShowMessage($"[Voice Fail] Không nhận diện được. Nghe được: '{result.RecognizedText}'", Color.Red);
+                VlogEntry(result, "Fail");
+            }
+        }
+
+        private void VlogEntry(VoiceMatchResult r, string status)
+        {
+            lock (_vlogLock)
+            {
+                if (_vlog == null) return;
+                _vlogSeq++;
+
+                _vlog.WriteLine(BuildCompactVoiceLogLine(r, status));
+                _vlog.Flush();
+            }
+        }
+
+        private string BuildCompactVoiceLogLine(VoiceMatchResult r, string status)
+        {
+            string finalStatus = BuildVoiceFinalStatus(r, status);
+            string elapsed = $"{r?.ProcessingTimeSec ?? 0:F2}s";
+
+            if (IsNoSpeechLog(r))
+            {
+                return $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] | Không nghe đc gì → Bỏ qua  ({elapsed})";
+            }
+
+            string heard = NormalizeVoiceLogText(r?.RecognizedText);
+            string cleaned = NormalizeVoiceLogText(r?.CleanedText);
+            if (cleaned == "Không nghe đc gì")
+            {
+                cleaned = heard;
+            }
+
+            return $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] | {heard} → {cleaned} → {BuildVoiceResultSummary(r)} → {finalStatus}  ({elapsed})";
+        }
+
+        private string BuildVoiceResultSummary(VoiceMatchResult r)
+        {
+            var commands = r?.ParsedCommands?.Where(c => c != null && c.IsSuccess).ToList()
+                ?? new List<VoiceCommandMatch>();
+
+            if (commands.Count == 0 && r?.ParsedCommand?.IsSuccess == true)
+            {
+                commands.Add(r.ParsedCommand);
+            }
+
+            string part = commands.FirstOrDefault(c => !string.IsNullOrWhiteSpace(c.PartCode))?.PartCode;
+            string error = string.Join(",", commands
+                .Where(c => !string.IsNullOrWhiteSpace(c.ErrorCode))
+                .Select(c => c.ErrorCode)
+                .Distinct());
+            string action = commands.FirstOrDefault(c => !string.IsNullOrWhiteSpace(c.ActionType))?.ActionType;
+
+            return $"part: {NoneIfEmpty(part)} | error:{NoneIfEmpty(error)} | action:{NoneIfEmpty(action)}";
+        }
+
+        private static string BuildVoiceFinalStatus(VoiceMatchResult r, string status)
+        {
+            string matched = r?.MatchedCommand ?? "";
+            if (matched.StartsWith("[Bỏ qua]"))
+            {
+                if (matched.Contains("Không nghiệp vụ")) return "Bỏ qua: không nghiệp vụ";
+                if (matched.Contains("Thiếu Action")) return "Bỏ qua: thiếu action";
+                return "Bỏ qua";
+            }
+
+            if (status == "OK" || r?.ParsedCommand?.IsSuccess == true || r?.ParsedCommands?.Any(c => c?.IsSuccess == true) == true)
+            {
+                return "OK";
+            }
+
+            return status == "Fail" ? "Không khớp" : status;
+        }
+
+        private static string NormalizeVoiceLogText(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return "Không nghe đc gì";
+            string text = value.Trim();
+            string compact = new string(text.Where(ch => !char.IsWhiteSpace(ch)).ToArray());
+            if (compact.Length == 0) return "Không nghe đc gì";
+
+            bool onlyPlaceholders = compact.All(ch =>
+                ch == '-' || ch == '_' || ch == '.' || ch == ',' ||
+                ch == '[' || ch == ']' || ch == '(' || ch == ')' || ch == '…');
+
+            return onlyPlaceholders ? "Không nghe đc gì" : text;
+        }
+
+        private static bool IsNoSpeechLog(VoiceMatchResult r)
+        {
+            if (r == null) return true;
+            string matched = r.MatchedCommand ?? "";
+            if (matched.Contains("Whisper noise") || matched.Contains("Chỉ từ kết thúc")) return true;
+            return NormalizeVoiceLogText(r.RecognizedText) == "Không nghe đc gì"
+                && NormalizeVoiceLogText(r.CleanedText) == "Không nghe đc gì";
+        }
+
+        private static string NoneIfEmpty(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "none" : value;
+        }
+
+        private void VlogFinalize()
+        {
+            lock (_vlogLock)
+            {
+                if (_vlog == null) return;
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Session kết thúc — {_vlogSeq} lượt nhận diện.");
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ================ Het session ================");
+                _vlog.Flush();
+                _vlog.Close();
+                _vlog = null;
+            }
+            string path = _vlogPath;
+            if (path != null)
+            {
+                void ShowLog() => ShowMessage($"[Log] {System.IO.Path.GetFileName(path)}", Color.DimGray);
+                if (this.InvokeRequired) this.Invoke(new Action(ShowLog)); else ShowLog();
             }
         }
 
@@ -4169,145 +3803,65 @@ namespace QIP.EOL
         {
             var commands = new List<VoiceCommandDefinition>();
 
-            for (int i = 0; i < _partVoiceCodes.Length; i++)
+            // ── Part labels (A-F) ────────────────────────────────────────────
+            foreach (var (label, code, display, extra) in GetPartLabels())
             {
-                string code = _partVoiceCodes[i].Code;
-                string display = _partVoiceCodes[i].Display;
-                string[] extra = _partVoiceCodes[i].ExtraAliases ?? new string[0];
-
-                var aliases = new List<string>
-                {
-                    code,
-                    "điểm " + code,
-                    "vị trí " + code,
-                    "part " + code,
-                };
-                aliases.AddRange(extra);
-
+                var aliases = new List<string> { code, "điểm " + code, "vị trí " + code, "part " + code };
+                if (extra != null) aliases.AddRange(extra);
                 commands.Add(new VoiceCommandDefinition
                 {
-                    Kind = VoiceCommandKind.Part,
-                    Code = code,
+                    Kind        = VoiceCommandKind.Part,
+                    Code        = code,
                     DisplayText = display,
-                    Aliases = aliases
+                    Aliases     = aliases
                 });
             }
 
-            foreach (Button button in GetReasonButtons())
-            {
-                if (string.IsNullOrWhiteSpace(button.AccessibleName))
-                {
-                    continue;
-                }
+            // ── REASON_ID cố định cho A14 ────────────────────────────────────
+            // Chỉ nhận 16 mã lỗi thực tế dùng tại A14.
+            // THỨ TỰ QUAN TRỌNG: 17, 18, 21 đứng ĐẦU → vào Whisper Prompt trước
+            // → Whisper sẽ ưu tiên nhận diện 3 mã lỗi thường xuyên nhất này.
+            var a14ReasonIds = new[] { "17", "18", "21", "1", "2", "3", "4", "5", "6", "8", "9", "12", "22", "23", "79", "82" };
 
-                string text = string.IsNullOrWhiteSpace(button.Text)
-                    ? button.AccessibleName
-                    : button.Text.Replace(Environment.NewLine, " ");
+            // Lấy button text từ form để giữ đúng tên lỗi thực tế
+            var buttonMap = GetReasonButtons()
+                .Where(b => !string.IsNullOrWhiteSpace(b.AccessibleName))
+                .ToDictionary(b => b.AccessibleName, b =>
+                    string.IsNullOrWhiteSpace(b.Text) ? b.AccessibleName
+                    : b.Text.Replace(Environment.NewLine, " "));
+
+            foreach (string reasonId in a14ReasonIds)
+            {
+                // Lấy display text từ button nếu có, fallback về reasonId
+                buttonMap.TryGetValue(reasonId, out string displayText);
+                displayText ??= reasonId;
 
                 commands.Add(new VoiceCommandDefinition
                 {
-                    Kind = VoiceCommandKind.Error,
-                    Code = button.AccessibleName,
-                    DisplayText = text,
-                    Aliases = BuildReasonAliases(button.AccessibleName, text)
+                    Kind        = VoiceCommandKind.Error,
+                    Code        = reasonId,
+                    DisplayText = displayText,
+                    Aliases     = VoiceAliasHelper.BuildReasonAliases(reasonId, displayText)
                 });
             }
 
-            commands.Add(new VoiceCommandDefinition
-            {
-                Kind = VoiceCommandKind.Action,
-                ActionType = "pass",
-                DisplayText = "đạt",
-                Aliases = new[] { "pass", "đạt", "qua", "ok" }
-            });
-            commands.Add(new VoiceCommandDefinition
-            {
-                Kind = VoiceCommandKind.Action,
-                ActionType = "fail",
-                DisplayText = "lỗi",
-                Aliases = new[] { "fail", "lỗi", "không đạt", "ng" }
-            });
-            commands.Add(new VoiceCommandDefinition
-            {
-                Kind = VoiceCommandKind.Action,
-                ActionType = "re-pass",
-                DisplayText = "đạt lại",
-                Aliases = new[] { "re pass", "đạt lại", "kiểm lại đạt" }
-            });
-            commands.Add(new VoiceCommandDefinition
-            {
-                Kind = VoiceCommandKind.Action,
-                ActionType = "re-fail",
-                DisplayText = "lỗi lại",
-                Aliases = new[] { "re fail", "lỗi lại", "kiểm lại lỗi" }
-            });
-            commands.Add(new VoiceCommandDefinition
-            {
-                Kind = VoiceCommandKind.Action,
-                ActionType = "clear",
-                DisplayText = "xóa",
-                Aliases = new[] { "xóa", "hủy", "clear", "bỏ chọn" }
-            });
-
+            commands.AddRange(VoiceAliasHelper.BuildActionCommands(SupportedActions));
             return commands;
         }
 
-        private IReadOnlyCollection<string> BuildReasonAliases(string reasonCode, string reasonText)
-        {
-            var aliases = new List<string>
-            {
-                reasonCode,
-                "lỗi " + reasonCode,
-                "mã lỗi " + reasonCode,
-                reasonText,
-                "lỗi " + reasonText
-            };
-
-            var numberWords = new Dictionary<string, string>
-            {
-                { "1", "một" },
-                { "2", "hai" },
-                { "3", "ba" },
-                { "4", "bốn" },
-                { "5", "năm" },
-                { "6", "sáu" },
-                { "7", "bảy" },
-                { "8", "tám" },
-                { "9", "chín" },
-                { "10", "mười" }
-            };
-
-            if (numberWords.TryGetValue(reasonCode, out string word))
-            {
-                aliases.Add(word);
-                aliases.Add("lỗi " + word);
-            }
-
-            return aliases;
-        }
 
         public void SelectPart(string partCode)
         {
-            // Tìm index trong _partVoiceCodes theo code (chữ cái) người dùng tự định nghĩa
-            int idx = -1;
-            for (int i = 0; i < _partVoiceCodes.Length; i++)
-            {
-                if (string.Equals(_partVoiceCodes[i].Code, partCode, StringComparison.OrdinalIgnoreCase))
-                {
-                    idx = i;
-                    break;
-                }
-            }
+            var entry = GetPartLabels()
+                .FirstOrDefault(p => string.Equals(p.Code, partCode, StringComparison.OrdinalIgnoreCase));
 
-            Label partLabel = idx >= 0 ? GetPartLabels().ElementAtOrDefault(idx) : null;
-
-            if (partLabel == null)
+            if (entry.Label == null)
             {
                 ShowMessage("Voice: không tìm thấy part " + partCode, Color.Red);
                 return;
             }
 
-            lblPart_Click(partLabel, EventArgs.Empty);
+            lblPart_Click(entry.Label, EventArgs.Empty);
         }
 
         public void SelectError(string errorCode)
@@ -4355,14 +3909,76 @@ namespace QIP.EOL
             }
         }
 
-        private IEnumerable<Label> GetPartLabels()
+        // ── Part labels cho A14 ─────────────────────────────────────────────
+        // Alias: ưu tiên cách đọc ĐÔI (bê bê, xê xê...) để Whisper nhận Part rõ hơn.
+        // Kỹ thuật "đọc đôi" (AA, BB...): Whisper nhận ký tự đơn rất kém,
+        // nhưng lặp 2 lần cụm âm tiết rõ (bê bê, xê xê) tăng accuracy lên đáng kể.
+        private IEnumerable<(Label Label, string Code, string Display, string[] ExtraAliases)> GetPartLabels()
         {
-            yield return lblPart1;
-            yield return lblPart2;
-            yield return lblPart3;
-            yield return lblPart4;
-            yield return lblPart5;
-            yield return lblPart6;
+            yield return (lblPart1, "A", "Part A", new[] { "a", "à", "ạ", "á", "Ah", "ah", "a a", "lỗi a" });
+            yield return (lblPart2, "B", "Part B", new[] { "bê", "bờ", "bê bê", "bờ bờ", "b b", "bb" });
+            yield return (lblPart3, "C", "Part C", new[] { "xê", "sê", "se", "xê xê", "sê sê", "c c" });
+            yield return (lblPart4, "D", "Part D", new[] { "đê", "đề", "đê đê", "đề đề", "d d" });
+            yield return (lblPart5, "E", "Part E", new[] { "ê", "e", "ê ê", "e e" });
+            yield return (lblPart6, "F", "Part F", new[] { "ép", "ep", "ép ép", "ep ep", "f f" });
+        }
+
+        // ── VOICE AUTO TEST ──────────────────────────────────────────────────
+        // Gọi từ button btnVoiceAutoTest (thêm button vào Designer hoặc dùng context menu)
+        // Dùng chính _voiceEngine của A14 — KHÔNG tạo engine mới
+        // ─────────────────────────────────────────────────────────────────────
+        public async Task RunVoiceAutoTestAsync(
+            IReadOnlyList<VoiceTestCase> cases = null,
+            IProgress<(int cur, int total)> progress = null)
+        {
+            if (_voiceEngine == null)
+            {
+                ShowMessage("VoiceEngine chưa sẵn sàng.", Color.Red);
+                return;
+            }
+
+            // Dừng auto loop nếu đang chạy
+            if (_autoLoopCts != null)
+            {
+                _autoLoopCts.Cancel();
+                _autoLoopCts = null;
+                _voiceEngine.IsAutoLoopMode = false;
+                await Task.Delay(500); // chờ engine về trạng thái Ready
+            }
+
+            ShowMessage("Đang chạy Voice Auto Test...", Color.Blue);
+
+            string tempDir   = System.IO.Path.Combine(Application.StartupPath, "VoiceTestTemp");
+            string reportDir = System.IO.Path.Combine(Application.StartupPath, "test", "log");
+
+            var runner = new VoiceAutoTestRunner(
+                engine    : _voiceEngine,
+                logAction : msg => ThreadSafe(() => ShowMessage(msg, Color.DarkSlateGray)),
+                tempDir   : tempDir
+            );
+
+            try
+            {
+                var results = await runner.RunAllAsync(cases, progress);
+
+                int pass = results.Count(r => r.IsPass);
+                Color statusColor = (pass == results.Count) ? Color.Green : Color.OrangeRed;
+
+                // Lưu báo cáo markdown
+                System.IO.Directory.CreateDirectory(reportDir);
+                string reportPath = System.IO.Path.Combine(
+                    reportDir,
+                    $"A14_autotest_{DateTime.Now:yyyyMMdd_HHmmss}.md");
+                runner.SaveReport(results, reportPath);
+
+                ShowMessage(
+                    $"Auto Test: {pass}/{results.Count} PASS  |  Báo cáo: {System.IO.Path.GetFileName(reportPath)}",
+                    statusColor);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Auto Test lỗi: " + ex.Message, Color.Red);
+            }
         }
     }
 }
