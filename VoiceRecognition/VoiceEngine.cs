@@ -19,8 +19,13 @@ namespace NETTMC.VoiceRecognition
         public string MatchedCommand { get; set; }
         public double ConfidenceScore { get; set; }
         public VoiceCommandMatch ParsedCommand { get; set; }
+        public IReadOnlyList<VoiceCommandMatch> ParsedCommands { get; set; }
         public double ProcessingTimeSec { get; set; }
-        public bool IsSuccess => ParsedCommand?.IsSuccess == true || MatchedCommand != null;
+        public string CleanedText { get; set; }
+        public string NormalizedText { get; set; }
+        public string AudioDiagnostics { get; set; }
+        public string ParseTrace { get; set; }
+        public bool IsSuccess => ParsedCommand?.IsSuccess == true || ParsedCommands?.Any(c => c?.IsSuccess == true) == true || MatchedCommand != null;
     }
 
     public enum VoiceEngineState
@@ -41,8 +46,8 @@ namespace NETTMC.VoiceRecognition
         private const int SampleRate = 16000;
         // 20ms frame = 16000Hz * 0.02s * 2 bytes (16-bit) = 640 bytes
         private const int VadFrameBytes = 640;
-        private const int MinimumVoiceMs = 250;
-        private const int SilenceAfterVoiceMs = 300;  // Giảm 400→300: cắt sớm hơn khi người dùng ngừng nói
+        private const int DefaultMinimumVoiceMs = 120;
+        private const int DefaultSilenceAfterVoiceMs = 800;
 
         // Từ khoá kết thúc câu — được strip trước khi match.
         // Không dùng "ok"/"ô kê" vì có xung đột với action "pass".
@@ -68,12 +73,18 @@ namespace NETTMC.VoiceRecognition
         private DateTime _firstVoiceAt;
         private DateTime _lastVoiceAt;
         private int _maxRecordingMs = 5000;
+        private double _recordingMaxRms;
+        private double _recordingMaxPeak;
+        private double _recordingRmsSum;
+        private int _recordingChunks;
+        private int _speechChunks;
+        private long _recordedBytes;
 
         private SpeechSynthesizer _tts;
         private bool _isDisposed;
         private string _lastErrorMessage;
 
-        public VoiceEngine(double threshold = 0.85)
+        public VoiceEngine(double threshold = 0.78)
         {
             _threshold = threshold;
             InitializeTTS();
@@ -86,6 +97,12 @@ namespace NETTMC.VoiceRecognition
         /// (pass/fail/re-pass/re-fail/clear) để tránh nhiễu môi trường.
         /// </summary>
         public bool IsAutoLoopMode { get; set; } = false;
+        public bool EmitBatchCommandResult { get; set; } = false;
+        public double InputGain { get; set; } = 3.0;
+        public double RmsVoiceThreshold { get; set; } = 0.0025;
+        public double VadVoiceFrameRatio { get; set; } = 0.15;
+        public int MinimumVoiceDurationMs { get; set; } = DefaultMinimumVoiceMs;
+        public int SilenceAfterVoiceDurationMs { get; set; } = DefaultSilenceAfterVoiceMs;
 
         public bool IsRecording => _isRecording;
         public string LastErrorMessage => _lastErrorMessage;
@@ -112,6 +129,10 @@ namespace NETTMC.VoiceRecognition
             }
 
             SetCommandList(_commandDefinitions.SelectMany(c => c.AllPhrases()).Distinct(StringComparer.OrdinalIgnoreCase));
+            if (_modelReady && !_isRecording)
+            {
+                RebuildWhisperProcessor();
+            }
         }
 
         public async Task InitializeAsync(string modelPath = "whisper-model.bin", GgmlType ggmlType = GgmlType.Base)
@@ -134,14 +155,7 @@ namespace NETTMC.VoiceRecognition
 
                 Log("Dang khoi tao Whisper...");
                 _whisperFactory = WhisperFactory.FromPath(modelPath);
-
-                _whisperProcessor = _whisperFactory.CreateBuilder()
-                    .WithLanguage("vi")
-                    .WithThreads(Environment.ProcessorCount)
-                    .WithSingleSegment()
-                    .WithNoContext()
-                    .WithPrompt(BuildPrompt())
-                    .Build();
+                RebuildWhisperProcessor();
 
                 _modelReady = true;
                 Log("Model san sang.");
@@ -169,6 +183,12 @@ namespace NETTMC.VoiceRecognition
                 _lastVoiceAt = DateTime.MinValue;
                 _speechDetected = false;
                 _hasPendingAudio = true;
+                _recordingMaxRms = 0;
+                _recordingMaxPeak = 0;
+                _recordingRmsSum = 0;
+                _recordingChunks = 0;
+                _speechChunks = 0;
+                _recordedBytes = 0;
 
                 _audioBuffer = new MemoryStream();
                 _waveIn = new WaveInEvent
@@ -184,7 +204,7 @@ namespace NETTMC.VoiceRecognition
                 _isRecording = true;
                 _waveIn.StartRecording();
 
-                Log("Bat dau ghi am.");
+                Log($"Bat dau ghi am. max={_maxRecordingMs}ms gain={InputGain:F1} rms={RmsVoiceThreshold:F4} vadRatio={VadVoiceFrameRatio:F2}");
                 ChangeState(VoiceEngineState.Recording);
             }
             catch (Exception ex)
@@ -269,10 +289,12 @@ namespace NETTMC.VoiceRecognition
 
         private void OnAudioData(object sender, WaveInEventArgs e)
         {
-            _waveWriter?.Write(e.Buffer, 0, e.BytesRecorded);
+            byte[] audio = PrepareAudioBuffer(e.Buffer, e.BytesRecorded);
+            _waveWriter?.Write(audio, 0, audio.Length);
 
             DateTime now = DateTime.UtcNow;
-            bool hasVoice = HasVoiceVad(e.Buffer, e.BytesRecorded);
+            bool hasVoice = HasVoiceVad(audio, audio.Length);
+            UpdateRecordingStats(audio, audio.Length, hasVoice);
 
             if (hasVoice)
             {
@@ -281,13 +303,13 @@ namespace NETTMC.VoiceRecognition
                     _firstVoiceAt = now;
                 }
 
-                _speechDetected = (now - _firstVoiceAt).TotalMilliseconds >= MinimumVoiceMs;
+                _speechDetected = (now - _firstVoiceAt).TotalMilliseconds >= MinimumVoiceDurationMs;
                 _lastVoiceAt = now;
             }
 
             bool maxReached = (now - _recordingStartedAt).TotalMilliseconds >= _maxRecordingMs;
             bool silenceReached = _speechDetected &&
-                (now - _lastVoiceAt).TotalMilliseconds >= SilenceAfterVoiceMs;
+                (now - _lastVoiceAt).TotalMilliseconds >= SilenceAfterVoiceDurationMs;
 
             if (maxReached || silenceReached)
             {
@@ -298,12 +320,59 @@ namespace NETTMC.VoiceRecognition
 
         // Phân tích giọng nói bằng WebRTC VAD (chia chunk 20ms)
         // Nếu VAD chưa sẵn sàng, fallback về RMS cơ bản
+        private byte[] PrepareAudioBuffer(byte[] buffer, int bytesRecorded)
+        {
+            int length = Math.Max(0, bytesRecorded);
+            var audio = new byte[length];
+            if (length == 0)
+            {
+                return audio;
+            }
+
+            double gain = InputGain;
+            if (gain < 1.0) gain = 1.0;
+            if (gain > 8.0) gain = 8.0;
+
+            if (gain <= 1.01)
+            {
+                Buffer.BlockCopy(buffer, 0, audio, 0, length);
+                return audio;
+            }
+
+            for (int i = 0; i < length - 1; i += 2)
+            {
+                short sample = BitConverter.ToInt16(buffer, i);
+                int boosted = (int)Math.Round(sample * gain);
+                if (boosted > short.MaxValue) boosted = short.MaxValue;
+                if (boosted < short.MinValue) boosted = short.MinValue;
+
+                byte[] bytes = BitConverter.GetBytes((short)boosted);
+                audio[i] = bytes[0];
+                audio[i + 1] = bytes[1];
+            }
+
+            return audio;
+        }
+
+        private void UpdateRecordingStats(byte[] buffer, int bytesRecorded, bool hasVoice)
+        {
+            double rms = CalculateRms(buffer, bytesRecorded);
+            double peak = CalculatePeak(buffer, bytesRecorded);
+
+            _recordingChunks++;
+            _recordedBytes += bytesRecorded;
+            _recordingRmsSum += rms;
+            if (rms > _recordingMaxRms) _recordingMaxRms = rms;
+            if (peak > _recordingMaxPeak) _recordingMaxPeak = peak;
+            if (hasVoice) _speechChunks++;
+        }
+
         private bool HasVoiceVad(byte[] buffer, int bytesRecorded)
         {
             if (_vad == null || bytesRecorded < VadFrameBytes)
             {
                 // Giảm threshold RMS từ 0.018 xuống 0.005 để bắt giọng nói nhỏ tốt hơn
-                return CalculateRms(buffer, bytesRecorded) >= 0.005;
+                return CalculateRms(buffer, bytesRecorded) >= RmsVoiceThreshold;
             }
 
             int offset = 0;
@@ -332,7 +401,9 @@ namespace NETTMC.VoiceRecognition
             }
 
             // Có giọng nói nếu >=25% frame bị phân loại là speech (giảm từ 40% để dễ nhận diện giọng nhỏ)
-            return totalFrames > 0 && (double)voiceFrames / totalFrames >= 0.25;
+            bool vadDetected = totalFrames > 0 && (double)voiceFrames / totalFrames >= VadVoiceFrameRatio;
+            bool rmsDetected = CalculateRms(buffer, bytesRecorded) >= RmsVoiceThreshold;
+            return vadDetected || rmsDetected;
         }
 
         private void OnRecordingStopped(object sender, StoppedEventArgs e)
@@ -382,6 +453,16 @@ namespace NETTMC.VoiceRecognition
                 }
 
                 _audioBuffer.Position = 0;
+                if (_whisperProcessor == null)
+                {
+                    sw.Stop();
+                    Log("Whisper processor chua san sang.");
+                    ChangeState(VoiceEngineState.Ready);
+                    return;
+                }
+
+                string audioDiagnostics = BuildAudioDiagnostics();
+                Log($"[Audio] {audioDiagnostics}");
 
                 string recognizedText = string.Empty;
                 double avgProb = 0;
@@ -402,12 +483,24 @@ namespace NETTMC.VoiceRecognition
 
                 // Strip từ khoá kết thúc câu ("ok", "ô kê"...) trước khi parse
                 string cleanedText = StripEndKeyword(recognizedText);
+                string normalizedText = VoiceTextNormalizer.Normalize(cleanedText);
 
                 if (string.IsNullOrWhiteSpace(cleanedText))
                 {
                     sw.Stop();
-                    Log($"Chỉ nghe được từ kết thúc, bỏ qua. - {sw.Elapsed.TotalSeconds:F2}s");
+                    Log($"Chi nghe duoc tu ket thuc: raw=\"{recognizedText}\" - {sw.Elapsed.TotalSeconds:F2}s");
                     Log("=============================================="); 
+                    CommandRecognized?.Invoke(this, new VoiceMatchResult
+                    {
+                        RecognizedText = recognizedText,
+                        CleanedText = cleanedText,
+                        NormalizedText = normalizedText,
+                        MatchedCommand = "[Bỏ qua] Chỉ từ kết thúc",
+                        ConfidenceScore = avgProb,
+                        ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                        AudioDiagnostics = audioDiagnostics,
+                        ParseTrace = "Only end keyword after StripEndKeyword"
+                    });
 
                     ChangeState(VoiceEngineState.Ready);
                     return;
@@ -416,7 +509,27 @@ namespace NETTMC.VoiceRecognition
                 // Tầng 1: Probability filter đã tắt — Whisper.net trả về Probability = 0 luôn
                 // (model không tính token probability theo mặc định, không thể dùng làm filter)
                 // Log để tham khảo nhưng không block:
-                Log($"Nghe được: \"{recognizedText}\" → xử lý: \"{cleanedText}\" (Prob: {avgProb:P0})");
+                if (LooksLikeNoSpeechTranscript(cleanedText))
+                {
+                    sw.Stop();
+                    Log($"[Whisper noise] Chi nghe silence/noise, Whisper tra: \"{recognizedText}\" - {sw.Elapsed.TotalSeconds:F2}s");
+                    Log("==============================================");
+                    CommandRecognized?.Invoke(this, new VoiceMatchResult
+                    {
+                        RecognizedText = recognizedText,
+                        CleanedText = cleanedText,
+                        NormalizedText = normalizedText,
+                        MatchedCommand = "[Bỏ qua] Whisper noise",
+                        ConfidenceScore = avgProb,
+                        ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                        AudioDiagnostics = audioDiagnostics,
+                        ParseTrace = "Whisper returned only dash/punctuation placeholders"
+                    });
+                    ChangeState(VoiceEngineState.Ready);
+                    return;
+                }
+
+                Log($"Nghe duoc: \"{recognizedText}\" -> xu ly: \"{cleanedText}\" | norm=\"{normalizedText}\" (Prob: {avgProb:P0})");
 
                 // ── TẦNG 2: Kiểm tra từ khóa nghiệp vụ ──────────────────────────
                 // Auto-loop phải chứa ít nhất 1 từ liên quan đến nghiệp vụ (số, từ hành động VN)
@@ -425,7 +538,17 @@ namespace NETTMC.VoiceRecognition
                     sw.Stop();
                     Log($"[Bỏ qua] Không chứa từ khoá nghiệp vụ: \"{cleanedText}\" - {sw.Elapsed.TotalSeconds:F2}s");
                     Log("==============================================");
-                    CommandRecognized?.Invoke(this, new VoiceMatchResult { RecognizedText = recognizedText, MatchedCommand = "[Bỏ qua] Không nghiệp vụ", ConfidenceScore = avgProb, ProcessingTimeSec = sw.Elapsed.TotalSeconds });
+                    CommandRecognized?.Invoke(this, new VoiceMatchResult
+                    {
+                        RecognizedText = recognizedText,
+                        CleanedText = cleanedText,
+                        NormalizedText = normalizedText,
+                        MatchedCommand = "[Bỏ qua] Không nghiệp vụ",
+                        ConfidenceScore = avgProb,
+                        ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                        AudioDiagnostics = audioDiagnostics,
+                        ParseTrace = "No business keyword"
+                    });
                     ChangeState(VoiceEngineState.Ready);
                     return;
                 }
@@ -448,8 +571,42 @@ namespace NETTMC.VoiceRecognition
                             sw.Stop();
                             Log($"[Bỏ qua] Auto-loop: nhận ra Part/Error nhưng thiếu Action — chờ câu hoàn chỉnh. - {sw.Elapsed.TotalSeconds:F2}s");
                             Log("==============================================");
-                            CommandRecognized?.Invoke(this, new VoiceMatchResult { RecognizedText = recognizedText, MatchedCommand = "[Bỏ qua] Thiếu Action", ConfidenceScore = avgProb, ProcessingTimeSec = sw.Elapsed.TotalSeconds });
+                            CommandRecognized?.Invoke(this, new VoiceMatchResult
+                            {
+                                RecognizedText = recognizedText,
+                                CleanedText = cleanedText,
+                                NormalizedText = normalizedText,
+                                MatchedCommand = "[Bỏ qua] Thiếu Action",
+                                ConfidenceScore = avgProb,
+                                ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                                AudioDiagnostics = audioDiagnostics,
+                                ParseTrace = string.Join("; ", allMatches.Select(m => m.ToDisplayText())),
+                                ParsedCommands = allMatches
+                            });
                             ChangeState(VoiceEngineState.Ready);
+                            return;
+                        }
+
+                        if (EmitBatchCommandResult)
+                        {
+                            sw.Stop();
+                            var batchCommand = BuildBatchCommand(cleanedText, allMatches);
+                            Log($"[Voice OK] {batchCommand.ToDisplayText()} ({batchCommand.ConfidenceScore:P0}) - {sw.Elapsed.TotalSeconds:F2}s");
+                            Log("==============================================");
+                            CommandRecognized?.Invoke(this, new VoiceMatchResult
+                            {
+                                RecognizedText = recognizedText,
+                                CleanedText = cleanedText,
+                                NormalizedText = normalizedText,
+                                ParsedCommand = batchCommand,
+                                ParsedCommands = allMatches,
+                                MatchedCommand = batchCommand.ToDisplayText(),
+                                ConfidenceScore = batchCommand.ConfidenceScore,
+                                ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                                AudioDiagnostics = audioDiagnostics,
+                                ParseTrace = string.Join("; ", allMatches.Select(m => m.ToDisplayText()))
+                            });
+                            SpeakAsync($"Đã nhận {allMatches.Count} lệnh");
                             return;
                         }
 
@@ -461,10 +618,14 @@ namespace NETTMC.VoiceRecognition
                             var result = new VoiceMatchResult
                             {
                                 RecognizedText  = recognizedText,
+                                CleanedText     = cleanedText,
+                                NormalizedText  = normalizedText,
                                 ParsedCommand   = parsedCommand,
                                 MatchedCommand  = parsedCommand.ToDisplayText(),
                                 ConfidenceScore = parsedCommand.ConfidenceScore,
-                                ProcessingTimeSec = sw.Elapsed.TotalSeconds
+                                ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                                AudioDiagnostics = audioDiagnostics,
+                                ParseTrace = parsedCommand.MatchedCommand
                             };
                             CommandRecognized?.Invoke(this, result);
                         }
@@ -479,10 +640,14 @@ namespace NETTMC.VoiceRecognition
                 var fallbackResult = new VoiceMatchResult
                 {
                     RecognizedText  = recognizedText,
+                    CleanedText     = cleanedText,
+                    NormalizedText  = normalizedText,
                     ParsedCommand   = null,
                     MatchedCommand  = (matchedCommand != null && score >= _threshold) ? matchedCommand : null,
                     ConfidenceScore = score,
-                    ProcessingTimeSec = sw.Elapsed.TotalSeconds
+                    ProcessingTimeSec = sw.Elapsed.TotalSeconds,
+                    AudioDiagnostics = audioDiagnostics,
+                    ParseTrace = $"best={matchedCommand ?? ""}; score={score:P0}"
                 };
 
                 sw.Stop();
@@ -505,6 +670,26 @@ namespace NETTMC.VoiceRecognition
             }
         }
 
+        private void RebuildWhisperProcessor()
+        {
+            if (_whisperFactory == null)
+            {
+                return;
+            }
+
+            try { _whisperProcessor?.Dispose(); } catch { }
+
+            _whisperProcessor = _whisperFactory.CreateBuilder()
+                .WithLanguage("vi")
+                .WithThreads(Environment.ProcessorCount)
+                .WithSingleSegment()
+                .WithNoContext()
+                .WithPrompt(BuildPrompt())
+                .Build();
+
+            Log($"Whisper prompt cap nhat: {_commandList.Count} phrases.");
+        }
+
         private string BuildPrompt()
         {
             if (_commandList.Count == 0)
@@ -515,7 +700,56 @@ namespace NETTMC.VoiceRecognition
             // Lấy tối đa 80 từ khóa.
             // Vì _commandList đã được nạp theo thứ tự ưu tiên (17, 18, 21 đứng đầu),
             // prompt tự nhiên sẽ ưu tiên đúng những từ khóa quan trọng nhất.
-            return string.Join(", ", _commandList.Take(80));
+            var seed = new[]
+            {
+                "A mười bảy không đạt",
+                "A mười tám không đạt",
+                "B mười tám không đạt",
+                "C hai mươi mốt không đạt",
+                "đạt",
+                "không đạt",
+                "đạt lại",
+                "lỗi lại",
+                "xóa",
+                "part A",
+                "part B",
+                "part C",
+                "mười bảy",
+                "mười tám",
+                "hai mươi mốt",
+                "bảy chín",
+                "tám hai"
+            };
+
+            return string.Join(", ", seed
+                .Concat(_commandList)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Take(120));
+        }
+
+        private static VoiceCommandMatch BuildBatchCommand(string input, IReadOnlyList<VoiceCommandMatch> matches)
+        {
+            var useful = matches?.Where(m => m != null && m.IsSuccess).ToList() ?? new List<VoiceCommandMatch>();
+            var part = useful.FirstOrDefault(m => !string.IsNullOrWhiteSpace(m.PartCode))?.PartCode;
+            var errors = useful
+                .Where(m => !string.IsNullOrWhiteSpace(m.ErrorCode))
+                .Select(m => m.ErrorCode)
+                .Distinct()
+                .ToList();
+            var action = useful.FirstOrDefault(m => !string.IsNullOrWhiteSpace(m.ActionType))?.ActionType;
+            double confidence = useful.Count == 0 ? 0 : useful.Min(m => m.ConfidenceScore);
+
+            return new VoiceCommandMatch
+            {
+                RecognizedText = input,
+                Kind = VoiceCommandKind.Composite,
+                PartCode = part,
+                ErrorCode = errors.Count == 0 ? null : string.Join(",", errors),
+                ActionType = action,
+                MatchedCommand = string.Join("; ", useful.Select(m => m.MatchedCommand).Where(x => !string.IsNullOrWhiteSpace(x))),
+                ConfidenceScore = confidence
+            };
         }
 
         /// <summary>
@@ -606,6 +840,56 @@ namespace NETTMC.VoiceRecognition
             }
 
             return Math.Sqrt(sumSquares / Math.Max(1, samples));
+        }
+
+        private static double CalculatePeak(byte[] buffer, int bytesRecorded)
+        {
+            if (bytesRecorded <= 0)
+            {
+                return 0;
+            }
+
+            double peak = 0;
+            for (int i = 0; i < bytesRecorded - 1; i += 2)
+            {
+                short sample = BitConverter.ToInt16(buffer, i);
+                double normalized = Math.Abs(sample / 32768.0);
+                if (normalized > peak) peak = normalized;
+            }
+
+            return peak;
+        }
+
+        private string BuildAudioDiagnostics()
+        {
+            double avgRms = _recordingChunks == 0 ? 0 : _recordingRmsSum / _recordingChunks;
+            double seconds = _recordedBytes <= 0 ? 0 : _recordedBytes / (double)(SampleRate * 2);
+            return $"len={seconds:F1}s speech={_speechDetected} chunks={_speechChunks}/{_recordingChunks} avgRms={avgRms:F4} maxRms={_recordingMaxRms:F4} peak={_recordingMaxPeak:F2} gain={InputGain:F1}";
+        }
+
+        private static bool LooksLikeNoSpeechTranscript(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return true;
+            }
+
+            string compact = new string(text.Where(ch => !char.IsWhiteSpace(ch)).ToArray());
+            if (compact.Length == 0)
+            {
+                return true;
+            }
+
+            return compact.All(ch =>
+                ch == '-' ||
+                ch == '_' ||
+                ch == '.' ||
+                ch == ',' ||
+                ch == '[' ||
+                ch == ']' ||
+                ch == '(' ||
+                ch == ')' ||
+                ch == '…');
         }
 
         private void InitializeTTS()

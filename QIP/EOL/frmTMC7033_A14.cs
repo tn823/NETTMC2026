@@ -3470,7 +3470,7 @@ namespace QIP.EOL
                 _vlogSeq  = 0;
                 _vlog = new System.IO.StreamWriter(_vlogPath, append: true, System.Text.Encoding.UTF8);
                 _vlog.WriteLine(new string('=', 80));
-                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] INFO : ===== Session bắt đầu =====");
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ================ Session bắt đầu ================");
                 _vlog.Flush();
             }
             catch { }
@@ -3487,7 +3487,6 @@ namespace QIP.EOL
             {
                 try
                 {
-                    // ── Thu âm 5 giây ──
                     if (this.InvokeRequired)
                         this.Invoke(new Action(() => ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed)));
                     else
@@ -3535,7 +3534,15 @@ namespace QIP.EOL
 
         private async void InitializeVoiceEngine()
         {
-            _voiceEngine = new VoiceEngine();
+            _voiceEngine = new VoiceEngine(0.78)
+            {
+                InputGain = 3.5,
+                RmsVoiceThreshold = 0.0025,
+                VadVoiceFrameRatio = 0.15,
+                MinimumVoiceDurationMs = 120,
+                SilenceAfterVoiceDurationMs = 800,
+                EmitBatchCommandResult = true
+            };
             _voiceEngine.CommandRecognized += _voiceEngine_CommandRecognized;
             _voiceEngine.StateChanged      += _voiceEngine_StateChanged;
             _voiceEngine.LogMessage        += _voiceEngine_LogMessage;
@@ -3554,12 +3561,10 @@ namespace QIP.EOL
 
         private void _voiceEngine_LogMessage(object sender, string e)
         {
-            // Chỉ log các thông báo quan trọng từ engine (bỏ qua noise/separator)
+            // File A14 chỉ giữ log kết quả dạng ngắn gọn; engine log chỉ giữ lỗi nghiêm trọng.
             if (string.IsNullOrWhiteSpace(e)) return;
-            // Bỏ qua dòng phân cách và trạng thái routine (có dấu lẫn không dấu)
             if (e.StartsWith("===") || e.StartsWith("---")) return;
-            if (e.StartsWith("Bat dau") || e.StartsWith("Dang xu ly") || e.StartsWith("Dang doc")) return;
-            if (e.Contains("Bắt đầu ghi âm") || e.Contains("Đang xử lý")) return;
+            if (!e.StartsWith("[Voice Error]")) return;
             lock (_vlogLock)
             {
                 if (_vlog != null)
@@ -3623,6 +3628,25 @@ namespace QIP.EOL
                 return;
             }
 
+            if (result?.ParsedCommands?.Any(c => c?.IsSuccess == true) == true)
+            {
+                foreach (var command in result.ParsedCommands.Where(c => c?.IsSuccess == true))
+                {
+                    if (!string.IsNullOrWhiteSpace(command.PartCode))
+                        SelectPart(command.PartCode);
+
+                    if (!string.IsNullOrWhiteSpace(command.ErrorCode))
+                        SelectError(command.ErrorCode);
+
+                    if (!string.IsNullOrWhiteSpace(command.ActionType))
+                        ConfirmAction(command.ActionType);
+                }
+
+                ShowMessage($"[Voice OK] {BuildVoiceResultSummary(result)}", Color.Green);
+                VlogEntry(result, "OK");
+                return;
+            }
+
             if (result?.ParsedCommand?.IsSuccess == true)
             {
                 VoiceCommandMatch command = result.ParsedCommand;
@@ -3660,29 +3684,95 @@ namespace QIP.EOL
                 if (_vlog == null) return;
                 _vlogSeq++;
 
-                string heard   = r.RecognizedText ?? "";
-                string matched = r.MatchedCommand ?? "";
-                string detail  = "";
-
-                if (r.ParsedCommand != null)
-                {
-                    var c = r.ParsedCommand;
-                    matched = c.ToDisplayText();
-                    var parts = new List<string>();
-                    if (!string.IsNullOrEmpty(c.PartCode))  parts.Add("Part=" + c.PartCode);
-                    if (!string.IsNullOrEmpty(c.ErrorCode)) parts.Add("Err=" + c.ErrorCode);
-                    if (!string.IsNullOrEmpty(c.ActionType)) parts.Add("Act=" + c.ActionType);
-                    detail = string.Join(" ", parts);
-                }
-
-                // Format kiểu Laravel: [datetime] LEVEL: message  {context}
-                string level = status == "OK" ? "INFO " : (status == "Fail" ? "WARN " : "DEBUG");
-                _vlog.WriteLine(
-                    $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {level}: [{status}] \"{heard}\" → {matched}" +
-                    (string.IsNullOrEmpty(detail) ? "" : $"  {{{detail}}}") +
-                    $"  ({r.ConfidenceScore:P0}, {r.ProcessingTimeSec:F1}s)");
+                _vlog.WriteLine(BuildCompactVoiceLogLine(r, status));
                 _vlog.Flush();
             }
+        }
+
+        private string BuildCompactVoiceLogLine(VoiceMatchResult r, string status)
+        {
+            string finalStatus = BuildVoiceFinalStatus(r, status);
+            string elapsed = $"{r?.ProcessingTimeSec ?? 0:F2}s";
+
+            if (IsNoSpeechLog(r))
+            {
+                return $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] | Không nghe đc gì → Bỏ qua  ({elapsed})";
+            }
+
+            string heard = NormalizeVoiceLogText(r?.RecognizedText);
+            string cleaned = NormalizeVoiceLogText(r?.CleanedText);
+            if (cleaned == "Không nghe đc gì")
+            {
+                cleaned = heard;
+            }
+
+            return $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] | {heard} → {cleaned} → {BuildVoiceResultSummary(r)} → {finalStatus}  ({elapsed})";
+        }
+
+        private string BuildVoiceResultSummary(VoiceMatchResult r)
+        {
+            var commands = r?.ParsedCommands?.Where(c => c != null && c.IsSuccess).ToList()
+                ?? new List<VoiceCommandMatch>();
+
+            if (commands.Count == 0 && r?.ParsedCommand?.IsSuccess == true)
+            {
+                commands.Add(r.ParsedCommand);
+            }
+
+            string part = commands.FirstOrDefault(c => !string.IsNullOrWhiteSpace(c.PartCode))?.PartCode;
+            string error = string.Join(",", commands
+                .Where(c => !string.IsNullOrWhiteSpace(c.ErrorCode))
+                .Select(c => c.ErrorCode)
+                .Distinct());
+            string action = commands.FirstOrDefault(c => !string.IsNullOrWhiteSpace(c.ActionType))?.ActionType;
+
+            return $"part: {NoneIfEmpty(part)} | error:{NoneIfEmpty(error)} | action:{NoneIfEmpty(action)}";
+        }
+
+        private static string BuildVoiceFinalStatus(VoiceMatchResult r, string status)
+        {
+            string matched = r?.MatchedCommand ?? "";
+            if (matched.StartsWith("[Bỏ qua]"))
+            {
+                if (matched.Contains("Không nghiệp vụ")) return "Bỏ qua: không nghiệp vụ";
+                if (matched.Contains("Thiếu Action")) return "Bỏ qua: thiếu action";
+                return "Bỏ qua";
+            }
+
+            if (status == "OK" || r?.ParsedCommand?.IsSuccess == true || r?.ParsedCommands?.Any(c => c?.IsSuccess == true) == true)
+            {
+                return "OK";
+            }
+
+            return status == "Fail" ? "Không khớp" : status;
+        }
+
+        private static string NormalizeVoiceLogText(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return "Không nghe đc gì";
+            string text = value.Trim();
+            string compact = new string(text.Where(ch => !char.IsWhiteSpace(ch)).ToArray());
+            if (compact.Length == 0) return "Không nghe đc gì";
+
+            bool onlyPlaceholders = compact.All(ch =>
+                ch == '-' || ch == '_' || ch == '.' || ch == ',' ||
+                ch == '[' || ch == ']' || ch == '(' || ch == ')' || ch == '…');
+
+            return onlyPlaceholders ? "Không nghe đc gì" : text;
+        }
+
+        private static bool IsNoSpeechLog(VoiceMatchResult r)
+        {
+            if (r == null) return true;
+            string matched = r.MatchedCommand ?? "";
+            if (matched.Contains("Whisper noise") || matched.Contains("Chỉ từ kết thúc")) return true;
+            return NormalizeVoiceLogText(r.RecognizedText) == "Không nghe đc gì"
+                && NormalizeVoiceLogText(r.CleanedText) == "Không nghe đc gì";
+        }
+
+        private static string NoneIfEmpty(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "none" : value;
         }
 
         private void VlogFinalize()
@@ -3690,8 +3780,8 @@ namespace QIP.EOL
             lock (_vlogLock)
             {
                 if (_vlog == null) return;
-                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] INFO : Session kết thúc — {_vlogSeq} lượt nhận diện.");
-                _vlog.WriteLine(new string('-', 80));
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Session kết thúc — {_vlogSeq} lượt nhận diện.");
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ================ Het session ================");
                 _vlog.Flush();
                 _vlog.Close();
                 _vlog = null;
