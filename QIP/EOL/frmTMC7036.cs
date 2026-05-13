@@ -1,4 +1,7 @@
 using ConnectionClass.Oracle;
+using GlobalFunction;
+using Microsoft.VisualBasic.Logging;
+using NETTMC.VoiceRecognition;
 using QIP.EOL.Popup;
 
 //using DocumentFormat.OpenXml.Office2010.CustomUI;
@@ -14,13 +17,20 @@ using System.Linq;
 using System.Net;
 //using DevExpress.XtraEditors.Camera;
 using System.Net;
+//using DevExpress.XtraEditors.Camera;
+using System.Net;
+//using DevExpress.XtraEditors.Camera;
+using System.Net;
 using System.Net;
 using System.Net.Http;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VoiceTest;
+using VoiceWhisperApp2;
 using static GlobalFunction.PublicFunction;
 using static QIP.EOL.frmTMC7032;
 using Label = System.Windows.Forms.Label;
@@ -70,6 +80,28 @@ namespace QIP.EOL
         public bool MQTTConnected = false;
         public string MQTTClient = "";
         GlobalFunction.PublicFunction etc = new GlobalFunction.PublicFunction();
+
+        private VoiceEngine _voiceEngine;
+        private bool _isRecordingVoice = false;
+        private CancellationTokenSource _autoLoopCts;
+
+        // ── Voice log (A36) ───────────────────────────────────
+        private static readonly string VoiceLogDir = EolCommonHelper.GetVoiceLogDir();
+        private System.IO.StreamWriter _vlog;
+        private string _vlogPath;
+        private int _vlogSeq;
+        private readonly object _vlogLock = new object();
+        // ───────────────────────────────────────────────────
+
+        public VoiceActionSupport SupportedActions => VoiceActionSupport.FullEOL;
+
+        private VoiceRecognitionService _voice;
+
+        private DateTime _lastVoiceTime = DateTime.MinValue;
+        private Button _micButton = null!;
+        private Label _resultLabel = null!;
+        //private VoiceRecognitionService _voice;
+        //private VoiceCommandParser _parser;
 
         Dictionary<string, string> Reason = new Dictionary<string, string>();
         List<string> linesensor = new List<string>();
@@ -146,6 +178,10 @@ namespace QIP.EOL
             //dtReason.Columns.Add("PART");
             //dtReason.Columns.Add("REASON");
             //dtReason.Columns.Add("USE_YN");
+
+
+            BuildMicButton();
+            Disposed += (s, e) => { _autoLoopCts?.Cancel(); VlogFinalize(); _voiceEngine?.Dispose(); };
         }
         private void TryToUpdateSystemDateTime()
         {
@@ -214,6 +250,103 @@ namespace QIP.EOL
             }
             MQTT_Init();
             //BroadCastCamera();
+
+            InitializeVoiceEngine();
+             //── Voice ──────────────────────────────────────────────
+            _voice = new VoiceRecognitionService(
+                commands: new[]
+                {
+                    "A","B","C","D",
+                    "pass","fail","repass","refail","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55"
+                },
+                enableTts: false
+            );
+
+            _voice.MessageLogged += (_, e) =>
+            {
+                if (InvokeRequired) Invoke(() => ShowMessage(e.Message, e.Color));
+                else ShowMessage(e.Message, e.Color);
+            };
+
+            // Bỏ cái cũ, thêm cái mới
+            _voice.RecognitionCompleted -= OnRecognitionCompleted;
+            _voice.RecognitionCompleted += (_, e) =>
+            {
+                SafeInvoke(() =>
+                {
+                    _micButton.Enabled = true;
+                    _micButton.Text = "🎙 Giọng nói";
+                    _micButton.BackColor = SystemColors.Control;
+                });
+
+                if (string.IsNullOrWhiteSpace(e.RawText)) return;
+                if ((DateTime.Now - _lastVoiceTime).TotalMilliseconds < 800) return;
+                _lastVoiceTime = DateTime.Now;
+
+                string normalized = NormalizeVoice(e.RawText);
+                if (string.IsNullOrWhiteSpace(normalized)) return;
+
+                // Log để debug
+                System.Diagnostics.Debug.WriteLine($"[Voice RAW] {e.RawText}");
+                System.Diagnostics.Debug.WriteLine($"[Voice NRM] {normalized}");
+
+                lock (_vlogLock)
+                {
+                    if (_vlog != null)
+                    {
+                        _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] RAW: {e.RawText}");
+                        _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] NRM: {normalized}");
+                        _vlog.Flush();
+                    }
+                    else if (_vlogPath != null)
+                    {
+                        // _vlog chưa mở (chưa bấm Auto Voice) → ghi thẳng vào file
+                        System.IO.File.AppendAllText(
+                            _vlogPath,
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] RAW: {e.RawText}\n" +
+                            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] NRM: {normalized}\n",
+                            System.Text.Encoding.UTF8);
+                    }
+                }
+
+                if (!TryParseVoiceCommand(normalized,
+                        out string position, out string errorCode, out string action))
+                {
+                    SafeInvoke(() => ShowMessage($"❌ Không khớp: '{normalized}'  (raw: '{e.RawText}')", Color.Gray));
+                    return;
+                }
+
+                SafeInvoke(() =>
+                {
+                    ShowMessage($"✔ {position} | {errorCode} | {action}", Color.Green);
+                    ProcessCommand(position, errorCode, action);
+                });
+            };
+
+
+
+
+            _ = _voice.InitializeAsync();
+        }
+        // Thay thế đoạn match cũ trong RecognitionCompleted
+        private bool TryParseVoiceCommand(string normalized,
+            out string position, out string errorCode, out string action)
+        {
+            position = errorCode = action = "";
+
+            // Trích từng thành phần độc lập — không cần đúng thứ tự
+            var posMatch = Regex.Match(normalized, @"\b(a|b|c|d)\b");
+            var errorMatch = Regex.Match(normalized, @"\b(3[9]|4[0-9]|5[0-5])\b");
+            var actionMatch = Regex.Match(normalized, @"\b(repass|refail|pass|fail)\b");
+            // repass/refail phải check trước vì chứa "pass"/"fail"
+
+            if (!posMatch.Success || !errorMatch.Success || !actionMatch.Success)
+                return false;
+
+            position = posMatch.Value.ToUpper();
+            errorCode = errorMatch.Value;
+            action = actionMatch.Value;
+            return true;
         }
         private async void MQTT_Init()
         {
@@ -3348,6 +3481,978 @@ namespace QIP.EOL
         }
 
         private void lblPart1_AutoSizeChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            if (_voiceEngine == null)
+            {
+                ShowMessage("VoiceWhisper chưa sẵn sàng.", Color.Red);
+                return;
+            }
+
+            // Toggle: nếu đang chạy thì dừng
+            if (_autoLoopCts != null)
+            {
+                _autoLoopCts.Cancel();
+                _autoLoopCts = null;
+                _voiceEngine.IsAutoLoopMode = false;
+                //btnVoiceWhisper.Text      = "🎤";
+                btnVoiceWhisper.BackColor = SystemColors.Control;
+                ShowMessage("[🛑 Auto Voice] Đã dừng. Đợi kết quả cuối...", Color.Gray);
+                _ = Task.Delay(3000).ContinueWith(_ => VlogFinalize());
+                return;
+            }
+
+            // Bắt đầu vòng lặp auto
+            RefreshVoiceCommandDefinitions();
+            _voiceEngine.IsAutoLoopMode = true;
+            _autoLoopCts = new CancellationTokenSource();
+            //btnVoiceWhisper.Text      = "⏹ DỮNG VOICE";
+            btnVoiceWhisper.BackColor = Color.OrangeRed;
+
+            // Mở log file — append vào file theo ngày, không tạo file mới mỗi lần chạy
+            try
+            {
+                System.IO.Directory.CreateDirectory(VoiceLogDir);
+                _vlogPath = System.IO.Path.Combine(VoiceLogDir, $"A36(thường)_voiceLog.log");
+                _vlogSeq = 0;
+                _vlog = new System.IO.StreamWriter(_vlogPath, append: true, System.Text.Encoding.UTF8);
+                _vlog.WriteLine(new string('=', 80));
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ================ Session bắt đầu ================");
+                _vlog.Flush();
+            }
+            catch { }
+
+            ShowMessage("[▶ Auto Voice] Bắt đầu thu âm tự động...", Color.Green);
+
+            var token = _autoLoopCts.Token;
+            _ = RunVoiceAutoLoopAsync(token);
+        }
+        private async Task RunVoiceAutoLoopAsync(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed)));
+                    else
+                        ShowMessage("🔴 Đang nghe... (tối đa 5 giây)", Color.OrangeRed);
+
+                    await _voiceEngine.StartSmartPushToTalkAsync(5000);
+
+                    if (token.IsCancellationRequested) break;
+
+                    // ── Đợi xử lý xong (engine chuyển về Ready) rồi nghỉ 5 giây ──
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("⏸ Xử lý... sau đó nghỉ 5 giây", Color.Blue)));
+                    else
+                        ShowMessage("⏸ Xử lý... sau đó nghỉ 5 giây", Color.Blue);
+
+                    await Task.Delay(5000, token);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    if (this.InvokeRequired)
+                        this.Invoke(new Action(() => ShowMessage("Voice lỗi: " + ex.Message, Color.Red)));
+                    else
+                        ShowMessage("Voice lỗi: " + ex.Message, Color.Red);
+                    await Task.Delay(2000); // nếu lỗi thì đợi 2s rồi thử lại
+                }
+            }
+
+            // Cleanup sau khi dừng
+            _voiceEngine.IsAutoLoopMode = false;
+            if (this.InvokeRequired)
+                this.Invoke(new Action(() =>
+                {
+                    //btnVoiceWhisper.Text      = "🎤";
+                    btnVoiceWhisper.BackColor = SystemColors.Control;
+                }));
+            else
+            {
+                //btnVoiceWhisper.Text      = "🎤";
+                btnVoiceWhisper.BackColor = SystemColors.Control;
+            }
+        }
+
+        private async void InitializeVoiceEngine()
+        {
+            _voiceEngine = new VoiceEngine(0.78)
+            {
+                InputGain = 3.5,
+                RmsVoiceThreshold = 0.004,
+                VadVoiceFrameRatio = 0.25,
+                MinimumVoiceDurationMs = 120,
+                SilenceAfterVoiceDurationMs = 1200,
+                EmitBatchCommandResult = true
+            };
+            _voiceEngine.CommandRecognized += _voiceEngine_CommandRecognized;
+            _voiceEngine.StateChanged += _voiceEngine_StateChanged;
+            _voiceEngine.LogMessage += _voiceEngine_LogMessage;
+            RefreshVoiceCommandDefinitions();
+
+            try
+            {
+                await _voiceEngine.InitializeAsync();
+                ShowMessage("✓ Voice đã sẵn sàng.", Color.Green);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Lỗi khởi tạo VoiceEngine: " + ex.Message, Color.Red);
+            }
+        }
+
+        private void _voiceEngine_LogMessage(object sender, string e)
+        {
+            // File A36 chỉ giữ log kết quả dạng ngắn gọn; engine log chỉ giữ lỗi nghiêm trọng.
+            if (string.IsNullOrWhiteSpace(e)) return;
+            if (e.StartsWith("===") || e.StartsWith("---")) return;
+            if (!e.StartsWith("[Voice Error]")) return;
+            lock (_vlogLock)
+            {
+                if (_vlog != null)
+                {
+                    _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ENGINE : {e}");
+                    _vlog.Flush();
+                }
+            }
+        }
+
+        private void _voiceEngine_StateChanged(object sender, VoiceEngineState e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => _voiceEngine_StateChanged(sender, e)));
+                return;
+            }
+
+            switch (e)
+            {
+                case VoiceEngineState.Ready:
+                    btnVoiceWhisper.Enabled = true;
+                    break;
+                case VoiceEngineState.Recording:
+                    btnVoiceWhisper.Enabled = false;
+                    break;
+                case VoiceEngineState.Processing:
+                    btnVoiceWhisper.Enabled = false;
+                    break;
+                case VoiceEngineState.Error:
+                    btnVoiceWhisper.Enabled = true;
+                    if (!string.IsNullOrWhiteSpace(_voiceEngine?.LastErrorMessage))
+                    {
+                        ShowMessage("Voice Engine loi: " + _voiceEngine.LastErrorMessage, Color.Red);
+                        break;
+                    }
+                    ShowMessage("⚠ Voice Engine lỗi!", Color.Red);
+                    break;
+            }
+        }
+
+        private void _voiceEngine_CommandRecognized(object sender, VoiceMatchResult e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => ProcessVoiceCommand(e)));
+            }
+            else
+            {
+                ProcessVoiceCommand(e);
+            }
+        }
+
+        private void ProcessVoiceCommand(VoiceMatchResult result)
+        {
+            if (result?.MatchedCommand?.StartsWith("[Bỏ qua]") == true)
+            {
+                ShowMessage($"[Voice] Bỏ qua — '{result.RecognizedText}'", Color.Gray);
+                VlogEntry(result, "[Bỏ qua]");
+                return;
+            }
+
+            if (result?.ParsedCommands?.Any(c => c?.IsSuccess == true) == true)
+            {
+                foreach (var command in result.ParsedCommands.Where(c => c?.IsSuccess == true))
+                {
+                    if (!string.IsNullOrWhiteSpace(command.PartCode))
+                        SelectPart(command.PartCode);
+
+                    if (!string.IsNullOrWhiteSpace(command.ErrorCode))
+                        SelectError(command.ErrorCode);
+
+                    // ── Nếu không có action → tự động FAIL ──────────────────────
+                    string action = string.IsNullOrWhiteSpace(command.ActionType)
+                        ? "fail"
+                        : command.ActionType;
+                    ConfirmAction(action);
+                }
+
+                ShowMessage($"[Voice OK] {BuildVoiceResultSummary(result)}", Color.Green);
+                VlogEntry(result, "OK");
+                return;
+            }
+
+            if (result?.ParsedCommand?.IsSuccess == true)
+            {
+                VoiceCommandMatch command = result.ParsedCommand;
+
+                if (!string.IsNullOrWhiteSpace(command.PartCode))
+                    SelectPart(command.PartCode);
+
+                if (!string.IsNullOrWhiteSpace(command.ErrorCode))
+                    SelectError(command.ErrorCode);
+
+                // ── Nếu không có action → tự động FAIL ──────────────────────────
+                string action = string.IsNullOrWhiteSpace(command.ActionType)
+                    ? "fail"
+                    : command.ActionType;
+                ConfirmAction(action);
+
+                ShowMessage($"[Voice OK] {command.ToDisplayText()} ({command.ConfidenceScore:P0})", Color.Green);
+                VlogEntry(result, "OK");
+                return;
+            }
+
+            if (result.IsSuccess)
+            {
+                ShowMessage($"[Voice Match] Lệnh: {result.MatchedCommand} ({result.ConfidenceScore:P0})", Color.Green);
+                VlogEntry(result, "Match");
+            }
+            else
+            {
+                ShowMessage($"[Voice Fail] Không nhận diện được. Nghe được: '{result.RecognizedText}'", Color.Red);
+                VlogEntry(result, "Fail");
+            }
+        }
+
+        private void VlogEntry(VoiceMatchResult r, string status)
+        {
+            lock (_vlogLock)
+            {
+                if (_vlog == null) return;
+                _vlogSeq++;
+
+                _vlog.WriteLine(BuildCompactVoiceLogLine(r, status));
+                _vlog.Flush();
+            }
+        }
+
+        private string BuildCompactVoiceLogLine(VoiceMatchResult r, string status)
+        {
+            string finalStatus = BuildVoiceFinalStatus(r, status);
+            string elapsed = $"{r?.ProcessingTimeSec ?? 0:F2}s";
+
+            if (IsNoSpeechLog(r))
+            {
+                return $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] | Không nghe đc gì → Bỏ qua  ({elapsed})";
+            }
+
+            string heard = NormalizeVoiceLogText(r?.RecognizedText);
+            string cleaned = NormalizeVoiceLogText(r?.CleanedText);
+            if (cleaned == "Không nghe đc gì")
+            {
+                cleaned = heard;
+            }
+
+            return $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] | {heard} → {cleaned} → {BuildVoiceResultSummary(r)} → {finalStatus}  ({elapsed})";
+        }
+
+        private string BuildVoiceResultSummary(VoiceMatchResult r)
+        {
+            var commands = r?.ParsedCommands?.Where(c => c != null && c.IsSuccess).ToList()
+                ?? new List<VoiceCommandMatch>();
+
+            if (commands.Count == 0 && r?.ParsedCommand?.IsSuccess == true)
+            {
+                commands.Add(r.ParsedCommand);
+            }
+
+            string part = commands.FirstOrDefault(c => !string.IsNullOrWhiteSpace(c.PartCode))?.PartCode;
+            string error = string.Join(",", commands
+                .Where(c => !string.IsNullOrWhiteSpace(c.ErrorCode))
+                .Select(c => c.ErrorCode)
+                .Distinct());
+            string action = commands.FirstOrDefault(c => !string.IsNullOrWhiteSpace(c.ActionType))?.ActionType;
+
+            return $"part: {NoneIfEmpty(part)} | error:{NoneIfEmpty(error)} | action:{NoneIfEmpty(action)}";
+        }
+
+        private static string BuildVoiceFinalStatus(VoiceMatchResult r, string status)
+        {
+            string matched = r?.MatchedCommand ?? "";
+            if (matched.StartsWith("[Bỏ qua]"))
+            {
+                if (matched.Contains("Không nghiệp vụ")) return "Bỏ qua: không nghiệp vụ";
+                if (matched.Contains("Thiếu Action")) return "Bỏ qua: thiếu action";
+                return "Bỏ qua";
+            }
+
+            if (status == "OK" || r?.ParsedCommand?.IsSuccess == true || r?.ParsedCommands?.Any(c => c?.IsSuccess == true) == true)
+            {
+                return "OK";
+            }
+
+            return status == "Fail" ? "Không khớp" : status;
+        }
+
+        private static string NormalizeVoiceLogText(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return "Không nghe đc gì";
+            string text = value.Trim();
+            string compact = new string(text.Where(ch => !char.IsWhiteSpace(ch)).ToArray());
+            if (compact.Length == 0) return "Không nghe đc gì";
+
+            bool onlyPlaceholders = compact.All(ch =>
+                ch == '-' || ch == '_' || ch == '.' || ch == ',' ||
+                ch == '[' || ch == ']' || ch == '(' || ch == ')' || ch == '…');
+
+            return onlyPlaceholders ? "Không nghe đc gì" : text;
+        }
+
+        private static bool IsNoSpeechLog(VoiceMatchResult r)
+        {
+            if (r == null) return true;
+            string matched = r.MatchedCommand ?? "";
+            if (matched.Contains("Whisper noise") || matched.Contains("Chỉ từ kết thúc")) return true;
+            return NormalizeVoiceLogText(r.RecognizedText) == "Không nghe đc gì"
+                && NormalizeVoiceLogText(r.CleanedText) == "Không nghe đc gì";
+        }
+
+        private static string NoneIfEmpty(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "none" : value;
+        }
+
+        private void VlogFinalize()
+        {
+            lock (_vlogLock)
+            {
+                if (_vlog == null) return;
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Session kết thúc — {_vlogSeq} lượt nhận diện.");
+                _vlog.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ================ Het session ================");
+                _vlog.Flush();
+                _vlog.Close();
+                _vlog = null;
+            }
+            string path = _vlogPath;
+            if (path != null)
+            {
+                void ShowLog() => ShowMessage($"[Log] {System.IO.Path.GetFileName(path)}", Color.DimGray);
+                if (this.InvokeRequired) this.Invoke(new Action(ShowLog)); else ShowLog();
+            }
+        }
+
+        private void RefreshVoiceCommandDefinitions()
+        {
+            _voiceEngine?.SetCommandDefinitions(BuildVoiceCommands());
+        }
+
+        public IReadOnlyCollection<VoiceCommandDefinition> BuildVoiceCommands()
+        {
+            var commands = new List<VoiceCommandDefinition>();
+
+            // ── Part labels (A-F) ────────────────────────────────────────────
+            foreach (var (label, code, display, extra) in GetPartLabels())
+            {
+                var aliases = new List<string> { code, "điểm " + code, "vị trí " + code, "part " + code };
+                if (extra != null) aliases.AddRange(extra);
+                commands.Add(new VoiceCommandDefinition
+                {
+                    Kind = VoiceCommandKind.Part,
+                    Code = code,
+                    DisplayText = display,
+                    Aliases = aliases
+                });
+            }
+
+            // ── REASON_ID cố định cho A36 ────────────────────────────────────
+            // Chỉ nhận 16 mã lỗi thực tế dùng tại A36.
+
+            // → Whisper sẽ ưu tiên nhận diện 3 mã lỗi thường xuyên nhất này.
+            var a14ReasonIds = new[] { "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55" };
+
+            // Lấy button text từ form để giữ đúng tên lỗi thực tế
+            var buttonMap = GetReasonButtons()
+    .Where(b => !string.IsNullOrWhiteSpace(b.AccessibleName))
+    .GroupBy(b => b.AccessibleName)
+    .ToDictionary(g => g.Key, g =>
+        string.IsNullOrWhiteSpace(g.First().Text) ? g.Key : g.First().Text.Replace(Environment.NewLine, " "));
+
+            foreach (string reasonId in a14ReasonIds)
+            {
+                // Lấy display text từ button nếu có, fallback về reasonId
+                buttonMap.TryGetValue(reasonId, out string displayText);
+                displayText ??= reasonId;
+
+                commands.Add(new VoiceCommandDefinition
+                {
+                    Kind = VoiceCommandKind.Error,
+                    Code = reasonId,
+                    DisplayText = displayText,
+                    Aliases = VoiceAliasHelper.BuildReasonAliases(reasonId, displayText)
+                });
+            }
+
+            commands.AddRange(VoiceAliasHelper.BuildActionCommands(SupportedActions));
+            return commands;
+        }
+
+
+        public void SelectPart(string partCode)
+        {
+            var entry = GetPartLabels()
+                .FirstOrDefault(p => string.Equals(p.Code, partCode, StringComparison.OrdinalIgnoreCase));
+
+            if (entry.Label == null)
+            {
+                ShowMessage("Voice: không tìm thấy part " + partCode, Color.Red);
+                return;
+            }
+
+            lblPart3_Click(entry.Label, EventArgs.Empty);
+        }
+
+        public void SelectError(string errorCode)
+        {
+            if (string.IsNullOrWhiteSpace(partID))
+            {
+                ShowMessage("Voice: chọn part trước khi chọn lỗi.", Color.Red);
+                return;
+            }
+
+            Button reasonButton = GetReasonButtons()
+                .FirstOrDefault(button => string.Equals(button.AccessibleName, errorCode, StringComparison.OrdinalIgnoreCase));
+
+            if (reasonButton == null)
+            {
+                ShowMessage("Voice: không tìm thấy mã lỗi " + errorCode, Color.Red);
+                return;
+            }
+
+            btnError_Click(reasonButton, EventArgs.Empty);
+        }
+        private void ShowMessage(string message, Color color)
+        {
+            txtMessage.Text = message;
+            txtMessage.ForeColor = color;
+
+            //timerStopMessage.Interval = 3000; // 3 giây
+            timerStopMessage.Start();
+        }
+        public void ConfirmAction(string actionType)
+        {
+            //switch ((actionType ?? string.Empty).ToLowerInvariant())
+            //{
+            //    case "pass":
+            //        btnPass_Click(btnPass, EventArgs.Empty);
+            //        break;
+            //    case "re-pass":
+            //        btnRePass_Click(btnRePass, EventArgs.Empty);
+            //        break;
+            //    case "fail":
+            //        btnFail_Click(btnFail, EventArgs.Empty);
+            //        break;
+            //    case "re-fail":
+            //        button4_Click(btnReFail, EventArgs.Empty);
+            //        break;
+            //    case "clear":
+            //        btnClear_Click(btnClear, EventArgs.Empty);
+            //        break;
+            //    default:
+            //        ShowMessage("Voice: không hỗ trợ lệnh " + actionType, Color.Red);
+            //        break;
+            //}
+        }
+
+        // ── Part labels cho A36─────────────────────────────────────────────
+        // Alias: ưu tiên cách đọc ĐÔI (bê bê, xê xê...) để Whisper nhận Part rõ hơn.
+        // Kỹ thuật "đọc đôi" (AA, BB...): Whisper nhận ký tự đơn rất kém,
+        // nhưng lặp 2 lần cụm âm tiết rõ (bê bê, xê xê) tăng accuracy lên đáng kể.
+        private IEnumerable<(Label Label, string Code, string Display, string[] ExtraAliases)> GetPartLabels()
+        {
+            yield return (lblPart1, "A", "Part A", new[] { "a", "à", "ạ", "á", "Ah", "ah", "a a", "lỗi a" });
+            yield return (lblPart2, "B", "Part B", new[] { "bê", "bờ", "bê bê", "bờ bờ", "b b", "bb" });
+            yield return (lblPart3, "C", "Part C", new[] { "xê", "sê", "se", "xê xê", "sê sê", "c c" });
+            yield return (lblPart4, "D", "Part D", new[] { "đê", "đề", "đê đê", "đề đề", "d d" });
+
+        }
+
+        // ── VOICE AUTO TEST ──────────────────────────────────────────────────
+        // Gọi từ button btnVoiceAutoTest (thêm button vào Designer hoặc dùng context menu)
+        // ─────────────────────────────────────────────────────────────────────
+        public async Task RunVoiceAutoTestAsync(
+            IReadOnlyList<VoiceTestCase> cases = null,
+            IProgress<(int cur, int total)> progress = null)
+        {
+            if (_voiceEngine == null)
+            {
+                ShowMessage("VoiceEngine chưa sẵn sàng.", Color.Red);
+                return;
+            }
+
+            // Dừng auto loop nếu đang chạy
+            if (_autoLoopCts != null)
+            {
+                _autoLoopCts.Cancel();
+                _autoLoopCts = null;
+                _voiceEngine.IsAutoLoopMode = false;
+                await Task.Delay(500); // chờ engine về trạng thái Ready
+            }
+
+            ShowMessage("Đang chạy Voice Auto Test...", Color.Blue);
+
+            string tempDir = System.IO.Path.Combine(Application.StartupPath, "VoiceTestTemp");
+            string reportDir = System.IO.Path.Combine(Application.StartupPath, "test", "log");
+
+            var runner = new VoiceAutoTestRunner(
+                engine: _voiceEngine,
+                logAction: msg => ThreadSafe(() => ShowMessage(msg, Color.DarkSlateGray)),
+                tempDir: tempDir
+            );
+
+            try
+            {
+                var results = await runner.RunAllAsync(cases, progress);
+
+                int pass = results.Count(r => r.IsPass);
+                Color statusColor = (pass == results.Count) ? Color.Green : Color.OrangeRed;
+
+                // Lưu báo cáo markdown
+                System.IO.Directory.CreateDirectory(reportDir);
+                string reportPath = System.IO.Path.Combine(
+                    reportDir,
+                    $"A14_autotest_{DateTime.Now:yyyyMMdd_HHmmss}.md");
+                runner.SaveReport(results, reportPath);
+
+                ShowMessage(
+                    $"Auto Test: {pass}/{results.Count} PASS  |  Báo cáo: {System.IO.Path.GetFileName(reportPath)}",
+                    statusColor);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Auto Test lỗi: " + ex.Message, Color.Red);
+            }
+        }
+        private async Task InitVoiceAsync()
+        {
+            _micButton.Enabled = false;
+            _micButton.Text = "⏳ Đang load…";
+            try
+            {
+                await _voice.InitializeAsync();
+                SafeInvoke(() =>
+                {
+                    _micButton.Enabled = true;
+                    _micButton.Text = "🎙 Giọng nói";
+                });
+            }
+            catch
+            {
+                SafeInvoke(() => _micButton.Text = "✘ Lỗi model");
+            }
+        }
+
+        // ── Nút mic ───────────────────────────────────────────────────────
+
+        private void MicButton_Click(object? sender, EventArgs e)
+        {
+            if (!_voice.IsModelReady) return;
+
+            if (!_voice.IsRecording)
+            {
+                // Bắt đầu ghi
+                _voice.StartRecording();
+                _micButton.Text = "⏹ Dừng";
+                _micButton.BackColor = Color.FromArgb(57, 211, 140);
+                _resultLabel.Text = "Đang nghe…";
+            }
+            else
+            {
+                // Dừng & nhận dạng (async, kết quả trả về qua event)
+                _micButton.Enabled = false;
+                _micButton.Text = "⚙ Đang xử lý…";
+                _ = _voice.StopAndRecognizeAsync();
+            }
+        }
+
+        // ── Xử lý kết quả ─────────────────────────────────────────────────
+
+        private void OnRecognitionCompleted(object? sender, RecognitionResultEventArgs e)
+        {
+            //SafeInvoke(() =>
+            //{
+            //    _micButton.Enabled = true;
+            //    _micButton.Text = "🎙 Giọng nói";
+            //    _micButton.BackColor = SystemColors.Control;
+
+            //    if (e.IsMatched)
+            //    {
+            //        _resultLabel.Text = $"✔ {e.MatchedCommand}  ({e.MatchScore:P0})";
+            //        _resultLabel.ForeColor = Color.Green;
+
+            //        // Xử lý lệnh theo nghiệp vụ của form này
+            //        HandleCommand(e.MatchedCommand!);
+            //    }
+            //    else
+            //    {
+            //        string info = e.MatchedCommand is not null
+            //            ? $"Gần nhất: \"{e.MatchedCommand}\" ({e.MatchScore:P0}) – dưới ngưỡng"
+            //            : "Không khớp lệnh nào";
+            //        _resultLabel.Text = $"⚠ {info}";
+            //        _resultLabel.ForeColor = Color.OrangeRed;
+            //    }
+            //});
+
+            //SafeInvoke(() =>
+            //{
+            //    _micButton.Enabled = true;
+            //    _micButton.Text = "🎙 Giọng nói";
+            //    _micButton.BackColor = SystemColors.Control;
+
+            //    if (!string.IsNullOrWhiteSpace(e.RawText))
+            //    {
+            //        string normalized = NormalizeVoice(e.RawText);
+            //        ProcessVoiceCommand(normalized);
+            //    }
+            //});
+
+            if (e.IsMatched && !string.IsNullOrWhiteSpace(e.MatchedCommand))
+            {
+                var parts = e.MatchedCommand.Split(' ');
+                if (parts.Length == 3)
+                {
+                    string position = parts[0]; // Vị trí (A, B, C, D)
+                    string errorCode = parts[1]; // Mã lỗi (AccessibleName của button)
+                    string action = parts[2];    // Hành động (fail, repair)
+
+                    ProcessCommand(position, errorCode, action);
+                }
+            }
+            else
+            {
+                txtMessage.Text = "Không nhận dạng được lệnh. Vui lòng thử lại.";
+            }
+        }
+        private void ProcessCommand(string position, string errorCode, string action)
+        {
+            Label? targetLabel = position switch
+            {
+                "A" => lblPart1,
+                "B" => lblPart2,
+                "C" => lblPart3,
+                "D" => lblPart4,
+                _ => null
+            };
+
+            if (targetLabel != null)
+            {
+                targetLabel.ForeColor = Color.Red; // Highlight vị trí
+            }
+
+            Button? targetButton = this.Controls
+                .OfType<Button>()
+                .FirstOrDefault(btn => btn.AccessibleName == errorCode);
+
+            if (targetButton != null)
+            {
+                targetButton.PerformClick(); // Nhấn nút tương ứng với mã lỗi
+            }
+
+            txtMessage.Text = $"Vị trí: {position}, Mã lỗi: {errorCode}, Hành động: {action}";
+        }
+        //private void ProcessVoiceCommand(string s)
+        //{
+        //    // ── Repass trước (phải check trước pass) ────────────────────
+        //    if (System.Text.RegularExpressions.Regex.IsMatch(s, @"\b(re\s*pass)\b"))
+        //    {
+        //        btnRePass_Click(btnRePass, EventArgs.Empty);
+        //        ShowMessage("✔ REPASS", Color.LimeGreen);
+        //        return;
+        //    }
+
+        //    // ── Pass ─────────────────────────────────────────────────────
+        //    if (System.Text.RegularExpressions.Regex.IsMatch(s, @"\bpass\b"))
+        //    {
+        //        btnPass_Click(btnPass, EventArgs.Empty);
+        //        ShowMessage("✔ PASS", Color.LimeGreen);
+        //        return;
+        //    }
+
+        //    // ── Refail / Fail ─────────────────────────────────────────────
+        //    bool isRefail = System.Text.RegularExpressions.Regex.IsMatch(s, @"\b(re\s*fail)\b");
+        //    bool isFail = !isRefail && System.Text.RegularExpressions.Regex.IsMatch(s, @"\bfail\b");
+
+        //    if (isFail || isRefail)
+        //    {
+        //        // Vị trí
+        //        var partMatch = System.Text.RegularExpressions.Regex.Match(s, @"\b([abcd])\b");
+        //        if (partMatch.Success)
+        //        {
+        //            Label targetLbl = partMatch.Value.ToUpper() switch
+        //            {
+        //                "A" => lblPart1,
+        //                "B" => lblPart2,
+        //                "C" => lblPart3,
+        //                "D" => lblPart4,
+        //                _ => null
+        //            };
+        //            if (targetLbl != null)
+        //                lblPart3_Click(targetLbl, EventArgs.Empty);
+        //        }
+
+        //        // Số lỗi + Fail — delay để lblPart xử lý xong
+        //        var numMatch = System.Text.RegularExpressions.Regex.Match(s, @"\b(\d{2,3})\b");
+        //        Task.Delay(200).ContinueWith(_ =>
+        //        {
+        //            SafeInvoke(() =>
+        //            {
+        //                if (numMatch.Success)
+        //                {
+        //                    var errBtn = GetReasonButtons()
+        //                                     .FirstOrDefault(b => b.AccessibleName == numMatch.Value);
+        //                    if (errBtn != null)
+        //                        btnError_Click(errBtn, EventArgs.Empty);
+        //                }
+
+        //                Task.Delay(100).ContinueWith(__ =>
+        //                {
+        //                    SafeInvoke(() =>
+        //                    {
+        //                        if (isRefail) button4_Click(button4, EventArgs.Empty);
+        //                        else btnFail_Click(btnFail, EventArgs.Empty);
+        //                        ShowMessage($"✔ {(isRefail ? "REFAIL" : "FAIL")}", Color.OrangeRed);
+        //                    });
+        //                });
+        //            });
+        //        });
+        //        return;
+        //    }
+
+        //    ShowMessage($"❓ Không nhận ra: \"{s}\"", Color.Orange);
+        //}
+        private IEnumerable<Button> GetReasonButtons()
+        {
+            Control[] reasonContainers =
+            {
+                tableLayoutError1,
+                tableLayoutError
+            };
+
+            foreach (Control container in reasonContainers)
+            {
+                foreach (Button btn in GetButtonsRecursive(container))
+                {
+                    yield return btn;
+                }
+            }
+        }
+        private IEnumerable<Button> GetButtonsRecursive(Control parent)
+        {
+            foreach (Control ctrl in parent.Controls)
+            {
+                if (ctrl is Button btn)
+                {
+                    yield return btn;
+                }
+
+                if (!ctrl.HasChildren)
+                {
+                    continue;
+                }
+
+                foreach (Button nestedButton in GetButtonsRecursive(ctrl))
+                {
+                    yield return nestedButton;
+                }
+            }
+        }
+
+        //private string NormalizeVoice(string s)
+        //{
+
+        //    s = Regex.Replace(s, @"[^\w\s]", " "); // bỏ ký tự rác
+        //    s = Regex.Replace(s, @"\s+", " ");
+        //    if (s.Split(' ').Length > 6) return "";
+        //    s = s.ToLowerInvariant().Trim();
+
+        //    // ── Vị trí — nói kèm từ cho dễ nhận ────────────────────────
+        //    // Nói "alpha" / "an" / "một" → A
+        //    s = s.Replace("alpha", "a");
+        //    s = s.Replace(" an ", " a ");
+        //    s = s.Replace("a a", "a");
+        //    s = s.Replace("vùng 1", "a");
+        //    s = s.Replace("phần 1", "a");
+        //    s = s.Replace("một", "a");  // nếu chỉ có 1 chữ số
+
+        //    // Nói "bravo" / "bê" / "hai" → B  
+        //    s = s.Replace("bravo", "b");
+        //    s = s.Replace("bê bê", "b");
+        //    s = s.Replace("bê", "b");
+        //    s = s.Replace("vùng 2", "b");
+        //    s = s.Replace("phần 2", "b");
+
+        //    // Nói "charlie" / "xê" / "cê" / "ba" → C
+        //    s = s.Replace("charlie", "c");
+        //    s = s.Replace("xê xê", "c");
+        //    s = s.Replace("xê", "c");
+        //    s = s.Replace("cê cê", "c");
+        //    s = s.Replace("cê", "c");
+        //    s = s.Replace("vùng 3", "c");
+        //    s = s.Replace("phần 3", "c");
+
+        //    // Nói "delta" / "đê" / "bốn" → D
+        //    s = s.Replace("delta", "d");
+        //    s = s.Replace("đê đê", "d");
+        //    s = s.Replace("đê", "d");
+        //    s = s.Replace("vùng 4", "d");
+        //    s = s.Replace("phần 4", "d");
+
+        //    // ── Pass / Repass ────────────────────────────────────────────
+        //    s = s.Replace("tái đạt", "repass");
+        //    s = s.Replace("re đạt", "repass");
+        //    s = s.Replace("đạt lại", "repass");
+        //    s = s.Replace("đạt", "pass");
+        //    s = s.Replace("pát", "pass");
+        //    s = s.Replace("pas", "pass");
+
+        //    // ── Fail / Refail ────────────────────────────────────────────
+        //    s = s.Replace("tái rớt", "refail");
+        //    s = s.Replace("re rớt", "refail");
+        //    s = s.Replace("rớt lại", "refail");
+        //    s = s.Replace("tái lỗi", "refail");
+        //    s = s.Replace("re lỗi", "refail");
+        //    s = s.Replace("rớt", "fail");
+        //    s = s.Replace("lỗi", "fail");
+        //    s = s.Replace("feel", "fail");
+        //    s = s.Replace("fell", "fail");
+        //    s = s.Replace("phil", "fail");
+        //    s = s.Replace("fai", "fail");
+
+        //    // ── Số ──────────────────────────────────────────────────────
+        //    s = s.Replace("ba mươi chín", "39");
+
+        //    s = s.Replace("bốn mươi mốt", "41");
+        //    s = s.Replace("bốn mươi hai", "42");
+        //    s = s.Replace("bốn mươi ba", "43");
+        //    s = s.Replace("bốn mươi bốn", "44");
+        //    s = s.Replace("bốn mươi lăm", "45");
+        //    s = s.Replace("bốn mươi sáu", "46");
+        //    s = s.Replace("bốn mươi bảy", "47");
+        //    s = s.Replace("bốn mươi tám", "48");
+        //    s = s.Replace("bốn mươi chín", "49");
+        //    s = s.Replace("bốn mươi", "40");
+
+        //    s = s.Replace("năm mươi mốt", "51");
+        //    s = s.Replace("năm mươi hai", "52");
+        //    s = s.Replace("năm mươi ba", "53");
+        //    s = s.Replace("năm mươi bốn", "54");
+        //    s = s.Replace("năm mươi lăm", "55");
+        //    s = s.Replace("năm mươi", "50");
+
+        //    return s;
+        //}
+
+        private string NormalizeVoice(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return "";
+
+            s = s.ToLowerInvariant().Trim();
+            s = Regex.Replace(s, @"[^\wÀ-ỹ\s]", " "); // giữ tiếng Việt
+            s = Regex.Replace(s, @"\s+", " ").Trim();
+
+            // ── Số: PHẢI replace chuỗi DÀI trước, ngắn sau ──────────────────
+            // Nếu replace "bốn mươi" trước → "bốn mươi mốt" bị sai thành "40 mốt"
+            var numberMap = new (string spoken, string digit)[]
+            {
+        ("ba mươi chín",   "39"),
+        ("bốn mươi mốt",  "41"), ("bốn mươi hai",  "42"),
+        ("bốn mươi ba",   "43"), ("bốn mươi bốn",  "44"),
+        ("bốn mươi lăm",  "45"), ("bốn mươi sáu",  "46"),
+        ("bốn mươi bảy",  "47"), ("bốn mươi tám",  "48"),
+        ("bốn mươi chín", "49"), ("bốn mươi",      "40"),
+        ("năm mươi mốt",  "51"), ("năm mươi hai",  "52"),
+        ("năm mươi ba",   "53"), ("năm mươi bốn",  "54"),
+        ("năm mươi lăm",  "55"), ("năm mươi",      "50"),
+            };
+            foreach (var (spoken, digit) in numberMap)
+                s = s.Replace(spoken, digit);
+
+            // ── Vị trí ───────────────────────────────────────────────────────
+            s = Regex.Replace(s, @"\b(alpha|ah|à|ạ|á|a a|lỗi a|phần 1|vùng 1|một)\b", "a");
+            s = Regex.Replace(s, @"\b(bravo|bê bê|bê|bờ bờ|bờ|b b|bb|phần 2|vùng 2)\b", "b");
+            s = Regex.Replace(s, @"\b(charlie|xê xê|xê|sê sê|sê|cê cê|cê|c c|phần 3|vùng 3)\b", "c");
+            s = Regex.Replace(s, @"\b(delta|đê đê|đê|đề đề|đề|d d|phần 4|vùng 4)\b", "d");
+
+            // ── Action: repass/refail TRƯỚC pass/fail ────────────────────────
+            s = Regex.Replace(s, @"\b(tái đạt|re đạt|đạt lại|tái pass|re pass)\b", "repass");
+            s = Regex.Replace(s, @"\b(tái rớt|re rớt|rớt lại|tái lỗi|re lỗi|tái fail|re fail)\b", "refail");
+            s = Regex.Replace(s, @"\b(đạt|pát|pas|pass)\b", "pass");
+            s = Regex.Replace(s, @"\b(rớt|lỗi|feel|fell|phil|fai|fail)\b", "fail");
+
+            // Bỏ từ nhiễu thường gặp từ Whisper
+            s = Regex.Replace(s, @"\b(ừ|uh|um|okay|ok|vâng|dạ|thì|là|ở)\b", "");
+            s = Regex.Replace(s, @"\s+", " ").Trim();
+
+            return s;
+        }
+        private void OnModelStatus(object? sender, ModelStatusEventArgs e)
+        {
+            // Tuỳ ý – ghi log, hiện tooltip, cập nhật status bar…
+            SafeInvoke(() => Text = $"Form – {e.Message}");
+        }
+
+        // ── Nghiệp vụ riêng của form ───────────────────────────────────────
+
+        private void HandleCommand(string command)
+        {
+            // TODO: tuỳ từng form làm gì với lệnh nhận được
+            switch (command)
+            {
+                case "Lỗi 1": /* ... */ break;
+                case "Lỗi 2": /* ... */ break;
+                case "Hở keo": /* ... */ break;
+            }
+        }
+
+        // ── UI helpers ─────────────────────────────────────────────────────
+
+        private void BuildMicButton()
+        {
+            _micButton = new Button
+            {
+                Text = "🎙 Giọng nói",
+                Size = new Size(130, 40),
+                Location = new Point(16, 16)
+            };
+            _micButton.Click += MicButton_Click;
+
+            _resultLabel = new Label
+            {
+                Location = new Point(16, 64),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10f),
+                ForeColor = SystemColors.ControlText
+            };
+
+            Controls.Add(_micButton);
+            Controls.Add(_resultLabel);
+        }
+
+        private void SafeInvoke(Action a)
+        {
+            if (IsDisposed) return;
+            if (InvokeRequired) Invoke(a); else a();
+        }
+
+        private void btnVoiceWhisper_Click(object sender, EventArgs e)
         {
 
         }

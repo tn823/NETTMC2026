@@ -125,6 +125,8 @@
             button9 = new Button();
             button8 = new Button();
             panelControl2 = new Panel();
+            btnVoiceWhisper = new Button();
+            button20 = new Button();
             txtMessage = new Label();
             button19 = new Button();
             btn_reasonCode1 = new Button();
@@ -1503,6 +1505,8 @@
             // 
             // panelControl2
             // 
+            panelControl2.Controls.Add(btnVoiceWhisper);
+            panelControl2.Controls.Add(button20);
             panelControl2.Controls.Add(txtMessage);
             panelControl2.Controls.Add(button19);
             panelControl2.Controls.Add(btn_reasonCode1);
@@ -1524,6 +1528,41 @@
             panelControl2.Name = "panelControl2";
             panelControl2.Size = new Size(1326, 58);
             panelControl2.TabIndex = 0;
+            // 
+            // btnVoiceWhisper
+            // 
+            btnVoiceWhisper.BackColor = Color.White;
+            btnVoiceWhisper.Dock = DockStyle.Right;
+            btnVoiceWhisper.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            btnVoiceWhisper.FlatStyle = FlatStyle.Flat;
+            btnVoiceWhisper.Font = new Font("Arial", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVoiceWhisper.Location = new Point(59, 0);
+            btnVoiceWhisper.Margin = new Padding(3, 4, 3, 4);
+            btnVoiceWhisper.Name = "btnVoiceWhisper";
+            btnVoiceWhisper.Size = new Size(113, 58);
+            btnVoiceWhisper.TabIndex = 18;
+            btnVoiceWhisper.Text = "Mic";
+            btnVoiceWhisper.TextImageRelation = TextImageRelation.ImageAboveText;
+            btnVoiceWhisper.UseVisualStyleBackColor = false;
+            btnVoiceWhisper.Visible = false;
+            btnVoiceWhisper.Click += btnVoiceWhisper_Click;
+            // 
+            // button20
+            // 
+            button20.BackColor = Color.White;
+            button20.Dock = DockStyle.Right;
+            button20.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            button20.FlatStyle = FlatStyle.Flat;
+            button20.Font = new Font("Arial", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button20.Image = Properties.Resources.voice_whisper;
+            button20.Location = new Point(172, 0);
+            button20.Margin = new Padding(3, 4, 3, 4);
+            button20.Name = "button20";
+            button20.Size = new Size(113, 58);
+            button20.TabIndex = 17;
+            button20.TextImageRelation = TextImageRelation.ImageAboveText;
+            button20.UseVisualStyleBackColor = false;
+            button20.Click += button20_Click;
             // 
             // txtMessage
             // 
@@ -2063,5 +2102,7 @@
         private Panel panelStatus;
         private Label txtStatus1;
         private Label txtPassQC;
+        private Button button20;
+        private Button btnVoiceWhisper;
     }
 }

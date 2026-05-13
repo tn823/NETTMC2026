@@ -702,10 +702,25 @@ namespace NETTMC.VoiceRecognition
             // prompt tự nhiên sẽ ưu tiên đúng những từ khóa quan trọng nhất.
             var seed = new[]
             {
-                "A mười bảy không đạt",
-                "A mười tám không đạt",
-                "B mười tám không đạt",
-                "C hai mươi mốt không đạt",
+                //"A mười bảy không đạt",
+                //"A mười tám không đạt",
+                //"B mười tám không đạt",
+                //"C hai mươi mốt không đạt",
+                "A",
+                "B",
+                "C",
+                "D",
+                "ok",
+                "bốn mươi lăm",
+                "bốn mươi năm",
+                "bốn năm",
+                "Pass",
+                "Fail",
+                "Repass",
+                "Refail",
+                "bốn tám",
+
+
                 "đạt",
                 "không đạt",
                 "đạt lại",
